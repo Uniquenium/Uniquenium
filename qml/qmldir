@@ -1,6 +1,0 @@
-module UniDesk
-UniDeskChart 1.0 UniDeskChart.qml
-UniDeskLink 1.0 UniDeskLink.qml
-UniDeskMenu 1.0 UniDeskMenu.qml
-UniDeskText 1.0 UniDeskText.qml
-UniDeskWindow 1.0 UniDeskWindow.qml

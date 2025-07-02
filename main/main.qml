@@ -1,13 +1,17 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
+import unidesk_qml
+import org.itcdt.unidesk
 
-Window {
+UniDeskBase {
     visible: true
     width: 640
     height: 480
-    title: "无边框窗口"
 
-    flags: Qt.Window | Qt.FramelessWindowHint 
-
-    
+    Text{
+        text: "PPP"
+        
+        verticalAlignment: Qt.AlignVCenter
+        anchors.fill: parent
+    }
 }

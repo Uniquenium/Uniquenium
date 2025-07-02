@@ -1,3 +1,3 @@
 import os
 
-os.system("pyside6-rcc ../resources.qrc -o res.py")
+os.system("pyside6-rcc resources.qrc -o main/res.py")
