@@ -21,7 +21,7 @@ An open-source desktop extension tool that combines beautification and practical
     - [ ] Remove
     - [ ] Options
 - [ ] Root Components
-    - [ ] Base
+    - [ ] Base <---Here
     - [ ] Menu
     - [ ] Infobar
     - [ ] Window(Frameless)

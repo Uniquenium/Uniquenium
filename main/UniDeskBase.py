@@ -7,4 +7,5 @@ class UniDeskBase(QQuickWindow):
     def __init__(self):
         super().__init__()
         self.setFlag(Qt.WindowType.FramelessWindowHint,True)
+        # self.setFlag(Qt.WindowType.WindowStaysOnBottomHint,True)
     
