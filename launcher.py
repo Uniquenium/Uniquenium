@@ -15,6 +15,7 @@ from PySide6.QtCore import *
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
+    print(app.screens())
     qmlRegisterType(UniDeskBase,"org.itcdt.unidesk",1,0,"UniDeskBase")
     qmlRegisterSingletonType(UniDeskUnits,"org.itcdt.unidesk",1,0,"UniDeskUnits")
     engine = QQmlApplicationEngine()
