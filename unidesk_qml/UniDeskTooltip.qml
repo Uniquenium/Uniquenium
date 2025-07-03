@@ -1,0 +1,34 @@
+import QtQuick 
+import QtQuick.Controls 
+import QtQuick.Layouts
+import QtQuick.Dialogs
+import QtQuick.Templates as T
+import QtQuick.Controls.Basic
+import Qt5Compat.GraphicalEffects
+import unidesk_qml
+import org.itcdt.unidesk
+
+T.ToolTip {
+    id: root
+    x: parent ? (parent.width - implicitWidth) / 2 : 0
+    y: -implicitHeight - 3
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            contentWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             contentHeight + topPadding + bottomPadding)
+    margins: 6
+    padding: 6
+    font: UniDeskUnits.tiny
+    closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent
+                 | T.Popup.CloseOnReleaseOutsideParent
+    contentItem: Text {
+        text: root.text
+        font: root.font
+        wrapMode: Text.Wrap
+    }
+    background: Rectangle {
+        color: UniDeskUnits.isLight ? Qt.rgba(1, 1, 1, 1) : Qt.rgba(0, 0, 0, 1)
+        border.color: UniDeskUnits.isLight ? Qt.rgba(0, 0, 0, 1) : Qt.rgba(1, 1, 1, 1)
+        border.width: 0.5
+    }
+}

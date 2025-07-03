@@ -14,13 +14,30 @@ Button{
     property string contentText
     property string iconSource
     property double radius
-    property color contentTextColor: Qt.rgba(0,0,0,1)
-    property color iconColor: Qt.rgba(0,0,0,1)
+    property double iconWidth: 20
+    property double iconHeight: 20
+
+    property color textNormalColor: Qt.rgba(0,0,0,1)
+    property color iconNormalColor: Qt.rgba(0,0,0,1)
     property color bgNormalColor: "transparent"
+
     property color bgHoverColor: UniDeskUnits.isLight ? bgNormalColor.darker(1.2) : bgNormalColor.lighter(1.2)
     property color bgPressColor: UniDeskUnits.isLight ? bgNormalColor.darker(1.5) : bgNormalColor.lighter(1.5)
     property color bgDisableColor: UniDeskUnits.isLight ? bgNormalColor.lighter(1.5) : bgNormalColor.darker(1.5)
+
+    property color iconHoverColor: UniDeskUnits.isLight ? iconNormalColor.darker(1.2) : iconNormalColor.lighter(1.2)
+    property color iconPressColor: UniDeskUnits.isLight ? iconNormalColor.darker(1.5) : iconNormalColor.lighter(1.5)
+    property color iconDisableColor: UniDeskUnits.isLight ? iconNormalColor.lighter(1.5) : iconNormalColor.darker(1.5)
+
+    property color textHoverColor: UniDeskUnits.isLight ? textNormalColor.darker(1.2) : textNormalColor.lighter(1.2)
+    property color textPressColor: UniDeskUnits.isLight ? textNormalColor.darker(1.5) : textNormalColor.lighter(1.5)
+    property color textDisableColor: UniDeskUnits.isLight ? textNormalColor.lighter(1.5) : textNormalColor.darker(1.5)
+
+    property color bgColor: UniDeskTools.switchColor(bgNormalColor,bgHoverColor,bgPressColor,bgDisableColor,hovered,pressed,disabled)
+    property color iconColor: UniDeskTools.switchColor(iconNormalColor,iconHoverColor,iconPressColor,iconDisableColor,hovered,pressed,disabled)
+    property color textColor: UniDeskTools.switchColor(textNormalColor,textHoverColor,textPressColor,textDisableColor,hovered,pressed,disabled)
     font: UniDeskUnits.tiny
+    clip: false
     Accessible.role: Accessible.Button
     Accessible.name: root.text
     Accessible.description: contentText
@@ -31,8 +48,16 @@ Button{
         implicitWidth: 30
         implicitHeight: 30
         radius: root.radius
-        color: UniDeskTools.switchColor(root.bgNormalColor,root.bgHoverColor,root.bgPressColor,root.bgDisableColor,
-                    root.hovered,root.pressed,root.disabled)
+        color: root.bgColor
+        MouseArea{
+            anchors.fill: parent
+            acceptedButtons: Qt.AllButtons
+            hoverEnabled: true
+            onHoveredChanged:{
+                tool_tip.x=mouseX;
+                tool_tip.y=mouseY;
+            }
+        }
     }
     Component {
         id: com_icon
@@ -40,8 +65,8 @@ Button{
             id: icon
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            width: 50
-            height: 50
+            width: root.iconWidth
+            height: root.iconHeight
             source: root.iconSource
             ColorOverlay{
                 anchors.fill: icon
@@ -62,7 +87,7 @@ Button{
                 text: root.contentText
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.IconOnly
-                color: root.contentTextColor
+                color: root.textColor
                 font: root.font
             }
         }
@@ -79,7 +104,7 @@ Button{
                 text: root.contentText
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.IconOnly
-                color: root.contentTextColor
+                color: root.textColor
                 font: root.font
             }
         }
@@ -92,18 +117,19 @@ Button{
             return com_row
         }
     }
-    ToolTip {
+    UniDeskTooltip {
         id: tool_tip
         visible: {
             if (root.contentText === "") {
                 return false
             }
-            if (control.display !== Button.IconOnly) {
+            if (root.display !== Button.IconOnly) {
                 return false
             }
             return hovered
         }
         text: root.contentText
         delay: 1000
+        font: root.font
     }
 }

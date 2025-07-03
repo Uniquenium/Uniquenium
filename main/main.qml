@@ -6,10 +6,15 @@ import org.itcdt.unidesk
 UniDeskBase {
     id: base
     visible: true
-    color: "white"
+    color: "transparent"
+    x: Screen.width-width-10
+    y: 10
+    width: btn_quit.width
     UniDeskButton{
         id: btn_quit
-        bgNormalColor:"green"
+        contentText: qsTr("退出")
+        iconWidth: 15
+        iconHeight: 15
         iconSource: "qrc:/media/img/logout-box-line.svg"
         onClicked:{
             base.close()
