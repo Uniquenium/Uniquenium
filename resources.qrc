@@ -1,9 +1,26 @@
 <RCC>
     <qresource prefix='/'>
+        <file>main/main.qml</file>
         <file>media/font/SanJiNengLiangHeiJianTi-2.ttf</file>
         <file>media/font/XiaWuWenKai.ttf</file>
         <file>media/font/yibiyihuachaoheiti-2.ttf</file>
         <file>media/font/ZhuZiAWan-2.ttf</file>
-        <file>main/main.qml</file>
+        <file>media/img/add-line.svg</file>
+        <file>media/img/arrow-down-s-line.svg</file>
+        <file>media/img/arrow-up-s-line.svg</file>
+        <file>media/img/calculator-line.svg</file>
+        <file>media/img/carousel-view.svg</file>
+        <file>media/img/line-chart-line.svg</file>
+        <file>media/img/links-line.svg</file>
+        <file>media/img/logout-box-line.svg</file>
+        <file>media/img/loop-left-line.svg</file>
+        <file>media/img/menu-line.svg</file>
+        <file>media/img/page-separator.svg</file>
+        <file>media/img/palette-line.svg</file>
+        <file>media/img/rest-time-line.svg</file>
+        <file>media/img/restart-line.svg</file>
+        <file>media/img/screenshot-2-line.svg</file>
+        <file>media/img/shut-down-line.svg</file>
+        <file>media/img/text.svg</file>
     </qresource>
 </RCC>
