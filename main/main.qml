@@ -40,6 +40,7 @@ UniDeskObject{
                 bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
                 radius: width / 2
                 onClicked:{
+                    manager.close_all();
                     base.baseClose();
                 }
             }
@@ -100,7 +101,7 @@ UniDeskObject{
                 bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
                 radius: width / 2
                 onClicked:{
-                    base.baseClose();
+                    manager.add_com_text("文字",Qt.rgba(0,0,0,1),"","微软雅黑",30)
                 }
             }
         }
@@ -157,5 +158,8 @@ UniDeskObject{
         onFocusOut: {
             system_menu.close();
         }
+    }
+    UniDeskComManager{
+        id: manager
     }
 }

@@ -6,7 +6,6 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import unidesk_qml
 import org.itcdt.unidesk
-import org.itcdt.unidesk
 
 UniDeskBase{
     id: base

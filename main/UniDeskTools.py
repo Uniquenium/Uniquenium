@@ -22,5 +22,10 @@ class UniDeskTools(QQuickItem):
     def systemCommand(self,command):
         os.system(command)
         
-
+    @Slot(str,int,result=QFont)
+    def font(self,family,size):
+        f=QFont()
+        f.setFamily(family)
+        f.setPixelSize(size)
+        return f
 
