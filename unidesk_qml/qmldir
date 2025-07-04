@@ -1,9 +1,15 @@
 module unidesk_qml
 UniDeskButton 1.0 UniDeskButton.qml
 UniDeskChart 1.0 UniDeskChart.qml
-UniDeskDivider 1.0 UniDeskDivider.qml
+UniDeskComBase 1.0 UniDeskComBase.qml
+UniDeskFrame 1.0 UniDeskFrame.qml
+UniDeskGroup 1.0 UniDeskGroup.qml
+UniDeskIcon 1.0 UniDeskIcon.qml
 UniDeskLink 1.0 UniDeskLink.qml
 UniDeskMenu 1.0 UniDeskMenu.qml
+UniDeskMenuItem 1.0 UniDeskMenuItem.qml
+UniDeskObject 1.0 UniDeskObject.qml
 UniDeskText 1.0 UniDeskText.qml
-UniDeskTextbox 1.0 UniDeskTextbox.qml
+UniDeskTextBox 1.0 UniDeskTextBox.qml
 UniDeskTooltip 1.0 UniDeskTooltip.qml
+UniDeskWindow 1.0 UniDeskWindow.qml

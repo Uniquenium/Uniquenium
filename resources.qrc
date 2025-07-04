@@ -7,11 +7,16 @@
         <file>media/font/ZhuZiAWan-2.ttf</file>
         <file>media/img/add-line.svg</file>
         <file>media/img/arrow-down-s-line.svg</file>
+        <file>media/img/arrow-left-s-line.svg</file>
+        <file>media/img/arrow-right-s-line.svg</file>
         <file>media/img/arrow-up-s-line.svg</file>
         <file>media/img/calculator-line.svg</file>
         <file>media/img/carousel-view.svg</file>
+        <file>media/img/check.svg</file>
+        <file>media/img/edit.svg</file>
         <file>media/img/line-chart-line.svg</file>
         <file>media/img/links-line.svg</file>
+        <file>media/img/lock.svg</file>
         <file>media/img/logout-box-line.svg</file>
         <file>media/img/loop-left-line.svg</file>
         <file>media/img/menu-line.svg</file>
@@ -20,6 +25,7 @@
         <file>media/img/rest-time-line.svg</file>
         <file>media/img/restart-line.svg</file>
         <file>media/img/screenshot-2-line.svg</file>
+        <file>media/img/settings.svg</file>
         <file>media/img/shut-down-line.svg</file>
         <file>media/img/text.svg</file>
     </qresource>

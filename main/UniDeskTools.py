@@ -2,7 +2,7 @@ from PySide6.QtGui import *
 from PySide6.QtQml import *
 from PySide6.QtQuick import *
 from PySide6.QtCore import *
-
+import os
 class UniDeskTools(QQuickItem):
     def __init__(self):
         super().__init__()
@@ -17,5 +17,10 @@ class UniDeskTools(QQuickItem):
             return hover
         else:
             return normal
+    
+    @Slot(str)
+    def systemCommand(self,command):
+        os.system(command)
+        
 
 

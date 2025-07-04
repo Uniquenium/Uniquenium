@@ -9,9 +9,32 @@ import os
 
 data = {
     "./data/settings.json": {
-
-    },
+        "isLight": True,
+        "primaryColor": {
+            "<type>": "QColor",
+            "red": 0,
+            "green": 100,
+            "blue": 255,
+            "alpha": 255
+        }
+    }
 }
+def object2json(obj):
+    if isinstance(obj,QColor):
+        return {
+            "<type>":"QColor",
+            "red": obj.red(),
+            "green": obj.green(),
+            "blue": obj.blue(),
+            "alpha": obj.alpha()
+        }
+    return obj
+def json2object(jso):
+    if isinstance(jso,dict):
+        if jso.get("<type>")=="QColor":
+            return QColor(jso['red'],jso['green'],jso['blue'],jso["alpha"])
+    return jso
+
 for i in data:
     try:
         with open(i, "r", encoding="utf-8") as f:
@@ -23,12 +46,13 @@ for i in data:
             data[i] = json.load(f)
 
 
+
 def Data(file, prop):
-    return data[file][prop]
+    return json2object(data[file][prop])
 
 
 def dumpData(file, prop, val):
-    data[file][prop] = val
+    data[file][prop] = object2json(val)
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data[file], f, indent=4)
 
@@ -43,21 +67,21 @@ def dumpDataAll(file, val):
         json.dump(data[file], f, indent=4)
 
 
-class UniDeskSettingsData(QQuickItem):
+class UniDeskSettings(QQuickItem):
     for i in data["./data/settings.json"]:
         exec(
             i
-            + "Changed=Signal(type(Data('../resources/data/settings.json','"
+            + "Changed=Signal(type(Data('./data/settings.json','"
             + i
             + "')))"
         )
         exec(
             i
-            + "=Property(type(Data('../resources/data/settings.json','"
+            + "=Property(type(Data('./data/settings.json','"
             + i
-            + "')),(lambda self: Data('../resources/data/settings.json','"
+            + "')),(lambda self: Data('./data/settings.json','"
             + i
-            + "')),(lambda self,val: dumpData('../resources/data/settings.json','"
+            + "')),(lambda self,val: dumpData('./data/settings.json','"
             + i
             + "',val)),notify="
             + i

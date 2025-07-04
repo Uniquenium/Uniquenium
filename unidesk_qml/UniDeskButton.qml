@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Controls.Basic
+import QtQuick.Templates as T
 import Qt5Compat.GraphicalEffects
 import unidesk_qml
 import org.itcdt.unidesk
@@ -13,29 +14,32 @@ Button{
     property bool disabled
     property string contentText
     property string iconSource
-    property double radius
-    property double iconWidth: 20
-    property double iconHeight: 20
+    property double radius: 3
+    property double iconSize
 
     property color textNormalColor: Qt.rgba(0,0,0,1)
     property color iconNormalColor: Qt.rgba(0,0,0,1)
     property color bgNormalColor: "transparent"
 
-    property color bgHoverColor: UniDeskUnits.isLight ? bgNormalColor.darker(1.2) : bgNormalColor.lighter(1.2)
-    property color bgPressColor: UniDeskUnits.isLight ? bgNormalColor.darker(1.5) : bgNormalColor.lighter(1.5)
-    property color bgDisableColor: UniDeskUnits.isLight ? bgNormalColor.lighter(1.5) : bgNormalColor.darker(1.5)
+    property color bgHoverColor: UniDeskSettings.isLight ? bgNormalColor.darker(1.2) : bgNormalColor.lighter(1.2)
+    property color bgPressColor: UniDeskSettings.isLight ? bgNormalColor.darker(1.5) : bgNormalColor.lighter(1.5)
+    property color bgDisableColor: UniDeskSettings.isLight ? bgNormalColor.lighter(1.5) : bgNormalColor.darker(1.5)
 
-    property color iconHoverColor: UniDeskUnits.isLight ? iconNormalColor.darker(1.2) : iconNormalColor.lighter(1.2)
-    property color iconPressColor: UniDeskUnits.isLight ? iconNormalColor.darker(1.5) : iconNormalColor.lighter(1.5)
-    property color iconDisableColor: UniDeskUnits.isLight ? iconNormalColor.lighter(1.5) : iconNormalColor.darker(1.5)
+    property color iconHoverColor: UniDeskSettings.isLight ? iconNormalColor.darker(1.2) : iconNormalColor.lighter(1.2)
+    property color iconPressColor: UniDeskSettings.isLight ? iconNormalColor.darker(1.5) : iconNormalColor.lighter(1.5)
+    property color iconDisableColor: UniDeskSettings.isLight ? iconNormalColor.lighter(1.5) : iconNormalColor.darker(1.5)
 
-    property color textHoverColor: UniDeskUnits.isLight ? textNormalColor.darker(1.2) : textNormalColor.lighter(1.2)
-    property color textPressColor: UniDeskUnits.isLight ? textNormalColor.darker(1.5) : textNormalColor.lighter(1.5)
-    property color textDisableColor: UniDeskUnits.isLight ? textNormalColor.lighter(1.5) : textNormalColor.darker(1.5)
+    property color textHoverColor: UniDeskSettings.isLight ? textNormalColor.darker(1.2) : textNormalColor.lighter(1.2)
+    property color textPressColor: UniDeskSettings.isLight ? textNormalColor.darker(1.5) : textNormalColor.lighter(1.5)
+    property color textDisableColor: UniDeskSettings.isLight ? textNormalColor.lighter(1.5) : textNormalColor.darker(1.5)
 
     property color bgColor: UniDeskTools.switchColor(bgNormalColor,bgHoverColor,bgPressColor,bgDisableColor,hovered,pressed,disabled)
     property color iconColor: UniDeskTools.switchColor(iconNormalColor,iconHoverColor,iconPressColor,iconDisableColor,hovered,pressed,disabled)
     property color textColor: UniDeskTools.switchColor(textNormalColor,textHoverColor,textPressColor,textDisableColor,hovered,pressed,disabled)
+
+    property int mouseX: mouse_area.mouseX
+    property int mouseY: mouse_area.mouseY
+
     font: UniDeskUnits.tiny
     clip: false
     Accessible.role: Accessible.Button
@@ -50,6 +54,7 @@ Button{
         radius: root.radius
         color: root.bgColor
         MouseArea{
+            id: mouse_area
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons
             hoverEnabled: true
@@ -61,18 +66,11 @@ Button{
     }
     Component {
         id: com_icon
-        Image {
+        UniDeskIcon {
             id: icon
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            width: root.iconWidth
-            height: root.iconHeight
-            source: root.iconSource
-            ColorOverlay{
-                anchors.fill: icon
-                source: icon
-                color: root.iconColor
-            }
+            iconColor: root.iconColor
+            iconSize: root.iconSize
+            iconSource: root.iconSource
         }
     }
     Component {
@@ -129,7 +127,7 @@ Button{
             return hovered
         }
         text: root.contentText
-        delay: 1000
+        delay: 2000
         font: root.font
     }
 }

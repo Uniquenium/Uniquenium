@@ -12,7 +12,6 @@ class UniDeskUnits(QQuickItem):
         ["medium","QFont"],
         ["large","QFont"],
         ["huge","QFont"],
-        ["isLight","bool"],
     ]
     for i in props:
         exec("%sChanged=Signal(%s)"%(i[0],i[1]))
@@ -54,5 +53,4 @@ class UniDeskUnits(QQuickItem):
         self._huge.setPixelSize(68)
         self._huge.setWeight(QFont.Weight.DemiBold)
 
-        self._isLight=True
 
