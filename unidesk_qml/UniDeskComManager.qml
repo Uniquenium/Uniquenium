@@ -10,6 +10,7 @@ import org.itcdt.unidesk
 UniDeskObject{
     id: object
     property int pageIndex: 0
+    property int serialCnt: 1
     property int delta: 100
     property list<UniDeskComBase> component_list
     property int newX: 0
@@ -46,7 +47,7 @@ UniDeskObject{
         }
     }
     onPageIndexChanged: {
-        for(var i=0;i<component_list.length();i++){
+        for(var i=0;i<component_list.length;i++){
             if(pageIndex==component_list[i].pageIdx){
                 component_list[i].visible=true;
             }
@@ -65,5 +66,11 @@ UniDeskObject{
         for(var i=0;i<component_list.length;i++){
             component_list[i].close();
         }
+    }
+    function toggle_page_to(index){
+        pageIndex=index;
+    }
+    function new_page(index){
+        page_list_model.append({"text": qsTr("页面")+serialCnt.toString(),"idx": serialCnt})
     }
 }

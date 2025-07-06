@@ -12,7 +12,7 @@ Image{
     id: root
     property string iconSource
     property color iconColor
-    property double iconSize
+    property double iconSize: 15
     width: iconSize
     height: iconSize
     source: iconSource

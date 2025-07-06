@@ -12,6 +12,7 @@ T.Menu {
                             contentWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                             contentHeight + topPadding + bottomPadding)
+    property Item bg: background
     margins: 0
     overlap: 1
     spacing: 0

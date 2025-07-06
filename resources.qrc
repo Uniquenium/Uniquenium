@@ -14,6 +14,9 @@
         <file>media/img/calculator-line.svg</file>
         <file>media/img/carousel-view.svg</file>
         <file>media/img/check.svg</file>
+        <file>media/img/checkbox.svg</file>
+        <file>media/img/close.svg</file>
+        <file>media/img/delete-bin.svg</file>
         <file>media/img/edit.svg</file>
         <file>media/img/line-chart-line.svg</file>
         <file>media/img/links-line.svg</file>
@@ -28,6 +31,7 @@
         <file>media/img/screenshot-2-line.svg</file>
         <file>media/img/settings.svg</file>
         <file>media/img/shut-down-line.svg</file>
+        <file>media/img/subtract.svg</file>
         <file>media/img/text.svg</file>
     </qresource>
 </RCC>

@@ -13,8 +13,9 @@ UniDeskObject{
         bg.color: "transparent"
         x: Screen.width-width-10
         y: 10
-        width: btns.width+150
+        width: btns.width+showLayer*152
         height: object.isSpread ? btns.height+15 : btn_spread.height+15
+        property int showLayer: system_menu&&page_menu&&mi_toggle_page ? (system_menu.visible || page_menu.visible)+mi_toggle_page.visible : 0
         ColumnLayout{
             id: btns
             anchors.right: parent ? parent.right : undefined 
@@ -65,7 +66,7 @@ UniDeskObject{
                 bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
                 radius: width / 2
                 onClicked:{
-                    base.baseClose();
+                    page_menu.popup(btn_page,Qt.point(-152,0))
                 }
             }
             UniDeskButton{
@@ -156,10 +157,29 @@ UniDeskObject{
             }
         }
         UniDeskMenu{
-            x: btn_page.x-width-2
             y: btn_page.y
             id: page_menu
-            Uni
+            UniDeskMenu{
+                id: mi_toggle_page
+                title: qsTr("切换页面")
+                Repeater{
+                    model: manager.page_list
+                    UniDeskMenuItem{
+                        text: model.text
+                        onClicked: {
+                            manager.toggle_page_to(model.idx);
+                        }
+                    }
+                }
+            }
+            UniDeskMenuItem{
+                id: mi_toggle_add
+                text: qsTr("添加页面")
+                iconSource: "qrc:/media/img/carousel-view.svg"
+                onClicked: {
+                    manager.new_page();
+                }
+            }
         }
         onFocusOut: {
             system_menu.close();
