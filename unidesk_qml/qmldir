@@ -9,6 +9,7 @@ UniDeskIcon 1.0 UniDeskIcon.qml
 UniDeskLink 1.0 UniDeskLink.qml
 UniDeskMenu 1.0 UniDeskMenu.qml
 UniDeskMenuItem 1.0 UniDeskMenuItem.qml
+UniDeskMenuSeparator 1.0 UniDeskMenuSeparator.qml
 UniDeskObject 1.0 UniDeskObject.qml
 UniDeskText 1.0 UniDeskText.qml
 UniDeskTextBox 1.0 UniDeskTextBox.qml

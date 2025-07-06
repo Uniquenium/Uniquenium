@@ -57,7 +57,7 @@ UniDeskObject{
                 }
             }
             UniDeskButton{
-                id: btn_view
+                id: btn_page
                 contentText: qsTr("页面")
                 iconSize: 15
                 iconSource: "qrc:/media/img/carousel-view.svg"
@@ -101,7 +101,7 @@ UniDeskObject{
                 bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
                 radius: width / 2
                 onClicked:{
-                    manager.add_com_text("文字",Qt.rgba(0,0,0,1),"","微软雅黑",30)
+                    manager.add_com_text("文字",Qt.rgba(0,0,0,1),"qrc:/media/font/ZhuZiAWan2.ttf","",30)
                 }
             }
         }
@@ -155,8 +155,15 @@ UniDeskObject{
                 }
             }
         }
+        UniDeskMenu{
+            x: btn_page.x-width-2
+            y: btn_page.y
+            id: page_menu
+            Uni
+        }
         onFocusOut: {
             system_menu.close();
+            page_menu.close();
         }
     }
     UniDeskComManager{

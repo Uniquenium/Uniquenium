@@ -14,9 +14,9 @@ Text {
     property double fontSize: UniDeskUnits.little.pixelSize
     id: control
     color: enabled ? textColor : (UniDeskSettings.isLight ? Qt.rgba(131/255,131/255,131/255,1) : Qt.rgba(160/255,160/255,160/255,1))
-    font: UniDeskTools.font(fontFamily,fontSize)
+    font: UniDeskTools.font(fontSource!=="" ?loadedFont.name:fontFamily,fontSize)
     FontLoader{
         id: loadedFont
-        source: control.fontSource ? control.fontSource : undefined
+        source: control.fontSource !== "" ? control.fontSource : undefined
     }
 }

@@ -7,7 +7,6 @@ import QtQuick.Controls.Basic
 import org.itcdt.unidesk
 
 T.Menu {
-    property bool animationEnabled: true
     id: control
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             contentWidth + leftPadding + rightPadding)
