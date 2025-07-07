@@ -71,6 +71,9 @@ UniDeskObject{
         pageIndex=index;
     }
     function new_page(index){
+        print(1)
         page_list_model.append({"text": qsTr("页面")+serialCnt.toString(),"idx": serialCnt})
+        print(2)
+        serialCnt++;
     }
 }

@@ -13,4 +13,14 @@ class UniDeskBase(QQuickWindow):
     def focusOutEvent(self, arg__1):
         self.focusOut.emit()
         return super().focusOutEvent(arg__1)
+
+
+class UniDeskWindowBase(QQuickWindow):
+    focusOut=Signal()
+    def __init__(self):
+        super().__init__()
+        self.setFlag(Qt.WindowType.FramelessWindowHint,True)
+    def focusOutEvent(self, arg__1):
+        self.focusOut.emit()
+        return super().focusOutEvent(arg__1)
     

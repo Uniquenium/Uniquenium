@@ -4,7 +4,7 @@ import unidesk_qml
 
 from main import updRes
 from main import res
-from main.UniDeskBase import UniDeskBase
+from main.UniDeskBases import UniDeskBase
 from main.UniDeskData import UniDeskSettings
 from main.UniDeskUnits import UniDeskUnits
 from main.UniDeskTools import UniDeskTools
