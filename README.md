@@ -1,5 +1,8 @@
-# UniqueDesktop
+![](./media/logo/uniquedesktop-d.png)
+
 An open-source desktop extension tool that combines beautification and practical functions
+
+
 
 # Todo List
 - [ ] Main Page
