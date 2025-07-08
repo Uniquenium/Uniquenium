@@ -13,9 +13,9 @@ UniDeskObject{
         bg.color: "transparent"
         x: Screen.width-width-10
         y: 10
-        width: btns.width+showLayer*152
+        width: btns.width+showLayer*302
         height: object.isSpread ? btns.height+15 : btn_spread.height+15
-        property int showLayer: system_menu&&page_menu&&mi_toggle_page ? (system_menu.visible || page_menu.visible)+mi_toggle_page.visible : 0
+        property int showLayer: system_menu&&page_menu&&mi_toggle_page ? (system_menu.visible || page_menu.visible || mi_toggle_page.visible ): 0
         ColumnLayout{
             id: btns
             anchors.right: parent ? parent.right : undefined 
@@ -25,8 +25,9 @@ UniDeskObject{
                 contentText: object.isSpread ? qsTr("收起") : qsTr("展开")
                 iconSize: 15
                 iconSource: object.isSpread ? "qrc:/media/img/arrow-up-s-line.svg" : "qrc:/media/img/arrow-down-s-line.svg"
-                bgHoverColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(1,1,1,0.5).lighter(1.2)
-                bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
                     object.isSpread = !object.isSpread
@@ -37,12 +38,14 @@ UniDeskObject{
                 contentText: qsTr("退出")
                 iconSize: 15
                 iconSource: "qrc:/media/img/logout-box-line.svg"
-                bgHoverColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(1,1,1,0.5).lighter(1.2)
-                bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
                     manager.close_all();
                     base.baseClose();
+                    object.closeAllWindows();
                 }
             }
             UniDeskButton{
@@ -50,11 +53,12 @@ UniDeskObject{
                 contentText: qsTr("系统")
                 iconSize: 15
                 iconSource: "qrc:/media/img/shut-down-line.svg"
-                bgHoverColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(1,1,1,0.5).lighter(1.2)
-                bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    system_menu.open()
+                    page_menu.popup(btn_system,Qt.point(-152,0))
                 }
             }
             UniDeskButton{
@@ -62,8 +66,9 @@ UniDeskObject{
                 contentText: qsTr("页面")
                 iconSize: 15
                 iconSource: "qrc:/media/img/carousel-view.svg"
-                bgHoverColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(1,1,1,0.5).lighter(1.2)
-                bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
                     page_menu.popup(btn_page,Qt.point(-152,0))
@@ -74,8 +79,9 @@ UniDeskObject{
                 contentText: qsTr("编辑")
                 iconSize: 15
                 iconSource: "qrc:/media/img/edit.svg"
-                bgHoverColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(1,1,1,0.5).lighter(1.2)
-                bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
                     base.baseClose();
@@ -86,11 +92,12 @@ UniDeskObject{
                 contentText: qsTr("设置")
                 iconSize: 15
                 iconSource: "qrc:/media/img/settings.svg"
-                bgHoverColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(1,1,1,0.5).lighter(1.2)
-                bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    base.baseClose();
+                    settings_window.show()
                 }
             }
             UniDeskButton{
@@ -98,8 +105,9 @@ UniDeskObject{
                 contentText: qsTr("添加组件")
                 iconSize: 15
                 iconSource: "qrc:/media/img/add-line.svg"
-                bgHoverColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(1,1,1,0.5).lighter(1.2)
-                bgPressColor: UniDeskSettings.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(1,1,1,0.5).lighter(1.5)
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
                     manager.add_com_text("文字",Qt.rgba(0,0,0,1),"qrc:/media/font/ZhuZiAWan2.ttf","",30)
@@ -112,7 +120,6 @@ UniDeskObject{
             }
         }
         UniDeskMenu{
-            x: btn_system.x-width-2
             y: btn_system.y
             id: system_menu
             UniDeskMenuItem{
@@ -175,7 +182,7 @@ UniDeskObject{
             UniDeskMenuItem{
                 id: mi_toggle_add
                 text: qsTr("添加页面")
-                iconSource: "qrc:/media/img/carousel-view.svg"
+                iconSource: "qrc:/media/img/add-line.svg"
                 onClicked: {
                     manager.new_page();
                 }
@@ -188,5 +195,11 @@ UniDeskObject{
     }
     UniDeskComManager{
         id: manager
+    }
+    UniDeskSettingsWindow{
+        id: settings_window
+    }
+    function closeAllWindows(){
+        settings_window.close();
     }
 }

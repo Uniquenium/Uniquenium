@@ -46,8 +46,8 @@ T.Menu {
     background: Rectangle {
         implicitWidth: 150
         implicitHeight: 36
-        color: UniDeskSettings.isLight ? Qt.rgba(1, 1, 1 , 0.7) : Qt.rgba(0,0,0, 0.7)
-        border.color: UniDeskSettings.isLight ? Qt.rgba(0, 0, 0,1) : Qt.rgba(1, 1, 1, 1)
+        color: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1 , 0.7) : Qt.rgba(0,0,0, 0.7)
+        border.color: UniDeskGlobals.isLight ? Qt.rgba(0, 0, 0,1) : Qt.rgba(1, 1, 1, 1)
         border.width: 1
         radius: 3
     }

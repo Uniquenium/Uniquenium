@@ -33,5 +33,17 @@
         <file>media/img/shut-down-line.svg</file>
         <file>media/img/subtract.svg</file>
         <file>media/img/text.svg</file>
+        <file>media/logo/unidesk-d-bg.png</file>
+        <file>media/logo/unidesk-d.png</file>
+        <file>media/logo/unidesk-d.svg</file>
+        <file>media/logo/unidesk-l-bg.png</file>
+        <file>media/logo/unidesk-l.png</file>
+        <file>media/logo/unidesk-l.svg</file>
+        <file>media/logo/uniquedesktop-d-bg.png</file>
+        <file>media/logo/uniquedesktop-d.png</file>
+        <file>media/logo/uniquedesktop-d.svg</file>
+        <file>media/logo/uniquedesktop-l-bg.png</file>
+        <file>media/logo/uniquedesktop-l.png</file>
+        <file>media/logo/uniquedesktop-l.svg</file>
     </qresource>
 </RCC>

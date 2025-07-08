@@ -91,6 +91,12 @@ class UniDeskSettings(QQuickItem):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+    def get(prop):
+        return Data("./data/settings.json",prop)
+    
+    def set(prop, val):
+        dumpData("./data/settings.json",prop,val)
+
 
 # class DownloadHistoryData(QQuickItem):
 #     downloadHistory: list = Data("../resources/data/downloadHistory.json", "list")

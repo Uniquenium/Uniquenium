@@ -27,8 +27,8 @@ T.ToolTip {
         wrapMode: Text.Wrap
     }
     background: Rectangle {
-        color: UniDeskSettings.isLight ? Qt.rgba(1, 1, 1, 1) : Qt.rgba(0, 0, 0, 1)
-        border.color: UniDeskSettings.isLight ? Qt.rgba(0, 0, 0, 1) : Qt.rgba(1, 1, 1, 1)
+        color: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1, 1) : Qt.rgba(0, 0, 0, 1)
+        border.color: UniDeskGlobals.isLight ? Qt.rgba(0, 0, 0, 1) : Qt.rgba(1, 1, 1, 1)
         border.width: 0.5
     }
 }

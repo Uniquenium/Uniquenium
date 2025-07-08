@@ -2,7 +2,14 @@ from PySide6.QtGui import *
 from PySide6.QtQml import *
 from PySide6.QtQuick import *
 from PySide6.QtCore import *
+import darkdetect
 import os
+import ctypes
+from ctypes import wintypes
+user32 = ctypes.WinDLL('user32')
+SM_CONTRAST = 221
+SM_USERCOLORSET = 263
+
 class UniDeskTools(QQuickItem):
     def __init__(self):
         super().__init__()
@@ -28,4 +35,10 @@ class UniDeskTools(QQuickItem):
         f.setFamily(family)
         f.setPixelSize(size)
         return f
+    
+    @Slot(result=bool)
+    def isSystemColorLight(self):
+        return darkdetect.isLight()
+    
+
 

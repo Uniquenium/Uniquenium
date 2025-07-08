@@ -21,17 +21,17 @@ Button{
     property color iconNormalColor: Qt.rgba(0,0,0,1)
     property color bgNormalColor: "transparent"
 
-    property color bgHoverColor: UniDeskSettings.isLight ? bgNormalColor.darker(1.2) : bgNormalColor.lighter(1.2)
-    property color bgPressColor: UniDeskSettings.isLight ? bgNormalColor.darker(1.5) : bgNormalColor.lighter(1.5)
-    property color bgDisableColor: UniDeskSettings.isLight ? bgNormalColor.lighter(1.5) : bgNormalColor.darker(1.5)
+    property color bgHoverColor: UniDeskGlobals.isLight ? bgNormalColor.darker(1.2) : bgNormalColor.lighter(1.2)
+    property color bgPressColor: UniDeskGlobals.isLight ? bgNormalColor.darker(1.5) : bgNormalColor.lighter(1.5)
+    property color bgDisableColor: UniDeskGlobals.isLight ? bgNormalColor.lighter(1.5) : bgNormalColor.darker(1.5)
 
-    property color iconHoverColor: UniDeskSettings.isLight ? iconNormalColor.darker(1.2) : iconNormalColor.lighter(1.2)
-    property color iconPressColor: UniDeskSettings.isLight ? iconNormalColor.darker(1.5) : iconNormalColor.lighter(1.5)
-    property color iconDisableColor: UniDeskSettings.isLight ? iconNormalColor.lighter(1.5) : iconNormalColor.darker(1.5)
+    property color iconHoverColor: UniDeskGlobals.isLight ? iconNormalColor.darker(1.2) : iconNormalColor.lighter(1.2)
+    property color iconPressColor: UniDeskGlobals.isLight ? iconNormalColor.darker(1.5) : iconNormalColor.lighter(1.5)
+    property color iconDisableColor: UniDeskGlobals.isLight ? iconNormalColor.lighter(1.5) : iconNormalColor.darker(1.5)
 
-    property color textHoverColor: UniDeskSettings.isLight ? textNormalColor.darker(1.2) : textNormalColor.lighter(1.2)
-    property color textPressColor: UniDeskSettings.isLight ? textNormalColor.darker(1.5) : textNormalColor.lighter(1.5)
-    property color textDisableColor: UniDeskSettings.isLight ? textNormalColor.lighter(1.5) : textNormalColor.darker(1.5)
+    property color textHoverColor: UniDeskGlobals.isLight ? textNormalColor.darker(1.2) : textNormalColor.lighter(1.2)
+    property color textPressColor: UniDeskGlobals.isLight ? textNormalColor.darker(1.5) : textNormalColor.lighter(1.5)
+    property color textDisableColor: UniDeskGlobals.isLight ? textNormalColor.lighter(1.5) : textNormalColor.darker(1.5)
 
     property color bgColor: UniDeskTools.switchColor(bgNormalColor,bgHoverColor,bgPressColor,bgDisableColor,hovered,pressed,disabled)
     property color iconColor: UniDeskTools.switchColor(iconNormalColor,iconHoverColor,iconPressColor,iconDisableColor,hovered,pressed,disabled)

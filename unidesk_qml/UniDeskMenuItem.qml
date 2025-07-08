@@ -11,7 +11,7 @@ T.MenuItem {
     property int iconSpacing: 5
     property string iconSource
     property int iconSize: 16
-    property color textColor: UniDeskSettings.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+    property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     id: root
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -67,7 +67,7 @@ T.MenuItem {
         iconSource: "qrc:/media/img/check.svg"
     }
     arrow: UniDeskIcon {
-        x: root.mirrored ? root.leftPadding : root.width - width - root.rightPadding
+        x: root.mirrored ? root.leftPadding+20 : root.width - width - root.rightPadding-20
         y: root.topPadding + (root.availableHeight - height) / 2
         visible: root.subMenu
         iconSource: "qrc:/media/img/arrow-right-s-line.svg"

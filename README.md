@@ -4,34 +4,43 @@ An open-source desktop extension tool that combines beautification and practical
 # Todo List
 - [ ] Main Page
     - [ ] Exit
-    - [ ] System 
-        - [ ] Shutdown
-        - [ ] Restart
+    - [x] System 
+        - [x] Shutdown
+        - [x] Restart
         - [ ] Sleep
         - [ ] Update
         - [ ] Log Off
         - [ ] Lock Screen
     - [ ] Edit
-        - [ ] New Component
-    - [ ] Start Menu
-    - [ ] Task View
+        - [ ] Move
+        - [ ] Remove
+    - [ ] Pages View
     - [ ] Settings
+    - [ ] New Component
 - [ ] Common Functions of a Component
-    - [ ] Move
-    - [ ] Remove
     - [ ] Options
 - [ ] Root Components
-    - [ ] Base <---Here
-    - [ ] Menu
+    - [ ] Base 
+    - [x] Menu
     - [ ] Infobar
     - [ ] Window(Frameless)
 - [ ] Basic Components
     - [ ] Text
     - [ ] Link
     - [ ] Chart
-    - [ ] Divider
+    - [ ] Frame
+    - [ ] Group
 - [ ] Extra Components
     - [ ] Calculator
     - [ ] Screen Capture
     - [ ] Color Picker
     - [ ] Translator
+    - [ ] Music
+    - [ ] Todo List
+    - [ ] Explorer
+    - [ ] Typing Follower
+    - [ ] Work Sheets
+    - [ ] Calendar
+    - [ ] Schedule
+    - [ ] Notepad
+    - [ ] Codepad

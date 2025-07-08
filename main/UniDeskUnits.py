@@ -15,10 +15,9 @@ class UniDeskUnits(QQuickItem):
     ]
     for i in props:
         exec("%sChanged=Signal(%s)"%(i[0],i[1]))
-        exec("%s=Property(%s,lambda self: self.__getattribute__(\"_%s\"),notify=%sChanged)"%(i[0],i[1],i[0],i[0]))
+        exec("%s=Property(%s,fget=lambda self: self.__getattribute__(\"_%s\"),notify=%sChanged)"%(i[0],i[1],i[0],i[0]))
     def __init__(self):
         super().__init__()
-
         _family="微软雅黑"
         self._tiny=QFont()
         self._tiny.setFamily(_family)
@@ -52,5 +51,6 @@ class UniDeskUnits(QQuickItem):
         self._huge.setFamily(_family)
         self._huge.setPixelSize(68)
         self._huge.setWeight(QFont.Weight.DemiBold)
+        
 
 
