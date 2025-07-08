@@ -32,6 +32,8 @@ class UniDeskTools(QQuickItem):
     @Slot(str,int,result=QFont)
     def font(self,family,size):
         f=QFont()
+        if family=="":
+            family="微软雅黑"
         f.setFamily(family)
         f.setPixelSize(size)
         return f

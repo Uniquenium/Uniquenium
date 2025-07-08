@@ -12,4 +12,5 @@ UniDeskWindow{
     id: window
     width: 1000
     height: 700
+    title: qsTr("设置")
 }
