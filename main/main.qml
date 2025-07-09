@@ -58,7 +58,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    page_menu.popup(btn_system,Qt.point(-152,0))
+                    system_menu.popup(btn_system,Qt.point(-152,0))
                 }
             }
             UniDeskButton{
@@ -114,6 +114,7 @@ UniDeskObject{
                 }
             }
         }
+        
         Behavior on height{
             NumberAnimation{
                 duration: 500

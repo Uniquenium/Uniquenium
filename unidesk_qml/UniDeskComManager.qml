@@ -72,5 +72,6 @@ UniDeskObject{
     }
     function new_page(index){
         page_list_model.append({"text": qsTr("页面")+serialCnt.toString(),"idx": serialCnt})
+        serialCnt+=1;
     }
 }
