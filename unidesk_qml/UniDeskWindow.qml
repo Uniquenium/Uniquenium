@@ -11,14 +11,21 @@ import org.itcdt.unidesk
 UniDeskWindowBase{
     id: window
     color: "transparent"
+    property string minimizeText: qsTr("最小化")
+    property string restoreText: qsTr("还原")
+    property string maximizeText: qsTr("最大化")
+    property string closeText: qsTr("关闭")
     default property alias contentData: layout_content.data
     property url windowIcon
     property bool fixSize: false
+    property bool isRestore: window && (Window.Maximized === window.visibility || Window.FullScreen === window.visibility)
     property var windowVisibility: window.visibility
-    property string title
+    property double appBarHeight: appBar.height
+    property double appBarRightBorder: appBar.width-layout_btns.width
     property Item appBar: Rectangle{
-        color: "transparent"
-        height: layout_btns.height
+        height: layout_btns.height+10
+        radius: 3
+        color: UniDeskSettings.primaryColor
         UniDeskText{
             id: appBar_text
             text: window.title
@@ -26,25 +33,80 @@ UniDeskWindowBase{
             anchors.leftMargin: 10
             anchors.top: parent.top
             anchors.topMargin: (parent.height-height)/2
+            font.pixelSize: 20
         }
         RowLayout{
             id: layout_btns
             anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.top: parent.top
+            anchors.topMargin: (parent.height-height)/2
+            UniDeskButton{
+                id: minimize_button
+                Layout.alignment: Qt.AlignVCenter
+                padding: 0
+                verticalPadding: 0
+                horizontalPadding: 0
+                Layout.preferredWidth: 25
+                Layout.preferredHeight: 25
+                iconSize: 15
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                iconSource: "qrc:/media/img/subtract.svg"
+                text: window.minimizeText
+                radius: height/2
+                visible: window.showMinimize
+                onClicked: {
+                    window.showMinimized();
+                }
+            }
+            UniDeskButton{
+                id: maximize_button
+                Layout.alignment: Qt.AlignVCenter
+                padding: 0
+                verticalPadding: 0
+                horizontalPadding: 0
+                Layout.preferredWidth: 25
+                Layout.preferredHeight: 25
+                iconSize: 13
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                iconSource: window.isRestore ? "qrc:/media/img/checkbox-multi.svg" : "qrc:/media/img/checkbox.svg"
+                text: window.isRestore ? window.restoreText : window.maximizeText
+                radius: height/2
+                visible: window.showMaximize
+                onClicked: {
+                    if(window.isRestore){
+                        window.showNormal();
+                    }
+                    else{
+                        window.showMaximized();
+                    }
+                }
+            }
             UniDeskButton{
                 id: close_button
                 Layout.alignment: Qt.AlignVCenter
+                padding: 0
+                verticalPadding: 0
+                horizontalPadding: 0
+                Layout.preferredWidth: 25
+                Layout.preferredHeight: 25
                 iconSize: 15
                 bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                 bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 iconSource: "qrc:/media/img/close.svg"
+                text: window.closeText
                 radius: height/2
+                visible: window.showClose
                 onClicked: {
                     window.close()
                 }
             }
         }
-        
     }
     property bool showClose: true
     property bool showMinimize: true
@@ -52,6 +114,8 @@ UniDeskWindowBase{
     property bool autoMaximize: false
     property bool autoCenter: true
     property int __margins: 0
+    minimumWidth: 200
+    minimumHeight: 200
     Component.onCompleted: {
         if (autoCenter) {
             moveWindowToDesktopCenter();
@@ -69,7 +133,7 @@ UniDeskWindowBase{
         Rectangle {
             color: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1 , 0.7) : Qt.rgba(0,0,0, 0.7)
             radius: Window.window && Window.window.visibility === Window.Maximized ? 0 : 3
-            border.width: 1
+            border.width: Window.window && Window.window.visibility === Window.Maximized ? 0 : 1
             border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
             z: 999
         }
@@ -100,6 +164,7 @@ UniDeskWindowBase{
                 top: parent.top
                 left: parent.left
                 right: parent.right
+                margins: 1
             }
             height: {
                 return window.appBar.height;
@@ -113,6 +178,7 @@ UniDeskWindowBase{
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
+                margins: 2
             }
             clip: true
         }

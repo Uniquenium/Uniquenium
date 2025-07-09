@@ -16,8 +16,8 @@ Image{
     width: iconSize
     height: iconSize
     source: iconSource
-    horizontalAlignment: Text.AlignHCenter
-    verticalAlignment: Text.AlignVCenter
+    horizontalAlignment: Qt.AlignHCenter
+    verticalAlignment: Qt.AlignVCenter
     ColorOverlay{
         anchors.fill: parent
         source: root

@@ -47,3 +47,5 @@ An open-source desktop extension tool that combines beautification and practical
     - [ ] Schedule
     - [ ] Notepad
     - [ ] Codepad
+    - [ ] Recycle Bin
+    - [ ] Rapid File Downloader
