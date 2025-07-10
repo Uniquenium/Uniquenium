@@ -46,6 +46,7 @@ UniDeskObject{
                     manager.close_all();
                     base.baseClose();
                     object.closeAllWindows();
+                    //后续中间插入一个确认对话框，确认是否退出，如果有窗口显示再询问检测到有窗口未关闭是否关闭所有窗口
                 }
             }
             UniDeskButton{
@@ -85,6 +86,8 @@ UniDeskObject{
                 radius: width / 2
                 onClicked:{
                     base.baseClose();
+                    //使所有UniDeskComBase出现一个UniDeskSettings.primaryColor颜色的边界框，可以移动和调整大小
+                    //再次点击按钮锁定
                 }
             }
             UniDeskButton{
@@ -111,6 +114,7 @@ UniDeskObject{
                 radius: width / 2
                 onClicked:{
                     manager.add_com_text("文字",Qt.rgba(0,0,0,1),"qrc:/media/font/ZhuZiAWan2.ttf","",30)
+                    //后续改成打开一个控件选择窗口，选择后打开属性设置窗口再在桌面上生成控件
                 }
             }
         }
@@ -163,6 +167,7 @@ UniDeskObject{
                     UniDeskTools.systemCommand("Rundll32.exe user32.dll,LockWorkStation")
                 }
             }
+            //系统有更新时显示更新选项
         }
         UniDeskMenu{
             y: btn_page.y
