@@ -33,11 +33,16 @@ UniDeskWindow{
         }
         UniDeskTabButton{
             text: qsTr("关于")
-            //仓库链接、鸣谢、检查更新
+            //仓库链接、鸣谢、版本、检查更新
         }
     }
     SwipeView{
         currentIndex: tabBar.currentIndex
+        anchors.top: tabBar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        interactive: false
         Item{
 
         }
@@ -50,8 +55,22 @@ UniDeskWindow{
         Item{
             
         }
-        Item{
-            
+        ScrollView{
+            Image{
+                id: unidesk_img
+                source: UniDeskGlobals.isLight ? "qrc:/media/logo/uniquedesktop-l-bg.png":"qrc:/media/logo/uniquedesktop-d-bg.png"
+                sourceSize: Qt.size(width,height)
+                width: 400
+                height: 200
+                x: (parent.width-width)/2
+                y: 10
+            }
+            UniDeskText{
+                id: title
+                text: "UniqueDesktop v1.0.0"//基本组件制作完成后再开始更改版本号
+                x: (parent.width-width)/2
+                y: unidesk_img.y+unidesk_img.height+10
+            }
         }
     }
 }
