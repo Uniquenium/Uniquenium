@@ -19,6 +19,11 @@ An open-source desktop extension tool that combines beautification and practical
         - [ ] Resize
     - [x] Pages View
     - [ ] Settings
+        - [ ] System
+        - [ ] Appearance
+        - [ ] Behavior
+        - [ ] Pages
+        - [ ] About
     - [ ] New Component
 - [ ] Common Functions of a Component
     - [ ] Options
@@ -27,11 +32,11 @@ An open-source desktop extension tool that combines beautification and practical
     - [x] Menu
     - [ ] Infobar
     - [ ] Dialog(inherits Window)
-    - [ ] Window(Frameless)
+    - [x] Window(Frameless)
 - [ ] Basic Components
     - [ ] Text
     - [ ] Link
-    - [ ] Chart
+    - [ ] Chart(CPU,GPU,Network status,etc.)
     - [ ] Frame
     - [ ] Group
     - [ ] Image
@@ -49,5 +54,10 @@ An open-source desktop extension tool that combines beautification and practical
     - [ ] Schedule
     - [ ] Notepad
     - [ ] Codepad
-    - [ ] Recycle Bin
     - [ ] Rapid File Downloader
+
+# Acknowledgements
+
+[Admibrill](https://github.com/admibrill),the starter of the project.
+
+[Remix Icons](https://www.remixicon.cn/collection),provides the icons.
