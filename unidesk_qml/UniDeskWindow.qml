@@ -22,6 +22,11 @@ UniDeskWindowBase{
     property var windowVisibility: window.visibility
     property double appBarHeight: appBar.height
     property double appBarRightBorder: appBar.width-layout_btns.width
+    property bool isPrevMaximized
+    property double prevX
+    property double prevY
+    property double prevWidth
+    property double prevHeight
     property Item appBar: Rectangle{
         height: layout_btns.height+10
         radius: 3
@@ -79,9 +84,11 @@ UniDeskWindowBase{
                 visible: window.showMaximize
                 onClicked: {
                     if(window.isRestore){
+                        window.isPrevMaximized=false;
                         window.showNormal();
                     }
                     else{
+                        window.isPrevMaximized=true;
                         window.showMaximized();
                     }
                 }
@@ -122,11 +129,16 @@ UniDeskWindowBase{
         }
         if (window.autoVisible) {
             if (window.autoMaximize) {
+                isPrevMaximized = true;
                 window.visibility = Window.Maximized;
             } else {
                 window.show();
             }
         }
+        window.prevX=x;
+        window.prevY=y;
+        window.prevWidth=width;
+        window.prevHeight=height;
     }
     Component {
         id: com_border
@@ -188,5 +200,33 @@ UniDeskWindowBase{
     }
     function containerItem() {
         return layout_container;
+    }
+    onWindowVisibilityChanged:{
+        if(window.visibility===Window.Windowed&&isPrevMaximized){
+            showMaximized();
+        }
+        else if(window.visibility===Window.Windowed){
+            window.setGeometry(prevX,prevY,prevWidth,prevHeight);
+        }
+    }
+    onXChanged: {
+        if(window.visibility===Window.Windowed){
+            prevX=x;
+        }
+    }
+    onYChanged: {
+        if(window.visibility===Window.Windowed){
+            prevY=y;
+        }
+    }
+    onWidthChanged: {
+        if(window.visibility===Window.Windowed){
+            prevWidth=width;
+        }
+    }
+    onHeightChanged: {
+        if(window.visibility===Window.Windowed){
+            prevHeight=height;
+        }
     }
 }

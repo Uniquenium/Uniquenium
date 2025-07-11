@@ -15,6 +15,7 @@ UniDeskSettingsWindow 1.0 UniDeskSettingsWindow.qml
 UniDeskTabBar 1.0 UniDeskTabBar.qml
 UniDeskTabButton 1.0 UniDeskTabButton.qml
 UniDeskText 1.0 UniDeskText.qml
-UniDeskTextBox 1.0 UniDeskTextBox.qml
+UniDeskTextArea 1.0 UniDeskTextArea.qml
+UniDeskTextButton 1.0 UniDeskTextButton.qml
 UniDeskTooltip 1.0 UniDeskTooltip.qml
 UniDeskWindow 1.0 UniDeskWindow.qml

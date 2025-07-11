@@ -20,6 +20,9 @@ class UniDeskWindowBase(QQuickWindow):
     def __init__(self):
         super().__init__()
         self.setFlag(Qt.WindowType.FramelessWindowHint,True)
+        self.setFlag(Qt.WindowType.Window,True)
+        self.setFlag(Qt.WindowType.WindowMinimizeButtonHint,True)
+        self.setFlag(Qt.WindowType.CustomizeWindowHint,True)
         self._edges=None
         self._margins=4
     def focusOutEvent(self, arg__1):
@@ -70,5 +73,3 @@ class UniDeskWindowBase(QQuickWindow):
             self.setCursor(Qt.CursorShape.SizeBDiagCursor)
     def appBarHovered(self):
         return self.mapFromGlobal(QCursor.pos()).x()<self.property("appBarRightBorder") and self.mapFromGlobal(QCursor.pos()).y()<self.property("appBarHeight")
-    
-    

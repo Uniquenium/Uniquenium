@@ -42,5 +42,9 @@ class UniDeskTools(QQuickItem):
     def isSystemColorLight(self):
         return darkdetect.isLight()
     
+    @Slot(str)
+    def web_browse(self,url):
+        os.system("start "+url)
+    
 
 

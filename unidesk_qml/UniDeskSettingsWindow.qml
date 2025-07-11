@@ -33,7 +33,7 @@ UniDeskWindow{
         }
         UniDeskTabButton{
             text: qsTr("关于")
-            //仓库链接、鸣谢、版本、检查更新
+            //仓库链接、鸣谢、版本、检查更新、官网链接
         }
     }
     SwipeView{
@@ -43,16 +43,16 @@ UniDeskWindow{
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         interactive: false
-        Item{
+        ScrollView{
 
         }
-        Item{
+        ScrollView{
             
         }
-        Item{
+        ScrollView{
             
         }
-        Item{
+        ScrollView{
             
         }
         ScrollView{
@@ -68,8 +68,51 @@ UniDeskWindow{
             UniDeskText{
                 id: title
                 text: "UniqueDesktop v1.0.0"//基本组件制作完成后再开始更改版本号
+                font: UniDeskUnits.large
                 x: (parent.width-width)/2
                 y: unidesk_img.y+unidesk_img.height+10
+            }
+            ColumnLayout{
+                anchors.top: title.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 10
+                spacing: 10
+                UniDeskText{
+                    id: contributors_title
+                    text: qsTr("贡献者")
+                    font: UniDeskUnits.medium
+                }
+                RowLayout{
+                    spacing: 10
+                    UniDeskTextButton{
+                        text: "Admibrill"
+                        webLink: "https://github.com/admibrill"
+                        font: UniDeskUnits.little
+                    }
+                    UniDeskTextButton{
+                        text: "IT Craft Development Team"
+                        webLink: "https://github.com/ITCraftDevelopmentTeam"
+                        font: UniDeskUnits.little
+                    }
+                }
+                UniDeskText{
+                    text: qsTr("相关链接")
+                    font: UniDeskUnits.medium
+                }
+                RowLayout{
+                    spacing: 10
+                    UniDeskTextButton{
+                        text: "仓库地址"
+                        webLink: "https://github.com/ITCraftDevelopmentTeam/unique-desktop"
+                        font: UniDeskUnits.little
+                    }
+                    UniDeskTextButton{
+                        text: "官网"
+                        //后续添加官网链接
+                        font: UniDeskUnits.little
+                    }
+                }
             }
         }
     }
