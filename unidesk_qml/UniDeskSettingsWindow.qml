@@ -44,10 +44,25 @@ UniDeskWindow{
         anchors.bottom: parent.bottom
         interactive: false
         ScrollView{
-
+            ColumnLayout{
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 10
+                spacing: 10
+                UniDeskText{
+                    text: qsTr("任务栏")
+                    font: UniDeskUnits.small
+                }
+                UniDeskCheckBox{
+                    text: qsTr("隐藏任务栏")
+                }
+            }
         }
         ScrollView{
-            
+            ComboBox {
+                model: [qsTr("浅色"), qsTr("深色"), qsTr("跟随系统")]
+            }
         }
         ScrollView{
             

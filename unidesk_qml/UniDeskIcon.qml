@@ -5,8 +5,6 @@ import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
-import Qt5Compat.GraphicalEffects
-import Qt5Compat.GraphicalEffects
 
 Image{
     id: root
