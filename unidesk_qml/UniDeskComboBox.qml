@@ -11,6 +11,8 @@ import org.itcdt.unidesk
 T.ComboBox {
     id: control
 
+    padding: 5
+    height: 30
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
@@ -19,27 +21,25 @@ T.ComboBox {
 
     leftPadding: padding + (!control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
     rightPadding: padding + (control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
-
-    delegate: ItemDelegate {
+    
+    delegate: UniDeskMenuItem {
         required property var model
         required property int index
 
         width: ListView.view.width
         text: model[control.textRole]
-        palette.text: control.palette.text
-        palette.highlightedText: control.palette.highlightedText
-        font.weight: control.currentIndex === index ? Font.DemiBold : Font.Normal
+        
         highlighted: control.highlightedIndex === index
         hoverEnabled: control.hoverEnabled
     }
 
-    indicator: ColorImage {
+    indicator: UniDeskIcon {
         x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
-        color: control.palette.dark
-        defaultColor: "#353637"
-        source: "qrc:/qt-project.org/imports/QtQuick/Controls/Basic/images/double-arrow.png"
+        source: popup.visible ? "qrc:/media/img/arrow-up-s-line.svg" : "qrc:/media/img/arrow-down-s-line.svg"
+        iconSize: 15
         opacity: enabled ? 1 : 0.3
+        iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     }
 
     contentItem: T.TextField {
@@ -57,16 +57,14 @@ T.ComboBox {
         validator: control.validator
         selectByMouse: control.selectTextByMouse
 
-        color: control.editable ? control.palette.text : control.palette.buttonText
-        selectionColor: control.palette.highlight
-        selectedTextColor: control.palette.highlightedText
+        color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
         verticalAlignment: Text.AlignVCenter
 
         background: Rectangle {
             visible: control.enabled && control.editable && !control.flat
-            border.width: parent && parent.activeFocus ? 2 : 1
-            border.color: parent && parent.activeFocus ? control.palette.highlight : control.palette.button
-            color: control.palette.base
+            border.width: 1
+            border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+            color: "transparent"
         }
     }
 
@@ -74,9 +72,10 @@ T.ComboBox {
         implicitWidth: 140
         implicitHeight: 40
 
-        color: control.down ? control.palette.mid : control.palette.button
-        border.color: control.palette.highlight
-        border.width: !control.editable && control.visualFocus ? 2 : 0
+        color: control.hovered ? UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2) :"transparent"
+        border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+        border.width: 1
+        radius: 5
         visible: !control.flat || control.down
     }
 
@@ -86,8 +85,6 @@ T.ComboBox {
         height: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin)
         topMargin: 6
         bottomMargin: 6
-        palette: control.palette
-
         contentItem: ListView {
             clip: true
             implicitHeight: contentHeight
@@ -95,19 +92,33 @@ T.ComboBox {
             currentIndex: control.highlightedIndex
             highlightMoveDuration: 0
 
-            Rectangle {
-                z: 10
-                width: parent.width
-                height: parent.height
-                color: "transparent"
-                border.color: control.palette.mid
-            }
-
+            
             T.ScrollIndicator.vertical: ScrollIndicator { }
         }
 
         background: Rectangle {
-            color: control.palette.window
+            width: parent.width
+            height: parent.height
+            color: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1 , 0.7) : Qt.rgba(0,0,0, 0.7)
+            border.color: UniDeskGlobals.isLight ? Qt.rgba(0, 0, 0,1) : Qt.rgba(1, 1, 1, 1)
+            border.width: 1
+            radius: 3
+        }
+        enter: Transition {
+            NumberAnimation {
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 100
+            }
+        }
+        exit: Transition {
+            NumberAnimation {
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 100
+            }
         }
     }
 }

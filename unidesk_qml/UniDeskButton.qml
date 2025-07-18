@@ -17,7 +17,7 @@ Button{
     property double radius: 3
     property double iconSize
 
-    property color textNormalColor: Qt.rgba(0,0,0,1)
+    property color textNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     property color iconNormalColor: Qt.rgba(0,0,0,1)
     property color bgNormalColor: "transparent"
 
@@ -37,6 +37,9 @@ Button{
     property color iconColor: UniDeskTools.switchColor(iconNormalColor,iconHoverColor,iconPressColor,iconDisableColor,hovered,pressed,disabled)
     property color textColor: UniDeskTools.switchColor(textNormalColor,textHoverColor,textPressColor,textDisableColor,hovered,pressed,disabled)
 
+    property double borderWidth: 0
+    property color borderColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+
     property int mouseX: mouse_area.mouseX
     property int mouseY: mouse_area.mouseY
 
@@ -52,6 +55,8 @@ Button{
         implicitWidth: 30
         implicitHeight: 30
         radius: root.radius
+        border.width: root.borderWidth
+        border.color: root.borderColor
         color: root.bgColor
         MouseArea{
             id: mouse_area
@@ -81,7 +86,7 @@ Button{
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.TextOnly
             }
-            Text {
+            UniDeskText {
                 text: root.contentText
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.IconOnly
@@ -98,7 +103,7 @@ Button{
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.TextOnly
             }
-            Text {
+            UniDeskText {
                 text: root.contentText
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.IconOnly

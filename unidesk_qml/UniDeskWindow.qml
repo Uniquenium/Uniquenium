@@ -29,8 +29,8 @@ UniDeskWindowBase{
     property double prevHeight
     property Item appBar: Rectangle{
         height: layout_btns.height+10
-        radius: 3
-        color: UniDeskSettings.primaryColor
+        radius: 5
+        color: "transparent"
         UniDeskText{
             id: appBar_text
             text: window.title
@@ -141,11 +141,56 @@ UniDeskWindowBase{
         window.prevHeight=height;
     }
     Component {
+        id: com_background
+        Item{
+            Rectangle{
+                id: back_rect
+                anchors.fill: parent
+                color: "transparent"
+                radius: 5
+            }
+            Image{
+                id: img_back
+                visible: false
+                cache: false
+                fillMode: Image.PreserveAspectCrop
+                source: UniDeskTools.get_wallpaper()
+                Component.onCompleted: {
+                    img_back.updateImage();
+                }
+                function updateImage(){
+                    img_back.source=UniDeskTools.get_wallpaper();
+                    var availableGeometry=UniDeskTools.desktopGeometry(window);
+                    img_back.width = availableGeometry.width;
+                    img_back.height = availableGeometry.height;
+                    img_back.sourceSize = Qt.size(img_back.width,img_back.height);
+                }
+                
+                Timer{
+                    interval: 150
+                    onTriggered: {
+                        img_back.updateImage()
+                    }
+                }
+            }
+            UniDeskAcrylic{
+                id: bg_acrylic
+                anchors.fill: parent
+                target: img_back
+                visible: true
+                blurRadius: 80
+                tintOpacity: 0
+                tintColor: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1, 1) : Qt.rgba(0, 0, 0, 1)
+                targetRect: Qt.rect(window.x-Screen.virtualX, window.y-Screen.virtualY, window.width, window.height)
+            }
+        }
+    }
+    Component {
         id: com_border
         Rectangle {
             color: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1 , 0.7) : Qt.rgba(0,0,0, 0.7)
-            radius: Window.window && Window.window.visibility === Window.Maximized ? 0 : 3
-            border.width: Window.window && Window.window.visibility === Window.Maximized ? 0 : 1
+            radius: Window.window && Window.window.visibility === Window.Maximized ? 0 : 5
+            border.width: Window.window && Window.window.visibility === Window.Maximized ? 0 : 2
             border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
             z: 999
         }
@@ -165,6 +210,11 @@ UniDeskWindowBase{
         id: layout_container
         anchors.fill: parent
         anchors.margins: window.__margins
+        Loader {
+            id: loader_background
+            anchors.fill: parent
+            sourceComponent: com_background
+        }
         Loader {
             id: loader_border
             anchors.fill: parent

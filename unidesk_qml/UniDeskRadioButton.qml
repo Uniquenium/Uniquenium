@@ -33,8 +33,8 @@ T.RadioButton {
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
-            width: 20
-            height: 20
+            width: 10
+            height: 10
             radius: width / 2
             color: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,1) : Qt.rgba(0,0,0,1)
             visible: control.checked

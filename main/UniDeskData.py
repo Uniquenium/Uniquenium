@@ -9,7 +9,8 @@ import os
 
 data = {
     "./data/settings.json": {
-        "isLight": True,
+        "hideTaskbar": False,
+        "colorMode": 2,
         "primaryColor": {
             "<type>": "QColor",
             "red": 0,

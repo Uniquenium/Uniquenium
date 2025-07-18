@@ -19,4 +19,5 @@ Text {
         id: loadedFont
         source: control.fontSource !== "" ? control.fontSource : undefined
     }
+    verticalAlignment: Qt.AlignVCenter
 }

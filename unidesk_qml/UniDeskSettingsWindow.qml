@@ -15,9 +15,10 @@ UniDeskWindow{
     title: qsTr("设置")
     UniDeskTabBar{
         id: tabBar
+        x: 10
         UniDeskTabButton{
             text: qsTr("系统")
-            //任务栏、桌面壁纸、鼠标样式、桌面图标显示
+            //任务栏、桌面壁纸、鼠标样式
         }
         UniDeskTabButton{
             text: qsTr("外观")
@@ -25,11 +26,14 @@ UniDeskWindow{
         }
         UniDeskTabButton{
             text: qsTr("行为")
-            //开机启动，检查更新的模式、显示语言、文件保存位置
+            //开机启动，检查更新的模式、显示语言
         }
         UniDeskTabButton{
             text: qsTr("页面")
-            //页面重命名、删除、新建、切换效果设置
+            //页面重命名、删除、新建、切换效果设置、系统桌面图标显示
+        }
+        UniDeskTabButton{
+            text: qsTr("热键")
         }
         UniDeskTabButton{
             text: qsTr("关于")
@@ -43,26 +47,97 @@ UniDeskWindow{
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         interactive: false
-        ScrollView{
-            ColumnLayout{
+        ScrollView{   
+            UniDeskText{
+                id: text1
+                text: qsTr("任务栏")
+                font: UniDeskUnits.small
                 anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.margins: 10
+            }
+            UniDeskCheckBox{
+                id: checkbox1
+                text: qsTr("隐藏任务栏")
+                anchors.top: text1.bottom
+                anchors.left: text1.left
+                checked: UniDeskSettings.hideTaskbar
+                onCheckedChanged: {
+                    UniDeskTools.setTaskbarVisible(!checked);
+                    UniDeskSettings.hideTaskbar=checked
+                }
+            }
+            UniDeskText{
+                id: text2
+                text: qsTr("壁纸")
+                font: UniDeskUnits.small
+                anchors.top: checkbox1.bottom
+                anchors.left: parent.left
+                anchors.margins: 10
+            }
+            ButtonGroup{
+                id: button_group1
+            }
+            UniDeskRadioButton{
+                id: radioButton1
+                text: qsTr("使用Lolicon Api随机壁纸")
+                anchors.top: text2.bottom
+                anchors.left: parent.left
+                anchors.margins: 10
+                ButtonGroup.group: button_group1
+            }
+            UniDeskRadioButton{
+                id: radioButton2
+                text: qsTr("自定义壁纸（按回车确认）")
+                anchors.top: radioButton1.bottom
+                anchors.left: parent.left
+                anchors.margins: 10
+                ButtonGroup.group: button_group1
+            }
+            UniDeskPathSelector{
+                id: pathSelector1
+                anchors.top: radioButton2.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: 10
-                spacing: 10
-                UniDeskText{
-                    text: qsTr("任务栏")
-                    font: UniDeskUnits.small
+                onSubmit: {
+                    UniDeskTools.set_wallpaper(path);
                 }
-                UniDeskCheckBox{
-                    text: qsTr("隐藏任务栏")
+            }
+            UniDeskText{
+                id: text3
+                text: qsTr("鼠标")
+                font: UniDeskUnits.small
+                anchors.top: pathSelector1.bottom
+                anchors.left: parent.left
+                anchors.margins: 10
+                anchors.topMargin: 40
+            }
+        }
+        ScrollView{
+            UniDeskText{
+                id: label1
+                text: qsTr("颜色模式")
+                font: UniDeskUnits.little
+                anchors.left: parent.left
+                anchors.margins: 10
+                anchors.verticalCenter: option1.verticalCenter
+            }
+            UniDeskComboBox {
+                id: option1
+                model: [qsTr("浅色"), qsTr("深色"), qsTr("跟随系统")]
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.margins: 10
+                currentIndex: UniDeskSettings.colorMode
+                onCurrentIndexChanged: {
+                    UniDeskSettings.colorMode=currentIndex;
+                    UniDeskGlobals.updateIsLight(0);
                 }
             }
         }
         ScrollView{
-            ComboBox {
-                model: [qsTr("浅色"), qsTr("深色"), qsTr("跟随系统")]
-            }
+            
         }
         ScrollView{
             
