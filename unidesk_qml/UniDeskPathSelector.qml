@@ -24,8 +24,10 @@ Item{
             Layout.fillWidth: true
             placeholderText: qsTr("输入路径（按回车确认）")
             onEditingFinished: {
-                root.path=text;
                 root.submit();
+            }
+            onTextEdited: {
+                root.path=UniDeskTools.fromLocalFile(text)
             }
         }
         UniDeskButton{

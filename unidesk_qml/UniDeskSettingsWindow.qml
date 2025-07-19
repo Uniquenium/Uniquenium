@@ -100,6 +100,7 @@ UniDeskWindow{
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: 10
+                path: UniDeskTools.get_wallpaper()
                 onSubmit: {
                     UniDeskTools.set_wallpaper(path);
                 }

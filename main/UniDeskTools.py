@@ -66,8 +66,11 @@ class UniDeskTools(QQuickItem):
     @Slot(QUrl)
     def set_wallpaper(self,path: QUrl):
         path=path.toLocalFile()
-        print(path)
         ctypes.windll.user32.SystemParametersInfoW(20, 0, path, 0x01 | 0x02)
+    
+    @Slot(str,result=QUrl)
+    def fromLocalFile(self,path):
+        return QUrl.fromLocalFile(path)
 
 
 

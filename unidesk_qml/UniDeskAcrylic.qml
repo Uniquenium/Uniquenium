@@ -18,7 +18,7 @@ Item {
     property int blurRadius: 32
     property rect targetRect: Qt.rect(control.x, control.y, control.width, control.height)
     
-    property int cornerRadius: 3
+    property int cornerRadius: 5
 
     Rectangle { 
         id: roundedBackground
@@ -35,16 +35,18 @@ Item {
             sourceItem: control.target
         }
 
-        
-        
-        FastBlur {
-            id: fast_blur
+        Rectangle{
             anchors.fill: parent
-            source: effect_source
-            radius: control.blurRadius
+            radius: control.cornerRadius
+            clip: true
+            FastBlur {
+                id: fast_blur
+                anchors.fill: parent
+                source: effect_source
+                radius: control.blurRadius
+            }
+        
         }
-        
-        
 
         Rectangle {
             anchors.fill: parent

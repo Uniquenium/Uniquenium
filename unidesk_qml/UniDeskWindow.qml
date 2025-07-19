@@ -157,6 +157,7 @@ UniDeskWindowBase{
                 source: UniDeskTools.get_wallpaper()
                 Component.onCompleted: {
                     img_back.updateImage();
+                    timer_updimg.start()
                 }
                 function updateImage(){
                     img_back.source=UniDeskTools.get_wallpaper();
@@ -167,7 +168,9 @@ UniDeskWindowBase{
                 }
                 
                 Timer{
+                    id: timer_updimg
                     interval: 150
+                    repeat: true
                     onTriggered: {
                         img_back.updateImage()
                     }
