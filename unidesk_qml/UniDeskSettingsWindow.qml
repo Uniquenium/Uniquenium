@@ -22,11 +22,11 @@ UniDeskWindow{
         }
         UniDeskTabButton{
             text: qsTr("外观")
-            //颜色模式，各控件颜色、字体、圆角大小、外框粗细
+            //颜色模式，各控件颜色、字体、圆角大小、外框粗细、主面板外观
         }
         UniDeskTabButton{
             text: qsTr("行为")
-            //开机启动，检查更新的模式、显示语言
+            //开机启动，检查更新的模式、显示语言、
         }
         UniDeskTabButton{
             text: qsTr("页面")

@@ -113,7 +113,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    manager.add_com_text("文字",Qt.rgba(0,0,0,1),"qrc:/media/font/ZhuZiAWan2.ttf","",30)
+                    manager.add_com_text("文字",Qt.rgba(1,1,1,1),"qrc:/media/font/ZhuZiAWan2.ttf","",30)
                     //后续改成打开一个控件选择窗口，选择后打开属性设置窗口再在桌面上生成控件
                 }
             }
