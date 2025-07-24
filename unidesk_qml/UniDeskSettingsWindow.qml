@@ -122,6 +122,7 @@ UniDeskWindow{
                 font: UniDeskUnits.little
                 anchors.left: parent.left
                 anchors.margins: 10
+                height: option1.height
                 anchors.verticalCenter: option1.verticalCenter
             }
             UniDeskComboBox {
@@ -142,14 +143,21 @@ UniDeskWindow{
                 font: UniDeskUnits.little
                 anchors.left: parent.left
                 anchors.margins: 10
-                anchors.verticalCenter: option2.verticalCenter
+                height: option2.height
+                anchors.top: option1.bottom
+                anchors.topMargin: 28
             }
             UniDeskColorPicker {
                 id: option2
                 anchors.top: option1.bottom
                 anchors.right: parent.right
                 anchors.margins: 10
+                anchors.rightMargin: 600
                 selectedColor: UniDeskSettings.primaryColor
+                onSelectedColorChanged:{
+                    UniDeskSettings.primaryColor=selectedColor;
+                    UniDeskSettings.notify("primaryColor")
+                }
             }
         }
         ScrollView{

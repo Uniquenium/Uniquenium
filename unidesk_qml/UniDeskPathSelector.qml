@@ -14,6 +14,8 @@ Item{
     //0: File,1: Folder
     property int mode: 0
     signal submit
+    width: row_layout.width
+    height: row_layout.height
     RowLayout{
         id: row_layout
         anchors.fill: parent

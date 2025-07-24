@@ -98,6 +98,9 @@ class UniDeskSettings(QQuickItem):
     def set(prop, val):
         dumpData("./data/settings.json",prop,val)
 
+    @Slot(str)
+    def notify(self, prop):
+        exec("self."+prop+"Changed.emit(Data(\"./data/settings.json\",prop))")
 
 # class DownloadHistoryData(QQuickItem):
 #     downloadHistory: list = Data("../resources/data/downloadHistory.json", "list")
