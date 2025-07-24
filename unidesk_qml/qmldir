@@ -3,6 +3,7 @@ UniDeskAcrylic 1.0 UniDeskAcrylic.qml
 UniDeskButton 1.0 UniDeskButton.qml
 UniDeskChart 1.0 UniDeskChart.qml
 UniDeskCheckBox 1.0 UniDeskCheckBox.qml
+UniDeskColorPicker 1.0 UniDeskColorPicker.qml
 UniDeskComBase 1.0 UniDeskComBase.qml
 UniDeskComboBox 1.0 UniDeskComboBox.qml
 UniDeskComManager 1.0 UniDeskComManager.qml

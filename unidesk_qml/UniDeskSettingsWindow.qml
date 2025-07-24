@@ -136,6 +136,21 @@ UniDeskWindow{
                     UniDeskGlobals.updateIsLight(0);
                 }
             }
+            UniDeskText{
+                id: label2
+                text: qsTr("主题色")
+                font: UniDeskUnits.little
+                anchors.left: parent.left
+                anchors.margins: 10
+                anchors.verticalCenter: option2.verticalCenter
+            }
+            UniDeskColorPicker {
+                id: option2
+                anchors.top: option1.bottom
+                anchors.right: parent.right
+                anchors.margins: 10
+                selectedColor: UniDeskSettings.primaryColor
+            }
         }
         ScrollView{
             
