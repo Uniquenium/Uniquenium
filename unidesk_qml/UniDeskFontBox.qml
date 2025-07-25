@@ -9,5 +9,10 @@ import unidesk_qml
 import org.itcdt.unidesk
 
 UniDeskComboBox{
-    
+    id: control
+    model: fontList
+    property list<string> fontList: UniDeskTools.systemFontFamilies()
+    enableFontDelegate: true
+    editable: true
+    width: 300
 }

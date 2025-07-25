@@ -159,6 +159,27 @@ UniDeskWindow{
                     UniDeskSettings.notify("primaryColor")
                 }
             }
+            UniDeskText{
+                id: label3
+                text: qsTr("全局字体")
+                font: UniDeskUnits.little
+                anchors.left: parent.left
+                anchors.margins: 10
+                height: option2.height
+                anchors.verticalCenter: option3.verticalCenter
+            }
+            // remember to save font changes into settings.json
+            UniDeskFontBox{
+                id: option3
+                anchors.top: option2.bottom
+                anchors.right: parent.right
+                anchors.margins: 10
+                anchors.topMargin: 45
+                currentIndex: UniDeskUnits.currentFontIndex()
+                onCurrentTextChanged: {
+                    UniDeskUnits.changeFontFamily(currentText)
+                }
+            }
         }
         ScrollView{
             

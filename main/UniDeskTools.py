@@ -71,6 +71,10 @@ class UniDeskTools(QQuickItem):
     @Slot(str,result=QUrl)
     def fromLocalFile(self,path):
         return QUrl.fromLocalFile(path)
+    
+    @Slot(result=list)
+    def systemFontFamilies(self):
+        return QFontDatabase.families()
 
 
 

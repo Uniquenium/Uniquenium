@@ -11,6 +11,8 @@ import org.itcdt.unidesk
 T.ComboBox {
     id: control
 
+    property bool enableFontDelegate: false
+
     padding: 5
     height: 30
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
@@ -28,7 +30,8 @@ T.ComboBox {
 
         width: ListView.view.width
         text: model[control.textRole]
-        
+        font: control.enableFontDelegate ? UniDeskTools.font(model[control.textRole],13) : UniDeskUnits.little
+
         highlighted: control.highlightedIndex === index
         hoverEnabled: control.hoverEnabled
     }
@@ -62,7 +65,7 @@ T.ComboBox {
 
         background: Rectangle {
             visible: control.enabled && control.editable && !control.flat
-            border.width: 1
+            border.width: 0
             border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
             color: "transparent"
         }
@@ -90,10 +93,8 @@ T.ComboBox {
             implicitHeight: contentHeight
             model: control.delegateModel
             currentIndex: control.highlightedIndex
-            highlightMoveDuration: 0
-
-            
-            T.ScrollIndicator.vertical: ScrollIndicator { }
+            highlightMoveDuration: 10
+            ScrollBar.vertical: ScrollBar {}
         }
 
         background: Rectangle {
