@@ -122,8 +122,10 @@ UniDeskWindowBase{
     property bool autoMaximize: false
     property bool autoCenter: true
     property int __margins: 0
-    minimumWidth: 200
-    minimumHeight: 200
+    maximumWidth: fixSize ? width : 32767
+    maximumHeight:  fixSize ? height: 32767
+    minimumWidth: fixSize? width : 200
+    minimumHeight: fixSize? height: 200
     Component.onCompleted: {
         if (autoCenter) {
             moveWindowToDesktopCenter();

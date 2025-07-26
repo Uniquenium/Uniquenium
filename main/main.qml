@@ -43,10 +43,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    manager.close_all();
-                    base.baseClose();
-                    object.closeAllWindows();
-                    //后续中间插入一个确认对话框，确认是否退出，如果有窗口显示再询问检测到有窗口未关闭是否关闭所有窗口
+                    confirm_exit_dialog.show();
                 }
             }
             UniDeskButton{
@@ -85,7 +82,6 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    base.baseClose();
                     //使所有UniDeskComBase出现一个UniDeskSettings.primaryColor颜色的边界框，可以移动和调整大小
                     //再次点击按钮锁定
                 }
@@ -204,6 +200,22 @@ UniDeskObject{
     }
     UniDeskSettingsWindow{
         id: settings_window
+    }
+    UniDeskMessageBox{
+        id: confirm_exit_dialog
+        title: qsTr("确认退出")
+        text: qsTr("确认要退出吗？")
+        Component.onCompleted: {
+            addButton(qsTr("确认"));
+            addButton(qsTr("取消"));
+        }
+        onButtonClicked: {
+            if(clickedIndex==0){
+                manager.close_all();
+                base.baseClose();
+                object.closeAllWindows();
+            }
+        }
     }
     function closeAllWindows(){
         settings_window.close();
