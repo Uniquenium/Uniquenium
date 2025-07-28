@@ -11,10 +11,14 @@ Item{
     id: root
     property color selectedColor
     property UniDeskComboBox colorTypeBox: combobox
+    width: layout_row.childrenRect.width
+    height: layout_row.childrenRect.height
     RowLayout{
+        id: layout_row
         anchors.fill: parent
         spacing: 10
         Rectangle{
+            id: rect_color
             color: root.selectedColor
             border.width: 2
             radius: 5

@@ -112,7 +112,6 @@ UniDeskWindow{
                 anchors.top: pathSelector1.bottom
                 anchors.left: parent.left
                 anchors.margins: 10
-                anchors.topMargin: 40
             }
         }
         ScrollView{
@@ -144,15 +143,13 @@ UniDeskWindow{
                 anchors.left: parent.left
                 anchors.margins: 10
                 height: option2.height
-                anchors.top: option1.bottom
-                anchors.topMargin: 28
+                anchors.verticalCenter: option2.verticalCenter
             }
             UniDeskColorPicker {
                 id: option2
                 anchors.top: option1.bottom
                 anchors.right: parent.right
                 anchors.margins: 10
-                anchors.rightMargin: 600
                 selectedColor: UniDeskSettings.primaryColor
                 onSelectedColorChanged:{
                     UniDeskSettings.primaryColor=selectedColor;
@@ -174,7 +171,6 @@ UniDeskWindow{
                 anchors.top: option2.bottom
                 anchors.right: parent.right
                 anchors.margins: 10
-                anchors.topMargin: 45
                 currentIndex: UniDeskUnits.currentFontIndex()
                 onCurrentTextChanged: {
                     UniDeskUnits.changeFontFamily(currentText)
