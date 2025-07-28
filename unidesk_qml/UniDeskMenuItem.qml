@@ -31,6 +31,7 @@ T.MenuItem {
             id: content_icon
             iconSize: root.iconSize
             iconSource: root.iconSource
+            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
         }
     }
     contentItem: Item{
@@ -65,12 +66,14 @@ T.MenuItem {
         y: root.topPadding + (root.availableHeight - height) / 2
         visible: root.checked
         iconSource: "qrc:/media/img/check.svg"
+        iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     }
     arrow: UniDeskIcon {
         x: root.mirrored ? root.leftPadding+20 : root.width - width - root.rightPadding-20
         y: root.topPadding + (root.availableHeight - height) / 2
         visible: root.subMenu
         iconSource: "qrc:/media/img/arrow-right-s-line.svg"
+        iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     }
     background: Item {
         implicitWidth: 150
