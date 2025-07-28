@@ -11,8 +11,9 @@ Item{
     id: root
     property color selectedColor
     property UniDeskComboBox colorTypeBox: combobox
-    width: layout_row.childrenRect.width
-    height: layout_row.childrenRect.height
+    
+    implicitWidth: layout_row.childrenRect.width
+    implicitHeight: layout_row.childrenRect.height
     RowLayout{
         id: layout_row
         anchors.fill: parent
