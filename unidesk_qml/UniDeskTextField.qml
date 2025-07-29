@@ -44,7 +44,7 @@ T.TextField {
         implicitHeight: 35
         border.width: 1
         color: control.hovered ? UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2) :"transparent"
-        border.color: control.activeFocus ? UniDeskSettings.primaryColor : UniDeskSettings.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1) 
+        border.color: control.activeFocus ? UniDeskSettings.primaryColor : UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1) 
         radius: 5
     }
     onEditingFinished:{

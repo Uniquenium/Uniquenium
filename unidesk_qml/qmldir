@@ -21,6 +21,7 @@ UniDeskObject 1.0 UniDeskObject.qml
 UniDeskPathSelector 1.0 UniDeskPathSelector.qml
 UniDeskRadioButton 1.0 UniDeskRadioButton.qml
 UniDeskSettingsWindow 1.0 UniDeskSettingsWindow.qml
+UniDeskSpinBox 1.0 UniDeskSpinBox.qml
 UniDeskTabBar 1.0 UniDeskTabBar.qml
 UniDeskTabButton 1.0 UniDeskTabButton.qml
 UniDeskText 1.0 UniDeskText.qml

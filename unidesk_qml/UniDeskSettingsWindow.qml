@@ -86,10 +86,26 @@ UniDeskWindow{
                 anchors.margins: 10
                 ButtonGroup.group: button_group1
             }
+            UniDeskText{
+                id: text2_2
+                text: qsTr("刷新间隔（秒，设为0不刷新）")
+                font: UniDeskUnits.little
+                anchors.left: parent.left
+                anchors.verticalCenter: spinbox1.verticalCenter
+                anchors.margins: 10
+            }
+            UniDeskSpinBox{
+                id: spinbox1
+                anchors.top: radioButton1.bottom
+                anchors.right: parent.right
+                anchors.margins: 10
+                editable: true
+                to: 3600
+            }
             UniDeskRadioButton{
                 id: radioButton2
                 text: qsTr("自定义壁纸（按回车确认）")
-                anchors.top: radioButton1.bottom
+                anchors.top: spinbox1.bottom
                 anchors.left: parent.left
                 anchors.margins: 10
                 ButtonGroup.group: button_group1
