@@ -1,8 +1,13 @@
 <!-- ![](./media/logo/uniquedesktop-d.png) -->
 
 <div align="center">
+
 <h1>Uniquenium</h1>
-![Repo Size](https://img.shields.io/github/repo-size/Uniquenium/Uniquenium)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/uniquenium/uniquenium/badge)](https://www.codefactor.io/repository/github/uniquenium/uniquenium)
+[![GitHub License](https://img.shields.io/github/license/Uniquenium/Uniquenium)](LICENSE)
+![GitHub repo size](https://img.shields.io/github/repo-size/Uniquenium/Uniquenium)
+
 </div>
 An open-source desktop extension tool that combines beautification and practical functions
 
