@@ -25,7 +25,7 @@ TabButton{
     }
     contentItem: UniDeskText{
         text: control.text
-        font: UniDeskUnits.little
+        font: UniDeskTextStyle.little
     }
     anchors.margins: 2
     padding: 10

@@ -24,7 +24,7 @@ T.MenuItem {
     icon.height: 24
     icon.color: root.palette.windowText
     height: visible ? implicitHeight : 0
-    font: UniDeskUnits.little
+    font: UniDeskTextStyle.little
     Component{
         id:com_icon
         UniDeskIcon{

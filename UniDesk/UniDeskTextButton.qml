@@ -20,7 +20,7 @@ Button {
     id: control
     horizontalPadding: 6
     enabled: !disabled
-    font: UniDeskUnits.little
+    font: UniDeskTextStyle.little
     background: Rectangle {
         implicitWidth: 30
         implicitHeight: 30

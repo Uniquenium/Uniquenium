@@ -43,7 +43,7 @@ Button{
     property int mouseX: mouse_area.mouseX
     property int mouseY: mouse_area.mouseY
 
-    font: UniDeskUnits.tiny
+    font: UniDeskTextStyle.tiny
     clip: false
     Accessible.role: Accessible.Button
     Accessible.name: root.text

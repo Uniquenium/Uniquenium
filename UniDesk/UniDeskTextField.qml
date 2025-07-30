@@ -17,7 +17,7 @@ T.TextField {
     padding: 2
     leftPadding: padding + 4
 
-    font: UniDeskUnits.little
+    font: UniDeskTextStyle.little
 
     color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     selectionColor: UniDeskSettings.primaryColor

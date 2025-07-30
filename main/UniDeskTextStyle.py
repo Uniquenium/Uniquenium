@@ -3,7 +3,7 @@ from PySide6.QtQml import *
 from PySide6.QtQuick import *
 from PySide6.QtCore import *
 
-class UniDeskUnits(QQuickItem):
+class UniDeskTextStyle(QQuickItem):
     props=[
         ["tiny","QFont"],
         ["little","QFont"],

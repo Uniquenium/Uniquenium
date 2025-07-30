@@ -6,7 +6,7 @@ from main import updRes
 from main import res
 from main.UniDeskBases import UniDeskBase,UniDeskWindowBase
 from main.UniDeskData import UniDeskSettings
-from main.UniDeskUnits import UniDeskUnits
+from main.UniDeskTextStyle import UniDeskTextStyle
 from main.UniDeskGlobals import UniDeskGlobals
 from main.UniDeskTools import UniDeskTools
 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     qmlRegisterType(UniDeskBase,"org.uniquenium.unidesk",1,0,"UniDeskBase")
     qmlRegisterType(UniDeskWindowBase,"org.uniquenium.unidesk",1,0,"UniDeskWindowBase")
     qmlRegisterSingletonType(UniDeskSettings,"org.uniquenium.unidesk",1,0,"UniDeskSettings")
-    qmlRegisterSingletonType(UniDeskUnits,"org.uniquenium.unidesk",1,0,"UniDeskUnits")
+    qmlRegisterSingletonType(UniDeskTextStyle,"org.uniquenium.unidesk",1,0,"UniDeskTextStyle")
     qmlRegisterSingletonType(UniDeskGlobals,"org.uniquenium.unidesk",1,0,"UniDeskGlobals")
     qmlRegisterSingletonType(UniDeskTools,"org.uniquenium.unidesk",1,0,"UniDeskTools")
     engine = QQmlApplicationEngine()

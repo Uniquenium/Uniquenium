@@ -30,7 +30,7 @@ T.ComboBox {
 
         width: ListView.view.width
         text: model[control.textRole]
-        font: control.enableFontDelegate ? UniDeskTools.font(model[control.textRole],13) : UniDeskUnits.little
+        font: control.enableFontDelegate ? UniDeskTools.font(model[control.textRole],13) : UniDeskTextStyle.little
 
         highlighted: control.highlightedIndex === index
         hoverEnabled: control.hoverEnabled

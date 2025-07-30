@@ -1,5 +1,6 @@
-![](./media/logo/uniquedesktop-d.png)
+<!-- ![](./media/logo/uniquedesktop-d.png) -->
 
+<h1><center>UniqueDesktop</center></h1>
 An open-source desktop extension tool that combines beautification and practical functions
 
 

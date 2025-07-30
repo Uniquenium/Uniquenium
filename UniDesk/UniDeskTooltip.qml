@@ -18,7 +18,7 @@ T.ToolTip {
                              contentHeight + topPadding + bottomPadding)
     margins: 6
     padding: 6
-    font: UniDeskUnits.tiny
+    font: UniDeskTextStyle.tiny
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent
                  | T.Popup.CloseOnReleaseOutsideParent
     contentItem: UniDeskText {

@@ -51,7 +51,7 @@ UniDeskWindow{
             UniDeskText{
                 id: text1
                 text: qsTr("任务栏")
-                font: UniDeskUnits.small
+                font: UniDeskTextStyle.small
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -70,7 +70,7 @@ UniDeskWindow{
             UniDeskText{
                 id: text2
                 text: qsTr("壁纸")
-                font: UniDeskUnits.small
+                font: UniDeskTextStyle.small
                 anchors.top: checkbox1.bottom
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -89,7 +89,7 @@ UniDeskWindow{
             UniDeskText{
                 id: text2_2
                 text: qsTr("刷新间隔（秒，设为0不刷新）")
-                font: UniDeskUnits.little
+                font: UniDeskTextStyle.little
                 anchors.left: parent.left
                 anchors.verticalCenter: spinbox1.verticalCenter
                 anchors.margins: 10
@@ -124,7 +124,7 @@ UniDeskWindow{
             UniDeskText{
                 id: text3
                 text: qsTr("鼠标")
-                font: UniDeskUnits.small
+                font: UniDeskTextStyle.small
                 anchors.top: pathSelector1.bottom
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -134,7 +134,7 @@ UniDeskWindow{
             UniDeskText{
                 id: label1
                 text: qsTr("颜色模式")
-                font: UniDeskUnits.little
+                font: UniDeskTextStyle.little
                 anchors.left: parent.left
                 anchors.margins: 10
                 height: option1.height
@@ -155,7 +155,7 @@ UniDeskWindow{
             UniDeskText{
                 id: label2
                 text: qsTr("主题色")
-                font: UniDeskUnits.little
+                font: UniDeskTextStyle.little
                 anchors.left: parent.left
                 anchors.margins: 10
                 height: option2.height
@@ -175,7 +175,7 @@ UniDeskWindow{
             UniDeskText{
                 id: label3
                 text: qsTr("全局字体")
-                font: UniDeskUnits.little
+                font: UniDeskTextStyle.little
                 anchors.left: parent.left
                 anchors.margins: 10
                 height: option2.height
@@ -187,9 +187,9 @@ UniDeskWindow{
                 anchors.top: option2.bottom
                 anchors.right: parent.right
                 anchors.margins: 10
-                currentIndex: UniDeskUnits.currentFontIndex()
+                currentIndex: UniDeskTextStyle.currentFontIndex()
                 onCurrentTextChanged: {
-                    UniDeskUnits.changeFontFamily(currentText)
+                    UniDeskTextStyle.changeFontFamily(currentText)
                 }
             }
         }
@@ -203,19 +203,19 @@ UniDeskWindow{
             
         }
         ScrollView{
-            Image{
-                id: unidesk_img
-                source: UniDeskGlobals.isLight ? "qrc:/media/logo/uniquedesktop-l-bg.png":"qrc:/media/logo/uniquedesktop-d-bg.png"
-                sourceSize: Qt.size(width,height)
-                width: 400
-                height: 200
-                x: (parent.width-width)/2
-                y: 10
-            }
+            // Image{
+            //     id: unidesk_img
+            //     source: UniDeskGlobals.isLight ? "qrc:/media/logo/uniquedesktop-l-bg.png":"qrc:/media/logo/uniquedesktop-d-bg.png"
+            //     sourceSize: Qt.size(width,height)
+            //     width: 400
+            //     height: 200
+            //     x: (parent.width-width)/2
+            //     y: 10
+            // }
             UniDeskText{
                 id: title
                 text: "Uniquenium v1.0.0"//基本组件制作完成后再开始更改版本号
-                font: UniDeskUnits.large
+                font: UniDeskTextStyle.large
                 x: (parent.width-width)/2
                 y: unidesk_img.y+unidesk_img.height+10
             }
@@ -228,31 +228,31 @@ UniDeskWindow{
                 UniDeskText{
                     id: contributors_title
                     text: qsTr("贡献者")
-                    font: UniDeskUnits.medium
+                    font: UniDeskTextStyle.medium
                 }
                 RowLayout{
                     spacing: 10
                     UniDeskTextButton{
                         text: "Admibrill"
                         webLink: "https://github.com/admibrill"
-                        font: UniDeskUnits.little
+                        font: UniDeskTextStyle.little
                     }
                 }
                 UniDeskText{
                     text: qsTr("相关链接")
-                    font: UniDeskUnits.medium
+                    font: UniDeskTextStyle.medium
                 }
                 RowLayout{
                     spacing: 10
                     UniDeskTextButton{
                         text: "仓库地址"
                         webLink: "https://github.com/ITCraftDevelopmentTeam/unique-desktop"
-                        font: UniDeskUnits.little
+                        font: UniDeskTextStyle.little
                     }
                     UniDeskTextButton{
                         text: "官网"
                         //后续添加官网链接
-                        font: UniDeskUnits.little
+                        font: UniDeskTextStyle.little
                     }
                 }
             }

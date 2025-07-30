@@ -22,7 +22,7 @@ UniDeskDialog{
     UniDeskText{
         id: content_text
         text: control.text
-        font.family: UniDeskUnits.little.family
+        font.family: UniDeskTextStyle.little.family
         font.pixelSize: 20
         anchors.top: parent.top
         anchors.bottom: buttons_view.top

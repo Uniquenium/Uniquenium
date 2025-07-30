@@ -18,7 +18,7 @@ T.CheckBox {
     padding: 6
     spacing: 6
 
-    font: UniDeskUnits.little
+    font: UniDeskTextStyle.little
     indicator: Rectangle {
         implicitWidth: 20
         implicitHeight: 20

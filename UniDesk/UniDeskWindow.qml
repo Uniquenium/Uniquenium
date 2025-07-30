@@ -38,7 +38,7 @@ UniDeskWindowBase{
             anchors.leftMargin: 10
             anchors.top: parent.top
             anchors.topMargin: (parent.height-height)/2
-            font.family: UniDeskUnits.little.family
+            font.family: UniDeskTextStyle.little.family
             font.pixelSize: 20
         }
         RowLayout{
