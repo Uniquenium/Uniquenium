@@ -1,8 +1,8 @@
 import QtQuick 
 import QtQuick.Controls 
 import QtQuick.Layouts
-import unidesk_qml
-import org.itcdt.unidesk
+import UniDesk
+import org.uniquenium.unidesk
 
 UniDeskObject{
     id: object

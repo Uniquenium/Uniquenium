@@ -1,4 +1,4 @@
-module unidesk_qml
+module UniDesk
 UniDeskAcrylic 1.0 UniDeskAcrylic.qml
 UniDeskButton 1.0 UniDeskButton.qml
 UniDeskChart 1.0 UniDeskChart.qml

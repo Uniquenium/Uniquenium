@@ -5,8 +5,8 @@ import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
-import unidesk_qml
-import org.itcdt.unidesk
+import UniDesk
+import org.uniquenium.unidesk
 
 UniDeskWindow{
     id: window
@@ -214,7 +214,7 @@ UniDeskWindow{
             }
             UniDeskText{
                 id: title
-                text: "UniqueDesktop v1.0.0"//基本组件制作完成后再开始更改版本号
+                text: "Uniquenium v1.0.0"//基本组件制作完成后再开始更改版本号
                 font: UniDeskUnits.large
                 x: (parent.width-width)/2
                 y: unidesk_img.y+unidesk_img.height+10
@@ -235,11 +235,6 @@ UniDeskWindow{
                     UniDeskTextButton{
                         text: "Admibrill"
                         webLink: "https://github.com/admibrill"
-                        font: UniDeskUnits.little
-                    }
-                    UniDeskTextButton{
-                        text: "IT Craft Development Team"
-                        webLink: "https://github.com/ITCraftDevelopmentTeam"
                         font: UniDeskUnits.little
                     }
                 }

@@ -5,7 +5,7 @@ import QtQuick.Dialogs
 import QtQml
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
-import org.itcdt.unidesk
+import org.uniquenium.unidesk
 
 Button {
     property bool disabled: false

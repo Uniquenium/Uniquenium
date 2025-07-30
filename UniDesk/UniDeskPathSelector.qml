@@ -5,8 +5,8 @@ import QtQuick.Dialogs
 import QtQuick.Controls.Basic
 import QtQuick.Templates as T
 import Qt5Compat.GraphicalEffects
-import unidesk_qml
-import org.itcdt.unidesk
+import UniDesk
+import org.uniquenium.unidesk
 
 Item{
     id: root

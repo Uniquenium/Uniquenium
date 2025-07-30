@@ -4,8 +4,8 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
-import unidesk_qml
-import org.itcdt.unidesk
+import UniDesk
+import org.uniquenium.unidesk
 
 Item{
     id: root

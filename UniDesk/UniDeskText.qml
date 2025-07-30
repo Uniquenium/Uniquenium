@@ -5,7 +5,7 @@ import QtQuick.Dialogs
 import QtQml
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
-import org.itcdt.unidesk
+import org.uniquenium.unidesk
 
 Text {
     property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
