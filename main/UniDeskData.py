@@ -17,7 +17,8 @@ data = {
             "green": 100,
             "blue": 255,
             "alpha": 255
-        }
+        },
+        "globalFontFamily":"微软雅黑",
     }
 }
 def object2json(obj):

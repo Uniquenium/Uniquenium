@@ -181,15 +181,15 @@ UniDeskWindow{
                 height: option2.height
                 anchors.verticalCenter: option3.verticalCenter
             }
-            // remember to save font changes into settings.json
             UniDeskFontBox{
                 id: option3
                 anchors.top: option2.bottom
                 anchors.right: parent.right
                 anchors.margins: 10
-                currentIndex: UniDeskTextStyle.currentFontIndex()
+                currentIndex: UniDeskTools.fontIndex(UniDeskSettings.globalFontFamily)
                 onCurrentTextChanged: {
                     UniDeskTextStyle.changeFontFamily(currentText)
+                    UniDeskSettings.globalFontFamily=currentText
                 }
             }
         }

@@ -76,6 +76,10 @@ class UniDeskTools(QQuickItem):
     def systemFontFamilies(self):
         return QFontDatabase.families()
 
+    @Slot(str,result=int)
+    def fontIndex(self,familyName):
+        return QFontDatabase.families().index(familyName)
+
 
 
 

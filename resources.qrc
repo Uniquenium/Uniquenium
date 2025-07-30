@@ -41,11 +41,13 @@
         <file>media/logo/unidesk-l-bg.png</file>
         <file>media/logo/unidesk-l.png</file>
         <file>media/logo/unidesk-l.svg</file>
-        <file>media/logo/uniquedesktop-d-bg.png</file>
-        <file>media/logo/uniquedesktop-d.png</file>
-        <file>media/logo/uniquedesktop-d.svg</file>
-        <file>media/logo/uniquedesktop-l-bg.png</file>
-        <file>media/logo/uniquedesktop-l.png</file>
-        <file>media/logo/uniquedesktop-l.svg</file>
+        <file>media/logo/uniquenium-d-bg.png</file>
+        <file>media/logo/uniquenium-d.png</file>
+        <file>media/logo/uniquenium-l-bg.png</file>
+        <file>media/logo/uniquenium-l.png</file>
+        <file>media/logo/uq-d-bg.png</file>
+        <file>media/logo/uq-d.png</file>
+        <file>media/logo/uq-l-bg.png</file>
+        <file>media/logo/uq-l.png</file>
     </qresource>
 </RCC>

@@ -57,9 +57,6 @@ class UniDeskTextStyle(QQuickItem):
         for i in self.props:
             exec("self._"+i[0]+".setFamily(self._family)")
             exec("self."+i[0]+"Changed.emit(self._"+i[0]+")")
-    @Slot(result=int)
-    def currentFontIndex(self):
-        return QFontDatabase.families().index(self._family)
         
 
 
