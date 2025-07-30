@@ -1,4 +1,4 @@
-<!-- ![](./media/logo/uniquedesktop-d.png) -->
+![](./media/logo/uniquenium-d.png)
 
 <div align="center">
 
