@@ -2,6 +2,7 @@
 
 <div align="center">
 <h1>Uniquenium</h1>
+![Repo Size](https://img.shields.io/github/repo-size/Uniquenium/Uniquenium)
 </div>
 An open-source desktop extension tool that combines beautification and practical functions
 
