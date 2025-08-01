@@ -23,7 +23,7 @@ except ImportError:
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
-    app.setWindowIcon(QIcon(":/media/logo/unidesk-l.png"))
+    app.setWindowIcon(QIcon(":/media/logo/uq-l-bg.png"))
     qmlRegisterType(UniDeskBase,"org.uniquenium.unidesk",1,0,"UniDeskBase")
     qmlRegisterType(UniDeskWindowBase,"org.uniquenium.unidesk",1,0,"UniDeskWindowBase")
     qmlRegisterSingletonType(UniDeskSettings,"org.uniquenium.unidesk",1,0,"UniDeskSettings")

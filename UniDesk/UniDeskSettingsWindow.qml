@@ -203,15 +203,15 @@ UniDeskWindow{
             
         }
         ScrollView{
-            // Image{
-            //     id: unidesk_img
-            //     source: UniDeskGlobals.isLight ? "qrc:/media/logo/uniquedesktop-l-bg.png":"qrc:/media/logo/uniquedesktop-d-bg.png"
-            //     sourceSize: Qt.size(width,height)
-            //     width: 400
-            //     height: 200
-            //     x: (parent.width-width)/2
-            //     y: 10
-            // }
+            Image{
+                id: unidesk_img
+                source: UniDeskGlobals.isLight ? "qrc:/media/logo/uniquenium-l-bg.png":"qrc:/media/logo/uniquenium-d-bg.png"
+                sourceSize: Qt.size(width,height)
+                width: 400
+                height: 200
+                x: (parent.width-width)/2
+                y: 10
+            }
             UniDeskText{
                 id: title
                 text: "Uniquenium v1.0.0"//基本组件制作完成后再开始更改版本号

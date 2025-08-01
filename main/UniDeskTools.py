@@ -7,6 +7,8 @@ import os
 import ctypes
 from ctypes import wintypes
 import winreg
+import win32gui
+import win32con
 user32 = ctypes.WinDLL('user32')
 SM_CONTRAST = 221
 SM_USERCOLORSET = 263
@@ -65,8 +67,24 @@ class UniDeskTools(QQuickItem):
 
     @Slot(QUrl)
     def set_wallpaper(self,path: QUrl):
-        path=path.toLocalFile()
-        ctypes.windll.user32.SystemParametersInfoW(20, 0, path, 0x01 | 0x02)
+        path = path.toLocalFile()
+        # 修改注册表
+        key = winreg.OpenKey(
+            winreg.HKEY_CURRENT_USER,
+            r"Control Panel\Desktop",
+            0,
+            winreg.KEY_SET_VALUE
+        )
+        winreg.SetValueEx(key, "Wallpaper", 0, winreg.REG_SZ, str(path))
+        winreg.CloseKey(key)
+        # 通知系统刷新壁纸
+        ctypes.windll.user32.SystemParametersInfoW(
+            0x0014,  # SPI_SETDESKWALLPAPER
+            0,
+            str(path),
+            0x01 | 0x02 | 0x04
+        )
+        
     
     @Slot(str,result=QUrl)
     def fromLocalFile(self,path):
