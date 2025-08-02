@@ -6,6 +6,7 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk
 import org.uniquenium.unidesk
+import Qt.labs.platform as QLP
 
 UniDeskObject{
     id: object
@@ -32,17 +33,38 @@ UniDeskObject{
             height: cont.height
             property string textContent
             property color textColor
-            property url fontSource
             property string fontFamily
             property string fontSize
-            property int pageIdx
             UniDeskText{
                 id: cont
-                text: base.textContent
+                text: base.textContent ? base.textContent : qsTr("请输入文本内容")
                 textColor: base.textColor
-                fontSource: base.fontSource
                 fontFamily: base.fontFamily
                 fontSize: base.fontSize
+            }
+            QLP.Menu{
+                id: menu
+                QLP.MenuItem{
+                    text: qsTr("编辑")
+                    icon.source: "qrc:/media/img/edit-2-line.svg"
+                    onTriggered: {
+                        optionsText.show();
+                    }
+                }
+                QLP.MenuItem{
+                    text: qsTr("删除")
+                    icon.source: "qrc:/media/img/delete-bin-2-line.svg"
+                    onTriggered: {
+                        base.close();
+                    }
+                }
+            }
+            UniDeskOptionsText{
+                id: optionsText
+                editingComponent: base
+            }
+            onRightClicked: {
+                menu.open();
             }
         }
     }
@@ -56,8 +78,8 @@ UniDeskObject{
             }
         }
     }
-    function add_com_text(text,color,fontSource,family,size){
-        var new_com=com_text.createObject(null,{"textContent":text,"textColor":color,"fontFamily":family,"fontSource":fontSource,"fontSize":size,"x":newX,"y": newY,"pageIdx": pageIndex});
+    function add_com_text(text,color,family,size){
+        var new_com=com_text.createObject(null,{"textContent":text,"textColor":color,"fontFamily":family,"fontSize":size,"x":newX,"y": newY,"pageIdx": pageIndex});
         component_list.push(new_com)
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)

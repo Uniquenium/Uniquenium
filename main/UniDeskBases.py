@@ -5,6 +5,7 @@ from PySide6.QtCore import *
 
 class UniDeskBase(QQuickWindow):
     focusOut=Signal()
+    rightClicked=Signal()
     def __init__(self):
         super().__init__()
         self.setFlag(Qt.WindowType.FramelessWindowHint,True)
@@ -13,10 +14,15 @@ class UniDeskBase(QQuickWindow):
     def focusOutEvent(self, arg__1):
         self.focusOut.emit()
         return super().focusOutEvent(arg__1)
+    def mousePressEvent(self, event: QMouseEvent):
+        if event.button()==Qt.MouseButton.RightButton:
+            self.rightClicked.emit()
+        return super().mousePressEvent(event)
 
 
 class UniDeskWindowBase(QQuickWindow):
     focusOut=Signal()
+    rightClicked=Signal()
     def __init__(self):
         super().__init__()
         self.setFlag(Qt.WindowType.FramelessWindowHint,True)
@@ -48,6 +54,8 @@ class UniDeskWindowBase(QQuickWindow):
                 self.startSystemResize(self._edges)
             elif self.appBarHovered() and self.visibility()!=self.Visibility.Maximized and self.visibility()!=self.Visibility.FullScreen:
                 self.startSystemMove()
+        elif event.button()==Qt.MouseButton.RightButton:
+            self.rightClicked.emit()
         return super().mousePressEvent(event)
     def mouseDoubleClickEvent(self, event: QMouseEvent):
         if event.button()==Qt.MouseButton.LeftButton:

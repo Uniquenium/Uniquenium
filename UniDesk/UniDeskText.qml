@@ -9,15 +9,10 @@ import org.uniquenium.unidesk
 
 Text {
     property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
-    property url fontSource: ""
-    property string fontFamily: ""
+    property string fontFamily
     property double fontSize: UniDeskTextStyle.little.pixelSize
     id: control
     color: enabled ? textColor : (UniDeskGlobals.isLight ? Qt.rgba(131/255,131/255,131/255,1) : Qt.rgba(160/255,160/255,160/255,1))
-    font: fontSource!=="" ?UniDeskTools.font(loadedFont.name,fontSize):UniDeskTextStyle.little
-    FontLoader{
-        id: loadedFont
-        source: control.fontSource !== "" ? control.fontSource : undefined
-    }
+    font: fontFamily ? UniDeskTools.font(fontFamily,fontSize) : UniDeskTextStyle.little
     verticalAlignment: Qt.AlignVCenter
 }

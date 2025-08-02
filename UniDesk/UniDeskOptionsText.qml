@@ -1,0 +1,110 @@
+import QtQuick 
+import QtQuick.Controls 
+import QtQuick.Layouts
+import QtQuick.Dialogs
+import QtQuick.Templates as T
+import QtQuick.Controls.Basic
+import UniDesk
+import org.uniquenium.unidesk
+
+UniDeskWindow{
+    id: window
+    width: 1000
+    height: 700
+    title: qsTr("文本选项")
+    property UniDeskComBase editingComponent
+    ScrollView{
+        anchors.fill: parent
+        UniDeskText{
+            id: text1
+            text: qsTr("文本内容")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: textField1.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskTextArea{
+            id: textField1
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 10
+            area.placeholderText: qsTr("请输入文本内容")
+            area.text: editingComponent ? editingComponent.textContent : ""
+            area.onTextChanged: {
+                if (editingComponent) {
+                    editingComponent.textContent = area.text;
+                }
+            }
+        }
+        UniDeskText{
+            id: text2
+            text: qsTr("文本颜色")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: colorPicker1.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskColorPicker{
+            id: colorPicker1
+            anchors.top: textField1.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            selectedColor: editingComponent ? editingComponent.textColor : Qt.rgba(0,0,0,1)
+            onSelectedColorChanged: {
+                if (editingComponent) {
+                    editingComponent.textColor = selectedColor;
+                }
+            }
+        }
+        UniDeskText{
+            id: text3
+            text: qsTr("字体")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: fontBox1.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskFontBox{
+            id: fontBox1
+            anchors.top: colorPicker1.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            currentIndex:  UniDeskTools.fontIndex(editingComponent.fontFamily ?editingComponent.fontFamily: UniDeskSettings.globalFontFamily)
+            onCurrentTextChanged: {
+                if (editingComponent) {
+                    editingComponent.fontFamily = currentText;
+                }
+            }
+        }
+        UniDeskText{
+            id: text4
+            text: qsTr("字号")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: fontSizeSpinBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskSpinBox{
+            id: fontSizeSpinBox
+            anchors.top: fontBox1.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            value: editingComponent ? editingComponent.fontSize : 30
+            from: 1
+            to: 1000
+            stepSize: 1
+            onValueChanged: {
+                if (editingComponent) {
+                    editingComponent.fontSize = value;
+                }
+            }
+        }
+    }
+    Connections{
+        target: UniDeskGlobals
+        function onApplicationQuit() {
+            window.close();
+        }
+    }
+}

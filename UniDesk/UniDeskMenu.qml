@@ -60,3 +60,4 @@ T.Menu {
         radius: window.windowVisibility === Window.Maximized ? 0 : 3
     }
 }
+

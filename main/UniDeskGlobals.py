@@ -10,6 +10,7 @@ import threading
 th=None
 
 class UniDeskGlobals(QQuickItem):
+    applicationQuit=Signal()
     props=[
         ["isLight","bool"]
     ]
@@ -39,5 +40,6 @@ class UniDeskGlobals(QQuickItem):
             self._isLight=darkdetect.isLight() 
         if prev!=self._isLight:
             self.isLightChanged.emit(self._isLight)
-
-
+    @Slot()
+    def emitApplicationQuit(self):
+        self.applicationQuit.emit()
