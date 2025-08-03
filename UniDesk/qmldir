@@ -6,8 +6,9 @@ UniDeskCheckBox 1.0 UniDeskCheckBox.qml
 UniDeskColorPicker 1.0 UniDeskColorPicker.qml
 UniDeskComBase 1.0 UniDeskComBase.qml
 UniDeskComboBox 1.0 UniDeskComboBox.qml
+UniDeskComBox 1.0 UniDeskComBox.qml
 UniDeskComManager 1.0 UniDeskComManager.qml
-UniDeskComSelector 1.0 UniDeskComSelector.qml
+UniDeskComWindow 1.0 UniDeskComWindow.qml
 UniDeskDialog 1.0 UniDeskDialog.qml
 UniDeskFontBox 1.0 UniDeskFontBox.qml
 UniDeskFrame 1.0 UniDeskFrame.qml
@@ -21,6 +22,7 @@ UniDeskMessageBox 1.0 UniDeskMessageBox.qml
 UniDeskObject 1.0 UniDeskObject.qml
 UniDeskOptionsText 1.0 UniDeskOptionsText.qml
 UniDeskPathSelector 1.0 UniDeskPathSelector.qml
+UniDeskPosSelector 1.0 UniDeskPosSelector.qml
 UniDeskRadioButton 1.0 UniDeskRadioButton.qml
 UniDeskSettingsWindow 1.0 UniDeskSettingsWindow.qml
 UniDeskSpinBox 1.0 UniDeskSpinBox.qml
