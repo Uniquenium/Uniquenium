@@ -11,7 +11,8 @@ import Qt.labs.platform as QLP
 UniDeskObject{
     id: object
     property int pageIndex: 0
-    property int serialCnt: 1
+    property int serialComponentCnt: 1
+    property int serialPageCnt: 1
     property int delta: 100
     property list<UniDeskComBase> component_list
     property int newX: 0
@@ -56,12 +57,14 @@ UniDeskObject{
                     icon.source: "qrc:/media/img/delete-bin-2-line.svg"
                     onTriggered: {
                         base.close();
+                        object.component_list.pop(i);
                     }
                 }
             }
             UniDeskOptionsText{
                 id: optionsText
                 editingComponent: base
+                comManager: object
             }
             onRightClicked: {
                 menu.open();
@@ -78,11 +81,12 @@ UniDeskObject{
             }
         }
     }
-    function add_com_text(text,color,family,size){
-        var new_com=com_text.createObject(null,{"textContent":text,"textColor":color,"fontFamily":family,"fontSize":size,"x":newX,"y": newY,"pageIdx": pageIndex});
+    function add_com_text(id,text,color,family,size){
+        var new_com=com_text.createObject(null,{"identification":id,"textContent":text,"textColor":color,"fontFamily":family,"fontSize":size,"x":newX,"y": newY,"pageIdx": pageIndex});
         component_list.push(new_com)
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)
+        serialComponentCnt+=1;
     }
     function close_all(){
         for(var i=0;i<component_list.length;i++){
@@ -93,7 +97,24 @@ UniDeskObject{
         pageIndex=index;
     }
     function new_page(index){
-        page_list_model.append({"text": qsTr("页面")+serialCnt.toString(),"idx": serialCnt})
-        serialCnt+=1;
+        page_list_model.append({"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt})
+        serialPageCnt+=1;
+    }
+    function validateId(id){
+        if(id=="")return false;
+        for(var i=0;i<component_list.length;i++){
+            if(component_list[i].identification===id){
+                return false;
+            }
+        }
+        return true;
+    }
+    function getIndexById(id){
+        for(var i=0;i<component_list.length;i++){
+            if(component_list[i].identification===id){
+                return i;
+            }
+        }
+        return -1;
     }
 }

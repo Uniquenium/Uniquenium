@@ -12,9 +12,38 @@ UniDeskWindow{
     width: 1000
     height: 700
     title: qsTr("文本选项")
+    property var comManager
     property UniDeskComBase editingComponent
     ScrollView{
         anchors.fill: parent
+        hoverEnabled: true
+        contentHeight: childrenRect.height
+        UniDeskText{
+            id: text0
+            text: qsTr("组件id（不能重复）")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.margins: 10
+            anchors.verticalCenter: idField.verticalCenter
+        }
+        UniDeskTextField {
+            id: idField
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 10
+            placeholderText: qsTr("请输入组件id")
+            text: editingComponent ? editingComponent.identification : ""
+            onEditingFinished: {
+                if(window.comManager.validateId(text)){  
+                    if (editingComponent) {
+                        editingComponent.identification = text;
+                    }
+                }
+                else{
+                    text = editingComponent.identification;
+                }
+            }
+        }
         UniDeskText{
             id: text1
             text: qsTr("文本内容")
@@ -25,7 +54,7 @@ UniDeskWindow{
         }
         UniDeskTextArea{
             id: textField1
-            anchors.top: parent.top
+            anchors.top: idField.bottom
             anchors.right: parent.right
             anchors.margins: 10
             area.placeholderText: qsTr("请输入文本内容")

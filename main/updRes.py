@@ -14,4 +14,6 @@ with open("./UniDesk/qmldir","w",encoding="utf-8") as f:
     f.write("""module UniDesk\n""")
     for file in glob.glob(os.path.join("./UniDesk","*.qml")):
         f.write(os.path.basename(file).replace(".qml","")+" 1.0 "+os.path.basename(file)+"\n")
-os.system("pyside6-rcc resources.qrc -o main/res.py")
+print("Regenerate main/res.py started")
+# os.system("pyside6-rcc resources.qrc -o main/res.py")
+print("Regenerate main/res.py finished")

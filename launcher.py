@@ -32,7 +32,7 @@ if __name__ == "__main__":
     qmlRegisterSingletonType(UniDeskTools,"org.uniquenium.unidesk",1,0,"UniDeskTools")
     engine = QQmlApplicationEngine()
     engine.addImportPath(os.getcwd())
-    engine.load("qrc:/main/main.qml")
+    engine.load("./main/main.qml")
     if not engine.rootObjects():
         sys.exit(-1)
     print("Application Launched Successfully.")

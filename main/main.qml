@@ -217,10 +217,10 @@ UniDeskObject{
             }
         }
     }
-    UniDeskComSelector{
+    UniDeskComWindow{
         id: com_selector
         onTextSelected: {
-            manager.add_com_text("文字",Qt.rgba(1,1,1,1),"微软雅黑",30);
+            manager.add_com_text(qsTr("文字 ")+manager.serialComponentCnt,qsTr("文字"),Qt.rgba(1,1,1,1),"微软雅黑",30);
         }
     }
     function closeAllWindows(){
