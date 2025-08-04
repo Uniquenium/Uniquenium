@@ -4,11 +4,13 @@ import UniDesk
 
 from main import updRes
 from main import res
-from main.UniDeskBases import UniDeskBase,UniDeskWindowBase
-from main.UniDeskData import UniDeskSettings
-from main.UniDeskTextStyle import UniDeskTextStyle
-from main.UniDeskGlobals import UniDeskGlobals
-from main.UniDeskTools import UniDeskTools
+
+from UniDeskPlugin.UniDeskBases import UniDeskBase,UniDeskWindowBase
+from UniDeskPlugin.UniDeskData import UniDeskSettings
+from UniDeskPlugin.UniDeskDefines import UniDeskDefines
+from UniDeskPlugin.UniDeskTextStyle import UniDeskTextStyle
+from UniDeskPlugin.UniDeskGlobals import UniDeskGlobals
+from UniDeskPlugin.UniDeskTools import UniDeskTools
 
 from PySide6.QtGui import *
 from PySide6.QtQml import *
@@ -27,6 +29,7 @@ if __name__ == "__main__":
     qmlRegisterType(UniDeskBase,"org.uniquenium.unidesk",1,0,"UniDeskBase")
     qmlRegisterType(UniDeskWindowBase,"org.uniquenium.unidesk",1,0,"UniDeskWindowBase")
     qmlRegisterSingletonType(UniDeskSettings,"org.uniquenium.unidesk",1,0,"UniDeskSettings")
+    qmlRegisterSingletonType(UniDeskDefines,"org.uniquenium.unidesk",1,0,"UniDeskDefines")
     qmlRegisterSingletonType(UniDeskTextStyle,"org.uniquenium.unidesk",1,0,"UniDeskTextStyle")
     qmlRegisterSingletonType(UniDeskGlobals,"org.uniquenium.unidesk",1,0,"UniDeskGlobals")
     qmlRegisterSingletonType(UniDeskTools,"org.uniquenium.unidesk",1,0,"UniDeskTools")

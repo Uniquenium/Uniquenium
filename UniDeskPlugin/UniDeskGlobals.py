@@ -21,6 +21,7 @@ class UniDeskGlobals(QQuickItem):
         global th
         super().__init__()
         self._isLight=True
+        self._component_list=[]
         self.updateIsLight(None)
         th=threading.Thread(target=self.startListener,daemon=True)
     def startThread():

@@ -1,3 +1,4 @@
+pragma Singleton
 import QtQuick 
 import QtQuick.Controls 
 import QtQuick.Layouts
@@ -56,8 +57,8 @@ UniDeskObject{
                     text: qsTr("删除")
                     icon.source: "qrc:/media/img/delete-bin-2-line.svg"
                     onTriggered: {
+                        object.component_list.pop(object.getIndexById(base.identification));
                         base.close();
-                        object.component_list.pop(i);
                     }
                 }
             }
@@ -113,6 +114,14 @@ UniDeskObject{
         for(var i=0;i<component_list.length;i++){
             if(component_list[i].identification===id){
                 return i;
+            }
+        }
+        return -1;
+    }
+    function getComById(id){
+        for(var i=0;i<component_list.length;i++){
+            if(component_list[i].identification===id){
+                return component_list[i];
             }
         }
         return -1;

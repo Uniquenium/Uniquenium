@@ -10,8 +10,8 @@ import org.uniquenium.unidesk
 
 UniDeskWindow{
     id: window
-    width: 1000
-    height: 700
+    width: 500
+    height: 350
     title: qsTr("选择控件")
     signal textSelected()
     signal linkSelected()

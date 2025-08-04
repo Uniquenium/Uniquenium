@@ -17,7 +17,7 @@ UniDeskWindow{
     ScrollView{
         anchors.fill: parent
         hoverEnabled: true
-        contentHeight: childrenRect.height
+        contentHeight: 1000
         UniDeskText{
             id: text0
             text: qsTr("组件id（不能重复）")
@@ -34,7 +34,7 @@ UniDeskWindow{
             placeholderText: qsTr("请输入组件id")
             text: editingComponent ? editingComponent.identification : ""
             onEditingFinished: {
-                if(window.comManager.validateId(text)){  
+                if(UniDeskComManager.validateId(text)){  
                     if (editingComponent) {
                         editingComponent.identification = text;
                     }
@@ -43,6 +43,42 @@ UniDeskWindow{
                     text = editingComponent.identification;
                 }
             }
+        }
+        UniDeskText{
+            id: text5
+            text: qsTr("父组件")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.margins: 10
+            anchors.verticalCenter: parentComBox.verticalCenter
+        }
+        UniDeskComBox{
+            id: parentComBox
+            anchors.top: idField.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editingComponent: window.editingComponent
+            onCurrentTextChanged: {
+                if (currentIndex === 0) {
+                    editingComponent.parentComponent = null;
+                }
+                else{
+                    editingComponent.parentComponent = UniDeskComManager.getComById(currentText);
+                    editingComponent.visualXChanged();
+                    editingComponent.visualYChanged();
+                }
+            }
+            Component.onCompleted: {
+                currentIndex = editingComponent.parentComponent ? UniDeskComManager.getIndexById(editingComponent.parentComponent.identification) : 0;
+            }
+        }
+        UniDeskPosSelector{
+            id: posSelector
+            anchors.top: parentComBox.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+            editingComponent: window.editingComponent
         }
         UniDeskText{
             id: text1
@@ -54,7 +90,7 @@ UniDeskWindow{
         }
         UniDeskTextArea{
             id: textField1
-            anchors.top: idField.bottom
+            anchors.top: posSelector.bottom
             anchors.right: parent.right
             anchors.margins: 10
             area.placeholderText: qsTr("请输入文本内容")
@@ -127,6 +163,17 @@ UniDeskWindow{
                 if (editingComponent) {
                     editingComponent.fontSize = value;
                 }
+            }
+        }
+        UniDeskCheckBox{
+            id: canMoveCheckBox
+            text: qsTr("可拖动")
+            anchors.top: fontSizeSpinBox.bottom
+            anchors.left: parent.left
+            anchors.margins: 10
+            checked: editingComponent ? editingComponent.canMove : false
+            onCheckedChanged: {
+                editingComponent.canMove=checked;
             }
         }
     }

@@ -73,20 +73,6 @@ UniDeskObject{
                 }
             }
             UniDeskButton{
-                id: btn_edit
-                contentText: qsTr("编辑")
-                iconSize: 15
-                iconSource: "qrc:/media/img/edit.svg"
-                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
-                radius: width / 2
-                onClicked:{
-                    //使所有UniDeskComBase出现一个UniDeskSettings.primaryColor颜色的边界框，可以移动和调整大小
-                    //再次点击按钮锁定
-                }
-            }
-            UniDeskButton{
                 id: btn_settings
                 contentText: qsTr("设置")
                 iconSize: 15
@@ -127,7 +113,7 @@ UniDeskObject{
                 text: qsTr("关机")
                 iconSource: "qrc:/media/img/shut-down-line.svg"
                 onClicked: {
-                    UniDeskTools.systemCommand("shutdown -s")
+                    shutdown_dialog.show();
                 }
             }
             UniDeskMenuItem{
@@ -135,7 +121,7 @@ UniDeskObject{
                 text: qsTr("重启")
                 iconSource: "qrc:/media/img/restart-line.svg"
                 onClicked: {
-                    UniDeskTools.systemCommand("shutdown -r")
+                    restart_dialog.show();
                 }
             }
             UniDeskMenuItem{
@@ -151,7 +137,7 @@ UniDeskObject{
                 text: qsTr("注销")
                 iconSource: "qrc:/media/img/logout-box-line.svg"
                 onClicked: {
-                    UniDeskTools.systemCommand("shutdown -l")
+                    logout_dialog.show();
                 }
             }
             UniDeskMenuItem{
@@ -171,11 +157,11 @@ UniDeskObject{
                 id: mi_toggle_page
                 title: qsTr("切换页面")
                 Repeater{
-                    model: manager.page_list
+                    model: UniDeskComManager.page_list
                     UniDeskMenuItem{
                         text: model.text
                         onClicked: {
-                            manager.toggle_page_to(model.idx);
+                            UniDeskComManager.toggle_page_to(model.idx);
                         }
                     }
                 }
@@ -185,7 +171,7 @@ UniDeskObject{
                 text: qsTr("添加页面")
                 iconSource: "qrc:/media/img/add-line.svg"
                 onClicked: {
-                    manager.new_page();
+                    UniDeskComManager.new_page();
                 }
             }
         }
@@ -193,9 +179,6 @@ UniDeskObject{
             system_menu.close();
             page_menu.close();
         }
-    }
-    UniDeskComManager{
-        id: manager
     }
     UniDeskSettingsWindow{
         id: settings_window
@@ -210,17 +193,59 @@ UniDeskObject{
         }
         onButtonClicked: {
             if(clickedIndex==0){
-                manager.close_all();
+                UniDeskComManager.close_all();
                 base.baseClose();
                 object.closeAllWindows();
                 UniDeskGlobals.emitApplicationQuit();
             }
         }
     }
+    UniDeskMessageBox{
+        id: error_dialog
+        title: qsTr("确认关机")
+        text: qsTr("确认要关机吗？")
+        Component.onCompleted: {
+            addButton(qsTr("确定"));
+            addButton(qsTr("取消"));
+        }
+        onButtonClicked: {
+            if(clickedIndex==0){
+                UniDeskTools.systemCommand("shutdown -s");
+            }
+        }
+    }
+    UniDeskMessageBox{
+        id: restart_dialog
+        title: qsTr("确认重启")
+        text: qsTr("确认要重启吗？")
+        Component.onCompleted: {
+            addButton(qsTr("确定"));
+            addButton(qsTr("取消"));
+        }
+        onButtonClicked: {
+            if(clickedIndex==0){
+                UniDeskTools.systemCommand("shutdown -r");
+            }
+        }
+    }
+    UniDeskMessageBox{
+        id: logout_dialog
+        title: qsTr("确认注销")
+        text: qsTr("确认要注销吗？")
+        Component.onCompleted: {
+            addButton(qsTr("确定"));
+            addButton(qsTr("取消"));
+        }
+        onButtonClicked: {
+            if(clickedIndex==0){
+                UniDeskTools.systemCommand("shutdown -l");
+            }
+        }
+    }
     UniDeskComWindow{
         id: com_selector
         onTextSelected: {
-            manager.add_com_text(qsTr("文字 ")+manager.serialComponentCnt,qsTr("文字"),Qt.rgba(1,1,1,1),"微软雅黑",30);
+            UniDeskComManager.add_com_text(qsTr("文字 ")+UniDeskComManager.serialComponentCnt,qsTr("文字"),Qt.rgba(1,1,1,1),"微软雅黑",30);
         }
     }
     function closeAllWindows(){

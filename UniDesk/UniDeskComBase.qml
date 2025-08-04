@@ -14,6 +14,31 @@ UniDeskBase{
     property double mouseY: mouseArea.mouseY
     property string identification
     property int pageIdx
+    property UniDeskComBase parentComponent
+    property double visualX
+    property double visualY
+    property bool canMove: false
+    property bool canResize: false
+    onVisualXChanged:{
+        x=parentComponent ? parentComponent.x+visualX : visualX
+    }
+    onVisualYChanged:{
+        y=parentComponent ? parentComponent.y+visualY : visualY
+    }
+    x: parentComponent ? parentComponent.x+visualX : visualX
+    y: parentComponent ? parentComponent.y+visualY : visualY
+    onXChanged: {
+        var newVisualX = parentComponent ? x-parentComponent.x : x
+        if (newVisualX !== visualX) {
+            visualX = newVisualX;
+        }
+    }
+    onYChanged: {
+        var newVisualY = parentComponent ? y-parentComponent.y : y
+        if (newVisualY !== visualY) {
+            visualY = newVisualY;
+        }
+    }
     color: "transparent"
     Rectangle{
         id: rect_bg
@@ -23,6 +48,16 @@ UniDeskBase{
     MouseArea{
         id: mouseArea
         anchors.fill: parent
+    }
+    Connections{
+        target: base.parentComponent
+        function onXChanged(){
+            base.x = base.parentComponent ? base.parentComponent.x+base.visualX : base.visualX
+        }
+        function onYChanged(){
+            base.y = base.parentComponent ? base.parentComponent.y+base.visualY : base.visualY
+        }
+        
     }
     function baseClose(){
         base.close()

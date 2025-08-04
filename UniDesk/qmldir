@@ -7,7 +7,7 @@ UniDeskColorPicker 1.0 UniDeskColorPicker.qml
 UniDeskComBase 1.0 UniDeskComBase.qml
 UniDeskComboBox 1.0 UniDeskComboBox.qml
 UniDeskComBox 1.0 UniDeskComBox.qml
-UniDeskComManager 1.0 UniDeskComManager.qml
+singleton UniDeskComManager 1.0 UniDeskComManager.qml
 UniDeskComWindow 1.0 UniDeskComWindow.qml
 UniDeskDialog 1.0 UniDeskDialog.qml
 UniDeskFontBox 1.0 UniDeskFontBox.qml
