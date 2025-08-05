@@ -19,6 +19,9 @@ data = {
             "alpha": 255
         },
         "globalFontFamily":"微软雅黑",
+        "customFontFamilyPaths":[
+            
+        ]
     }
 }
 def object2json(obj):

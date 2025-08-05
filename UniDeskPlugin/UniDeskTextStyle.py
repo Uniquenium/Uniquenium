@@ -5,6 +5,7 @@ from PySide6.QtCore import *
 
 class UniDeskTextStyle(QQuickItem):
     props=[
+        ["family","str"],
         ["tiny","QFont"],
         ["little","QFont"],
         ["littleStrong","QFont"],
@@ -55,8 +56,9 @@ class UniDeskTextStyle(QQuickItem):
     def changeFontFamily(self,name):
         self._family=name
         for i in self.props:
-            exec("self._"+i[0]+".setFamily(self._family)")
-            exec("self."+i[0]+"Changed.emit(self._"+i[0]+")")
+            if i[0]!="family":
+                exec("self._"+i[0]+".setFamily(self._family)")
+                exec("self."+i[0]+"Changed.emit(self._"+i[0]+")")
         
 
 

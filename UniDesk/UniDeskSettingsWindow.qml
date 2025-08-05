@@ -166,10 +166,12 @@ UniDeskWindow{
                 anchors.top: option1.bottom
                 anchors.right: parent.right
                 anchors.margins: 10
-                selectedColor: UniDeskSettings.primaryColor
                 onSelectedColorChanged:{
                     UniDeskSettings.primaryColor=selectedColor;
                     UniDeskSettings.notify("primaryColor")
+                }
+                Component.onCompleted:{
+                    selectedColor=UniDeskSettings.primaryColor
                 }
             }
             UniDeskText{
@@ -190,6 +192,89 @@ UniDeskWindow{
                 onCurrentTextChanged: {
                     UniDeskTextStyle.changeFontFamily(currentText)
                     UniDeskSettings.globalFontFamily=currentText
+                }
+            }
+            UniDeskText{
+                id: label4
+                text: qsTr("自定义字体")
+                font: UniDeskTextStyle.little
+                anchors.left: parent.left
+                anchors.margins: 10
+                height: option3.height
+                anchors.verticalCenter: option4.verticalCenter
+            }
+            Rectangle {
+                id: option4
+                anchors.top: option3.bottom
+                anchors.right: parent.right
+                anchors.margins: 10
+                width: 300
+                height: 200
+                clip: true
+                ListView{
+                    id: option4_listView
+                    model: UniDeskTools.getCustomFonts()
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    spacing: 10
+                    delegate: Rectangle{
+                        anchors.left: parent ? parent.left : undefined
+                        anchors.right: parent ? parent.right : undefined
+                        RowLayout{   
+                            id: font_row_layout
+                            anchors.fill: parent
+                            anchors.margins: 10
+                            UniDeskText{
+                                text: modelData[1]
+                                font.family: modelData[1]
+                                font.pixelSize: 20
+                                Layout.fillWidth: true
+                            }
+                            UniDeskButton{
+                                iconSource: "qrc:/media/img/delete-bin.svg"
+                                iconSize: 15
+                                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                                iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+                                radius: width / 2
+                                onClicked: {
+                                    UniDeskTools.removeFontFamily(modelData[0]);
+                                    option4_listView.model=UniDeskTools.getCustomFonts();
+                                }
+                                Layout.alignment: Qt.AlignRight
+                                horizontalPadding: 0
+                                verticalPadding: 0
+                                padding: 0
+                                width: 20
+                                height: 20
+                            }
+                        }
+                        Component.onCompleted: {
+                            implicitWidth = font_row_layout.childrenRect.width;
+                            implicitHeight = font_row_layout.childrenRect.height+25;
+                        }
+                        border.width: 1
+                        border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+                        radius: 5
+                    }
+                    ScrollBar.vertical: ScrollBar {}
+                }
+                border.width: 1
+                border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+                radius: 5
+            }
+            UniDeskPathSelector{
+                id: customFontSelector
+                anchors.top: option4.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 10
+                mode: UniDeskDefines.FileModeFile
+                onSubmit: {
+                    if(UniDeskTools.isValidUrl(path)){
+                        UniDeskTools.addFontFamily(path.toString().slice(8));
+                        option4_listView.model=UniDeskTools.getCustomFonts();
+                    }
                 }
             }
         }

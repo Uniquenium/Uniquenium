@@ -17,7 +17,7 @@ UniDeskWindow{
     ScrollView{
         anchors.fill: parent
         hoverEnabled: true
-        contentHeight: 1000
+        contentHeight: renderFormatComboBox.y+renderFormatComboBox.height-text0.y+30
         UniDeskText{
             id: text0
             text: qsTr("组件id（不能重复）")
@@ -165,15 +165,240 @@ UniDeskWindow{
                 }
             }
         }
+        UniDeskText{
+            id: text11
+            text: qsTr("字重")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: fontWeightSpinBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskSpinBox{
+            id: fontWeightSpinBox
+            anchors.top: fontSizeSpinBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            from: 100
+            to: 1000
+            stepSize: 100
+            onValueChanged: {
+                if (editingComponent) {
+                    editingComponent.weight = value;
+                }
+            }
+            Component.onCompleted: {
+                value = editingComponent ? editingComponent.weight : 400;
+            }
+        }
         UniDeskCheckBox{
             id: canMoveCheckBox
             text: qsTr("可拖动")
-            anchors.top: fontSizeSpinBox.bottom
+            anchors.top: fontWeightSpinBox.bottom
             anchors.left: parent.left
             anchors.margins: 10
             checked: editingComponent ? editingComponent.canMove : false
             onCheckedChanged: {
                 editingComponent.canMove=checked;
+            }
+        }
+        UniDeskCheckBox{
+            id: smallCapsCheckBox
+            text: qsTr("小大写字母")
+            anchors.top: canMoveCheckBox.bottom
+            anchors.left: parent.left
+            anchors.margins: 10
+            checked: editingComponent ? editingComponent.smallCaps : false
+            onCheckedChanged: {
+                editingComponent.smallCaps=checked;
+            }
+        }
+        UniDeskCheckBox{
+            id: boldCheckBox
+            text: qsTr("粗体")
+            anchors.top: smallCapsCheckBox.bottom
+            anchors.left: parent.left
+            anchors.margins: 10
+            checked: editingComponent ? editingComponent.bold : false
+            onCheckedChanged: {
+                editingComponent.bold = checked;
+            }
+        }
+        UniDeskCheckBox{
+            id: italicCheckBox
+            text: qsTr("斜体")
+            anchors.top: boldCheckBox.bottom
+            anchors.left: parent.left
+            anchors.margins: 10
+            checked: editingComponent ? editingComponent.italic : false
+            onCheckedChanged: {
+                editingComponent.italic = checked;
+            }
+        }
+        UniDeskCheckBox{
+            id: underlineCheckBox
+            text: qsTr("下划线")
+            anchors.top: italicCheckBox.bottom
+            anchors.left: parent.left
+            anchors.margins: 10
+            checked: editingComponent ? editingComponent.underline : false
+            onCheckedChanged: {
+                editingComponent.underline = checked;
+            }
+        }
+        UniDeskCheckBox{
+            id: strikeoutCheckBox
+            text: qsTr("删除线")
+            anchors.top: underlineCheckBox.bottom
+            anchors.left: parent.left
+            anchors.margins: 10
+            checked: editingComponent ? editingComponent.strikeout : false
+            onCheckedChanged: {
+                editingComponent.strikeout = checked;
+            }
+        }
+        UniDeskText{
+            id: text6
+            text: qsTr("字间距")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: letterSpacingSpinBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskSpinBox{
+            id: letterSpacingSpinBox
+            anchors.top: strikeoutCheckBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            value: editingComponent ? editingComponent.letterSpacing : 0
+            from: -1000
+            to: 1000
+            stepSize: 1
+            onValueChanged: {
+                if (editingComponent) {
+                    editingComponent.letterSpacing = value;
+                }
+            }
+        }
+        UniDeskText{
+            id: text7
+            text: qsTr("词间距")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: wordSpacingSpinBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskSpinBox{
+            id: wordSpacingSpinBox
+            anchors.top: letterSpacingSpinBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            value: editingComponent ? editingComponent.wordSpacing : 0
+            from: -1000
+            to: 1000
+            stepSize: 1
+            onValueChanged: {
+                if (editingComponent) {
+                    editingComponent.wordSpacing = value;
+                }
+            }
+        }
+        UniDeskText{
+            id: text8
+            text: qsTr("行高倍数")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: lineHeightField.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskTextField{
+            id: lineHeightField
+            anchors.top: wordSpacingSpinBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            onEditingFinished: {
+                if (editingComponent) {
+                    editingComponent.lineHeight = parseFloat(text);
+                }
+            }
+            Component.onCompleted: {
+                text = editingComponent ? editingComponent.lineHeight.toString() : "1"
+            }
+        }
+        UniDeskText{
+            id: text9
+            text: qsTr("文本样式")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: styleComboBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskComboBox{
+            id: styleComboBox
+            anchors.top: lineHeightField.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            model: [qsTr("正常"), qsTr("凸起"), qsTr("描边"), qsTr("凹陷")]
+            onCurrentIndexChanged: {
+                if (editingComponent) {
+                    if (currentIndex === 0) {
+                        editingComponent.style = Text.Normal;
+                    } else if (currentIndex === 1) {
+                        editingComponent.style = Text.Raised;
+                    } else if (currentIndex === 2) {
+                        editingComponent.style = Text.Outline;
+                    } else if (currentIndex === 3) {
+                        editingComponent.style = Text.Sunken;
+                    }
+                }
+            }
+            Component.onCompleted: {
+                currentIndex = editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style==Text.Outline ? 2 : 3) : 0
+            }
+        }
+        UniDeskText{
+            id: text10
+            text: qsTr("文本样式颜色")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: styleColorPicker.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskColorPicker{
+            id: styleColorPicker
+            anchors.top: styleComboBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            selectedColor: editingComponent ? editingComponent.styleColor : Qt.rgba(0,0,0,1)
+            onSelectedColorChanged: {
+                if (editingComponent) {
+                    editingComponent.styleColor = selectedColor;
+                }
+            }
+        }
+        UniDeskText{
+            id: text12
+            text: qsTr("渲染格式")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: renderFormatComboBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskComboBox{
+            id: renderFormatComboBox
+            anchors.top: styleColorPicker.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            model: [qsTr("自动"), qsTr("纯文本"), qsTr("富文本（HTML）"), qsTr("Markdown")]
+            onCurrentIndexChanged: {
+                if (editingComponent) {
+                    editingComponent.textFormat = currentIndex === 0 ? Text.AutoText : currentIndex === 1 ? Text.PlainText : currentIndex === 2 ? Text.RichText : Text.MarkdownText;
+                }
+            }
+            Component.onCompleted: {
+                currentIndex = editingComponent ? (editingComponent.textFormat === Text.AutoText ? 0 : editingComponent.textFormat === Text.PlainText ? 1 : editingComponent.textFormat === Text.RichText ? 2 : 3) : 0;
             }
         }
     }

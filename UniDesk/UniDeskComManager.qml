@@ -33,16 +33,40 @@ UniDeskObject{
             visible: true
             width: cont.width
             height: cont.height
-            property string textContent
-            property color textColor
-            property string fontFamily
-            property string fontSize
+            property string textContent: qsTr("文字")
+            property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+            property string fontFamily: UniDeskTextStyle.family
+            property real fontSize: 30
+            property bool smallCaps: false
+            property bool bold: false
+            property bool italic: false
+            property bool underline: false
+            property bool strikeout: false
+            property real letterSpacing: 0
+            property real wordSpacing: 0
+            property real lineHeight: 1
+            property int weight: Font.Normal
+            property var style: Text.Normal
+            property color styleColor: UniDeskSettings.primaryColor
+            property var textFormat: Text.RichText
             UniDeskText{
                 id: cont
                 text: base.textContent ? base.textContent : qsTr("请输入文本内容")
                 textColor: base.textColor
-                fontFamily: base.fontFamily
-                fontSize: base.fontSize
+                font.family: base.fontFamily
+                font.pixelSize: base.fontSize
+                font.capitalization: base.smallCaps ? Font.SmallCaps : Font.MixedCase
+                font.bold: base.bold
+                font.italic: base.italic
+                font.underline: base.underline
+                font.strikeout: base.strikeout
+                font.letterSpacing: base.letterSpacing
+                font.wordSpacing: base.wordSpacing
+                lineHeight: base.lineHeight
+                font.weight: base.weight
+                style: base.style
+                styleColor: base.styleColor
+                textFormat: base.textFormat
             }
             QLP.Menu{
                 id: menu
@@ -50,7 +74,7 @@ UniDeskObject{
                     text: qsTr("编辑")
                     icon.source: "qrc:/media/img/edit-2-line.svg"
                     onTriggered: {
-                        optionsText.show();
+                        optionsText.showActivate()
                     }
                 }
                 QLP.MenuItem{
@@ -58,6 +82,7 @@ UniDeskObject{
                     icon.source: "qrc:/media/img/delete-bin-2-line.svg"
                     onTriggered: {
                         object.component_list.pop(object.getIndexById(base.identification));
+                        optionsText.close();
                         base.close();
                     }
                 }
@@ -82,8 +107,8 @@ UniDeskObject{
             }
         }
     }
-    function add_com_text(id,text,color,family,size){
-        var new_com=com_text.createObject(null,{"identification":id,"textContent":text,"textColor":color,"fontFamily":family,"fontSize":size,"x":newX,"y": newY,"pageIdx": pageIndex});
+    function add_com_text(){
+        var new_com=com_text.createObject(null,{"identification":qsTr("文字 ")+serialComponentCnt,"x":newX,"y": newY,"pageIdx": pageIndex});
         component_list.push(new_com)
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)

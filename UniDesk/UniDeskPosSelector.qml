@@ -10,8 +10,6 @@ import org.uniquenium.unidesk
 
 Item{
     id: control
-    width: gridLayout.childrenRect.width
-    height: gridLayout.childrenRect.height
     property var editingComponent
     property var horizontalAlignComponent
     property var verticalAlignment
@@ -62,7 +60,6 @@ Item{
             id: horizontalCoordTextField
             Layout.column: 2
             Layout.row: 0
-            value: control.editingComponent ? control.editingComponent.visualX : 0
             editable: true
             from: 0
             to: UniDeskTools.desktopGeometry(editingComponent).width - 10
@@ -71,10 +68,12 @@ Item{
                     control.editingComponent.visualX = value;
                 }
             }
+            Component.onCompleted: {
+                value=control.editingComponent ? control.editingComponent.visualX : 0
+            }
         }
         UniDeskSpinBox{
             id: verticalCoordTextField
-            value: control.editingComponent ? control.editingComponent.visualY : 0
             Layout.column: 2
             Layout.row: 2
             editable: true
@@ -84,6 +83,9 @@ Item{
                 if(control.editingComponent){
                     control.editingComponent.visualY = value;
                 }
+            }  
+            Component.onCompleted: {
+                value = control.editingComponent ? control.editingComponent.visualY : 0
             }
         }
         UniDeskComBox{
@@ -244,5 +246,9 @@ Item{
             Layout.row: 3
             Layout.alignment: Qt.AlignRight
         }
+    }
+    Component.onCompleted: {
+        implicitWidth=gridLayout.childrenRect.width
+        implicitHeight=gridLayout.childrenRect.height
     }
 }

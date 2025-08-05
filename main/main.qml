@@ -82,7 +82,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    settings_window.show()
+                    settings_window.showActivate()
                 }
             }
             UniDeskButton{
@@ -95,7 +95,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    com_selector.show();
+                    com_selector.showActivate();
                 }
             }
         }
@@ -113,7 +113,7 @@ UniDeskObject{
                 text: qsTr("关机")
                 iconSource: "qrc:/media/img/shut-down-line.svg"
                 onClicked: {
-                    shutdown_dialog.show();
+                    shutdown_dialog.showActivate();
                 }
             }
             UniDeskMenuItem{
@@ -121,7 +121,7 @@ UniDeskObject{
                 text: qsTr("重启")
                 iconSource: "qrc:/media/img/restart-line.svg"
                 onClicked: {
-                    restart_dialog.show();
+                    restart_dialog.showActivate();
                 }
             }
             UniDeskMenuItem{
@@ -137,7 +137,7 @@ UniDeskObject{
                 text: qsTr("注销")
                 iconSource: "qrc:/media/img/logout-box-line.svg"
                 onClicked: {
-                    logout_dialog.show();
+                    logout_dialog.showActivate();
                 }
             }
             UniDeskMenuItem{
@@ -244,9 +244,6 @@ UniDeskObject{
     }
     UniDeskComWindow{
         id: com_selector
-        onTextSelected: {
-            UniDeskComManager.add_com_text(qsTr("文字 ")+UniDeskComManager.serialComponentCnt,qsTr("文字"),Qt.rgba(1,1,1,1),"微软雅黑",30);
-        }
     }
     function closeAllWindows(){
         settings_window.close();

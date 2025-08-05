@@ -285,4 +285,12 @@ UniDeskWindowBase{
             prevHeight=height;
         }
     }
+    function showActivate(){
+        if(window.visibility===Window.Hidden){
+            window.show();
+        }
+        else{
+            window.requestActivate();
+        }
+    }
 }

@@ -38,10 +38,9 @@ T.SpinBox {
         validator: control.validator
         inputMethodHints: control.inputMethodHints
         onTextEdited: {
-            control.value=text;
+            control.value= parseInt(text);
         }
     }
-
     up.indicator: Rectangle {
         x: control.mirrored ? 0 : control.width - width
         height: control.height

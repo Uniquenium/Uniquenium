@@ -8,7 +8,7 @@ import org.uniquenium.unidesk
 
 
 Rectangle {
-    id: rect
+    id: rect_r
     implicitWidth: 200
     implicitHeight: 200
     border.width: 1
@@ -37,7 +37,7 @@ Rectangle {
             selectionColor: control.palette.highlight
             selectedTextColor: control.palette.highlightedText
             
-
+            font: UniDeskTextStyle.little
             UniDeskText {
                 id: placeholder
                 x: control.leftPadding

@@ -13,10 +13,6 @@ UniDeskWindow{
     width: 500
     height: 350
     title: qsTr("选择控件")
-    signal textSelected()
-    signal linkSelected()
-    signal frameSelected()
-    signal groupSelected()
     ScrollView{
         anchors.fill: parent
         anchors.margins: 10
@@ -40,7 +36,7 @@ UniDeskWindow{
                 borderWidth: 1
                 radius: 5
                 onClicked: {
-                    textSelected();
+                    UniDeskComManager.add_com_text();
                     window.close();
                 }
             }
@@ -53,7 +49,6 @@ UniDeskWindow{
                 borderWidth: 1
                 radius: 5
                 onClicked: {
-                    linkSelected();
                     window.close();
                 }
             }
@@ -66,7 +61,6 @@ UniDeskWindow{
                 borderWidth: 1
                 radius: 5
                 onClicked: {
-                    frameSelected();
                     window.close();
                 }
             }
@@ -79,7 +73,6 @@ UniDeskWindow{
                 borderWidth: 1
                 radius: 5
                 onClicked: {
-                    groupSelected();
                     window.close();
                 }
             }

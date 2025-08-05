@@ -9,6 +9,7 @@ import org.uniquenium.unidesk
 T.TextField {
     id: control
 
+    property bool enableFontDelegate: false
     implicitWidth: implicitBackgroundWidth + leftInset + rightInset
                    || Math.max(contentWidth, placeholder.implicitWidth) + leftPadding + rightPadding
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
@@ -17,7 +18,7 @@ T.TextField {
     padding: 2
     leftPadding: padding + 4
 
-    font: UniDeskTextStyle.little
+    font: enableFontDelegate && UniDeskTools.fontIndex(control.text) !== -1? UniDeskTools.font(control.text, 13) : UniDeskTextStyle.little
 
     color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     selectionColor: UniDeskSettings.primaryColor

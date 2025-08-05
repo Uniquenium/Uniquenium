@@ -11,11 +11,8 @@ import org.uniquenium.unidesk
 Item{
     id: root
     property url path
-    //0: File,1: Folder
-    property int mode: 0
+    property int mode: UniDeskDefines.FileModeFile
     signal submit
-    implicitWidth: row_layout.childrenRect.width
-    implicitHeight: row_layout.childrenRect.height
     RowLayout{
         id: row_layout
         anchors.fill: parent
@@ -40,7 +37,7 @@ Item{
             borderWidth: 1
             radius: 5
             onClicked: {
-                if(root.mode===0){
+                if(root.mode===UniDeskDefines.FileModeFile){
                     file_dialog.open();
                 }
                 else{
@@ -70,5 +67,8 @@ Item{
             root.submit();
         }
     }
-    
+    Component.onCompleted: {  
+        implicitWidth=row_layout.childrenRect.width;
+        implicitHeight=row_layout.childrenRect.height;
+    }
 }

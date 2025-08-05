@@ -9,14 +9,17 @@ from ctypes import wintypes
 import winreg
 import win32gui
 import win32con
+from .UniDeskData import UniDeskSettings
 user32 = ctypes.WinDLL('user32')
 SM_CONTRAST = 221
 SM_USERCOLORSET = 263
 
 class UniDeskTools(QQuickItem):
+    customFontsChanged = Signal()
     def __init__(self):
         super().__init__()
-
+        self.familyPaths=UniDeskSettings.get("customFontFamilyPaths")
+        self.appFonts=[QFontDatabase.addApplicationFont(i) for i in self.familyPaths if os.path.exists(i)]
     @Slot(QColor,QColor,QColor,QColor,bool,bool,bool,result=QColor)
     def switchColor(self,normal,hover,press,disable,hovered,pressed,disabled):
         if disabled:
@@ -91,13 +94,39 @@ class UniDeskTools(QQuickItem):
         return QUrl.fromLocalFile(path)
     
     @Slot(result=list)
-    def systemFontFamilies(self):
-        return QFontDatabase.families()
+    def applicationFontFamilies(self):
+        return QFontDatabase.families()+[QFontDatabase.applicationFontFamilies(i)[0] for i in self.appFonts]
 
     @Slot(str,result=int)
     def fontIndex(self,familyName):
-        return QFontDatabase.families().index(familyName)
+        try:
+            return self.applicationFontFamilies().index(familyName)
+        except ValueError:
+            return -1
+    @Slot(str)
+    def addFontFamily(self,path):
+        id=QFontDatabase.addApplicationFont(path)
+        self.appFonts.append(id)
+        self.customFontsChanged.emit()
+        self.familyPaths.append(path)
+        UniDeskSettings.set("customFontFamilyPaths",self.familyPaths)
+    
+    @Slot(str)
+    def removeFontFamily(self,id):
+        id=int(id)
+        QFontDatabase.removeApplicationFont(id)
+        self.familyPaths.pop(self.appFonts.index(id))
+        self.appFonts.remove(id)
+        self.customFontsChanged.emit()
+        UniDeskSettings.set("customFontFamilyPaths",self.familyPaths)
 
+    @Slot(result=list)
+    def getCustomFonts(self):
+        return [[i,QFontDatabase.applicationFontFamilies(i)[0]] for i in self.appFonts]
+    
+    @Slot(QUrl,result=bool)
+    def isValidUrl(self,url: QUrl):
+        return url.isValid()
 
 
 

@@ -52,7 +52,6 @@ T.ComboBox {
         bottomPadding: 6 - control.padding
 
         text: control.editable ? control.editText : control.displayText
-
         enabled: control.editable
         autoScroll: control.editable
         readOnly: control.down
@@ -69,6 +68,7 @@ T.ComboBox {
             border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
             color: "transparent"
         }
+        enableFontDelegate: control.enableFontDelegate
     }
 
     background: Rectangle {
