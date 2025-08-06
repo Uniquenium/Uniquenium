@@ -1,8 +1,9 @@
 import QtQuick 
 import QtQuick.Controls 
 import QtQuick.Layouts
-import UniDesk
-import org.uniquenium.unidesk
+import UniDesk.Controls
+import UniDesk.Singletons
+import UniDesk.PyPlugin
 import Qt.labs.platform as QLP
 
 UniDeskObject{
@@ -85,7 +86,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    settings_window.showActivate()
+                    UniDeskSettingsWindow.showActivate()
                 }
             }
             UniDeskButton{
@@ -98,7 +99,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    com_selector.showActivate();
+                    UniDeskComWindow.showActivate();
                 }
             }
         }
@@ -183,9 +184,6 @@ UniDeskObject{
             page_menu.close();
         }
     }
-    UniDeskSettingsWindow{
-        id: settings_window
-    }
     UniDeskMessageBox{
         id: confirm_exit_dialog
         title: qsTr("确认退出")
@@ -245,10 +243,10 @@ UniDeskObject{
             }
         }
     }
-    UniDeskComWindow{
-        id: com_selector
-    }
     function closeAllWindows(){
-        settings_window.close();
+        UniDeskSettingsWindow.close();
+    }
+    Component.onCompleted: {
+        UniDeskSettingsWindow.hide();
     }
 }

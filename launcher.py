@@ -1,16 +1,16 @@
 import sys
 import os
-import UniDesk
+import UniDesk.Controls
 
 from main import updRes
 from main import res
 
-from UniDeskPlugin.UniDeskBases import UniDeskBase,UniDeskWindowBase
-from UniDeskPlugin.UniDeskData import UniDeskSettings,UniDeskComponentsData
-from UniDeskPlugin.UniDeskDefines import UniDeskDefines
-from UniDeskPlugin.UniDeskTextStyle import UniDeskTextStyle
-from UniDeskPlugin.UniDeskGlobals import UniDeskGlobals
-from UniDeskPlugin.UniDeskTools import UniDeskTools
+from UniDesk.PyPlugin.UniDeskBases import UniDeskBase,UniDeskWindowBase
+from UniDesk.PyPlugin.UniDeskData import UniDeskSettings,UniDeskComponentsData
+from UniDesk.PyPlugin.UniDeskDefines import UniDeskDefines
+from UniDesk.PyPlugin.UniDeskTextStyle import UniDeskTextStyle
+from UniDesk.PyPlugin.UniDeskGlobals import UniDeskGlobals
+from UniDesk.PyPlugin.UniDeskTools import UniDeskTools
 
 from PySide6.QtGui import *
 from PySide6.QtQml import *
@@ -26,14 +26,14 @@ except ImportError:
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     app.setWindowIcon(QIcon(":/media/logo/uq-l-bg.png"))
-    qmlRegisterType(UniDeskBase,"org.uniquenium.unidesk",1,0,"UniDeskBase")
-    qmlRegisterType(UniDeskWindowBase,"org.uniquenium.unidesk",1,0,"UniDeskWindowBase")
-    qmlRegisterSingletonType(UniDeskSettings,"org.uniquenium.unidesk",1,0,"UniDeskSettings")
-    qmlRegisterSingletonType(UniDeskComponentsData,"org.uniquenium.unidesk",1,0,"UniDeskComponentsData")
-    qmlRegisterSingletonType(UniDeskDefines,"org.uniquenium.unidesk",1,0,"UniDeskDefines")
-    qmlRegisterSingletonType(UniDeskTextStyle,"org.uniquenium.unidesk",1,0,"UniDeskTextStyle")
-    qmlRegisterSingletonType(UniDeskGlobals,"org.uniquenium.unidesk",1,0,"UniDeskGlobals")
-    qmlRegisterSingletonType(UniDeskTools,"org.uniquenium.unidesk",1,0,"UniDeskTools")
+    qmlRegisterType(UniDeskBase,"UniDesk.PyPlugin",1,0,"UniDeskBase")
+    qmlRegisterType(UniDeskWindowBase,"UniDesk.PyPlugin",1,0,"UniDeskWindowBase")
+    qmlRegisterSingletonType(UniDeskSettings,"UniDesk.PyPlugin",1,0,"UniDeskSettings")
+    qmlRegisterSingletonType(UniDeskComponentsData,"UniDesk.PyPlugin",1,0,"UniDeskComponentsData")
+    qmlRegisterSingletonType(UniDeskDefines,"UniDesk.PyPlugin",1,0,"UniDeskDefines")
+    qmlRegisterSingletonType(UniDeskTextStyle,"UniDesk.PyPlugin",1,0,"UniDeskTextStyle")
+    qmlRegisterSingletonType(UniDeskGlobals,"UniDesk.PyPlugin",1,0,"UniDeskGlobals")
+    qmlRegisterSingletonType(UniDeskTools,"UniDesk.PyPlugin",1,0,"UniDeskTools")
     engine = QQmlApplicationEngine()
     engine.addImportPath(os.getcwd())
     engine.load("./main/main.qml")
