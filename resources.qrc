@@ -7,6 +7,7 @@
         <file>media/font/ZhuZiAWan-2.ttf</file>
         <file>media/font/ZhuZiAWan2.ttf</file>
         <file>media/img/add-line.svg</file>
+        <file>media/img/arrow-down-box-line.svg</file>
         <file>media/img/arrow-down-s-line.svg</file>
         <file>media/img/arrow-left-s-line.svg</file>
         <file>media/img/arrow-right-s-line.svg</file>
@@ -19,12 +20,14 @@
         <file>media/img/close.svg</file>
         <file>media/img/delete-bin.svg</file>
         <file>media/img/edit.svg</file>
+        <file>media/img/layout-2-fill.svg</file>
         <file>media/img/line-chart-line.svg</file>
         <file>media/img/links-line.svg</file>
         <file>media/img/lock.svg</file>
         <file>media/img/logout-box-line.svg</file>
         <file>media/img/loop-left-line.svg</file>
         <file>media/img/menu-line.svg</file>
+        <file>media/img/move.svg</file>
         <file>media/img/noise.png</file>
         <file>media/img/page-separator.svg</file>
         <file>media/img/palette-line.svg</file>

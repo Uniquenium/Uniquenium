@@ -68,20 +68,35 @@ UniDeskObject{
                 styleColor: base.styleColor
                 textFormat: base.textFormat
             }
-            QLP.Menu{
+            UniDeskMenu{
                 id: menu
-                QLP.MenuItem{
+                UniDeskMenuItem{
                     text: qsTr("编辑")
-                    icon.source: "qrc:/media/img/edit-2-line.svg"
-                    onTriggered: {
+                    iconSource: "qrc:/media/img/edit.svg"
+                    onClicked: {
                         optionsText.showActivate()
                     }
                 }
-                QLP.MenuItem{
+                UniDeskMenuItem{
+                    text: qsTr("可拖动")
+                    iconSource: "qrc:/media/img/move.svg"
+                    checkable: true
+                    onClicked: {
+                        checked=!checked;
+                        base.canMove=checked;
+                        base.saveComToFile();
+                        menu.close();
+                    }
+                    Component.onCompleted: {
+                        checked=base.canMove;
+                    }
+                }
+                UniDeskMenuItem{
                     text: qsTr("删除")
-                    icon.source: "qrc:/media/img/delete-bin-2-line.svg"
-                    onTriggered: {
-                        object.component_list.pop(object.getIndexById(base.identification));
+                    iconSource: "qrc:/media/img/delete-bin.svg"
+                    onClicked: {
+                        UniDeskComponentsData.removeComponent(base.identification);
+                        object.component_list.splice(object.getIndexById(base.identification),1);
                         optionsText.close();
                         base.close();
                     }
@@ -93,7 +108,45 @@ UniDeskObject{
                 comManager: object
             }
             onRightClicked: {
-                menu.open();
+                menu.popup(base)
+            }
+            onVisualXChanged:{
+                saveComToFile();
+            }
+            onVisualYChanged:{
+                saveComToFile();
+            }
+            function propertyData(){
+                return {
+                    "type": "text",
+                    "identification": base.identification,
+                    "pageIdx": base.pageIdx,
+                    "parentComponent": base.parentComponent ? base.parentComponent.identification: null,
+                    "visualX": base.visualX,
+                    "visualY": base.visualY,
+                    "canMove": base.canMove,
+                    "canResize": base.canResize,
+                    "textContent": base.textContent,
+                    "textColor": base.textColor,
+                    "fontFamily": base.fontFamily,
+                    "fontSize": base.fontSize,
+                    "smallCaps": base.smallCaps,
+                    "bold": base.bold,
+                    "italic": base.italic,
+                    "underline": base.underline,
+                    "strikeout": base.strikeout,
+                    "letterSpacing": base.letterSpacing,
+                    "wordSpacing": base.wordSpacing,
+                    "lineHeight": base.lineHeight,
+                    "weight": base.weight,
+                    "style": base.style,
+                    "styleColor": base.styleColor,
+                    "textFormat": base.textFormat
+                }
+            }
+            function saveComToFile(){
+                var data= propertyData();
+                UniDeskComponentsData.updateComponent(object.getIndexById(identification), data);
             }
         }
     }
@@ -108,7 +161,8 @@ UniDeskObject{
         }
     }
     function add_com_text(){
-        var new_com=com_text.createObject(null,{"identification":qsTr("文字 ")+serialComponentCnt,"x":newX,"y": newY,"pageIdx": pageIndex});
+        var new_com=com_text.createObject(null,{"identification":qsTr("文字 ")+serialComponentCnt,"visualX":newX,"visualY": newY,"pageIdx": pageIndex});
+        UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com)
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)
@@ -121,9 +175,11 @@ UniDeskObject{
     }
     function toggle_page_to(index){
         pageIndex=index;
+        UniDeskComponentsData.setCurrentPage(index);
     }
     function new_page(index){
-        page_list_model.append({"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt})
+        page_list_model.append({"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt});
+        UniDeskComponentsData.addPage({"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt});
         serialPageCnt+=1;
     }
     function validateId(id){
@@ -150,5 +206,75 @@ UniDeskObject{
             }
         }
         return -1;
+    }
+    function getIndexByCom(com){
+        for(var i=0;i<component_list.length;i++){
+            if(component_list[i]===com){
+                return i;
+            }
+        }
+        return -1;
+    }
+    function loadComponentsFromData(){
+        var data=UniDeskComponentsData.getComponents();
+        for(var i=0;i<data.length;i++){
+            if(data[i].type==="text"){
+                var new_com=com_text.createObject(null,{
+                    "identification":data[i].identification,
+                    "pageIdx":data[i].pageIdx,
+                    "parentComponent":data[i].parentComponent ? getComById(data[i].parentComponent) : null,
+                    "visualX":data[i].visualX,
+                    "visualY":data[i].visualY,
+                    "canMove":data[i].canMove,
+                    "canResize":data[i].canResize,
+                    "textContent":data[i].textContent,
+                    "textColor":data[i].textColor,
+                    "fontFamily":data[i].fontFamily,
+                    "fontSize":data[i].fontSize,
+                    "smallCaps":data[i].smallCaps,
+                    "bold":data[i].bold,
+                    "italic":data[i].italic,
+                    "underline":data[i].underline,
+                    "strikeout":data[i].strikeout,
+                    "letterSpacing":data[i].letterSpacing,
+                    "wordSpacing":data[i].wordSpacing,
+                    "lineHeight":data[i].lineHeight,
+                    "weight":data[i].weight,
+                    "style":data[i].style,
+                    "styleColor":data[i].styleColor,
+                    "textFormat":data[i].textFormat
+                });
+            }
+            else{
+                continue;
+            }
+            new_com.parentComponent=data[i].parentComponent ? getComById(data[i].parentComponent) : null;
+            component_list.push(new_com)
+            if(new_com.pageIdx==pageIndex){
+                new_com.visible=true;
+            }
+            else{
+                new_com.visible=false
+            }
+            var id_num=parseInt(data[i].identification.split(" ")[1]);
+            if(!isNaN(id_num)&&id_num>=serialComponentCnt){
+                serialComponentCnt=id_num+1;
+            }
+        }
+    }
+    function loadPagesFromData(){
+        var data=UniDeskComponentsData.getPages();
+        for(var i=0;i<data.length;i++){
+            page_list_model.append({"text": data[i].text,"idx": data[i].idx});
+            var idx_num=data[i].idx;
+            if(!isNaN(idx_num)&&idx_num>=serialPageCnt){
+                serialPageCnt=idx_num+1;
+            }
+        }
+    }
+    Component.onCompleted: {
+        pageIndex=UniDeskComponentsData.getCurrentPage();
+        loadPagesFromData();
+        loadComponentsFromData();
     }
 }

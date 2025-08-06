@@ -36,12 +36,12 @@ class UniDeskBase(QQuickWindow):
                 self.startSystemResize(self._edges)
             elif self.property("canMove"):
                 self.startSystemMove()
-        elif event.button()==Qt.MouseButton.RightButton:
-            self.rightClicked.emit()
         return super().mousePressEvent(event)
-    def mouseReleaseEvent(self, arg__1):
+    def mouseReleaseEvent(self, event: QMouseEvent):
         self._edges=None
-        return super().mouseReleaseEvent(arg__1)
+        if event.button()==Qt.MouseButton.RightButton:
+            self.rightClicked.emit()
+        return super().mouseReleaseEvent(event)
     def updateCursor(self):
         if self._edges == None:
             self.setCursor(Qt.CursorShape.ArrowCursor)
@@ -90,8 +90,6 @@ class UniDeskWindowBase(QQuickWindow):
                 self.startSystemResize(self._edges)
             elif self.appBarHovered() and self.visibility()!=self.Visibility.Maximized and self.visibility()!=self.Visibility.FullScreen:
                 self.startSystemMove()
-        elif event.button()==Qt.MouseButton.RightButton:
-            self.rightClicked.emit()
         return super().mousePressEvent(event)
     def mouseDoubleClickEvent(self, event: QMouseEvent):
         if event.button()==Qt.MouseButton.LeftButton:
@@ -101,9 +99,11 @@ class UniDeskWindowBase(QQuickWindow):
                 else:
                     self.showNormal()
         return super().mouseDoubleClickEvent(event)
-    def mouseReleaseEvent(self, arg__1):
+    def mouseReleaseEvent(self, event: QMouseEvent):
         self._edges=None
-        return super().mouseReleaseEvent(arg__1)
+        if event.button()==Qt.MouseButton.RightButton:
+            self.rightClicked.emit()
+        return super().mouseReleaseEvent(event)
     def updateCursor(self):
         if self._edges == None:
             self.setCursor(Qt.CursorShape.ArrowCursor)

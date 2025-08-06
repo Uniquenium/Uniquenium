@@ -25,6 +25,3 @@ with open(".pyproject","w",encoding="utf-8") as f:
             if file.endswith(".py") or file.endswith(".qml") or file.endswith(".qrc"):
                 a["files"].append(os.path.join(root, file).replace("\\","/"))
     json.dump(a, f, indent=4)
-print("Regenerate main/res.py started")
-# os.system("pyside6-rcc resources.qrc -o main/res.py")
-print("Regenerate main/res.py finished")

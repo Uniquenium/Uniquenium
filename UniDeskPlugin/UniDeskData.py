@@ -22,7 +22,12 @@ data = {
         "customFontFamilyPaths":[
             
         ]
-    }
+    },
+    "./data/components.json": {
+        "pages": [],
+        "pageIndex": 0,
+        "components": [],
+    },
 }
 def object2json(obj):
     if isinstance(obj,QColor):
@@ -33,11 +38,32 @@ def object2json(obj):
             "blue": obj.blue(),
             "alpha": obj.alpha()
         }
+    if isinstance(obj, dict):
+        new_obj = {}
+        for key, value in obj.items():
+            new_obj[key] = object2json(value)
+        return new_obj
+    if isinstance(obj, list):
+        new_obj = []
+        for i in obj:
+            new_obj.append(object2json(i))
+        return new_obj
     return obj
 def json2object(jso):
     if isinstance(jso,dict):
         if jso.get("<type>")=="QColor":
             return QColor(jso['red'],jso['green'],jso['blue'],jso["alpha"])
+    
+    if isinstance(jso, dict):
+        new_obj = {}
+        for key, value in jso.items():
+            new_obj[key] = json2object(value)
+        return new_obj
+    if isinstance(jso, list):
+        new_obj = []
+        for i in jso:
+            new_obj.append(json2object(i))
+        return new_obj
     return jso
 
 for i in data:
@@ -106,114 +132,53 @@ class UniDeskSettings(QQuickItem):
     def notify(self, prop):
         exec("self."+prop+"Changed.emit(Data(\"./data/settings.json\",prop))")
 
-# class DownloadHistoryData(QQuickItem):
-#     downloadHistory: list = Data("../resources/data/downloadHistory.json", "list")
-
-#     def __init__(self, parent=None):
-#         super().__init__(parent)
-
-#     @Slot(int, str, result=type)
-#     def get(self, index, prop):
-#         return self.downloadHistory[index][prop]
-
-#     @Slot(int, str, type)
-#     def set(self, index, prop, val):
-#         self.downloadHistory[index][prop] = val
-#         dumpData("../resources/data/downloadHistory.json", "list", self.downloadHistory)
-
-#     @Slot(str, str, str, str, bool, bool)
-#     def append(
-#         self, downloadDirectory, downloadFileName, mimeType, url, cancelled, deleted
-#     ):
-#         self.downloadHistory.append(
-#             {
-#                 "downloadDirectory": downloadDirectory,
-#                 "downloadFileName": downloadFileName,
-#                 "mimeType": mimeType,
-#                 "url": url,
-#                 "cancelled": cancelled,
-#                 "deleted": deleted,
-#             }
-#         )
-#         dumpData("../resources/data/downloadHistory.json", "list", self.downloadHistory)
-
-#     @Slot(int)
-#     def delete(self, index):
-#         self.downloadHistory.pop(index)
-#         dumpData("../resources/data/downloadHistory.json", "list", self.downloadHistory)
-    
-#     @Slot()
-#     def clear(self):
-#         self.downloadHistory.clear()
-#         dumpData("../resources/data/downloadHistory.json", "list", self.downloadHistory)
-
-
-# class HistoryData(QQuickItem):
-#     history: dict = DataAll("../resources/data/history.json")
-
-#     def __init__(self, parent=None):
-#         super().__init__(parent)
-
-#     @Slot(str, int, str, result=str)
-#     def get(self, date, index, prop):
-#         return self.history[date][index][prop]
-    
-#     @Slot(str, result=str)
-#     def getLast(self, prop):
-#         if list(self.history.keys())==[]:
-#             return None
-#         if self.history[list(self.history.keys())[-1]]==[]:
-#             return None
-#         return self.history[list(self.history.keys())[-1]][-1][prop]
-    
-#     @Slot(result=list)
-#     def getDates(self):
-#         return list(self.history.keys())
-    
-#     @Slot(str, result=list)
-#     def getDateList(self, date):
-#         return self.history.get(date)
-
-#     @Slot(str, str, str)
-#     def append(
-#         self, title, favicon, url
-#     ):
-#         nowdate=datetime.datetime.now().strftime("%Y-%m-%d")
-#         if not (nowdate in self.history.keys()):
-#             self.history[nowdate]=[]
-#         self.history[nowdate].append(
-#             {
-#                 "title": title,
-#                 "favicon": favicon,
-#                 "url": url,
-#                 "time": datetime.datetime.now().strftime("%H:%M")
-#             }
-#         )
-#         dumpDataAll("../resources/data/history.json", self.history)
-
-
-#     @Slot(str, str, str)
-#     def setLast(
-#         self, title, favicon, url
-#     ):
-#         self.history[list(self.history.keys())[-1]][-1]["title"]=title
-#         self.history[list(self.history.keys())[-1]][-1]["favicon"]=favicon
-#         self.history[list(self.history.keys())[-1]][-1]["url"]=url
-#         dumpDataAll("../resources/data/history.json", self.history)
-
-#     @Slot(str, int)
-#     def delete(self, date, index):
-#         self.history[date].pop(index)
-#         if self.history[date]==[]:
-#             self.remove(date)
-#         dumpDataAll("../resources/data/history.json", self.history)
-
-#     @Slot(str)
-#     def remove(self, date):
-#         self.history.pop(date)
-#         dumpDataAll("../resources/data/history.json", self.history)
-
-#     @Slot()
-#     def clear(self):
-#         self.history.clear()
-#         dumpDataAll("../resources/data/history.json", self.history)
+class UniDeskComponentsData(QQuickItem):
+    def __init__(self):
+        super().__init__()
+    @Slot(result=list)
+    def getPages(self):
+        return Data("./data/components.json","pages")
+    @Slot(result=list)
+    def getComponents(self):
+        return Data("./data/components.json","components")
+    @Slot(int,dict)
+    def updatePage(self,pageIndex,page):
+        pages = Data("./data/components.json","pages")
+        if pageIndex < 0 or pageIndex >= len(pages):
+            return
+        pages[pageIndex] = page
+        dumpData("./data/components.json","pages",pages)
+    @Slot(int,dict)
+    def updateComponent(self,componentIndex,component):
+        components = Data("./data/components.json","components")
+        if componentIndex < 0 or componentIndex >= len(components):
+            return
+        components[componentIndex] = component
+        dumpData("./data/components.json","components",components)
+    @Slot(dict)
+    def addComponent(self,component):
+        components = Data("./data/components.json","components")
+        components.append(object2json(component))
+        dumpData("./data/components.json","components",components)
+    @Slot(str)
+    def removeComponent(self, componentIdentification):
+        components = Data("./data/components.json","components")
+        components = [i for i in components if i.get("identification")!=componentIdentification]
+        dumpData("./data/components.json","components",components)
+    @Slot(dict)
+    def addPage(self,page):
+        pages = Data("./data/components.json","pages")
+        pages.append(object2json(page))
+        dumpData("./data/components.json","pages",pages)
+    @Slot(int)
+    def removePage(self,idx):
+        pages = Data("./data/components.json","pages")
+        pages = [i for i in pages if i.get("idx")!=idx]
+        dumpData("./data/components.json","pages",pages)
+    @Slot(int)
+    def setCurrentPage(self,idx):
+        dumpData("./data/components.json","pageIndex",idx)
+    @Slot(result=int)
+    def getCurrentPage(self):
+        return Data("./data/components.json","pageIndex")
+        

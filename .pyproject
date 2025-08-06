@@ -4,6 +4,7 @@
         "./resources.qrc",
         "./main/main.qml",
         "./main/res.py",
+        "./main/updRcc.py",
         "./main/updRes.py",
         "./UniDesk/UniDeskAcrylic.qml",
         "./UniDesk/UniDeskButton.qml",

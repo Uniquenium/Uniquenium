@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import UniDesk
 import org.uniquenium.unidesk
+import Qt.labs.platform as QLP
 
 UniDeskObject{
     id: object
@@ -13,9 +14,11 @@ UniDeskObject{
         bg.color: "transparent"
         x: Screen.width-width-10
         y: 10
-        width: btns.width+showLayer*302
+        width: btns.width
         height: object.isSpread ? btns.height+15 : btn_spread.height+15
-        property int showLayer: system_menu&&page_menu&&mi_toggle_page ? (system_menu.visible || page_menu.visible || mi_toggle_page.visible ): 0
+        onWidthChanged:{
+            x=Screen.width-width-10;
+        }
         ColumnLayout{
             id: btns
             anchors.right: parent ? parent.right : undefined 
@@ -56,7 +59,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    system_menu.popup(btn_system,Qt.point(-152,0))
+                    system_menu.popup(btn_system,Qt.point(-152,0));
                 }
             }
             UniDeskButton{
@@ -69,7 +72,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    page_menu.popup(btn_page,Qt.point(-152,0))
+                    page_menu.popup(btn_page,Qt.point(-152,0));
                 }
             }
             UniDeskButton{

@@ -16,6 +16,7 @@ T.Menu {
     margins: 0
     overlap: 1
     spacing: 0
+    popupType: Popup.Window
     delegate: UniDeskMenuItem {}
     enter: Transition {
         NumberAnimation {
@@ -33,7 +34,7 @@ T.Menu {
             duration: 100
         }
     }
-    closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutside
+    closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutside 
     contentItem: ListView {
         implicitHeight: contentHeight
         model: control.contentModel

@@ -29,8 +29,9 @@ UniDeskWindow{
             anchors.left: parent.left
             UniDeskButton{
                 id: button1
-                display: Button.TextOnly
+                display: Button.TextBesideIcon
                 contentText: qsTr("文字")
+                iconSource: "qrc:/media/img/text.svg"
                 bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                 bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                 borderWidth: 1
@@ -42,8 +43,9 @@ UniDeskWindow{
             }
             UniDeskButton{
                 id: button2
-                display: Button.TextOnly
-                contentText: qsTr("链接")
+                display: Button.TextBesideIcon
+                contentText: qsTr("按钮")
+                iconSource: "qrc:/media/img/arrow-down-box-line.svg"
                 bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                 bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                 borderWidth: 1
@@ -54,8 +56,9 @@ UniDeskWindow{
             }
             UniDeskButton{
                 id: button3
-                display: Button.TextOnly
+                display: Button.TextBesideIcon
                 contentText: qsTr("分区框")
+                iconSource: "qrc:/media/img/checkbox.svg"
                 bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                 bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                 borderWidth: 1
@@ -66,8 +69,9 @@ UniDeskWindow{
             }
             UniDeskButton{
                 id: button4
-                display: Button.TextOnly
+                display: Button.TextBesideIcon
                 contentText: qsTr("分组")
+                iconSource: "qrc:/media/img/layout-2-fill.svg"
                 bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                 bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                 borderWidth: 1

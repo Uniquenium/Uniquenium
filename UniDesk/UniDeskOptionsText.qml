@@ -42,6 +42,7 @@ UniDeskWindow{
                 else{
                     text = editingComponent.identification;
                 }
+                editingComponent.saveComToFile();
             }
         }
         UniDeskText{
@@ -64,12 +65,12 @@ UniDeskWindow{
                 }
                 else{
                     editingComponent.parentComponent = UniDeskComManager.getComById(currentText);
-                    editingComponent.visualXChanged();
-                    editingComponent.visualYChanged();
+                    editingComponent.parentComponentChanged();
                 }
+                editingComponent.saveComToFile();
             }
             Component.onCompleted: {
-                currentIndex = editingComponent.parentComponent ? UniDeskComManager.getIndexById(editingComponent.parentComponent.identification) : 0;
+                currentIndex = editingComponent.parentComponent ? UniDeskComManager.getIndexById(editingComponent.parentComponent.identification)+1 : 0;
             }
         }
         UniDeskPosSelector{
@@ -98,6 +99,7 @@ UniDeskWindow{
             area.onTextChanged: {
                 if (editingComponent) {
                     editingComponent.textContent = area.text;
+                    editingComponent.saveComToFile();
                 }
             }
         }
@@ -118,6 +120,7 @@ UniDeskWindow{
             onSelectedColorChanged: {
                 if (editingComponent) {
                     editingComponent.textColor = selectedColor;
+                    editingComponent.saveComToFile();
                 }
             }
         }
@@ -138,6 +141,7 @@ UniDeskWindow{
             onCurrentTextChanged: {
                 if (editingComponent) {
                     editingComponent.fontFamily = currentText;
+                    editingComponent.saveComToFile();
                 }
             }
         }
@@ -162,6 +166,7 @@ UniDeskWindow{
             onValueChanged: {
                 if (editingComponent) {
                     editingComponent.fontSize = value;
+                    editingComponent.saveComToFile();
                 }
             }
         }
@@ -185,6 +190,7 @@ UniDeskWindow{
             onValueChanged: {
                 if (editingComponent) {
                     editingComponent.weight = value;
+                    editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
@@ -200,6 +206,7 @@ UniDeskWindow{
             checked: editingComponent ? editingComponent.canMove : false
             onCheckedChanged: {
                 editingComponent.canMove=checked;
+                editingComponent.saveComToFile();
             }
         }
         UniDeskCheckBox{
@@ -211,6 +218,7 @@ UniDeskWindow{
             checked: editingComponent ? editingComponent.smallCaps : false
             onCheckedChanged: {
                 editingComponent.smallCaps=checked;
+                editingComponent.saveComToFile();
             }
         }
         UniDeskCheckBox{
@@ -222,6 +230,7 @@ UniDeskWindow{
             checked: editingComponent ? editingComponent.bold : false
             onCheckedChanged: {
                 editingComponent.bold = checked;
+                editingComponent.saveComToFile();
             }
         }
         UniDeskCheckBox{
@@ -233,6 +242,7 @@ UniDeskWindow{
             checked: editingComponent ? editingComponent.italic : false
             onCheckedChanged: {
                 editingComponent.italic = checked;
+                editingComponent.saveComToFile();
             }
         }
         UniDeskCheckBox{
@@ -244,6 +254,7 @@ UniDeskWindow{
             checked: editingComponent ? editingComponent.underline : false
             onCheckedChanged: {
                 editingComponent.underline = checked;
+                editingComponent.saveComToFile();
             }
         }
         UniDeskCheckBox{
@@ -255,6 +266,7 @@ UniDeskWindow{
             checked: editingComponent ? editingComponent.strikeout : false
             onCheckedChanged: {
                 editingComponent.strikeout = checked;
+                editingComponent.saveComToFile();
             }
         }
         UniDeskText{
@@ -278,6 +290,7 @@ UniDeskWindow{
             onValueChanged: {
                 if (editingComponent) {
                     editingComponent.letterSpacing = value;
+                    editingComponent.saveComToFile();
                 }
             }
         }
@@ -302,6 +315,7 @@ UniDeskWindow{
             onValueChanged: {
                 if (editingComponent) {
                     editingComponent.wordSpacing = value;
+                    editingComponent.saveComToFile();
                 }
             }
         }
@@ -321,6 +335,7 @@ UniDeskWindow{
             onEditingFinished: {
                 if (editingComponent) {
                     editingComponent.lineHeight = parseFloat(text);
+                    editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
@@ -353,6 +368,7 @@ UniDeskWindow{
                         editingComponent.style = Text.Sunken;
                     }
                 }
+                editingComponent.saveComToFile();
             }
             Component.onCompleted: {
                 currentIndex = editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style==Text.Outline ? 2 : 3) : 0
@@ -375,6 +391,7 @@ UniDeskWindow{
             onSelectedColorChanged: {
                 if (editingComponent) {
                     editingComponent.styleColor = selectedColor;
+                    editingComponent.saveComToFile();
                 }
             }
         }
@@ -395,6 +412,7 @@ UniDeskWindow{
             onCurrentIndexChanged: {
                 if (editingComponent) {
                     editingComponent.textFormat = currentIndex === 0 ? Text.AutoText : currentIndex === 1 ? Text.PlainText : currentIndex === 2 ? Text.RichText : Text.MarkdownText;
+                    editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {

@@ -66,6 +66,7 @@ Item{
             onValueChanged:{
                 if(control.editingComponent){
                     control.editingComponent.visualX = value;
+                    control.editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
@@ -82,6 +83,7 @@ Item{
             onValueChanged:{
                 if(control.editingComponent){
                     control.editingComponent.visualY = value;
+                    control.editingComponent.saveComToFile();
                 }
             }  
             Component.onCompleted: {
@@ -101,6 +103,7 @@ Item{
                     }else{
                         control.horizontalAlignComponent = UniDeskComManager.getComById(currentText);
                     }
+                    control.editingComponent.saveComToFile();
                 }
             }
         }
@@ -117,6 +120,7 @@ Item{
                     }else{
                         control.verticalAlignment = UniDeskComManager.getComById(currentText);
                     }
+                    control.editingComponent.saveComToFile();
                 }
             }
         }
@@ -139,6 +143,7 @@ Item{
                     else{
                         control.editingComponent.visualX=0;
                     }
+                    control.editingComponent.saveComToFile();  
                 }
             }
             UniDeskButton{
@@ -158,6 +163,7 @@ Item{
                     else{
                         control.editingComponent.visualX = UniDeskTools.desktopGeometry(editingComponent).width /2 - control.editingComponent.width /2;
                     }
+                    control.editingComponent.saveComToFile();
                 }
             }
             UniDeskButton{
@@ -177,6 +183,7 @@ Item{
                     else{
                         control.editingComponent.visualX = UniDeskTools.desktopGeometry(editingComponent).width - control.editingComponent.width;
                     }
+                    control.editingComponent.saveComToFile();
                 }
             }
             Layout.column: 2
@@ -202,6 +209,7 @@ Item{
                     else{
                         control.editingComponent.visualY=0;
                     }
+                    control.editingComponent.saveComToFile();
                 }
             }
             UniDeskButton{
@@ -221,6 +229,7 @@ Item{
                     else{
                         control.editingComponent.visualY = UniDeskTools.desktopGeometry(editingComponent).height /2 - control.editingComponent.height /2;
                     }
+                    control.editingComponent.saveComToFile();
                 }
             }
             UniDeskButton{
@@ -240,6 +249,7 @@ Item{
                     else{
                         control.editingComponent.visualY = UniDeskTools.desktopGeometry(editingComponent).height - control.editingComponent.height;
                     }
+                    control.editingComponent.saveComToFile();
                 }
             }
             Layout.column: 2

@@ -39,6 +39,16 @@ UniDeskBase{
             visualY = newVisualY;
         }
     }
+    onParentComponentChanged: {
+        var newVisualX = parentComponent ? x-parentComponent.x : x
+        if (newVisualX !== visualX) {
+            visualX = newVisualX;
+        }
+        var newVisualY = parentComponent ? y-parentComponent.y : y
+        if (newVisualY !== visualY) {
+            visualY = newVisualY;
+        }
+    }
     color: "transparent"
     Rectangle{
         id: rect_bg

@@ -7,6 +7,7 @@ import QtQuick.Templates as T
 import Qt5Compat.GraphicalEffects
 import UniDesk
 import org.uniquenium.unidesk
+import Qt.labs.platform as QLP
 
 Button{
     id: root
@@ -15,7 +16,7 @@ Button{
     property string contentText
     property string iconSource
     property double radius: 3
-    property double iconSize
+    property double iconSize: 15
 
     property color textNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     property color iconNormalColor: Qt.rgba(0,0,0,1)
@@ -120,7 +121,7 @@ Button{
             return com_row
         }
     }
-    UniDeskTooltip {
+    ToolTip {
         id: tool_tip
         visible: {
             if (root.contentText === "") {
