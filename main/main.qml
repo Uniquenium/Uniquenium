@@ -171,12 +171,22 @@ UniDeskObject{
                     }
                 }
             }
+            UniDeskMenuSeparator{
+            }
             UniDeskMenuItem{
                 id: mi_toggle_add
                 text: qsTr("添加页面")
                 iconSource: "qrc:/media/img/add-line.svg"
                 onClicked: {
                     UniDeskComManager.new_page();
+                }
+            }
+            UniDeskMenuItem{
+                id: mi_layer
+                text: qsTr("管理页面")
+                iconSource: "qrc:/media/img/settings.svg"
+                onClicked: {
+                    UniDeskPageWindow.showActivate();
                 }
             }
         }

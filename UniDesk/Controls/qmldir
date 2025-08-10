@@ -27,4 +27,5 @@ UniDeskTextArea 1.0 UniDeskTextArea.qml
 UniDeskTextButton 1.0 UniDeskTextButton.qml
 UniDeskTextField 1.0 UniDeskTextField.qml
 UniDeskTooltip 1.0 UniDeskTooltip.qml
+UniDeskTreeView 1.0 UniDeskTreeView.qml
 UniDeskWindow 1.0 UniDeskWindow.qml

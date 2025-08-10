@@ -19,7 +19,7 @@ UniDeskWindow{
         x: 10
         UniDeskTabButton{
             text: qsTr("系统")
-            //任务栏、桌面壁纸、鼠标样式
+            //任务栏、桌面壁纸、鼠标样式，桌面图标显示
         }
         UniDeskTabButton{
             text: qsTr("外观")
@@ -28,10 +28,6 @@ UniDeskWindow{
         UniDeskTabButton{
             text: qsTr("行为")
             //开机启动，检查更新的模式、显示语言、
-        }
-        UniDeskTabButton{
-            text: qsTr("页面")
-            //页面重命名、删除、新建、切换效果设置、系统桌面图标显示
         }
         UniDeskTabButton{
             text: qsTr("热键")
@@ -281,50 +277,6 @@ UniDeskWindow{
         }
         ScrollView{
             
-        }
-        ScrollView{
-            TreeView{
-                model: UniDeskComManager.componentTree()
-                anchors.fill:parent
-                selectionModel: ItemSelectionModel{}
-                delegate: Item {
-                    id: treeDelegate
-
-                    implicitWidth: padding + label.x + label.implicitWidth + padding
-                    implicitHeight: label.implicitHeight * 1.5
-
-                    readonly property real indent: 20
-                    readonly property real padding: 5
-
-                    // Assigned to by TreeView:
-                    required property TreeView treeView
-                    required property bool isTreeNode
-                    required property bool expanded
-                    required property int hasChildren
-                    required property int depth
-
-                    TapHandler {
-                        onTapped: treeView.toggleExpanded(row)
-                    }
-
-                    Text {
-                        id: indicator
-                        visible: treeDelegate.isTreeNode && treeDelegate.hasChildren
-                        x: padding + (treeDelegate.depth * treeDelegate.indent)
-                        anchors.verticalCenter: label.verticalCenter
-                        text: "▶"
-                        rotation: treeDelegate.expanded ? 90 : 0
-                    }
-
-                    Text {
-                        id: label
-                        x: padding + (treeDelegate.isTreeNode ? (treeDelegate.depth + 1) * treeDelegate.indent : 0)
-                        width: treeDelegate.width - treeDelegate.padding - x
-                        clip: true
-                        text: model.display
-                    }
-                }
-            }
         }
         ScrollView{
         }

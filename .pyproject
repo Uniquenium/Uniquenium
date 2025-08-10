@@ -37,6 +37,7 @@
         "./UniDesk/Controls/UniDeskTextButton.qml",
         "./UniDesk/Controls/UniDeskTextField.qml",
         "./UniDesk/Controls/UniDeskTooltip.qml",
+        "./UniDesk/Controls/UniDeskTreeView.qml",
         "./UniDesk/Controls/UniDeskWindow.qml",
         "./UniDesk/PyPlugin/UniDeskBases.py",
         "./UniDesk/PyPlugin/UniDeskData.py",
@@ -46,6 +47,7 @@
         "./UniDesk/PyPlugin/UniDeskTools.py",
         "./UniDesk/Singletons/UniDeskComManager.qml",
         "./UniDesk/Singletons/UniDeskComWindow.qml",
+        "./UniDesk/Singletons/UniDeskPageWindow.qml",
         "./UniDesk/Singletons/UniDeskSettingsWindow.qml"
     ]
 }
