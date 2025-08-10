@@ -31,9 +31,10 @@ UniDeskComBase{
     property var style: Text.Normal
     property color styleColor: UniDeskSettings.primaryColor
     property var textFormat: Text.RichText
+    chosen: optionsText ? optionsText.visible : false
     UniDeskText{
         id: cont
-        text: base.textContent ? base.textContent : qsTr("请输入文本内容")
+        text: base.textContent ? UniDeskTools.convertStr(base.textContent) : qsTr("请输入文本内容")
         textColor: base.textColor
         font.family: base.fontFamily
         font.pixelSize: base.fontSize
@@ -91,6 +92,14 @@ UniDeskComBase{
             }
         }
     }
+    Timer{
+        id: flushText
+        interval: 50
+        onTriggered: {
+            cont.text=base.textContent ? UniDeskTools.convertStr(base.textContent) : qsTr("请输入文本内容");
+        }
+        repeat: true
+    }
     UDCTextOptions{
         id: optionsText
         editingComponent: base
@@ -136,5 +145,11 @@ UniDeskComBase{
     function saveComToFile(){
         var data= propertyData();
         UniDeskComponentsData.updateComponent(UniDeskComManager.getIndexById(identification), data);
+    }
+    Component.onCompleted:{
+        flushText.start();
+    }
+    Component.onDestruction: {
+        flushText.stop();
     }
 }

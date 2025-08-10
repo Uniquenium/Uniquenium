@@ -32,23 +32,22 @@ An open-source desktop extension tool that combines beautification and practical
         - [ ] Appearance
         - [ ] Behavior
         - [ ] Pages
+        - [ ] Hotkeys
         - [ ] About
     - [ ] New Component
-- [ ] Common Functions of a Component
-    - [ ] Options
 - [ ] Root Components
-    - [ ] Base 
+    - [x] Base 
     - [x] Menu
     - [ ] Infobar
-    - [ ] Dialog(inherits Window)
+    - [x] Dialog(inherits Window)
     - [x] Window(Frameless)
 - [ ] Basic Components
-    - [ ] Text
-    - [ ] Link
+    - [x] Text
+    - [ ] Button
+    - [ ] Image
     - [ ] Chart(CPU,GPU,Network status,etc.)
     - [ ] Frame
     - [ ] Group
-    - [ ] Image
 - [ ] Extra Components
     - [ ] Calculator
     - [ ] Screen Capture
@@ -64,6 +63,7 @@ An open-source desktop extension tool that combines beautification and practical
     - [ ] Notepad
     - [ ] Codepad
     - [ ] Rapid File Downloader
+    - [ ] RSS
 
 # Acknowledgements
 

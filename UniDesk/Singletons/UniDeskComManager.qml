@@ -39,9 +39,10 @@ UniDeskObject{
             }
         }
     }
-    function add_com(typename,typenameTr){
+    function add_com(typename,typenameTr,parentId){
         var idx=typename_list.indexOf(typename);
         var new_com=type_list[idx].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"visualX":newX,"visualY": newY,"pageIdx": pageIndex});
+        new_com.parentIdentification=parentId
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com)
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
@@ -132,6 +133,15 @@ UniDeskObject{
         for(var i=0;i<typename_list.length;i++){
             type_list.push(Qt.createComponent("UniDesk.Components",typename_list[i]));
         }
+    }
+    UniDeskTreeModel {
+        id: modelTree2
+        Component.onCompleted: {
+            setup();
+        }
+    }
+    function componentTree(){
+        return modelTree2;
     }
     Component.onCompleted: {
         loadComponentTypesFromData();

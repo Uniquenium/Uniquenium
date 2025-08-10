@@ -55,9 +55,6 @@ UniDeskDialog{
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.margins: 10
     }
-    onFocusOut: {
-        control.requestActivate();
-    }
     function addButton(text){
         buttonlist.append({"text":text})
     }

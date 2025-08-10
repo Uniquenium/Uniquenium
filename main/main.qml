@@ -99,6 +99,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
+                    UniDeskComWindow.parentId="";
                     UniDeskComWindow.showActivate();
                 }
             }
@@ -245,6 +246,7 @@ UniDeskObject{
     }
     function closeAllWindows(){
         UniDeskSettingsWindow.close();
+        UniDeskComWindow.close();
     }
     Component.onCompleted: {
         UniDeskSettingsWindow.hide();

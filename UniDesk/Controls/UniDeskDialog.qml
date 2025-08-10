@@ -11,4 +11,7 @@ UniDeskWindow{
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint
     showMaximize: false
     fixSize: true
+    onFocusOut: {
+        control.requestActivate();
+    }
 }

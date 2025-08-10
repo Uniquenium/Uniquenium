@@ -5,6 +5,7 @@ import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
+import UniDesk.Singletons
 import UniDesk.PyPlugin
 
 UniDeskWindow{
@@ -47,35 +48,32 @@ UniDeskWindow{
         }
         UniDeskText{
             id: text5
-            text: qsTr("父组件")
+            text: qsTr("在此组件上新建")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
-            anchors.verticalCenter: parentComBox.verticalCenter
+            anchors.verticalCenter: btn_add.verticalCenter
         }
-        UniDeskComBox{
-            id: parentComBox
+        UniDeskButton{
+            id: btn_add
             anchors.top: idField.bottom
             anchors.right: parent.right
             anchors.margins: 10
-            editingComponent: window.editingComponent
-            onCurrentTextChanged: {
-                if (currentIndex === 0) {
-                    editingComponent.parentIdentification = null;
-                }
-                else{
-                    editingComponent.parentIdentification = currentText;
-                    editingComponent.parentIdentificationChanged();
-                }
-                editingComponent.saveComToFile();
-            }
-            Component.onCompleted: {
-                currentIndex = editingComponent.parentComponent() ? UniDeskComManager.getIndexById(editingComponent.parentComponent().identification)+1 : 0;
+            contentText: qsTr("添加组件")
+            iconSize: 15
+            iconSource: "qrc:/media/img/add-line.svg"
+            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+            radius: width / 2
+            onClicked:{
+                UniDeskComWindow.parentId=window.editingComponent.identification;
+                UniDeskComWindow.showActivate();
             }
         }
         UniDeskPosSelector{
             id: posSelector
-            anchors.top: parentComBox.bottom
+            anchors.top: btn_add.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
@@ -94,6 +92,7 @@ UniDeskWindow{
             anchors.top: posSelector.bottom
             anchors.right: parent.right
             anchors.margins: 10
+            width: 300
             area.placeholderText: qsTr("请输入文本内容")
             area.text: editingComponent ? editingComponent.textContent : ""
             area.onTextChanged: {

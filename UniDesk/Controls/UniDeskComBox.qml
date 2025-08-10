@@ -12,6 +12,7 @@ import UniDesk.PyPlugin
 UniDeskComboBox{
     id: control
     property UniDeskComBase editingComponent
+    enableComDelegate: true
     model: getIds(componentList);
     property list<UniDeskComBase> componentList: UniDeskComManager.component_list
     editable: true

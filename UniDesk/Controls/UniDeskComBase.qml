@@ -21,6 +21,8 @@ UniDeskBase{
     property double visualY
     property bool canMove: false
     property bool canResize: false
+    property bool indicated: false
+    property bool chosen: false
     onVisualXChanged:{
         x=parentComponent() ? parentComponent().x+visualX : visualX
     }
@@ -57,9 +59,35 @@ UniDeskBase{
         anchors.fill: parent
         color: "transparent"
     }
+    Rectangle{
+        id: rect_border
+        anchors.fill: parent
+        color: "transparent"
+        border.width: base.chosen ? 1: 0
+        border.color: UniDeskSettings.primaryColor
+        z: 32766
+    }
     MouseArea{
         id: mouseArea
         anchors.fill: parent
+    }
+    UniDeskBase{
+        x: base.x
+        y: base.y-height >=0 ? base.y-height : base.y+base.height
+        width: id_text.width
+        height: id_text.height
+        visible: base.indicated
+        Rectangle{
+            width: id_text.width
+            height: id_text.height
+            color: UniDeskSettings.primaryColor
+            z: 32767
+            UniDeskText{
+                id: id_text
+                font: UniDeskTextStyle.little
+                text: base.identification
+            }
+        }
     }
     Connections{
         target: base.parentComponent() ? base.parentComponent() : null
@@ -72,9 +100,10 @@ UniDeskBase{
         
     }
     function baseClose(){
-        base.close()
+        base.close();
     }
     function parentComponent(){
         return UniDeskComManager.getComById(parentIdentification);
     }
+
 }

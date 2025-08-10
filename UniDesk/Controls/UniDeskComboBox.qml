@@ -6,13 +6,14 @@ import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
+import UniDesk.Singletons
 import UniDesk.PyPlugin
 
 T.ComboBox {
     id: control
 
     property bool enableFontDelegate: false
-
+    property bool enableComDelegate: false
     padding: 5
     height: 30
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
@@ -34,6 +35,14 @@ T.ComboBox {
 
         highlighted: control.highlightedIndex === index
         hoverEnabled: control.hoverEnabled
+        onHighlightedChanged: {
+            if(control.enableComDelegate){
+                var com=UniDeskComManager.getComById(text)
+                if(com){
+                    com.indicated=highlighted;
+                }
+            }
+        }
     }
 
     indicator: UniDeskIcon {

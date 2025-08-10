@@ -1,16 +1,6 @@
 import os
 import glob
 import json
-with open("./resources.qrc","w",encoding="utf-8") as f:
-    f.write("""<RCC>
-    <qresource prefix='/'>
-            """)
-    for i,j,k in os.walk("media"):
-        if j==[]:
-            for p in k:
-                f.write("        <file>"+i.replace("\\","/")+"/"+p+"</file>\n")
-    f.write("""    </qresource>
-</RCC>""")
 with open("./UniDesk/Controls/qmldir","w",encoding="utf-8") as f:
     f.write("""module UniDesk.Controls\n""")
     for file in glob.glob(os.path.join("./UniDesk/Controls","*.qml")):

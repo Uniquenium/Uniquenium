@@ -5,7 +5,7 @@ import UniDesk.Controls
 from main import updRes
 from main import res
 
-from UniDesk.PyPlugin.UniDeskBases import UniDeskBase,UniDeskWindowBase
+from UniDesk.PyPlugin.UniDeskBases import UniDeskBase,UniDeskWindowBase,UniDeskTreeModel
 from UniDesk.PyPlugin.UniDeskData import UniDeskSettings,UniDeskComponentsData
 from UniDesk.PyPlugin.UniDeskDefines import UniDeskDefines
 from UniDesk.PyPlugin.UniDeskTextStyle import UniDeskTextStyle
@@ -28,6 +28,7 @@ if __name__ == "__main__":
     app.setWindowIcon(QIcon(":/media/logo/uq-l-bg.png"))
     qmlRegisterType(UniDeskBase,"UniDesk.PyPlugin",1,0,"UniDeskBase")
     qmlRegisterType(UniDeskWindowBase,"UniDesk.PyPlugin",1,0,"UniDeskWindowBase")
+    qmlRegisterType(UniDeskTreeModel,"UniDesk.PyPlugin",1,0,"UniDeskTreeModel")
     qmlRegisterSingletonType(UniDeskSettings,"UniDesk.PyPlugin",1,0,"UniDeskSettings")
     qmlRegisterSingletonType(UniDeskComponentsData,"UniDesk.PyPlugin",1,0,"UniDeskComponentsData")
     qmlRegisterSingletonType(UniDeskDefines,"UniDesk.PyPlugin",1,0,"UniDeskDefines")
@@ -40,5 +41,6 @@ if __name__ == "__main__":
     if not engine.rootObjects():
         sys.exit(-1)
     print("Application Launched Successfully.")
+    UniDeskTools.startThread()
     UniDeskGlobals.startThread()
     sys.exit(app.exec())
