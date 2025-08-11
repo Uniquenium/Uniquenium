@@ -170,6 +170,11 @@ class UniDeskComponentsData(QQuickItem):
         pages = Data("./data/components.json","pages")
         pages.append(object2json(page))
         dumpData("./data/components.json","pages",pages)
+    @Slot(int,dict)
+    def insertPage(self,index,page):
+        pages = Data("./data/components.json","pages")
+        pages.insert(index,object2json(page))
+        dumpData("./data/components.json","pages",pages)
     @Slot(int)
     def removePage(self,idx):
         pages = Data("./data/components.json","pages")

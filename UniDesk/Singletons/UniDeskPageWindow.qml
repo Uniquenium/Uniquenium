@@ -57,14 +57,13 @@ UniDeskWindow{
                     UniDeskTextField{
                         id: rename_page_field
                         property int pageIdx
-                        height: 20
-                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.fill: parent
+                        anchors.margins: 5
                         visible: dele.editing
                         onEditingFinished: {
                             dele.editing=false;
                             UniDeskComManager.rename_page(pageIdx,text)
                             option4_listView.model=UniDeskComManager.page_list;
-                            rename_page_field.focus=true;
                         }
                     }
                     MouseArea{
@@ -85,7 +84,7 @@ UniDeskWindow{
                         id: m_list
                         UniDeskMenuItem{
                             text: qsTr("重命名")
-                            disabled: index==0
+                            disabled: UniDeskComManager.getPageIdx(index)==0
                             onClicked: {
                                 rename_page_field.pageIdx=index;
                                 rename_page_field.text=model.text
@@ -96,33 +95,38 @@ UniDeskWindow{
                             text: qsTr("在上方新建页面")
                             disabled: index==0
                             onClicked: {
-                                
+                                UniDeskComManager.insert_new_page(index)
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("在下方新建页面")
                             onClicked: {
-                                
+                                if(index==UniDeskComManager.page_list.count-1){
+                                    UniDeskComManager.new_page()
+                                }
+                                else{
+                                    UniDeskComManager.insert_new_page(index+1)
+                                }
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("切换到此页")
                             onClicked: {
-                                UniDeskComManager.toggle_page_to(index);
+                                UniDeskComManager.toggle_page_to(UniDeskComManager.getPageIdx(index));
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("上移")
-                            disabled: index==0
+                            disabled: index==0 || index==1
                             onClicked: {
-                                
+                                UniDeskComManager.moveUp(index)
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("下移")
-                            disabled: index==0
+                            disabled: index==0 || index==UniDeskComManager.page_list.count-1
                             onClicked: {
-                                
+                                UniDeskComManager.moveDown(index)
                             }
                         }
                         UniDeskMenuItem{

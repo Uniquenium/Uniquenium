@@ -182,6 +182,24 @@ UniDeskObject{
             }
         }
     }
+    function getPageIdx(index){
+        return page_list_model.get(index).idx
+    }
+    function moveUp(index){
+        page_list_model.move(index,index-1,1)
+        UniDeskComponentsData.updatePage(index-1,page_list_model.get(index))
+        UniDeskComponentsData.updatePage(index-2,page_list_model.get(index-1))
+    }
+    function moveDown(index){
+        page_list_model.move(index,index+1,1)
+        UniDeskComponentsData.updatePage(index-1,page_list_model.get(index))
+        UniDeskComponentsData.updatePage(index,page_list_model.get(index+1))
+    }
+    function insert_new_page(index){
+        page_list_model.insert(index,{"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt});
+        UniDeskComponentsData.insertPage(index,{"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt});
+        serialPageCnt+=1;
+    }
     Component.onCompleted: {
         loadComponentTypesFromData();
         pageIndex=UniDeskComponentsData.getCurrentPage();
