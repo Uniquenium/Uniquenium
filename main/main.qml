@@ -8,7 +8,7 @@ import Qt.labs.platform as QLP
 
 UniDeskObject{
     id: object
-    property bool isSpread: true
+    property bool isExpand: true
     UniDeskComBase {
         id: base
         visible: true
@@ -16,7 +16,7 @@ UniDeskObject{
         x: Screen.width-width-10
         y: 10
         width: btns.width
-        height: object.isSpread ? btns.height+15 : btn_spread.height+15
+        height: object.isExpand ? btns.height+15 : btn_spread.height+15
         onWidthChanged:{
             x=Screen.width-width-10;
         }
@@ -26,15 +26,15 @@ UniDeskObject{
             spacing: 5
             UniDeskButton{
                 id: btn_spread
-                contentText: object.isSpread ? qsTr("收起") : qsTr("展开")
+                contentText: object.isExpand ? qsTr("收起") : qsTr("展开")
                 iconSize: 15
-                iconSource: object.isSpread ? "qrc:/media/img/arrow-up-s-line.svg" : "qrc:/media/img/arrow-down-s-line.svg"
+                iconSource: object.isExpand ? "qrc:/media/img/arrow-up-s-line.svg" : "qrc:/media/img/arrow-down-s-line.svg"
                 bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                 bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    object.isSpread = !object.isSpread
+                    object.isExpand = !object.isExpand
                 }
             }
             UniDeskButton{
@@ -100,6 +100,7 @@ UniDeskObject{
                 radius: width / 2
                 onClicked:{
                     UniDeskComWindow.parentId="";
+                    UniDeskComWindow.pageIdx=UniDeskComManager.pageIndex;
                     UniDeskComWindow.showActivate();
                 }
             }
@@ -165,6 +166,9 @@ UniDeskObject{
                     model: UniDeskComManager.page_list
                     UniDeskMenuItem{
                         text: model.text
+                        font.family: UniDeskTextStyle.little.family
+                        font.pixelSize: UniDeskTextStyle.little.pixelSize
+                        font.bold: UniDeskComManager.page_list.get(index).idx==UniDeskComManager.pageIndex
                         onClicked: {
                             UniDeskComManager.toggle_page_to(model.idx);
                         }

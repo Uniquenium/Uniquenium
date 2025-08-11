@@ -254,15 +254,23 @@ class UniDeskTreeModel(QAbstractItemModel):
     @Slot(int,QModelIndex)
     def insertRow(self, row, /, parent: QModelIndex = ...):
         self.layoutAboutToBeChanged.emit()
-        parentItem=parent.internalPointer()
+        parentItem=parent.internalPointer() if parent.isValid() else self._root
         child=TreeNode("",parentItem)
         parentItem.insertChild(row,child)
         self.layoutChanged.emit()
     @Slot(int,QModelIndex)
     def removeRow(self, row, /, parent: QModelIndex = ...):
         self.layoutAboutToBeChanged.emit()
-        parentItem=parent.internalPointer()
+        parentItem=parent.internalPointer() if parent.isValid() else self._root
         parentItem.popChild(row)
+        self.layoutChanged.emit()
+    @Slot(QModelIndex)
+    def removeIndex(self, index: QModelIndex = ...):
+        self.layoutAboutToBeChanged.emit()
+        pid=self.parent(index)
+        pItem=pid.internalPointer() if pid.isValid() else self._root
+        ch=index.internalPointer()
+        pItem.removeChild(ch)
         self.layoutChanged.emit()
     def findR(self,data,parent:QModelIndex):
         parentItem=parent.internalPointer()
@@ -290,6 +298,10 @@ class UniDeskTreeModel(QAbstractItemModel):
         parentItem.appendChild(child)
         self.layoutChanged.emit()
         return self.createIndex(parentItem.childCount()-1,0,child)
+    @Slot(result=QModelIndex)
+    def rootIndex(self):
+        return self.createIndex(-1,-1)
+    
 
         
 

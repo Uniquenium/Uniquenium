@@ -8,6 +8,10 @@
 [![GitHub License](https://img.shields.io/github/license/Uniquenium/Uniquenium)](LICENSE)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Uniquenium/Uniquenium)
 
+[Official Docs](https://docs.uniquenium.qyadbr.top) ·
+[DeepWiki Docs](https://deepwiki.com/Uniquenium/Uniquenium) ·
+[中文](./README-ZH_CN.md)
+
 </div>
 An open-source desktop extension tool that combines beautification and practical functions
 
@@ -19,30 +23,22 @@ An open-source desktop extension tool that combines beautification and practical
     - [x] System 
         - [x] Shutdown
         - [x] Restart
-        - [ ] Sleep
+        - [x] Sleep
         - [ ] Update
-        - [ ] Log Off
-        - [ ] Lock Screen
-    - [ ] Edit
-        - [ ] Move
-        - [ ] Resize
+        - [x] Log Off
+        - [x] Lock Screen
     - [x] Pages View
+        - [ ] Manage Pages
     - [ ] Settings
         - [ ] System
         - [ ] Appearance
         - [ ] Behavior
-        - [ ] Pages
         - [ ] Hotkeys
         - [ ] About
-    - [ ] New Component
-- [ ] Root Components
-    - [x] Base 
-    - [x] Menu
-    - [ ] Infobar
-    - [x] Dialog(inherits Window)
-    - [x] Window(Frameless)
+    - [x] New Component
+- [ ] Controls
 - [ ] Basic Components
-    - [x] Text
+    - [ ] Text
     - [ ] Button
     - [ ] Image
     - [ ] Chart(CPU,GPU,Network status,etc.)
@@ -64,6 +60,7 @@ An open-source desktop extension tool that combines beautification and practical
     - [ ] Codepad
     - [ ] Rapid File Downloader
     - [ ] RSS
+    - [ ] Screen Using Time
 
 # Acknowledgements
 

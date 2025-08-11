@@ -72,11 +72,12 @@ UniDeskBase{
         anchors.fill: parent
     }
     UniDeskBase{
+        id: indicator_base
         x: base.x
         y: base.y-height >=0 ? base.y-height : base.y+base.height
         width: id_text.width
         height: id_text.height
-        visible: base.indicated
+        visible: base.indicated && base.visible
         Rectangle{
             width: id_text.width
             height: id_text.height
@@ -99,7 +100,23 @@ UniDeskBase{
         }
         
     }
+    function deleteCom(){
+        for(var i=0;i<UniDeskComManager.component_list.length;i++){
+            var c=UniDeskComManager.component_list[i]
+            if(c.parentIdentification===base.identification){
+                c.deleteCom();
+            }
+        }
+        UniDeskComponentsData.removeComponent(base.identification);
+        UniDeskComManager.component_list.splice(UniDeskComManager.getIndexById(base.identification),1);
+        var pidx=UniDeskComManager.pageIdxConvert(base.pageIdx)
+        var id=UniDeskComManager.treeModels[pidx].find(base.identification)
+        UniDeskComManager.treeModels[pidx].removeIndex(id)
+        base.baseClose();
+        base.destroy();
+    }
     function baseClose(){
+        indicator_base.close();
         base.close();
     }
     function parentComponent(){

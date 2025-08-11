@@ -6,17 +6,19 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
+import UniDesk.Singletons
 import UniDesk.PyPlugin
 
 TreeView{
     id: control
     selectionModel: ItemSelectionModel{}
     rowSpacing: 10
+    property bool enableComDelegate: false
+    property Component extraDelegate
     delegate: Item {
         id: treeDelegate
         implicitWidth: control.width
         implicitHeight: 30
-        
         readonly property real indent: 20
         readonly property real padding: 5
 
@@ -30,7 +32,17 @@ TreeView{
         TapHandler {
             onTapped: treeView.toggleExpanded(row)
         }
-
+        HoverHandler{
+            onHoveredChanged: {
+                rect_.color=hovered? UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.05) : Qt.rgba(0,0,0,0.5).lighter(1.05)  : "transparent"   
+                if(control.enableComDelegate){
+                    var com=UniDeskComManager.getComById(model.display)
+                    if(com){
+                        com.indicated=hovered;
+                    }
+                }
+            }
+        }
         UniDeskIcon {
             id: indicator
             visible: treeDelegate.isTreeNode && treeDelegate.hasChildren
@@ -62,6 +74,13 @@ TreeView{
             radius: 5
             border.width: 1
             border.color: UniDeskGlobals.isLight? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,0)
+        }
+        Component.onCompleted: {
+            if(control.extraDelegate){
+                var newCom=control.extraDelegate.createObject(treeDelegate,{"model":model})
+                newCom.anchors.right=treeDelegate.right
+                newCom.anchors.verticalCenter=treeDelegate.verticalCenter
+            }
         }
     }
 }

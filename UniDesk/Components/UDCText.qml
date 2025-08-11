@@ -143,16 +143,13 @@ UniDeskComBase{
         var data= propertyData();
         UniDeskComponentsData.updateComponent(UniDeskComManager.getIndexById(identification), data);
     }
-    function deleteCom(){
-        UniDeskComponentsData.removeComponent(base.identification);
-        UniDeskComManager.component_list.splice(UniDeskComManager.getIndexById(base.identification),1);
-        optionsText.close();
-        base.close();
-    }
     Component.onCompleted:{
         flushText.start();
     }
     Component.onDestruction: {
+        if(optionsText){
+            optionsText.close();
+        }
         flushText.stop();
     }
 }

@@ -68,6 +68,7 @@ UniDeskWindow{
             radius: width / 2
             onClicked:{
                 UniDeskComWindow.parentId=window.editingComponent.identification;
+                UniDeskComWindow.pageIdx=window.editingComponent.pageIdx;
                 UniDeskComWindow.showActivate();
             }
         }

@@ -46,18 +46,22 @@ UniDeskObject{
             }
         }
     }
-    function add_com(typename,typenameTr,parentId){
+    function add_com(typename,typenameTr,parentId,pageIdx){
+        if(pageIdx){
+            pageIndex=pageIdx;
+        }
         var idx=typename_list.indexOf(typename);
         var new_com=type_list[idx].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"visualX":newX,"visualY": newY,"pageIdx": pageIndex});
-        new_com.parentIdentification=parentId
+        new_com.parentIdentification=parentId;
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com)
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)
         serialComponentCnt+=1;
-        var pid=treeModels[pageIndex].find(parentId)
-        var id=treeModels[pageIndex].appendRow(pid)
-        treeModels[pageIndex].setData(id,new_com.identification)
+        var pidx=pageIdxConvert(pageIdx)
+        var pid=treeModels[pidx].find(parentId)
+        var id=treeModels[pidx].appendRow(pid)
+        treeModels[pidx].setData(id,new_com.identification)
     }
     function close_all(){
         for(var i=0;i<component_list.length;i++){
@@ -147,7 +151,35 @@ UniDeskObject{
     function loadComponentTypesFromData(){
         typename_list=UniDeskComponentsData.getComponentTypes();
         for(var i=0;i<typename_list.length;i++){
+            print(typename_list[i]+" Loading")
             type_list.push(Qt.createComponent("UniDesk.Components",typename_list[i]));
+            print(typename_list[i]+" Loaded")
+        }
+    }
+    function loadTree(){
+        for(var i=0;i<component_list.length;i++){
+            var c=component_list[i];
+            var pidx=pageIdxConvert(c.pageIdx)
+            var id=treeModels[pidx].appendRow(treeModels[pidx].rootIndex())
+            treeModels[pidx].setData(id,c.identification)
+        }
+        for(var i=0;i<component_list.length;i++){
+            var c=component_list[i];
+            if(c.parentIdentification!==""){
+                var pidx=pageIdxConvert(c.pageIdx)
+                var pid=treeModels[pidx].find(c.parentIdentification)
+                var iid=treeModels[pidx].find(c.identification)
+                treeModels[pidx].removeIndex(iid);
+                var id=treeModels[pidx].appendRow(pid);
+                treeModels[pidx].setData(id,c.identification)
+            }
+        }
+    }
+    function pageIdxConvert(idx){
+        for(var i=0;i<page_list_model.count;i++){
+            if(page_list_model.get(i).idx===idx){
+                return i;
+            }
         }
     }
     Component.onCompleted: {
@@ -155,5 +187,6 @@ UniDeskObject{
         pageIndex=UniDeskComponentsData.getCurrentPage();
         loadPagesFromData();
         loadComponentsFromData();
+        loadTree();
     }
 }

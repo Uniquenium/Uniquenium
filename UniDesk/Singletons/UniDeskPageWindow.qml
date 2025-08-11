@@ -41,7 +41,9 @@ UniDeskWindow{
                         id: textt
                         text: model.text
                         visible: !dele.editing
-                        font: UniDeskTextStyle.little
+                        font.family: UniDeskTextStyle.little.family
+                        font.pixelSize: UniDeskTextStyle.little.pixelSize
+                        font.bold: UniDeskComManager.page_list.get(index).idx==UniDeskComManager.pageIndex
                         anchors.verticalCenter: parent.verticalCenter
                         x: 10
                     }
@@ -71,7 +73,9 @@ UniDeskWindow{
                         hoverEnabled: true
                         visible: !dele.editing
                         onClicked: (mouse)=> {
-                            window.currentIndex=index;
+                            if(mouse.button==Qt.LeftButton){
+                                window.currentIndex=index;
+                            }
                             if(mouse.button==Qt.RightButton){
                                 m_list.popup(dele,mouseX,mouseY)
                             }
@@ -89,16 +93,22 @@ UniDeskWindow{
                             }
                         }
                         UniDeskMenuItem{
-                            text: qsTr("在上方新建")
+                            text: qsTr("在上方新建页面")
                             disabled: index==0
                             onClicked: {
                                 
                             }
                         }
                         UniDeskMenuItem{
-                            text: qsTr("在下方新建")
+                            text: qsTr("在下方新建页面")
                             onClicked: {
                                 
+                            }
+                        }
+                        UniDeskMenuItem{
+                            text: qsTr("切换到此页")
+                            onClicked: {
+                                UniDeskComManager.toggle_page_to(index);
                             }
                         }
                         UniDeskMenuItem{
@@ -140,7 +150,52 @@ UniDeskWindow{
             UniDeskTreeView{
                 anchors.fill: parent
                 anchors.margins: 10
-                model: UniDeskComManager.treeModels[window.currentIndex]
+                enableComDelegate: true
+                model: UniDeskComManager.treeModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
+                extraDelegate: Component{
+                    RowLayout{
+                        property var model
+                        spacing: 10
+                        UniDeskButton{
+                            contentText: qsTr("添加组件")
+                            iconSize: 15
+                            iconSource: "qrc:/media/img/add-line.svg"
+                            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                            radius: width / 2
+                            onClicked:{
+                                UniDeskComWindow.parentId=model.display;
+                                UniDeskComWindow.pageIdx=UniDeskComManager.getComById(model.display).pageIdx;
+                                UniDeskComWindow.showActivate();
+                            }
+                        }
+                        UniDeskButton{
+                            contentText: qsTr("删除")
+                            iconSize: 15
+                            iconSource: "qrc:/media/img/delete-bin.svg"
+                            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                            radius: width / 2
+                            onClicked:{
+                                UniDeskComManager.getComById(model.display).deleteCom();
+                            }
+                        }
+                        UniDeskButton{
+                            contentText: qsTr("移动")
+                            iconSize: 15
+                            iconSource: "qrc:/media/img/move.svg"
+                            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                            radius: width / 2
+                            onClicked:{
+                                
+                            }
+                        }
+                    }
+                }
             }
             border.width: 1
             border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
