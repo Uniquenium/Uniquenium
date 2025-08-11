@@ -2,7 +2,6 @@ from PySide6.QtGui import *
 from PySide6.QtQml import *
 from PySide6.QtQuick import *
 from PySide6.QtCore import *
-
 class UniDeskBase(QQuickWindow):
     focusOut=Signal()
     rightClicked=Signal()
@@ -120,7 +119,7 @@ class UniDeskWindowBase(QQuickWindow):
 
 
 # 自定义的树形节点类
-class TreeNode:
+class TreeNode():
     # 初始化节点数据和父亲节点
     def __init__(self, data, parent=None):
         # 存储节点数据
@@ -154,6 +153,9 @@ class TreeNode:
     def data(self, column):
         if column == 0:
             return self._data
+    def setData(self, column,data):
+        if column==0:
+            self._data=data
 
     # 获取父节点
     def parent(self):
@@ -168,6 +170,10 @@ class TreeNode:
     def hasChildren(self):
         return len(self._children) > 0
 
+    def insertChild(self,child):
+        self._children.insert(child)
+    def popChild(self,index):
+        self._children.pop(index)
 
 # 自定义的树形数据模型
 class UniDeskTreeModel(QAbstractItemModel):
@@ -202,7 +208,7 @@ class UniDeskTreeModel(QAbstractItemModel):
         childItem = index.internalPointer()
         parentItem = childItem.parent()
 
-        if parentItem == self._root:
+        if parentItem == self._root or parentItem==None:
             return QModelIndex()
 
         return self.createIndex(parentItem.row(), 0, parentItem)
@@ -222,7 +228,6 @@ class UniDeskTreeModel(QAbstractItemModel):
     # 获取列数，这里只有一列
     def columnCount(self, parent=QModelIndex()):
         return 1
-
     # 获取某个节点的数据
     def data(self, index: QModelIndex, role=Qt.ItemDataRole.DisplayRole):
         if not index.isValid():
@@ -231,26 +236,61 @@ class UniDeskTreeModel(QAbstractItemModel):
         item = index.internalPointer()
         if role == Qt.ItemDataRole.DisplayRole:
             return item.data(index.column())
+    @Slot(QModelIndex,str)
+    def setData(self, index: QModelIndex,data,role=Qt.ItemDataRole.EditRole):
+        if not index.isValid():
+            return None
 
+        item = index.internalPointer()
+        if role == Qt.ItemDataRole.EditRole:
+            return item.setData(index.column(),data)
+    
     def flags(self, index: QModelIndex):
         if not index.isValid():
             return Qt.ItemFlag.NoItemFlags
 
         return super().flags(index)
     
-    @Slot()
-    def setup(self):
-        rootItem = TreeNode("root")
-        childItem1 = TreeNode("child1", rootItem)
-        childItem2 = TreeNode("child2", rootItem)
-        childItem3 = TreeNode("child3", rootItem)
-        subChildItem1 = TreeNode("sub_child1", childItem1)
-        subChildItem2 = TreeNode("sub_child2", childItem1)
+    @Slot(int,QModelIndex)
+    def insertRow(self, row, /, parent: QModelIndex = ...):
+        self.layoutAboutToBeChanged.emit()
+        parentItem=parent.internalPointer()
+        child=TreeNode("",parentItem)
+        parentItem.insertChild(row,child)
+        self.layoutChanged.emit()
+    @Slot(int,QModelIndex)
+    def removeRow(self, row, /, parent: QModelIndex = ...):
+        self.layoutAboutToBeChanged.emit()
+        parentItem=parent.internalPointer()
+        parentItem.popChild(row)
+        self.layoutChanged.emit()
+    def findR(self,data,parent:QModelIndex):
+        parentItem=parent.internalPointer()
+        if not parent.isValid():
+            parentItem=self._root
+        for i in range(parentItem.childCount()):
+            idx=self.createIndex(i,0,parentItem.child(i))
+            if parentItem.child(i)._data==data:
+                return idx
+            idx=self.findR(data,idx)
+            if idx.isValid():
+                return idx
+        return self.createIndex(-1,-1)
+    @Slot(str ,result=QModelIndex)
+    def find(self,data):
+        return self.findR(data,QModelIndex())
+    @Slot(QModelIndex,result=QModelIndex)
+    def appendRow(self,parent=QModelIndex()):
+        self.layoutAboutToBeChanged.emit()
+        if parent.isValid():
+            parentItem=parent.internalPointer()
+        else:
+            parentItem=self._root
+        child=TreeNode("",parentItem)
+        parentItem.appendChild(child)
+        self.layoutChanged.emit()
+        return self.createIndex(parentItem.childCount()-1,0,child)
 
-        rootItem.appendChild(childItem1)
-        rootItem.appendChild(childItem2)
-        rootItem.appendChild(childItem3)
-        childItem1.appendChild(subChildItem1)
-        childItem1.appendChild(subChildItem2)
-        self._root=rootItem
+        
+
 

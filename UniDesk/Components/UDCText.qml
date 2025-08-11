@@ -85,10 +85,7 @@ UniDeskComBase{
             text: qsTr("删除")
             iconSource: "qrc:/media/img/delete-bin.svg"
             onClicked: {
-                UniDeskComponentsData.removeComponent(base.identification);
-                UniDeskComManager.component_list.splice(UniDeskComManager.getIndexById(base.identification),1);
-                optionsText.close();
-                base.close();
+                base.deleteCom();
             }
         }
     }
@@ -145,6 +142,12 @@ UniDeskComBase{
     function saveComToFile(){
         var data= propertyData();
         UniDeskComponentsData.updateComponent(UniDeskComManager.getIndexById(identification), data);
+    }
+    function deleteCom(){
+        UniDeskComponentsData.removeComponent(base.identification);
+        UniDeskComManager.component_list.splice(UniDeskComManager.getIndexById(base.identification),1);
+        optionsText.close();
+        base.close();
     }
     Component.onCompleted:{
         flushText.start();

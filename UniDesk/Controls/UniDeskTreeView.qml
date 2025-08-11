@@ -9,13 +9,14 @@ import UniDesk.Controls
 import UniDesk.PyPlugin
 
 TreeView{
+    id: control
     selectionModel: ItemSelectionModel{}
+    rowSpacing: 10
     delegate: Item {
         id: treeDelegate
-
-        implicitWidth: padding + label.x + label.implicitWidth + padding
-        implicitHeight: label.implicitHeight * 1.5
-
+        implicitWidth: control.width
+        implicitHeight: 30
+        
         readonly property real indent: 20
         readonly property real padding: 5
 
@@ -30,21 +31,37 @@ TreeView{
             onTapped: treeView.toggleExpanded(row)
         }
 
-        Text {
+        UniDeskIcon {
             id: indicator
             visible: treeDelegate.isTreeNode && treeDelegate.hasChildren
             x: padding + (treeDelegate.depth * treeDelegate.indent)
             anchors.verticalCenter: label.verticalCenter
-            text: "▶"
+            iconSource: "qrc:/media/img/arrow-right-s-line.svg"
             rotation: treeDelegate.expanded ? 90 : 0
+            Behavior on rotation{
+                RotationAnimation{
+                    direction: RotationAnimation.Shortest
+                    duration: 50
+                }
+            }
         }
 
-        Text {
+        UniDeskText {
             id: label
             x: padding + (treeDelegate.isTreeNode ? (treeDelegate.depth + 1) * treeDelegate.indent : 0)
             width: treeDelegate.width - treeDelegate.padding - x
             clip: true
             text: model.display
+            font: UniDeskTextStyle.little
+            anchors.verticalCenter: rect_.verticalCenter
+        }
+        Rectangle{
+            id: rect_
+            anchors.fill: parent
+            color:  "transparent"
+            radius: 5
+            border.width: 1
+            border.color: UniDeskGlobals.isLight? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,0)
         }
     }
 }

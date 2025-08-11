@@ -22,11 +22,18 @@ UniDeskObject{
     property alias page_list: page_list_model
     property list<Component> type_list
     property list<string> typename_list
+    property list<UniDeskTreeModel> treeModels
     ListModel{
         id: page_list_model
         ListElement{
             text: qsTr("默认页面")
             idx: 0
+        }
+    }
+    Component{
+        id: com_tree_model
+        UniDeskTreeModel{
+            id: tree
         }
     }
     onPageIndexChanged: {
@@ -48,6 +55,9 @@ UniDeskObject{
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)
         serialComponentCnt+=1;
+        var pid=treeModels[pageIndex].find(parentId)
+        var id=treeModels[pageIndex].appendRow(pid)
+        treeModels[pageIndex].setData(id,new_com.identification)
     }
     function close_all(){
         for(var i=0;i<component_list.length;i++){
@@ -62,6 +72,10 @@ UniDeskObject{
         page_list_model.append({"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt});
         UniDeskComponentsData.addPage({"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt});
         serialPageCnt+=1;
+    }
+    function rename_page(index,newname){
+        page_list_model.get(index).text=newname
+        UniDeskComponentsData.updatePage(index-1,page_list_model.get(index))
     }
     function validateId(id){
         if(id=="")return false;
@@ -119,9 +133,11 @@ UniDeskObject{
         }
     }
     function loadPagesFromData(){
+        treeModels.push(com_tree_model.createObject(null,{}));
         var data=UniDeskComponentsData.getPages();
         for(var i=0;i<data.length;i++){
             page_list_model.append({"text": data[i].text,"idx": data[i].idx});
+            treeModels.push(com_tree_model.createObject(null,{}));
             var idx_num=data[i].idx;
             if(!isNaN(idx_num)&&idx_num>=serialPageCnt){
                 serialPageCnt=idx_num+1;
@@ -133,15 +149,6 @@ UniDeskObject{
         for(var i=0;i<typename_list.length;i++){
             type_list.push(Qt.createComponent("UniDesk.Components",typename_list[i]));
         }
-    }
-    UniDeskTreeModel {
-        id: modelTree2
-        Component.onCompleted: {
-            setup();
-        }
-    }
-    function componentTree(){
-        return modelTree2;
     }
     Component.onCompleted: {
         loadComponentTypesFromData();

@@ -7,6 +7,7 @@ import QtQuick.Controls.Basic
 import UniDesk.PyPlugin
 
 T.MenuItem {
+    property bool disabled
     property Component iconDelegate : com_icon
     property int iconSpacing: 5
     property string iconSource
@@ -20,18 +21,16 @@ T.MenuItem {
                              implicitIndicatorHeight + topPadding + bottomPadding)
     padding: 1
     spacing: 1
-    icon.width: 24
-    icon.height: 24
-    icon.color: root.palette.windowText
     height: visible ? implicitHeight : 0
     font: UniDeskTextStyle.little
+    enabled: !disabled
     Component{
         id:com_icon
         UniDeskIcon{
             id: content_icon
             iconSize: root.iconSize
             iconSource: root.iconSource
-            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+            iconColor: enabled ? UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1) : root.palette.mid
         }
     }
     contentItem: Item{
@@ -56,7 +55,7 @@ T.MenuItem {
                 id:content_text
                 text: root.text
                 font: root.font
-                color: root.textColor
+                color: enabled ? root.textColor : root.palette.mid
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

@@ -257,6 +257,7 @@ UniDeskObject{
     function closeAllWindows(){
         UniDeskSettingsWindow.close();
         UniDeskComWindow.close();
+        UniDeskPageWindow.close();
     }
     Component.onCompleted: {
         UniDeskSettingsWindow.hide();
