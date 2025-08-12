@@ -81,6 +81,10 @@ UniDeskObject{
         page_list_model.get(index).text=newname
         UniDeskComponentsData.updatePage(index-1,page_list_model.get(index))
     }
+    function remove_page(index){
+        page_list_model.remove(index)
+        UniDeskComponentsData.removePage(index-1)
+    }
     function validateId(id){
         if(id=="")return false;
         for(var i=0;i<component_list.length;i++){
@@ -183,7 +187,7 @@ UniDeskObject{
         }
     }
     function getPageIdx(index){
-        return page_list_model.get(index).idx
+        return page_list_model.get(index) ?page_list_model.get(index).idx : -1
     }
     function moveUp(index){
         page_list_model.move(index,index-1,1)

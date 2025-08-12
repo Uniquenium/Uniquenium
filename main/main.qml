@@ -168,7 +168,7 @@ UniDeskObject{
                         text: model.text
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: UniDeskComManager.page_list.get(index).idx==UniDeskComManager.pageIndex
+                        font.bold: UniDeskComManager.getPageIdx(index)==UniDeskComManager.pageIndex
                         onClicked: {
                             UniDeskComManager.toggle_page_to(model.idx);
                         }

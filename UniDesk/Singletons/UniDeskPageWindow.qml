@@ -14,8 +14,6 @@ UniDeskWindow{
     width: 1000
     height: 700
     title: qsTr("页面层级")
-    //选中页面功能： 在上方插入，在下方插入，上移，下移，重命名，删除
-    //组件功能（正常）：在元件上新建、删除、移动（移动中）：成为其子组件
     property int currentIndex: 0
     ScrollView{    
         anchors.fill: parent
@@ -43,7 +41,7 @@ UniDeskWindow{
                         visible: !dele.editing
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: UniDeskComManager.page_list.get(index).idx==UniDeskComManager.pageIndex
+                        font.bold: UniDeskComManager.getPageIdx(index)==UniDeskComManager.pageIndex
                         anchors.verticalCenter: parent.verticalCenter
                         x: 10
                     }
@@ -133,7 +131,7 @@ UniDeskWindow{
                             text: qsTr("删除")
                             disabled: index==0
                             onClicked: {
-                                
+                                UniDeskComManager.remove_page(index)
                             }
                         }
                     }
@@ -187,7 +185,7 @@ UniDeskWindow{
                             }
                         }
                         UniDeskButton{
-                            contentText: qsTr("移动")
+                            contentText: qsTr("移动到页面")
                             iconSize: 15
                             iconSource: "qrc:/media/img/move.svg"
                             bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
