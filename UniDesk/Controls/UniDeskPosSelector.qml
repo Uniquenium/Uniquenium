@@ -65,12 +65,12 @@ Item{
             to: UniDeskTools.desktopGeometry(editingComponent).width - 10
             onValueChanged:{
                 if(control.editingComponent){
-                    control.editingComponent.visualX = value;
+                    control.editingComponent.x = value;
                     control.editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
-                value=control.editingComponent ? control.editingComponent.visualX : 0
+                value=control.editingComponent ? control.editingComponent.x : 0
             }
         }
         UniDeskSpinBox{
@@ -82,12 +82,12 @@ Item{
             to: UniDeskTools.desktopGeometry(editingComponent).height - 10 
             onValueChanged:{
                 if(control.editingComponent){
-                    control.editingComponent.visualY = value;
+                    control.editingComponent.y = value;
                     control.editingComponent.saveComToFile();
                 }
             }  
             Component.onCompleted: {
-                value = control.editingComponent ? control.editingComponent.visualY : 0
+                value = control.editingComponent ? control.editingComponent.y : 0
             }
         }
         UniDeskComBox{
@@ -136,12 +136,10 @@ Item{
                 radius: 5
                 onClicked: {
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.visualX = control.editingComponent.parentComponent() ? 
-                        control.horizontalAlignComponent.x-control.editingComponent.parentComponent().x : 
-                        control.horizontalAlignComponent.x;
+                        control.editingComponent.x = control.horizontalAlignComponent.x;
                     }
                     else{
-                        control.editingComponent.visualX=0;
+                        control.editingComponent.x=0;
                     }
                     control.editingComponent.saveComToFile();  
                 }
@@ -156,12 +154,10 @@ Item{
                 radius: 5
                 onClicked: {
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.visualX = control.editingComponent.parentComponent() ? 
-                        control.horizontalAlignComponent.x + control.horizontalAlignComponent.width/2 - control.editingComponent.width/2 - control.editingComponent.parentComponent().x : 
-                        control.horizontalAlignComponent.x + control.horizontalAlignComponent.width/2 - control.editingComponent.width/2;
+                        control.editingComponent.x = control.horizontalAlignComponent.x + control.horizontalAlignComponent.width/2 - control.editingComponent.width/2;
                     }
                     else{
-                        control.editingComponent.visualX = UniDeskTools.desktopGeometry(editingComponent).width /2 - control.editingComponent.width /2;
+                        control.editingComponent.x = UniDeskTools.desktopGeometry(editingComponent).width /2 - control.editingComponent.width /2;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -176,12 +172,10 @@ Item{
                 radius: 5
                 onClicked: {
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.visualX = control.editingComponent.parentComponent() ? 
-                        control.horizontalAlignComponent.x + control.horizontalAlignComponent.width - control.editingComponent.width - control.editingComponent.parentComponent().x : 
-                        control.horizontalAlignComponent.x + control.horizontalAlignComponent.width - control.editingComponent.width;
+                        control.editingComponent.x = control.horizontalAlignComponent.x + control.horizontalAlignComponent.width - control.editingComponent.width;
                     }
                     else{
-                        control.editingComponent.visualX = UniDeskTools.desktopGeometry(editingComponent).width - control.editingComponent.width;
+                        control.editingComponent.x = UniDeskTools.desktopGeometry(editingComponent).width - control.editingComponent.width;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -202,12 +196,10 @@ Item{
                 radius: 5
                 onClicked: {
                     if(control.verticalAlignment){
-                        control.editingComponent.visualY = control.editingComponent.parentComponent() ? 
-                        control.verticalAlignment.y-control.editingComponent.parentComponent().y : 
-                        control.verticalAlignment.y;
+                        control.editingComponent.y = control.verticalAlignment.y;
                     }
                     else{
-                        control.editingComponent.visualY=0;
+                        control.editingComponent.y=0;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -222,12 +214,10 @@ Item{
                 radius: 5
                 onClicked: {
                     if(control.verticalAlignment){
-                        control.editingComponent.visualY = control.editingComponent.parentComponent() ? 
-                        control.verticalAlignment.y + control.verticalAlignment.height/2 - control.editingComponent.height/2 - control.editingComponent.parentComponent().y : 
-                        control.verticalAlignment.y + control.verticalAlignment.height/2 - control.editingComponent.height/2;
+                        control.editingComponent.y = control.verticalAlignment.y + control.verticalAlignment.height/2 - control.editingComponent.height/2;
                     }
                     else{
-                        control.editingComponent.visualY = UniDeskTools.desktopGeometry(editingComponent).height /2 - control.editingComponent.height /2;
+                        control.editingComponent.y = UniDeskTools.desktopGeometry(editingComponent).height /2 - control.editingComponent.height /2;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -242,12 +232,10 @@ Item{
                 radius: 5
                 onClicked: {
                     if(control.verticalAlignment){
-                        control.editingComponent.visualY = control.editingComponent.parentComponent() ? 
-                        control.verticalAlignment.y + control.verticalAlignment.height - control.editingComponent.height - control.editingComponent.parentComponent().y : 
-                        control.verticalAlignment.y + control.verticalAlignment.height - control.editingComponent.height;
+                        control.editingComponent.y = control.verticalAlignment.y + control.verticalAlignment.height - control.editingComponent.height;
                     }
                     else{
-                        control.editingComponent.visualY = UniDeskTools.desktopGeometry(editingComponent).height - control.editingComponent.height;
+                        control.editingComponent.y = UniDeskTools.desktopGeometry(editingComponent).height - control.editingComponent.height;
                     }
                     control.editingComponent.saveComToFile();
                 }

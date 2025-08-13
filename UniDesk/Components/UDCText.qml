@@ -105,10 +105,10 @@ UniDeskComBase{
     onRightClicked: {
         menu.popup(base)
     }
-    onVisualXChanged:{
+    onXChanged:{
         saveComToFile();
     }
-    onVisualYChanged:{
+    onYChanged:{
         saveComToFile();
     }
     function propertyData(){
@@ -116,9 +116,8 @@ UniDeskComBase{
             "type": base.type,
             "identification": base.identification,
             "pageIdx": base.pageIdx,
-            "parentIdentification": base.parentIdentification,
-            "visualX": base.visualX,
-            "visualY": base.visualY,
+            "x": base.x,
+            "y": base.y,
             "canMove": base.canMove,
             "canResize": base.canResize,
             "textContent": base.textContent,

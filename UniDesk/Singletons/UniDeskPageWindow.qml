@@ -15,6 +15,9 @@ UniDeskWindow{
     height: 700
     title: qsTr("页面层级")
     property int currentIndex: 0
+    property bool isMove: false
+    property int moveIndex
+    property string moveComId
     ScrollView{    
         anchors.fill: parent
         Rectangle {
@@ -45,6 +48,25 @@ UniDeskWindow{
                         anchors.verticalCenter: parent.verticalCenter
                         x: 10
                     }
+                    UniDeskButton{
+                        contentText: qsTr("移动到此页面")
+                        iconSize: 15
+                        anchors.right: parent.right
+                        anchors.margins: 10
+                        anchors.verticalCenter: parent.verticalCenter
+                        iconSource: index==moveIndex ? "qrc:/media/img/close.svg" :"qrc:/media/img/move.svg"
+                        bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                        bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                        iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                        radius: width / 2
+                        visible: window.isMove
+                        onClicked:{
+                            window.isMove=false;
+                            UniDeskComManager.move_com_to_page(window.moveComId,index)
+                            window.currentIndex=index;
+                            liview.model=UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
+                        }
+                    }
                     Component.onCompleted: {
                         implicitHeight = textt.height+25;
                     }
@@ -68,10 +90,11 @@ UniDeskWindow{
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
                         anchors.fill: parent
                         hoverEnabled: true
-                        visible: !dele.editing
+                        visible: (!dele.editing)&&(!window.isMove)
                         onClicked: (mouse)=> {
                             if(mouse.button==Qt.LeftButton){
                                 window.currentIndex=index;
+                                liview.model=UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
                             }
                             if(mouse.button==Qt.RightButton){
                                 m_list.popup(dele,mouseX,mouseY)
@@ -117,14 +140,14 @@ UniDeskWindow{
                             text: qsTr("上移")
                             disabled: index==0 || index==1
                             onClicked: {
-                                UniDeskComManager.moveUp(index)
+                                UniDeskComManager.move_page_up(index)
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("下移")
                             disabled: index==0 || index==UniDeskComManager.page_list.count-1
                             onClicked: {
-                                UniDeskComManager.moveDown(index)
+                                UniDeskComManager.move_page_down(index)
                             }
                         }
                         UniDeskMenuItem{
@@ -149,15 +172,43 @@ UniDeskWindow{
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.margins: 10
-            UniDeskTreeView{
+            ListView{
+                id: liview
                 anchors.fill: parent
                 anchors.margins: 10
-                enableComDelegate: true
-                model: UniDeskComManager.treeModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
-                extraDelegate: Component{
+                model: UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
+                ScrollBar.vertical: ScrollBar {}
+                spacing: 10
+                delegate: Rectangle{
+                    id: rect_
+                    color:  "transparent"
+                    radius: 5
+                    border.width: 1
+                    border.color: UniDeskGlobals.isLight? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,0)  
+                    anchors.left: parent ? parent.left : undefined
+                    anchors.right: parent ? parent.right : undefined
+                    height: 30
+                    UniDeskText{
+                        anchors.left: parent.left
+                        anchors.leftMargin: 10
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: model.display
+                    }
+                    HoverHandler{
+                        onHoveredChanged: {
+                            rect_.color=hovered? UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.05) : Qt.rgba(0,0,0,0.5).lighter(1.05)  : "transparent"   
+                            
+                            var com=UniDeskComManager.getComById(model.display)
+                            if(com){
+                                com.indicated=hovered;
+                            }
+                            
+                        }
+                    }
                     RowLayout{
                         property var model
-                        spacing: 10
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
                         UniDeskButton{
                             contentText: qsTr("添加组件")
                             iconSize: 15
@@ -166,6 +217,7 @@ UniDeskWindow{
                             bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                             iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                             radius: width / 2
+                            visible: UniDeskComManager.getComById(model.display)?UniDeskComManager.getComById(model.display).subComponentable:false
                             onClicked:{
                                 UniDeskComWindow.parentId=model.display;
                                 UniDeskComWindow.pageIdx=UniDeskComManager.getComById(model.display).pageIdx;
@@ -182,6 +234,7 @@ UniDeskWindow{
                             radius: width / 2
                             onClicked:{
                                 UniDeskComManager.getComById(model.display).deleteCom();
+                                liview.model=UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
                             }
                         }
                         UniDeskButton{
@@ -193,7 +246,9 @@ UniDeskWindow{
                             iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                             radius: width / 2
                             onClicked:{
-                                
+                                window.moveComId=model.display
+                                window.moveIndex=window.currentIndex
+                                window.isMove=true;
                             }
                         }
                     }

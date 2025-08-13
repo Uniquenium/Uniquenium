@@ -22,7 +22,7 @@ UniDeskObject{
     property alias page_list: page_list_model
     property list<Component> type_list
     property list<string> typename_list
-    property list<UniDeskTreeModel> treeModels
+    property list<ListModel> compModels
     ListModel{
         id: page_list_model
         ListElement{
@@ -32,7 +32,7 @@ UniDeskObject{
     }
     Component{
         id: com_tree_model
-        UniDeskTreeModel{
+        ListModel{
             id: tree
         }
     }
@@ -46,22 +46,19 @@ UniDeskObject{
             }
         }
     }
-    function add_com(typename,typenameTr,parentId,pageIdx){
+    function add_com(typename,typenameTr,pageIdx){
         if(pageIdx){
             pageIndex=pageIdx;
         }
         var idx=typename_list.indexOf(typename);
-        var new_com=type_list[idx].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"visualX":newX,"visualY": newY,"pageIdx": pageIndex});
-        new_com.parentIdentification=parentId;
+        var new_com=type_list[idx].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"x":newX,"y": newY,"pageIdx": pageIndex});
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com)
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)
         serialComponentCnt+=1;
         var pidx=pageIdxConvert(pageIdx)
-        var pid=treeModels[pidx].find(parentId)
-        var id=treeModels[pidx].appendRow(pid)
-        treeModels[pidx].setData(id,new_com.identification)
+        compModels[pidx].append({"display":new_com.identification});
     }
     function close_all(){
         for(var i=0;i<component_list.length;i++){
@@ -129,23 +126,19 @@ UniDeskObject{
                 }
             }
             component_list.push(new_com)
-            if(new_com.pageIdx==pageIndex){
-                new_com.visible=true;
-            }
-            else{
-                new_com.visible=false;
-            }
+            compModels[new_com.pageIdx].append({"display":new_com.identification});
+            new_com.visible=new_com.pageIdx==pageIndex;
             if(!isNaN(id_num)&&id_num>=serialComponentCnt){
                 serialComponentCnt=id_num+1;
             }
         }
     }
     function loadPagesFromData(){
-        treeModels.push(com_tree_model.createObject(null,{}));
+        compModels.push(com_tree_model.createObject(null,{}));
         var data=UniDeskComponentsData.getPages();
         for(var i=0;i<data.length;i++){
             page_list_model.append({"text": data[i].text,"idx": data[i].idx});
-            treeModels.push(com_tree_model.createObject(null,{}));
+            compModels.push(com_tree_model.createObject(null,{}));
             var idx_num=data[i].idx;
             if(!isNaN(idx_num)&&idx_num>=serialPageCnt){
                 serialPageCnt=idx_num+1;
@@ -160,25 +153,6 @@ UniDeskObject{
             print(typename_list[i]+" Loaded")
         }
     }
-    function loadTree(){
-        for(var i=0;i<component_list.length;i++){
-            var c=component_list[i];
-            var pidx=pageIdxConvert(c.pageIdx)
-            var id=treeModels[pidx].appendRow(treeModels[pidx].rootIndex())
-            treeModels[pidx].setData(id,c.identification)
-        }
-        for(var i=0;i<component_list.length;i++){
-            var c=component_list[i];
-            if(c.parentIdentification!==""){
-                var pidx=pageIdxConvert(c.pageIdx)
-                var pid=treeModels[pidx].find(c.parentIdentification)
-                var iid=treeModels[pidx].find(c.identification)
-                treeModels[pidx].removeIndex(iid);
-                var id=treeModels[pidx].appendRow(pid);
-                treeModels[pidx].setData(id,c.identification)
-            }
-        }
-    }
     function pageIdxConvert(idx){
         for(var i=0;i<page_list_model.count;i++){
             if(page_list_model.get(i).idx===idx){
@@ -189,12 +163,12 @@ UniDeskObject{
     function getPageIdx(index){
         return page_list_model.get(index) ?page_list_model.get(index).idx : -1
     }
-    function moveUp(index){
+    function move_page_up(index){
         page_list_model.move(index,index-1,1)
         UniDeskComponentsData.updatePage(index-1,page_list_model.get(index))
         UniDeskComponentsData.updatePage(index-2,page_list_model.get(index-1))
     }
-    function moveDown(index){
+    function move_page_down(index){
         page_list_model.move(index,index+1,1)
         UniDeskComponentsData.updatePage(index-1,page_list_model.get(index))
         UniDeskComponentsData.updatePage(index,page_list_model.get(index+1))
@@ -204,11 +178,25 @@ UniDeskObject{
         UniDeskComponentsData.insertPage(index,{"text": qsTr("页面")+serialPageCnt.toString(),"idx": serialPageCnt});
         serialPageCnt+=1;
     }
+    function index_in_compModels(comId){
+        var c=getComById(comId);
+        for(var i=0;i<compModels[pageIdxConvert(c.pageIdx)].count;i++){
+            if(compModels[pageIdxConvert(c.pageIdx)].get(i).display==c.identification){
+                return i
+            }
+        }
+    }
+    function move_com_to_page(comId,indexPage){
+        var c=getComById(comId);
+        compModels[indexPage].append({"display":comId});
+        compModels[pageIdxConvert(c.pageIdx)].remove(index_in_compModels(comId));
+        c.pageIdx=getPageIdx(indexPage);
+        c.saveComToFile();
+    }
     Component.onCompleted: {
         loadComponentTypesFromData();
         pageIndex=UniDeskComponentsData.getCurrentPage();
         loadPagesFromData();
         loadComponentsFromData();
-        loadTree();
     }
 }

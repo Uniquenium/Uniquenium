@@ -46,35 +46,9 @@ UniDeskWindow{
                 editingComponent.saveComToFile();
             }
         }
-        UniDeskText{
-            id: text5
-            text: qsTr("在此组件上新建")
-            font: UniDeskTextStyle.little
-            anchors.left: parent.left
-            anchors.margins: 10
-            anchors.verticalCenter: btn_add.verticalCenter
-        }
-        UniDeskButton{
-            id: btn_add
-            anchors.top: idField.bottom
-            anchors.right: parent.right
-            anchors.margins: 10
-            contentText: qsTr("添加组件")
-            iconSize: 15
-            iconSource: "qrc:/media/img/add-line.svg"
-            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
-            radius: width / 2
-            onClicked:{
-                UniDeskComWindow.parentId=window.editingComponent.identification;
-                UniDeskComWindow.pageIdx=window.editingComponent.pageIdx;
-                UniDeskComWindow.showActivate();
-            }
-        }
         UniDeskPosSelector{
             id: posSelector
-            anchors.top: btn_add.bottom
+            anchors.top: idField.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10

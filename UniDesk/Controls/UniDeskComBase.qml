@@ -16,43 +16,11 @@ UniDeskBase{
     property string type
     property string identification
     property int pageIdx
-    property string parentIdentification
-    property double visualX
-    property double visualY
     property bool canMove: false
     property bool canResize: false
     property bool indicated: false
     property bool chosen: false
-    onVisualXChanged:{
-        x=parentComponent() ? parentComponent().x+visualX : visualX
-    }
-    onVisualYChanged:{
-        y=parentComponent() ? parentComponent().y+visualY : visualY
-    }
-    x: parentComponent() ? parentComponent().x+visualX : visualX
-    y: parentComponent() ? parentComponent().y+visualY : visualY
-    onXChanged: {
-        var newVisualX = parentComponent() ? x-parentComponent().x : x
-        if (newVisualX !== visualX) {
-            visualX = newVisualX;
-        }
-    }
-    onYChanged: {
-        var newVisualY = parentComponent() ? y-parentComponent().y : y
-        if (newVisualY !== visualY) {
-            visualY = newVisualY;
-        }
-    }
-    onParentIdentificationChanged: {
-        var newVisualX = parentComponent() ? x-parentComponent().x : x
-        if (newVisualX !== visualX) {
-            visualX = newVisualX;
-        }
-        var newVisualY = parentComponent() ? y-parentComponent().y : y
-        if (newVisualY !== visualY) {
-            visualY = newVisualY;
-        }
-    }
+    property bool subComponentable: false
     color: "transparent"
     Rectangle{
         id: rect_bg
@@ -90,37 +58,21 @@ UniDeskBase{
             }
         }
     }
-    Connections{
-        target: base.parentComponent() ? base.parentComponent() : null
-        function onXChanged(){
-            base.x = base.parentComponent() ? base.parentComponent().x+base.visualX : base.visualX
-        }
-        function onYChanged(){
-            base.y = base.parentComponent() ? base.parentComponent().y+base.visualY : base.visualY
-        }
-        
-    }
     function deleteCom(){
-        for(var i=0;i<UniDeskComManager.component_list.length;i++){
-            var c=UniDeskComManager.component_list[i]
-            if(c.parentIdentification===base.identification){
-                c.deleteCom();
-            }
-        }
         UniDeskComponentsData.removeComponent(base.identification);
         UniDeskComManager.component_list.splice(UniDeskComManager.getIndexById(base.identification),1);
         var pidx=UniDeskComManager.pageIdxConvert(base.pageIdx)
-        var id=UniDeskComManager.treeModels[pidx].find(base.identification)
-        UniDeskComManager.treeModels[pidx].removeIndex(id)
+        for(var i=0;i<UniDeskComManager.compModels[pidx].count;i++){
+            if(UniDeskComManager.compModels[pidx].get(i).display===base.identification){
+                UniDeskComManager.compModels[pidx].remove(i)
+            }
+        }
         base.baseClose();
         base.destroy();
     }
     function baseClose(){
         indicator_base.close();
         base.close();
-    }
-    function parentComponent(){
-        return UniDeskComManager.getComById(parentIdentification);
     }
 
 }
