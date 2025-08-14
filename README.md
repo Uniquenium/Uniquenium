@@ -61,6 +61,7 @@ An open-source desktop extension tool that combines beautification and practical
     - [ ] Rapid File Downloader
     - [ ] RSS
     - [ ] Screen Using Time
+    - [ ] ClipBoard
 
 # Acknowledgements
 

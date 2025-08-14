@@ -6,7 +6,8 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
 import UniDesk.Singletons
-import UniDesk.Components
+import UniDesk.Components.UDCText
+import UniDesk.Components.UDCText.PyPlugins
 import UniDesk.PyPlugin
 
 UniDeskComBase{
@@ -34,7 +35,7 @@ UniDeskComBase{
     chosen: optionsText ? optionsText.visible : false
     UniDeskText{
         id: cont
-        text: base.textContent ? UniDeskTools.convertStr(base.textContent) : qsTr("请输入文本内容")
+        text: base.textContent ? UDCTextTools.convertStr(base.textContent) : qsTr("请输入文本内容")
         textColor: base.textColor
         font.family: base.fontFamily
         font.pixelSize: base.fontSize
@@ -93,7 +94,7 @@ UniDeskComBase{
         id: flushText
         interval: 50
         onTriggered: {
-            cont.text=base.textContent ? UniDeskTools.convertStr(base.textContent) : qsTr("请输入文本内容");
+            cont.text=base.textContent ? UDCTextTools.convertStr(base.textContent) : qsTr("请输入文本内容");
         }
         repeat: true
     }

@@ -5,6 +5,7 @@ from PySide6.QtCore import *
 import json
 import datetime
 import os
+import importlib
 
 
 data = {
@@ -191,3 +192,29 @@ class UniDeskComponentsData(QQuickItem):
         with open("./UniDesk/Components/components-list","r",encoding="utf-8") as f:
             p= f.readlines()
         return p
+    def loadComponentPyPlugins():
+        with open("./UniDesk/Components/components-list","r",encoding="utf-8") as f:
+            for i in f.readlines():
+                with open("./UniDesk/Components/"+i+"/pyplugins-list","r",encoding="utf-8") as ff:
+                    for j in ff.readlines():
+                        m=importlib.import_module("UniDesk.Components."+i+"."+j)
+                        try:
+                            for singleton,typeobj,name,funcs in m.__pluginloadlist__:
+                                if singleton=="singleton":
+                                    qmlRegisterSingletonType(typeobj,"UniDesk.Components."+i+".PyPlugins",1,0,name)
+                                else:
+                                    qmlRegisterType(typeobj,"UniDesk."+i+".PyPlugins",1,0,name)
+                        except Exception as e:
+                            print(e.args)
+    def startFuncs():
+        with open("./UniDesk/Components/components-list","r",encoding="utf-8") as f:
+            for i in f.readlines():
+                with open("./UniDesk/Components/"+i+"/pyplugins-list","r",encoding="utf-8") as ff:
+                    for j in ff.readlines():
+                        m=importlib.import_module("UniDesk.Components."+i+"."+j)
+                        try:
+                            for singleton,typeobj,name,funcs in m.__pluginloadlist__:
+                                for func in funcs:
+                                    func()
+                        except Exception as e:
+                            print(e.args)

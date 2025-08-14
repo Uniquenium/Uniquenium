@@ -7,7 +7,6 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
 import UniDesk.PyPlugin
-import UniDesk.Components
 import Qt.labs.platform as QLP
 
 UniDeskObject{
@@ -149,7 +148,7 @@ UniDeskObject{
         typename_list=UniDeskComponentsData.getComponentTypes();
         for(var i=0;i<typename_list.length;i++){
             print(typename_list[i]+" Loading")
-            type_list.push(Qt.createComponent("UniDesk.Components",typename_list[i]));
+            type_list.push(Qt.createComponent("UniDesk.Components."+typename_list[i],typename_list[i]));
             print(typename_list[i]+" Loaded")
         }
     }

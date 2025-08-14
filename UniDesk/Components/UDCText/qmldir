@@ -1,3 +1,3 @@
-module UniDesk.Components
+module UniDesk.Components.UDCText
 UDCText 1.0 UDCText.qml
 UDCTextOptions 1.0 UDCTextOptions.qml

@@ -13,5 +13,9 @@ class UniDeskDefines(QObject):
     class FileMode(Enum):  
         FileModeFile = auto()
         FileModeFolder = auto()
+    @QEnum
+    class ApiRequestType(Enum):
+        ApiTypeGet = 0
+        ApiTypePost = 1
     def __init__(self):
         super().__init__()
