@@ -137,7 +137,6 @@ class UniDeskTools(QQuickItem):
     def isValidUrl(self,url: QUrl):
         return url.isValid()
 
-    @Slot(UniDeskDefines.ApiRequestType,str,dict,int,result=dict)
     def apiRequest(reqType: UniDeskDefines.ApiRequestType,url,data,timeout):
         if reqType==UniDeskDefines.ApiRequestType.ApiTypeGet:
             response=requests.get(url,data=data,timeout=timeout)

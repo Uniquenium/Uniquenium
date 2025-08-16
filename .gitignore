@@ -1,4 +1,8 @@
-data/settings.json
-data/components.json
+data/
 main/res.py
 */__pycache__/
+.vscode/
+build/
+CMakeCache.txt
+CMakeFiles/
+_deps/
