@@ -17,6 +17,8 @@ from PySide6.QtQml import *
 from PySide6.QtQuick import *
 from PySide6.QtCore import *
 
+import UniDeskCpp
+
 try:
     from ctypes import windll
     windll.shell32.SetCurrentProcessExplicitAppUserModelID('org.lingmo.webbrowser')
@@ -44,4 +46,6 @@ if __name__ == "__main__":
     print("Application Launched Successfully.")
     UniDeskGlobals.startThread()
     UniDeskComponentsData.startFuncs()
-    sys.exit(app.exec())
+    UniDeskCpp.udcpptools.add(1)
+    print(UniDeskCpp.udcpptools.getResult())
+    app.exec()

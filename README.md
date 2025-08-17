@@ -15,7 +15,9 @@
 </div>
 An open-source desktop extension tool that combines beautification and practical functions
 
-
+# Dependences
+- pypi modules from `requirements.txt`
+- c++ command (used by )
 
 # Todo List
 - [ ] Main Page
