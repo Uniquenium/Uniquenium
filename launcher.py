@@ -17,7 +17,6 @@ from PySide6.QtQml import *
 from PySide6.QtQuick import *
 from PySide6.QtCore import *
 
-import UniDeskCpp
 
 try:
     from ctypes import windll
@@ -46,6 +45,4 @@ if __name__ == "__main__":
     print("Application Launched Successfully.")
     UniDeskGlobals.startThread()
     UniDeskComponentsData.startFuncs()
-    UniDeskCpp.udcpptools.add(1)
-    print(UniDeskCpp.udcpptools.getResult())
     app.exec()
