@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix='/'>
-                    <file>media/font/SanJiNengLiangHeiJianTi-2.ttf</file>
+        <file>main/main.qml</file>
+        <file>media/font/SanJiNengLiangHeiJianTi-2.ttf</file>
         <file>media/font/XiaWuWenKai.ttf</file>
         <file>media/font/yibiyihuachaoheiti-2.ttf</file>
         <file>media/font/ZhuZiAWan-2.ttf</file>

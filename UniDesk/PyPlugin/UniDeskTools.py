@@ -15,8 +15,8 @@ import calendar
 import time
 import threading
 import math
-from .UniDeskData import UniDeskSettings
-from .UniDeskDefines import UniDeskDefines
+from .UniDeskData import UniDesk.ControlsSettings
+from .UniDeskDefines import UniDesk.ControlsDefines
 import requests
 user32 = ctypes.WinDLL('user32')
 SM_CONTRAST = 221
