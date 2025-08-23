@@ -20,6 +20,9 @@ int main(int argc,char* argv[]){
     py::exec(R"(
         print("Python Interpreter Initialized.")
     )");
+    // py::module_ UniDeskBases = py::module_::import("temp.UniDesk.PyPlugin.UniDeskBases");
+    // py::object UniDeskBase = UniDeskBases.attr("UniDeskBase");
+    // qDebug()<<typeid(UniDeskBases).name();
     QQmlApplicationEngine engine;
     engine.addImportPath(QDir::currentPath()+"/temp");
     const QUrl url(QStringLiteral("qrc:/main/main.qml"));

@@ -49,7 +49,7 @@ endforeach (filepath)
 
 
 #遍历所有qml文件
-file(GLOB_RECURSE QML_PATHS Controls/*.qml Singletons/*.qml qmldir)
+file(GLOB_RECURSE QML_PATHS Controls/*.qml Singletons/*.qml qmldir )
 foreach (filepath ${QML_PATHS})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" filename ${filepath})
     if (${filename} MATCHES "qmldir")
