@@ -7,7 +7,6 @@ import QtQuick.Controls.Basic
 import UniDesk.Controls
 import UniDesk.Singletons
 import UniDesk.Components.UDCText
-import UniDesk.Components.UDCText.PyPlugins
 
 UniDeskComBase{
     id: base

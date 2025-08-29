@@ -144,10 +144,11 @@ void UniDeskSettings::setAll(const QVariant &val) {
 
 void UniDeskSettings::notify(const QString &prop) {
     // 触发属性变更信号
-    if (prop == "hideTaskbar") emit hideTaskbarChanged();
-    else if (prop == "colorMode") emit colorModeChanged();
-    else if (prop == "primaryColor") emit primaryColorChanged();
-    else if (prop == "globalFontFamily") emit globalFontFamilyChanged();
+    QJsonObject obj = readJsonFile(settingsFile);
+    if (prop == "hideTaskbar") hideTaskbar(obj.value(prop).toBool());
+    else if (prop == "colorMode") colorMode(obj.value(prop).toInt());
+    else if (prop == "primaryColor") primaryColor(json2object(obj.value(prop)).value<QColor>());
+    else if (prop == "globalFontFamily") globalFontFamily(obj.value(prop).toString());
     else if (prop == "customFontFamilyPaths") emit customFontFamilyPathsChanged();
 }
 

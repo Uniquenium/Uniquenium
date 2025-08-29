@@ -1,5 +1,5 @@
-#ifndef UniDeskSettings_H
-#define UniDeskSettings_H
+#ifndef UNIDESKSETTINGS_H
+#define UNIDESKSETTINGS_H
 
 #include "stdafx.h"
 #include "singleton.h"
@@ -34,4 +34,4 @@ public:
     Q_INVOKABLE void notify(const QString &prop);
 };
 
-#endif // UniDeskSettings_H
+#endif // UNIDESKSETTINGS_H

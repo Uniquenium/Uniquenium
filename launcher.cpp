@@ -19,7 +19,6 @@ int main(int argc,char* argv[]){
     QGuiApplication app(argc,argv);
     app.setWindowIcon(QIcon(":/media/logo/uq-l-bg.png"));
     py::scoped_interpreter guard{}; // Start the Python interpreter
-    // UniDeskComponentsData::getInstance()->loadComponentPyPlugins();
     QQmlApplicationEngine engine;
     engine.addImportPath(QDir::currentPath()+"/temp");
     const QUrl url(QStringLiteral("qrc:/main/main.qml"));
@@ -27,8 +26,8 @@ int main(int argc,char* argv[]){
     if (engine.rootObjects().isEmpty())
         return -1;
     qDebug()<<"Application Launched Successfully.";
-    // UniDeskGlobals::getInstance()->startThread();
-    // UniDeskComponentsData::getInstance()->startFuncs();
+    UniDeskGlobals::getInstance()->startThread();
+    UniDeskComponentsData::getInstance()->startFuncs();
     return app.exec();
 }
 

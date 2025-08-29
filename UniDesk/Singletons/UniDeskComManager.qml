@@ -38,7 +38,7 @@ UniDeskObject{
     }
     onPageIndexChanged: {
         for(var i=0;i<component_list.length;i++){
-            if(pageIndex==component_list[i].pageIdx){
+            if(pageIndex===component_list[i].pageIdx){
                 component_list[i].visible=true;
             }
             else{
@@ -50,14 +50,14 @@ UniDeskObject{
         if(pageIdx){
             pageIndex=pageIdx;
         }
-        var idx=typename_list.indexOf(typename);
-        var new_com=type_list[idx].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"x":newX,"y": newY,"pageIdx": pageIndex});
+        let idx=typename_list.indexOf(typename);
+        let new_com=type_list[idx].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"x":newX,"y": newY,"pageIdx": pageIndex});
         UniDeskComponentsData.addComponent(new_com.propertyData());
-        component_list.push(new_com)
-        newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width)
-        newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height)
+        component_list.push(new_com);
+        newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width);
+        newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height);
         serialComponentCnt+=1;
-        var pidx=pageIdxConvert(pageIdx)
+        let pidx=pageIdxConvert(pageIdx);
         compModels[pidx].append({"display":new_com.identification});
     }
     function close_all(){
@@ -127,7 +127,7 @@ UniDeskObject{
             }
             component_list.push(new_com)
             compModels[new_com.pageIdx].append({"display":new_com.identification});
-            new_com.visible=new_com.pageIdx==pageIndex;
+            new_com.visible=new_com.pageIdx===pageIndex;
             if(!isNaN(id_num)&&id_num>=serialComponentCnt){
                 serialComponentCnt=id_num+1;
             }

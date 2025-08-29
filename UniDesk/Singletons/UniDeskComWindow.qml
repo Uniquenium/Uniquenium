@@ -41,7 +41,8 @@ UniDeskWindow{
                 borderWidth: 1
                 radius: 5
                 onClicked: {
-                    UniDeskComManager.add_com("UDCText",contentText,window.parentId,pageIdx);
+                    UniDeskComManager.close_all();
+                    UniDeskComManager.add_com("UDCText",contentText,pageIdx);
                     window.close();
                 }
             }

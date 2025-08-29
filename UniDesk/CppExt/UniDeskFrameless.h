@@ -130,7 +130,7 @@ public:
 
     ~UniDeskFrameless() override;
 
-    void componentComplete() override;
+    Q_INVOKABLE void componentComplete() override;
 
     [[maybe_unused]] bool nativeEventFilter(const QByteArray& eventType, void* message,
         QT_NATIVE_EVENT_RESULT_TYPE* result) override;

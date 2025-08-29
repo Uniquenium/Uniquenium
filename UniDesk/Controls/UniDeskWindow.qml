@@ -325,7 +325,7 @@ Window {
         return layout_container;
     }
     function showActivate(){
-        useSystemAppBar=false;
+        frameless.componentComplete();
         if (visible){
             window.requestActivate()
         }

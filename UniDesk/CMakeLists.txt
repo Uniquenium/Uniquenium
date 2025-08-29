@@ -48,7 +48,12 @@ foreach (filepath ${H_FILES})
     list(APPEND sources_files ${filename})
 endforeach (filepath)
 
-file(GLOB SINGLETON_FILES Singletons/*.qml)
+file(GLOB SINGLETON_PATHS Singletons/*.qml)
+set(SINGLETON_FILES "")
+foreach(filepath ${SINGLETON_PATHS})
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" singleton_name ${filepath})
+    list(APPEND SINGLETON_FILES ${singleton_name})
+endforeach()
 
 #遍历所有qml文件
 file(GLOB_RECURSE QML_PATHS Controls/*.qml Singletons/*.qml qmldir )
@@ -59,11 +64,11 @@ foreach (filepath ${QML_PATHS})
     else ()
         list(APPEND qml_files ${filename})
         # Check for singleton
-        foreach (singletion_name ${SINGLETON_FILES})
-            if (${filename} MATCHES ${singletion_name})
+        foreach (singleton_name ${SINGLETON_FILES})
+            if (${filename} MATCHES ${singleton_name})
                 set_source_files_properties(${filename} PROPERTIES QT_QML_SINGLETON_TYPE true)
             endif ()
-        endforeach (singletion_name)
+        endforeach (singleton_name)
     endif ()
 endforeach (filepath)
 
