@@ -7,7 +7,7 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
 import UniDesk.Singletons
-import UniDesk.PyPlugin
+import UniDesk
 
 T.ComboBox {
     id: control

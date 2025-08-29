@@ -5,7 +5,7 @@ import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk
 
 UniDeskDialog{
     id: control
@@ -16,6 +16,7 @@ UniDeskDialog{
     property string text
     property bool autoCloseAfterClick: true
     signal buttonClicked
+    property bool autoShow: false
     ListModel{
         id: buttonlist
     }
@@ -57,5 +58,8 @@ UniDeskDialog{
     }
     function addButton(text){
         buttonlist.append({"text":text})
+    }
+    Component.onCompleted: {
+        visible=autoShow;
     }
 }

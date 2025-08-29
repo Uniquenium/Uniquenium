@@ -7,7 +7,8 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk.Singletons
+import UniDesk
 
 UniDeskWindow{
     id: window
@@ -22,7 +23,7 @@ UniDeskWindow{
         UniDeskText{
             id: text1
             text: qsTr("基础控件")
-            font: UniDeskTextStyle.small
+            font: UniDeskTextStyle.small_
             anchors.top: parent.top
             anchors.left: parent.left
         }

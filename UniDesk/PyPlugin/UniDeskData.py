@@ -195,7 +195,7 @@ class UniDeskComponentsData(QQuickItem):
     def loadComponentPyPlugins():
         with open("./UniDesk/Components/components-list","r",encoding="utf-8") as f:
             for i in f.readlines():
-                with open("./UniDesk/Components/"+i+"/pyplugins-list","r",encoding="utf-8") as ff:
+                with open("./UniDesk/Components/"+i+"/pyplugins-list", "r",encoding="utf-8") as ff:
                     for j in ff.readlines():
                         m=importlib.import_module("UniDesk.Components."+i+"."+j)
                         try:

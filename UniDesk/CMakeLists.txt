@@ -16,8 +16,9 @@ target_link_libraries(${TARGET}
         Qt6::GuiPrivate
         Qt6::Core5Compat
         QHotkey::QHotkey
+        pybind11::embed
         )
-target_include_directories(${TARGET} PRIVATE ${QHOTKEY_INCLUDE_DIR})
+target_include_directories(${TARGET} PRIVATE ${QHOTKEY_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/CppExt)
 
 if (UNIX)
     if (NOT APPLE)
@@ -34,19 +35,20 @@ set(qml_files "")
 set(resource_files "")
 
 #遍历所有Cpp文件
-file(GLOB CPP_FILES *.cpp)
+file(GLOB CPP_FILES CppExt/*.cpp)
 foreach (filepath ${CPP_FILES})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" filename ${filepath})
     list(APPEND sources_files ${filename})
 endforeach (filepath)
 
 #遍历所有h文件
-file(GLOB H_FILES *.h)
+file(GLOB H_FILES CppExt/*.h)
 foreach (filepath ${H_FILES})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" filename ${filepath})
     list(APPEND sources_files ${filename})
 endforeach (filepath)
 
+file(GLOB SINGLETON_FILES Singletons/*.qml)
 
 #遍历所有qml文件
 file(GLOB_RECURSE QML_PATHS Controls/*.qml Singletons/*.qml qmldir )
@@ -69,7 +71,7 @@ endforeach (filepath)
 set(RES_SUFFIX "")
 set(RES_PATHS "")
 list(APPEND RES_SUFFIX *.png *.jpg *.svg *.ico *.ttf *.webp *.js *.qm *.qsb)
-list(APPEND RES_PATHS Controls Font Image)
+list(APPEND RES_PATHS ../media/font ../media/img ../media/logo)
 foreach (respath ${RES_PATHS})
     foreach (filesuffix ${RES_SUFFIX})
         file(GLOB_RECURSE RES_FOUND ${respath}/${filesuffix})

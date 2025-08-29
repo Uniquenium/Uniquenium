@@ -6,7 +6,8 @@ import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk.Singletons
+import UniDesk
 import Qt.labs.platform as QLP
 
 UniDeskObject{
@@ -82,7 +83,7 @@ UniDeskObject{
         UniDeskComponentsData.removePage(index-1)
     }
     function validateId(id){
-        if(id=="")return false;
+        if(id==="")return false;
         for(var i=0;i<component_list.length;i++){
             if(component_list[i].identification===id){
                 return false;

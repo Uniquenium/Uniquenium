@@ -6,7 +6,7 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk
 
 T.SpinBox {
     id: control

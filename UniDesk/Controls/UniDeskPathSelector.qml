@@ -6,12 +6,12 @@ import QtQuick.Controls.Basic
 import QtQuick.Templates as T
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk
 
 Item{
     id: root
     property url path
-    property int mode: UniDeskDefines.FileModeFile
+    property int mode: UniDeskFileMode.FileModeFile
     signal submit
     RowLayout{
         id: row_layout
@@ -37,7 +37,7 @@ Item{
             borderWidth: 1
             radius: 5
             onClicked: {
-                if(root.mode===UniDeskDefines.FileModeFile){
+                if(root.mode===UniDeskFileMode.FileModeFile){
                     file_dialog.open();
                 }
                 else{

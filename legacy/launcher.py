@@ -5,12 +5,12 @@ import UniDesk.Controls
 from main import updRes
 from legacy import res
 
-from UniDesk.PyPlugin.UniDeskBases import UniDesk.ControlsBase,UniDeskWindowBase,UniDeskTreeModel
-from UniDesk.PyPlugin.UniDeskData import UniDesk.ControlsSettings,UniDeskComponentsData
-from UniDesk.PyPlugin.UniDeskDefines import UniDesk.ControlsDefines
-from UniDesk.PyPlugin.UniDeskTextStyle import UniDesk.ControlsTextStyle
-from UniDesk.PyPlugin.UniDeskGlobals import UniDesk.ControlsGlobals
-from UniDesk.PyPlugin.UniDeskTools import UniDesk.ControlsTools
+from UniDesk.PyPlugin.UniDeskBases import UniDeskBase,UniDeskWindowBase,UniDeskTreeModel
+from UniDesk.PyPlugin.UniDeskData import UniDeskSettings,UniDeskComponentsData
+from UniDesk.PyPlugin.UniDeskDefines import UniDeskDefines
+from UniDesk.PyPlugin.UniDeskTextStyle import UniDeskTextStyle
+from UniDesk.PyPlugin.UniDeskGlobals import UniDeskGlobals
+from UniDesk.PyPlugin.UniDeskTools import UniDeskTools
 
 from PySide6.QtGui import *
 from PySide6.QtQml import *

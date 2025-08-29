@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
-import UniDesk.PyPlugin
+import UniDesk
 
 T.CheckBox {
     id: control

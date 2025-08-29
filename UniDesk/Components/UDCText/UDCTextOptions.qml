@@ -6,7 +6,6 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import UniDesk.Controls
 import UniDesk.Singletons
-import UniDesk.PyPlugin
 
 UniDeskWindow{
     id: window

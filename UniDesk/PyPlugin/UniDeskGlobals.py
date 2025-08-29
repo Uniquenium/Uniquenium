@@ -2,7 +2,7 @@ from PySide6.QtGui import *
 from PySide6.QtQml import *
 from PySide6.QtQuick import *
 from PySide6.QtCore import *
-from .UniDeskData import UniDesk.ControlsSettings
+from .UniDeskData import UniDeskSettings
 import darkdetect
 import threading
 
@@ -43,3 +43,5 @@ class UniDeskGlobals(QQuickItem):
     @Slot()
     def emitApplicationQuit(self):
         self.applicationQuit.emit()
+
+

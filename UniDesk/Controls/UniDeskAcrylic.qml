@@ -6,7 +6,7 @@ import QtQuick.Controls.Basic
 import QtQuick.Templates as T
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk
 
 Item {
     id: control

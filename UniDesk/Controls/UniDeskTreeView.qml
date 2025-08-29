@@ -7,7 +7,7 @@ import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
 import UniDesk.Singletons
-import UniDesk.PyPlugin
+import UniDesk
 
 TreeView{
     id: control

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-# add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -102,6 +102,7 @@ add_subdirectory(UniDesk)
 
 
 qt_add_executable(${PROJECT_NAME}
+    MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
     # ${QM_FILES}
 )
@@ -119,7 +120,9 @@ target_link_libraries(${PROJECT_NAME}
         Qt6::Core5Compat
         QHotkey::QHotkey
         pybind11::embed
+        ${TARGET}
         )
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/UniDesk/CppExt ${QHOTKEY_INCLUDE_DIR})
 # Qt Widgets Style
 #if (UNIX)
 #    find_package(ECM REQUIRED NO_MODULE)

@@ -6,8 +6,8 @@ import QtQuick.Controls.Basic
 import QtQuick.Templates as T
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
-import UniDesk.PyPlugin
 import Qt.labs.platform as QLP
+import UniDesk
 
 Button{
     id: root

@@ -8,7 +8,6 @@ import UniDesk.Controls
 import UniDesk.Singletons
 import UniDesk.Components.UDCText
 import UniDesk.Components.UDCText.PyPlugins
-import UniDesk.PyPlugin
 
 UniDeskComBase{
     id: base

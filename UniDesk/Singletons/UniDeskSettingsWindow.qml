@@ -7,7 +7,8 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk.Singletons
+import UniDesk
 
 UniDeskWindow{
     id: window
@@ -48,7 +49,7 @@ UniDeskWindow{
             UniDeskText{
                 id: text1
                 text: qsTr("任务栏")
-                font: UniDeskTextStyle.small
+                font: UniDeskTextStyle.small_
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -61,13 +62,13 @@ UniDeskWindow{
                 checked: UniDeskSettings.hideTaskbar
                 onCheckedChanged: {
                     UniDeskTools.setTaskbarVisible(!checked);
-                    UniDeskSettings.hideTaskbar=checked
+                    UniDeskSettings.set("hideTaskbar", checked);
                 }
             }
             UniDeskText{
                 id: text2
                 text: qsTr("壁纸")
-                font: UniDeskTextStyle.small
+                font: UniDeskTextStyle.small_
                 anchors.top: checkbox1.bottom
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -121,7 +122,7 @@ UniDeskWindow{
             UniDeskText{
                 id: text3
                 text: qsTr("鼠标")
-                font: UniDeskTextStyle.small
+                font: UniDeskTextStyle.small_
                 anchors.top: pathSelector1.bottom
                 anchors.left: parent.left
                 anchors.margins: 10
@@ -145,7 +146,7 @@ UniDeskWindow{
                 anchors.margins: 10
                 currentIndex: UniDeskSettings.colorMode
                 onCurrentIndexChanged: {
-                    UniDeskSettings.colorMode=currentIndex;
+                    UniDeskSettings.set("colorMode", currentIndex);
                     UniDeskGlobals.updateIsLight(0);
                 }
             }
@@ -164,7 +165,7 @@ UniDeskWindow{
                 anchors.right: parent.right
                 anchors.margins: 10
                 onSelectedColorChanged:{
-                    UniDeskSettings.primaryColor=selectedColor;
+                    UniDeskSettings.set("primaryColor", selectedColor);
                     UniDeskSettings.notify("primaryColor")
                 }
                 Component.onCompleted:{
@@ -187,8 +188,8 @@ UniDeskWindow{
                 anchors.margins: 10
                 currentIndex: UniDeskTools.fontIndex(UniDeskSettings.globalFontFamily)
                 onCurrentTextChanged: {
-                    UniDeskTextStyle.changeFontFamily(currentText)
-                    UniDeskSettings.globalFontFamily=currentText
+                    UniDeskTextStyle.changeFontFamily(currentText);
+                    UniDeskSettings.set("globalFontFamily", currentText);
                 }
             }
             UniDeskText{
@@ -266,7 +267,7 @@ UniDeskWindow{
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.margins: 10
-                mode: UniDeskDefines.FileModeFile
+                mode: UniDeskFileMode.FileModeFile
                 onSubmit: {
                     if(UniDeskTools.isValidUrl(path)){
                         UniDeskTools.addFontFamily(path.toString().slice(8));

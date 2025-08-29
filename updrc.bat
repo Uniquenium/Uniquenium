@@ -1,1 +1,1 @@
-python -u main/updRcc.py
+python -u main/updRes.py

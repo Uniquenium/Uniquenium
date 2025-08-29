@@ -7,7 +7,8 @@ import QtQuick.Templates as T
 import QtQuick.Controls.Basic
 import Qt5Compat.GraphicalEffects
 import UniDesk.Controls
-import UniDesk.PyPlugin
+import UniDesk.Singletons
+import UniDesk
 
 UniDeskWindow{
     id: window
@@ -44,7 +45,7 @@ UniDeskWindow{
                         visible: !dele.editing
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: UniDeskComManager.getPageIdx(index)==UniDeskComManager.pageIndex
+                        font.bold: UniDeskComManager.getPageIdx(index)===UniDeskComManager.pageIndex
                         anchors.verticalCenter: parent.verticalCenter
                         x: 10
                     }
@@ -92,11 +93,11 @@ UniDeskWindow{
                         hoverEnabled: true
                         visible: (!dele.editing)&&(!window.isMove)
                         onClicked: (mouse)=> {
-                            if(mouse.button==Qt.LeftButton){
+                            if(mouse.button===Qt.LeftButton){
                                 window.currentIndex=index;
                                 liview.model=UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
                             }
-                            if(mouse.button==Qt.RightButton){
+                            if(mouse.button===Qt.RightButton){
                                 m_list.popup(dele,mouseX,mouseY)
                             }
                         }
@@ -105,7 +106,7 @@ UniDeskWindow{
                         id: m_list
                         UniDeskMenuItem{
                             text: qsTr("重命名")
-                            disabled: UniDeskComManager.getPageIdx(index)==0
+                            disabled: UniDeskComManager.getPageIdx(index)===0
                             onClicked: {
                                 rename_page_field.pageIdx=index;
                                 rename_page_field.text=model.text

@@ -1,9 +1,9 @@
 import QtQuick 
 import QtQuick.Controls 
 import QtQuick.Layouts
+import UniDesk
 import UniDesk.Controls
 import UniDesk.Singletons
-import UniDesk.PyPlugin
 import Qt.labs.platform as QLP
 
 UniDeskObject{
@@ -204,11 +204,12 @@ UniDeskObject{
         title: qsTr("确认退出")
         text: qsTr("确认要退出吗？")
         Component.onCompleted: {
-            addButton(qsTr("确认"));
+            addButton(qsTr("确定"));
             addButton(qsTr("取消"));
         }
         onButtonClicked: {
             if(clickedIndex==0){
+                // print(UniDeskComManager)
                 UniDeskComManager.close_all();
                 base.baseClose();
                 object.closeAllWindows();
