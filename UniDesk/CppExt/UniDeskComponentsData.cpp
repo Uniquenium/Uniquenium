@@ -191,7 +191,7 @@ int UniDeskComponentsData::getCurrentPage() {
 }
 
 QVariant UniDeskComponentsData::getComponentTypes() {
-    QFile f("./UniDesk/Components/components-list");
+    QFile f("./temp/UniDesk/Components/components-list");
     QStringList types;
     if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&f);
@@ -205,25 +205,4 @@ QVariant UniDeskComponentsData::getComponentTypes() {
     return types;
 }
 
-void UniDeskComponentsData::startFuncs() {
-    QFile listFile("./UniDesk/Components/components-list");
-    if (!listFile.open(QIODevice::ReadOnly | QIODevice::Text)) return;
-    QTextStream listStream(&listFile);
-    while (!listStream.atEnd()) {
-        QString componentName = listStream.readLine().trimmed();
-        if (componentName.isEmpty()) continue;
-        QFile pypluginsFile("./UniDesk/Components/" + componentName + "/plugins-list");
-        if (!pypluginsFile.open(QIODevice::ReadOnly | QIODevice::Text)) continue;
-        QTextStream pypluginsStream(&pypluginsFile);
-        while (!pypluginsStream.atEnd()) {
-            QString pluginName = pypluginsStream.readLine().trimmed();
-            if (pluginName.isEmpty()) continue;
-            // 这里假设插件信息可通过某种方式获取，实际需根据你的插件结构调整
-            // 伪代码：调用插件初始化函数
-            // plugin->startFuncs();
-            // qDebug() << "Start funcs for plugin:" << componentName << pluginName;
-        }
-        pypluginsFile.close();
-    }
-    listFile.close();
-}
+

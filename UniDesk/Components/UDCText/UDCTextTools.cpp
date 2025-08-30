@@ -1,5 +1,5 @@
-#include "UDCTextTools.h"
 #include <pybind11/embed.h>
+#include "UDCTextTools.h"
 #include <QThread>
 #include <QTimer>
 #include <QDateTime>
@@ -166,16 +166,5 @@ QString UDCTextTools::convertStr(const QString &text) {
     return result;
 }
 
-// Getter实现
-double UDCTextTools::cpuPercent() const { return m_cpuPercent; }
-qint64 UDCTextTools::bytesSend() const { return m_bytesSend; }
-qint64 UDCTextTools::bytesRecv() const { return m_bytesRecv; }
-qint64 UDCTextTools::bytesSendPerSec() const { return m_bytesSendPerSec; }
-qint64 UDCTextTools::bytesRecvPerSec() const { return m_bytesRecvPerSec; }
-double UDCTextTools::dropPercent() const { return m_dropPercent; }
-qint64 UDCTextTools::virtmemTotal() const { return m_virtmemTotal; }
-qint64 UDCTextTools::virtmemUsed() const { return m_virtmemUsed; }
-qint64 UDCTextTools::swapmemTotal() const { return m_swapmemTotal; }
-qint64 UDCTextTools::swapmemUsed() const { return m_swapmemUsed; }
-double UDCTextTools::virtmemPercent() const { return m_virtmemPercent; }
-double UDCTextTools::swapmemPercent() const { return m_swapmemPercent; }
+
+

@@ -265,6 +265,7 @@ UniDeskObject{
         UniDeskPageWindow.close();
     }
     Component.onCompleted: {
+        UniDeskGlobals.startThread();
         UniDeskSettingsWindow.hide();
     }
 }

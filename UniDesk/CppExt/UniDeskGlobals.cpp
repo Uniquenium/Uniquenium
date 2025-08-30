@@ -42,14 +42,17 @@ void UniDeskGlobals::emitApplicationQuit() {
 
 void UniDeskGlobals::startThread() {
     th = std::thread([this]() { startListener(); });
+    qDebug()<<"Listener thread started.";
     th.detach();
+    qDebug()<<"Listener thread detached.";
 }
 
 void UniDeskGlobals::startListener() {
-    py::scoped_interpreter guard{};
-    py::module darkdetect = py::module::import("darkdetect");
+    // py::scoped_interpreter guard{};
+    py::module_ darkdetect = py::module_::import("darkdetect");
     auto listener = darkdetect.attr("listener");
     listener([this](int val){
-        QMetaObject::invokeMethod(this, [this, val](){ updateIsLight(val); }, Qt::QueuedConnection);
+        // QMetaObject::invokeMethod(this, [this, val](){ updateIsLight(val); }, Qt::QueuedConnection);
+        updateIsLight(val);
     });
 }

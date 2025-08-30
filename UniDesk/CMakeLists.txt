@@ -103,7 +103,8 @@ qt_add_qml_module(${TARGET}
 set_target_properties(${TARGET}
     PROPERTIES  VERSION ${MODULE_VERSION} SOVERSION ${MODULE_VERSION_MAJOR})
 
-# add_subdirectory(GraphicalEffects)
+add_subdirectory(GraphicalEffects)
+add_subdirectory(Components)
 
 # install(DIRECTORY ${CMAKE_BINARY_DIR}/temp/${PROJECT_NAME} DESTINATION ${INSTALL_QMLDIR})
 # generate_export_header(${TARGET} BASE_NAME ${TARGET})

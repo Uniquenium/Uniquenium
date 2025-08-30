@@ -4,8 +4,8 @@
 #include <QQuickItem>
 #include <QtQml/qqml.h>
 #include <QDateTime>
-#include "stdafx.h"
-#include "singleton.h"
+#include "../../CppExt/stdafx.h"
+#include "../../CppExt/singleton.h"
 
 class UDCTextTools : public QQuickItem {
     Q_OBJECT
@@ -31,8 +31,7 @@ public:
 
     Q_INVOKABLE QString convertStr(const QString &text);
 
-public slots:
-    void startThread();
+    Q_INVOKABLE void startThread();
 
 private:
     void updateData();
