@@ -26,8 +26,8 @@ int main(int argc,char* argv[]){
     if (engine.rootObjects().isEmpty())
         return -1;
     qDebug()<<"Application Launched Successfully.";
-    UniDeskGlobals::getInstance()->startThread();
-    UniDeskComponentsData::getInstance()->startFuncs();
+    // UniDeskGlobals::getInstance()->startThread();
+    // UniDeskComponentsData::getInstance()->startFuncs();
     return app.exec();
 }
 
