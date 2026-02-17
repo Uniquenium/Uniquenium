@@ -36,18 +36,6 @@ public slots:
 
 private:
     void updateData();
-    double m_cpuPercent;
-    qint64 m_bytesSend;
-    qint64 m_bytesRecv;
-    qint64 m_bytesSendPerSec;
-    qint64 m_bytesRecvPerSec;
-    double m_dropPercent;
-    qint64 m_virtmemTotal;
-    qint64 m_virtmemUsed;
-    qint64 m_swapmemTotal;
-    qint64 m_swapmemUsed;
-    double m_virtmemPercent;
-    double m_swapmemPercent;
 };
 
 #endif // UDCTEXTTOOLS_H

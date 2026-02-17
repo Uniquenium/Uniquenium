@@ -3,6 +3,16 @@ qt_standard_project_setup()
 # Create Qt6 library target
 qt_add_library(${TARGET} SHARED)
 
+file(STRINGS Components/components-list COMPONENT_LIST)
+
+set(UNIDESK_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+set(component_lib_list "")
+set(component_dir_list "")
+foreach(line IN LISTS COMPONENT_LIST)
+    # list(APPEND component_lib_list ${TARGET}${line})
+    list(APPEND component_dir_list ${CMAKE_CURRENT_SOURCE_DIR}/Components/${line})
+endforeach()
+
 target_link_libraries(${TARGET}
         PUBLIC
         Qt6::Core
@@ -18,7 +28,7 @@ target_link_libraries(${TARGET}
         QHotkey::QHotkey
         pybind11::embed
         )
-target_include_directories(${TARGET} PRIVATE ${QHOTKEY_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/CppExt)
+target_include_directories(${TARGET} PRIVATE ${QHOTKEY_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/CppExt ${component_dir_list})
 
 if (UNIX)
     if (NOT APPLE)
@@ -35,14 +45,14 @@ set(qml_files "")
 set(resource_files "")
 
 #遍历所有Cpp文件
-file(GLOB CPP_FILES CppExt/*.cpp)
+file(GLOB CPP_FILES CppExt/*.cpp Components/*/*.cpp)
 foreach (filepath ${CPP_FILES})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" filename ${filepath})
     list(APPEND sources_files ${filename})
 endforeach (filepath)
 
 #遍历所有h文件
-file(GLOB H_FILES CppExt/*.h)
+file(GLOB H_FILES CppExt/*.h Components/*/*.h)
 foreach (filepath ${H_FILES})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" filename ${filepath})
     list(APPEND sources_files ${filename})
@@ -56,7 +66,7 @@ foreach(filepath ${SINGLETON_PATHS})
 endforeach()
 
 #遍历所有qml文件
-file(GLOB_RECURSE QML_PATHS Controls/*.qml Singletons/*.qml qmldir )
+file(GLOB_RECURSE QML_PATHS Controls/*.qml Singletons/*.qml qmldir Components/*/*.qml Components/*/qmldir)
 foreach (filepath ${QML_PATHS})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" filename ${filepath})
     if (${filename} MATCHES "qmldir")
@@ -86,6 +96,8 @@ foreach (respath ${RES_PATHS})
         endforeach()
     endforeach ()
 endforeach (respath)
+
+list(APPEND resource_files "Components/components-list")
 
 # Set Qt6 QMl Plugins
 qt_add_qml_module(${TARGET}

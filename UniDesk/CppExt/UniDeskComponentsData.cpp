@@ -191,9 +191,10 @@ int UniDeskComponentsData::getCurrentPage() {
 }
 
 QVariant UniDeskComponentsData::getComponentTypes() {
-    QFile f("./UniDesk/Components/components-list");
+    QFile f("./temp/UniDesk/Components/components-list");
+    qDebug()<<f.exists();
     QStringList types;
-    if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (f.open(QIODevice::ReadWrite | QIODevice::Text)) {
         QTextStream in(&f);
         while (!in.atEnd()) {
             QString line = in.readLine();
@@ -202,6 +203,7 @@ QVariant UniDeskComponentsData::getComponentTypes() {
         }
         f.close();
     }
+    qDebug()<<types;
     return types;
 }
 

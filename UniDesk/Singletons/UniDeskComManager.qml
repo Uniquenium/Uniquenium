@@ -149,7 +149,8 @@ UniDeskObject{
         typename_list=UniDeskComponentsData.getComponentTypes();
         for(var i=0;i<typename_list.length;i++){
             print(typename_list[i]+" Loading")
-            type_list.push(Qt.createComponent("UniDesk.Components."+typename_list[i],typename_list[i]));
+            type_list.push(Qt.createComponent("UniDesk.Components."+typename_list[i],typename_list[i],Component.Asynchronous, null));
+            print(type_list)
             print(typename_list[i]+" Loaded")
         }
     }
@@ -181,7 +182,7 @@ UniDeskObject{
     function index_in_compModels(comId){
         var c=getComById(comId);
         for(var i=0;i<compModels[pageIdxConvert(c.pageIdx)].count;i++){
-            if(compModels[pageIdxConvert(c.pageIdx)].get(i).display==c.identification){
+            if(compModels[pageIdxConvert(c.pageIdx)].get(i).display===c.identification){
                 return i
             }
         }

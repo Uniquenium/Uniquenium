@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
+import UniDesk
 import UniDesk.Controls
 import UniDesk.Singletons
 
@@ -344,7 +345,7 @@ UniDeskWindow{
                 editingComponent.saveComToFile();
             }
             Component.onCompleted: {
-                currentIndex = editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style==Text.Outline ? 2 : 3) : 0
+                currentIndex = editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style===Text.Outline ? 2 : 3) : 0
             }
         }
         UniDeskText{

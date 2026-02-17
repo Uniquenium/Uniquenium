@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
+import UniDesk
 import UniDesk.Controls
 import UniDesk.Singletons
 import UniDesk.Components.UDCText
@@ -27,9 +28,9 @@ UniDeskComBase{
     property real wordSpacing: 0
     property real lineHeight: 1
     property int weight: Font.Normal
-    property var style: Text.Normal
+    property int style: Text.Normal
     property color styleColor: UniDeskSettings.primaryColor
-    property var textFormat: Text.RichText
+    property int textFormat: Text.RichText
     chosen: optionsText ? optionsText.visible : false
     UniDeskText{
         id: cont
@@ -102,7 +103,7 @@ UniDeskComBase{
         comManager: UniDeskComManager
     }
     onRightClicked: {
-        menu.popup(base)
+        menu.popup(cont);
     }
     onXChanged:{
         saveComToFile();
