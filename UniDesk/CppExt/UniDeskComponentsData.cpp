@@ -47,91 +47,91 @@ static QJsonObject readJsonFile(const QString &file) {
     return doc.object();
 }
 
-static QVariant json2object(const QJsonValue &jso) {
-    if (jso.isObject()) {
-        QJsonObject obj = jso.toObject();
-        if (obj.value("<type>").toString() == "QColor") {
-            return QColor(obj.value("red").toInt(), obj.value("green").toInt(), obj.value("blue").toInt(), obj.value("alpha").toInt());
-        }
-        QVariantMap map;
-        for (auto it = obj.begin(); it != obj.end(); ++it)
-            map[it.key()] = json2object(it.value());
-        return QVariant::fromValue(map);
-    }
-    if (jso.isArray()) {
-        QVariantList list;
-        for (const QJsonValue &v : jso.toArray())
-            list << json2object(v);
-        return QVariant::fromValue(list);
-    }
-    return jso.toVariant();
-}
+// static QVariant json2object(const QJsonValue &jso) {
+//     if (jso.isObject()) {
+//         QJsonObject obj = jso.toObject();
+//         if (obj.value("<type>").toString() == "QColor") {
+//             return QColor(obj.value("red").toInt(), obj.value("green").toInt(), obj.value("blue").toInt(), obj.value("alpha").toInt());
+//         }
+//         QVariantMap map;
+//         for (auto it = obj.begin(); it != obj.end(); ++it)
+//             map[it.key()] = json2object(it.value());
+//         return QVariant::fromValue(map);
+//     }
+//     if (jso.isArray()) {
+//         QVariantList list;
+//         for (const QJsonValue &v : jso.toArray())
+//             list << json2object(v);
+//         return QVariant::fromValue(list);
+//     }
+//     return jso.toVariant();
+// }
 
-static QJsonValue object2json(const QVariant &obj) {
-    // 使用typeId判断是否为QColor
-    if (obj.typeId() == qMetaTypeId<QColor>()) {
-        QColor c = obj.value<QColor>();
-        QJsonObject o;
-        o["<type>"] = "QColor";
-        o["red"] = c.red();
-        o["green"] = c.green();
-        o["blue"] = c.blue();
-        o["alpha"] = c.alpha();
-        return o;
-    }
-    // 使用typeId判断Map和List
-    if (obj.typeId() == qMetaTypeId<QVariantMap>()) {
-        QJsonObject o;
-        QVariantMap m = obj.toMap();
-        for (auto it = m.begin(); it != m.end(); ++it)
-            o[it.key()] = object2json(it.value());
-        return o;
-    }
-    if (obj.typeId() == qMetaTypeId<QVariantList>()) {
-        QJsonArray arr;
-        for (const QVariant &v : obj.toList())
-            arr.append(object2json(v));
-        return arr;
-    }
-    return QJsonValue::fromVariant(obj);
-}
+// static QJsonValue object2json(const QVariant &obj) {
+//     // 使用typeId判断是否为QColor
+//     if (obj.typeId() == qMetaTypeId<QColor>()) {
+//         QColor c = obj.value<QColor>();
+//         QJsonObject o;
+//         o["<type>"] = "QColor";
+//         o["red"] = c.red();
+//         o["green"] = c.green();
+//         o["blue"] = c.blue();
+//         o["alpha"] = c.alpha();
+//         return o;
+//     }
+//     // 使用typeId判断Map和List
+//     if (obj.typeId() == qMetaTypeId<QVariantMap>()) {
+//         QJsonObject o;
+//         QVariantMap m = obj.toMap();
+//         for (auto it = m.begin(); it != m.end(); ++it)
+//             o[it.key()] = object2json(it.value());
+//         return o;
+//     }
+//     if (obj.typeId() == qMetaTypeId<QVariantList>()) {
+//         QJsonArray arr;
+//         for (const QVariant &v : obj.toList())
+//             arr.append(object2json(v));
+//         return arr;
+//     }
+//     return QJsonValue::fromVariant(obj);
+// }
 
 UniDeskComponentsData::UniDeskComponentsData(QQuickItem *parent)
     : QQuickItem(parent)
 {}
 
-QVariant UniDeskComponentsData::getPages() {
+QJsonValue UniDeskComponentsData::getPages() {
     QJsonObject obj = readJsonFile(componentsFile);
-    return json2object(obj.value("pages"));
+    return obj.value("pages");
 }
 
-QVariant UniDeskComponentsData::getComponents() {
+QJsonValue UniDeskComponentsData::getComponents() {
     QJsonObject obj = readJsonFile(componentsFile);
-    return json2object(obj.value("components"));
+    return obj.value("components");
 }
 
-void UniDeskComponentsData::updatePage(int pageIndex, const QVariant &page) {
+void UniDeskComponentsData::updatePage(int pageIndex, const QJsonValue &page) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray pages = obj.value("pages").toArray();
     if (pageIndex < 0 || pageIndex >= pages.size()) return;
-    pages[pageIndex] = object2json(page);
+    pages[pageIndex] = page;
     obj["pages"] = pages;
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::updateComponent(int componentIndex, const QVariant &component) {
+void UniDeskComponentsData::updateComponent(int componentIndex, const QJsonValue &component) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray components = obj.value("components").toArray();
     if (componentIndex < 0 || componentIndex >= components.size()) return;
-    components[componentIndex] = object2json(component);
+    components[componentIndex] = component;
     obj["components"] = components;
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::addComponent(const QVariant &component) {
+void UniDeskComponentsData::addComponent(const QJsonObject &component) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray components = obj.value("components").toArray();
-    components.append(object2json(component));
+    components.append(component);
     obj["components"] = components;
     writeJsonFile(componentsFile, obj);
 }
@@ -149,19 +149,19 @@ void UniDeskComponentsData::removeComponent(const QString &componentIdentificati
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::addPage(const QVariant &page) {
+void UniDeskComponentsData::addPage(const QJsonValue &page) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray pages = obj.value("pages").toArray();
-    pages.append(object2json(page));
+    pages.append(page);
     obj["pages"] = pages;
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::insertPage(int index, const QVariant &page) {
+void UniDeskComponentsData::insertPage(int index, const QJsonValue &page) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray pages = obj.value("pages").toArray();
     if (index < 0 || index > pages.size()) return;
-    pages.insert(index, object2json(page));
+    pages.insert(index, page);
     obj["pages"] = pages;
     writeJsonFile(componentsFile, obj);
 }
@@ -192,7 +192,6 @@ int UniDeskComponentsData::getCurrentPage() {
 
 QVariant UniDeskComponentsData::getComponentTypes() {
     QFile f("./temp/UniDesk/Components/components-list");
-    qDebug()<<f.exists();
     QStringList types;
     if (f.open(QIODevice::ReadWrite | QIODevice::Text)) {
         QTextStream in(&f);
@@ -203,7 +202,6 @@ QVariant UniDeskComponentsData::getComponentTypes() {
         }
         f.close();
     }
-    qDebug()<<types;
     return types;
 }
 

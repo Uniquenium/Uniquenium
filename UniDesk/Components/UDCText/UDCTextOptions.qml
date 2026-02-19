@@ -13,6 +13,7 @@ UniDeskWindow{
     width: 1000
     height: 700
     title: qsTr("文本选项")
+    autoVisible: false
     property var comManager
     property UniDeskComBase editingComponent
     ScrollView{

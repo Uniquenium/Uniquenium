@@ -121,7 +121,10 @@ UniDeskComBase{
             "canMove": base.canMove,
             "canResize": base.canResize,
             "textContent": base.textContent,
-            "textColor": base.textColor,
+            "textColorR": base.textColor.r,
+            "textColorG": base.textColor.g,
+            "textColorB": base.textColor.b,
+            "textColorA": base.textColor.a,
             "fontFamily": base.fontFamily,
             "fontSize": base.fontSize,
             "smallCaps": base.smallCaps,
@@ -134,9 +137,37 @@ UniDeskComBase{
             "lineHeight": base.lineHeight,
             "weight": base.weight,
             "style": base.style,
-            "styleColor": base.styleColor,
+            "styleColorR": base.styleColor.r,
+            "styleColorG": base.styleColor.g,
+            "styleColorB": base.styleColor.b,
+            "styleColorA": base.styleColor.a,
             "textFormat": base.textFormat
         }
+    }
+    function loadPropertyData(data){
+        base.type=data.type;
+        base.identification=data.identification;
+        base.pageIdx=data.pageIdx;
+        base.x=data.x;
+        base.y=data.y;
+        base.canMove=data.canMove;
+        base.canResize=data.canResize;
+        base.textContent=data.textContent;
+        base.textColor=Qt.rgba(data.textColorR,data.textColorG,data.textColorB,data.textColorA);
+        base.fontFamily=data.fontFamily;
+        base.fontSize=data.fontSize;
+        base.smallCaps=data.smallCaps;
+        base.bold=data.bold;
+        base.italic=data.italic;
+        base.underline=data.underline;
+        base.strikeout=data.strikeout;
+        base.letterSpacing=data.letterSpacing;
+        base.wordSpacing=data.wordSpacing;
+        base.lineHeight=data.lineHeight;
+        base.weight=data.weight;
+        base.style=data.style;
+        base.styleColor=Qt.rgba(data.styleColorR,data.styleColorG,data.styleColorB,data.styleColorA);
+        base.textFormat=data.textFormat;
     }
     function saveComToFile(){
         var data= propertyData();

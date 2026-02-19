@@ -54,6 +54,14 @@ UniDeskObject{
         let new_com=type_list[idx].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"x":newX,"y": newY,"pageIdx": pageIndex});
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com);
+        for(var i=0;i<component_list.length;i++){
+            if(pageIndex===component_list[i].pageIdx){
+                component_list[i].visible=true;
+            }
+            else{
+                component_list[i].visible=false;
+            }
+        }
         newX=(newX+delta)%(Screen.desktopAvailableWidth-new_com.width);
         newY=(newY+delta)%(Screen.desktopAvailableHeight-new_com.height);
         serialComponentCnt+=1;
@@ -121,8 +129,9 @@ UniDeskObject{
             var id_num=parseInt(data[i].identification.split(" ")[1]);
             var new_com;
             for(var j=0;j<typename_list.length;j++){
-                if(data[j].type===typename_list[j]){
-                    new_com=type_list[j].createObject(null,data[i]);
+                if(data[i].type===typename_list[j]){
+                    new_com=type_list[j].createObject(null,{"identification":data[i].identification,"x":data[i].x,"y": data[i].y,"pageIdx": data[i].pageIdx});
+                    new_com.loadPropertyData(data[i]);
                 }
             }
             component_list.push(new_com)
@@ -149,8 +158,7 @@ UniDeskObject{
         typename_list=UniDeskComponentsData.getComponentTypes();
         for(var i=0;i<typename_list.length;i++){
             print(typename_list[i]+" Loading")
-            type_list.push(Qt.createComponent("UniDesk.Components."+typename_list[i],typename_list[i],Component.Asynchronous, null));
-            print(type_list)
+            type_list.push(Qt.createComponent("UniDesk.Components."+typename_list[i],typename_list[i],Component.Synchronous, null));
             print(typename_list[i]+" Loaded")
         }
     }

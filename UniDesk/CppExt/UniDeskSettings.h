@@ -9,6 +9,8 @@
 #include <QVariant>
 #include <QList>
 #include <QtQml/qqml.h>
+#include <QJsonObject>
+#include <QString>
 
 class UniDeskSettings : public QQuickItem {
     Q_OBJECT
@@ -33,5 +35,6 @@ public:
 
     Q_INVOKABLE void notify(const QString &prop);
 };
+
 
 #endif // UNIDESKSETTINGS_H
