@@ -22,17 +22,19 @@ UDCTextTools::UDCTextTools(QQuickItem *parent)
     swapmemUsed(0);
     virtmemPercent(0);
     swapmemPercent(0);
+    startThread();
 }
 
 void UDCTextTools::startThread() {
     QThread* thread = QThread::create([this]() {
+
         // py::scoped_interpreter guard{};
         // py::object psutil = py::module_::import("psutil");
         // py::object calendar = py::module_::import("calendar");
         // py::object datetime_mod = py::module_::import("datetime");
         // py::object time_mod = py::module_::import("time");
         // qint64 prevSend = 0, prevRecv = 0;
-        // while (true) {
+        while (true) {
         //     try {
         //         cpuPercent(psutil.attr("cpu_percent")().cast<double>());
         //         prevSend = bytesSend();
@@ -72,8 +74,8 @@ void UDCTextTools::startThread() {
         //     Q_EMIT swapmemUsedChanged();
         //     Q_EMIT virtmemPercentChanged();
         //     Q_EMIT swapmemPercentChanged();
-        //     QThread::sleep(1);
-        // }
+            QThread::sleep(1);
+        }
     });
     thread->start();
 }

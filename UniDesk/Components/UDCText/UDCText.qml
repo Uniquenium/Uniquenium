@@ -106,9 +106,11 @@ UniDeskComBase{
         menu.popup(cont);
     }
     onXChanged:{
+        optionsText.updatePosition();
         saveComToFile();
     }
     onYChanged:{
+        optionsText.updatePosition();
         saveComToFile();
     }
     function propertyData(){

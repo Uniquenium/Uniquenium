@@ -19,6 +19,12 @@ class UniDeskSettings : public QQuickItem {
     Q_PROPERTY_AUTO(QColor, primaryColor)
     Q_PROPERTY_AUTO(QString, globalFontFamily)
     Q_PROPERTY_AUTO(QList<QString>, customFontFamilyPaths)
+    Q_PROPERTY_AUTO(QColor, fontPrimaryColorDark)
+    Q_PROPERTY_AUTO(QColor, fontSecondaryColorDark)
+    Q_PROPERTY_AUTO(QColor, fontTertiaryColorDark)
+    Q_PROPERTY_AUTO(QColor, fontPrimaryColorLight)
+    Q_PROPERTY_AUTO(QColor, fontSecondaryColorLight)
+    Q_PROPERTY_AUTO(QColor, fontTertiaryColorLight)
     QML_NAMED_ELEMENT(UniDeskSettings)
     QML_SINGLETON
 private:

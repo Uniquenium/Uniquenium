@@ -209,6 +209,7 @@ UniDeskWindow{
                 width: 300
                 height: 200
                 clip: true
+                color: "transparent"
                 ListView{
                     id: option4_listView
                     model: UniDeskTools.getCustomFonts()
@@ -218,6 +219,7 @@ UniDeskWindow{
                     delegate: Rectangle{
                         anchors.left: parent ? parent.left : undefined
                         anchors.right: parent ? parent.right : undefined
+                        color: "transparent"
                         RowLayout{   
                             id: font_row_layout
                             anchors.fill: parent

@@ -19,41 +19,10 @@ UniDeskGlobals::UniDeskGlobals(QQuickItem *parent)
 
 }
 
-static QJsonObject defaultSettings() {
-    QJsonObject obj;
-    obj["hideTaskbar"] = false;
-    obj["colorMode"] = 2;
-    QJsonObject color;
-    color["<type>"] = "QColor";
-    color["red"] = 0;
-    color["green"] = 100;
-    color["blue"] = 255;
-    color["alpha"] = 255;
-    obj["primaryColor"] = color;
-    obj["globalFontFamily"] = QString::fromUtf8("微软雅黑");
-    obj["customFontFamilyPaths"] = QJsonArray();
-    return obj;
-}
-static void writeJsonFile(const QString &file, const QJsonObject &obj) {
-    QFile f(file);
-    py::exec(R"(
-    import os
-    if not os.path.exists("./data"):
-        os.mkdir("./data")
-    )");
-    f.open(QIODevice::WriteOnly | QIODevice::Text);
-    QJsonDocument doc(obj);
-    f.write(doc.toJson(QJsonDocument::Indented));
-    f.close();
-}
+
 static QJsonObject readJsonFile(const QString &file) {
     QFile f(file);
-    if (!f.exists()) {
-        QJsonObject obj = defaultSettings();
-        writeJsonFile(file, obj);
-        return obj;
-    }
-    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) return QJsonObject();
+    if (!f.exists()||!f.open(QIODevice::ReadOnly | QIODevice::Text)) return QJsonObject();
     QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
     f.close();
     return doc.object();

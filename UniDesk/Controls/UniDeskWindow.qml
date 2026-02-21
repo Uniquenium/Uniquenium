@@ -18,7 +18,7 @@ Window {
     property var background: com_background
     property bool fixSize: false
     property bool fitsAppBarWindows: false
-    property var tintOpacity: !UniDeskGlobals.isLight ? 0.80 : 0.75
+    property var tintOpacity: !UniDeskGlobals.isLight ? 0.50 : 0.75
     property int blurRadius: 80
     // Do not change this in other place!
     property var windowVisibility: window.visibility
@@ -37,13 +37,16 @@ Window {
     }
     property color backgroundColor: {
         if (frameless.effective && active) {
-            var backcolor = "transparent";
+            var backcolor = UniDeskUtils.withOpacity(!UniDeskGlobals.isLight ? Qt.rgba(26/255, 26/255, 26/255, 1)
+                                                            : Qt.rgba(243/255, 243/255, 243/255, 1), window.tintOpacity);;
             return backcolor;
         }
         if (active) {
-            return "transparent";
+            return !UniDeskGlobals.isLight ? Qt.rgba(26/255, 26/255, 26/255, 1)
+                                          : Qt.rgba(243/255, 243/255, 243/255, 1);
         }
-        return "transparent";
+        return !UniDeskGlobals.isLight ? Qt.rgba(32/255, 32/255, 32/255, 1)
+                                      : Qt.rgba(237/255, 237/255, 237/255, 1);
     }
     property bool stayTop: false
     property bool showDark: false
@@ -149,7 +152,7 @@ Window {
                 asynchronous: true
                 Component.onCompleted: {
                     img_back.updateLayout();
-                    source = UniDeskUtils.getUrlByFilePath(UniDeskTools.get_wallpaper());
+                    source = UniDeskTools.get_wallpaper();
                 }
                 Connections {
                     target: window

@@ -14,6 +14,8 @@ UniDeskWindow{
     height: 700
     title: qsTr("文本选项")
     autoVisible: false
+    showMinimize: false
+    showMaximize: false
     property var comManager
     property UniDeskComBase editingComponent
     ScrollView{
@@ -400,5 +402,8 @@ UniDeskWindow{
         function onApplicationQuit() {
             window.close();
         }
+    }
+    function updatePosition(){
+        posSelector.refreshPosition();
     }
 }

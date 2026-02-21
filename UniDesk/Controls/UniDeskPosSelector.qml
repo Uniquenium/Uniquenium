@@ -249,4 +249,8 @@ Item{
         implicitWidth=gridLayout.childrenRect.width
         implicitHeight=gridLayout.childrenRect.height
     }
+    function refreshPosition(){
+        horizontalCoordTextField.value=control.editingComponent.x;
+        verticalCoordTextField.value=control.editingComponent.y;
+    }
 }

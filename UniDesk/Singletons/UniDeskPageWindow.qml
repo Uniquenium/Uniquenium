@@ -28,6 +28,7 @@ UniDeskWindow{
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.margins: 10
+            color: "transparent"
             ListView{
                 id: option4_listView
                 model: UniDeskComManager.page_list
@@ -173,6 +174,7 @@ UniDeskWindow{
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.margins: 10
+            color: "transparent"
             ListView{
                 id: liview
                 anchors.fill: parent
@@ -185,7 +187,7 @@ UniDeskWindow{
                     color:  "transparent"
                     radius: 5
                     border.width: 1
-                    border.color: UniDeskGlobals.isLight? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,0)  
+                    border.color: UniDeskGlobals.isLight? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
                     anchors.left: parent ? parent.left : undefined
                     anchors.right: parent ? parent.right : undefined
                     height: 30

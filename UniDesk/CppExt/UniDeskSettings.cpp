@@ -22,6 +22,18 @@ static QJsonObject defaultSettings() {
     obj["primaryColor"] = color;
     obj["globalFontFamily"] = QString::fromUtf8("微软雅黑");
     obj["customFontFamilyPaths"] = QJsonArray();
+    QJsonObject fontPrimaryColorDark{{"<type>", "QColor"},{"red", 255},{"green",255},{"blue",255},{"alpha",255}};
+    obj["fontPrimaryColorDark"]=fontPrimaryColorDark;
+    QJsonObject fontPrimaryColorLight{{"<type>", "QColor"},{"red", 0},{"green",0},{"blue",0},{"alpha",255}};
+    obj["fontPrimaryColorLight"]=fontPrimaryColorLight;
+    QJsonObject fontSecondaryColorDark{{"<type>", "QColor"},{"red", 222},{"green",222},{"blue",222},{"alpha",255}};
+    obj["fontSecondaryColorDark"]=fontSecondaryColorDark;
+    QJsonObject fontSecondaryColorLight{{"<type>", "QColor"},{"red", 102},{"green",102},{"blue",102},{"alpha",255}};
+    obj["fontSecondaryColorLight"]=fontSecondaryColorLight;
+    QJsonObject fontTertiaryColorDark{{"<type>", "QColor"},{"red", 200},{"green",200},{"blue",200},{"alpha",255}};
+    obj["fontTertiaryColorDark"]=fontTertiaryColorDark;
+    QJsonObject fontTertiaryColorLight{{"<type>", "QColor"},{"red", 153},{"green",153},{"blue",153},{"alpha",255}};
+    obj["fontTertiaryColorLight"]=fontTertiaryColorLight;
     return obj;
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
@@ -107,6 +119,12 @@ UniDeskSettings::UniDeskSettings(QQuickItem *parent)
     hideTaskbar(obj.value("hideTaskbar").toBool());
     colorMode(obj.value("colorMode").toInt());
     primaryColor(json2object(obj.value("primaryColor")).value<QColor>());
+    fontPrimaryColorDark(json2object(obj.value("fontPrimaryColorDark")).value<QColor>());
+    fontPrimaryColorLight(json2object(obj.value("fontPrimaryColorLight")).value<QColor>());
+    fontSecondaryColorDark(json2object(obj.value("fontSecondaryColorDark")).value<QColor>());
+    fontSecondaryColorLight(json2object(obj.value("fontSecondaryColorLight")).value<QColor>());
+    fontTertiaryColorDark(json2object(obj.value("fontTertiaryColorDark")).value<QColor>());
+    fontTertiaryColorLight(json2object(obj.value("fontTertiaryColorLight")).value<QColor>());
     globalFontFamily(obj.value("globalFontFamily").toString());
     QList<QString> fontPaths;
     for (const QJsonValue &v : obj.value("customFontFamilyPaths").toArray())
@@ -150,5 +168,11 @@ void UniDeskSettings::notify(const QString &prop) {
     else if (prop == "primaryColor") primaryColor(json2object(obj.value(prop)).value<QColor>());
     else if (prop == "globalFontFamily") globalFontFamily(obj.value(prop).toString());
     else if (prop == "customFontFamilyPaths") emit customFontFamilyPathsChanged();
+    else if (prop == "fontPrimaryColorDark") fontPrimaryColorDark(json2object(obj.value(prop)).value<QColor>());
+    else if (prop == "fontPrimaryColorLight") fontPrimaryColorLight(json2object(obj.value(prop)).value<QColor>());
+    else if (prop == "fontSecondaryColorDark") fontSecondaryColorDark(json2object(obj.value(prop)).value<QColor>());
+    else if (prop == "fontSecondaryColorLight") fontSecondaryColorLight(json2object(obj.value(prop)).value<QColor>());
+    else if (prop == "fontTertiaryColorDark") fontTertiaryColorDark(json2object(obj.value(prop)).value<QColor>());
+    else if (prop == "fontTertiaryColorLight") fontTertiaryColorLight(json2object(obj.value(prop)).value<QColor>());
 }
 

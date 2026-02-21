@@ -21,6 +21,7 @@ SM_CONTRAST = 221
 SM_USERCOLORSET = 263
 
 
+
 class UDCTextTools(QQuickItem):
     def __init__(self):
         global th

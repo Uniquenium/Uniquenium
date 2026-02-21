@@ -32,9 +32,9 @@ Rectangle {
             padding: 6
             leftPadding: padding + 4
 
-            color: control.palette.text
-            placeholderTextColor: control.palette.placeholderText
-            selectionColor: control.palette.highlight
+            color: UniDeskGlobals.isLight?UniDeskSettings.fontPrimaryColorLight:UniDeskSettings.fontPrimaryColorDark
+            placeholderTextColor: UniDeskGlobals.isLight?UniDeskSettings.fontSecondaryColorLight:UniDeskSettings.fontSecondaryColorDark
+            selectionColor: UniDeskSettings.primaryColor
             selectedTextColor: control.palette.highlightedText
             
             font: UniDeskTextStyle.little
