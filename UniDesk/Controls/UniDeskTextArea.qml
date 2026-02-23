@@ -35,7 +35,7 @@ Rectangle {
             color: UniDeskGlobals.isLight?UniDeskSettings.fontPrimaryColorLight:UniDeskSettings.fontPrimaryColorDark
             placeholderTextColor: UniDeskGlobals.isLight?UniDeskSettings.fontSecondaryColorLight:UniDeskSettings.fontSecondaryColorDark
             selectionColor: UniDeskSettings.primaryColor
-            selectedTextColor: control.palette.highlightedText
+            selectedTextColor: UniDeskSettings.fontPrimaryColorDark
             
             font: UniDeskTextStyle.little
             UniDeskText {
