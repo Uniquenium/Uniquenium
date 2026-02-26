@@ -16,54 +16,57 @@
 An open-source desktop extension tool that combines beautification and practical functions
 
 # Dependences
-- pypi modules from `requirements.txt`
-- c++ command (used by )
+
+- pybind11(temporary)
+- [exprtk](https://github.com/ArashPartow/exprtk)
+- QHotkey
 
 # Todo List
+
 - [ ] Main Page
-    - [ ] Exit
-    - [x] System 
-        - [x] Shutdown
-        - [x] Restart
-        - [x] Sleep
-        - [ ] Update
-        - [x] Log Off
-        - [x] Lock Screen
+  - [ ] Exit
+    - [x] System
+      - [x] Shutdown
+      - [x] Restart
+      - [x] Sleep
+      - [ ] Update
+      - [x] Log Off
+      - [x] Lock Screen
     - [x] Pages View
-        - [ ] Manage Pages
+      - [ ] Manage Pages
     - [ ] Settings
-        - [ ] System
-        - [ ] Appearance
-        - [ ] Behavior
-        - [ ] Hotkeys
-        - [ ] About
+      - [ ] System
+      - [ ] Appearance
+      - [ ] Behavior
+      - [ ] Hotkeys
+      - [ ] About
     - [x] New Component
 - [ ] Controls
 - [ ] Basic Components
-    - [ ] Text
-    - [ ] Button
-    - [ ] Image
-    - [ ] Chart(CPU,GPU,Network status,etc.)
-    - [ ] Frame
-    - [ ] Group
+  - [ ] Text
+  - [ ] Button
+  - [ ] Image
+  - [ ] Chart(CPU,GPU,Network status,etc.)
+  - [ ] Frame
+  - [ ] Group
 - [ ] Extra Components
-    - [ ] Calculator
-    - [ ] Screen Capture
-    - [ ] Color Picker
-    - [ ] Translator
-    - [ ] Music
-    - [ ] Todo List
-    - [ ] Explorer
-    - [ ] Typing Follower
-    - [ ] Work Sheets
-    - [ ] Calendar
-    - [ ] Schedule
-    - [ ] Notepad
-    - [ ] Codepad
-    - [ ] Rapid File Downloader
-    - [ ] RSS
-    - [ ] Screen Using Time
-    - [ ] ClipBoard
+  - [ ] Calculator
+  - [ ] Screen Capture
+  - [ ] Color Picker
+  - [ ] Translator
+  - [ ] Music
+  - [ ] Todo List
+  - [ ] Explorer
+  - [ ] Typing Follower
+  - [ ] Work Sheets
+  - [ ] Calendar
+  - [ ] Schedule
+  - [ ] Notepad
+  - [ ] Codepad
+  - [ ] Rapid File Downloader
+  - [ ] RSS
+  - [ ] Screen Using Time
+  - [ ] ClipBoard
 
 # Acknowledgements
 

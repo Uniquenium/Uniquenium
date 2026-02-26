@@ -28,7 +28,13 @@ target_link_libraries(${TARGET}
         QHotkey::QHotkey
         pybind11::embed
         )
-target_include_directories(${TARGET} PRIVATE ${QHOTKEY_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/CppExt ${component_dir_list})
+target_include_directories(${TARGET} 
+        PRIVATE 
+        ${QHOTKEY_INCLUDE_DIR} 
+        ${CMAKE_CURRENT_SOURCE_DIR}/CppExt 
+        ${component_dir_list}
+        ${EXPRTK_INCLUDE}
+        )
 
 if (UNIX)
     if (NOT APPLE)
@@ -98,6 +104,7 @@ foreach (respath ${RES_PATHS})
 endforeach (respath)
 
 list(APPEND resource_files "Components/components-list")
+# list(APPEND sources_files "${EXPRTK_INCLUDE}")
 
 # Set Qt6 QMl Plugins
 qt_add_qml_module(${TARGET}

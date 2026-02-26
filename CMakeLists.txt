@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.25)
 
 add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
+add_compile_options(/bigobj)
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -96,6 +98,9 @@ set(PROJECT_SOURCES
     resources.qrc
 )
 
+#exprtk
+set(EXPRTK_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/extern/exprtk)
+
 add_subdirectory(extern/pybind11)
 
 add_subdirectory(UniDesk)
@@ -122,7 +127,12 @@ target_link_libraries(${PROJECT_NAME}
         pybind11::embed
         ${TARGET}
         )
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/UniDesk/CppExt ${QHOTKEY_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME}
+        PRIVATE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/UniDesk/CppExt 
+        ${QHOTKEY_INCLUDE_DIR} 
+        ${EXPRTK_INCLUDE}
+        )
 # Qt Widgets Style
 #if (UNIX)
 #    find_package(ECM REQUIRED NO_MODULE)
