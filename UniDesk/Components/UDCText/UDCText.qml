@@ -117,7 +117,7 @@ UniDeskComBase{
         return {
             "type": base.type,
             "identification": base.identification,
-            "pageIdx": base.pageIdx,
+            "pageid": base.pageid,
             "x": base.x,
             "y": base.y,
             "canMove": base.canMove,
@@ -149,7 +149,7 @@ UniDeskComBase{
     function loadPropertyData(data){
         base.type=data.type;
         base.identification=data.identification;
-        base.pageIdx=data.pageIdx;
+        base.pageid=data.pageid;
         base.x=data.x;
         base.y=data.y;
         base.canMove=data.canMove;

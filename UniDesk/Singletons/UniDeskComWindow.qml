@@ -16,7 +16,7 @@ UniDeskWindow{
     height: 350
     title: qsTr("选择控件")
     property string parentId
-    property int pageIdx
+    property int pageid
     ScrollView{
         anchors.fill: parent
         anchors.margins: 10
@@ -42,7 +42,7 @@ UniDeskWindow{
                 radius: 5
                 onClicked: {
                     UniDeskComManager.close_all();
-                    UniDeskComManager.add_com("UDCText",contentText,pageIdx);
+                    UniDeskComManager.add_com("UDCText",contentText,pageid);
                     window.close();
                 }
             }

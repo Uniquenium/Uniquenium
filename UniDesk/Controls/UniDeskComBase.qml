@@ -15,7 +15,7 @@ UniDeskBase{
     property double mouseY: mouseArea.mouseY
     property string type
     property string identification
-    property int pageIdx
+    property int pageid
     property bool canMove: false
     property bool canResize: false
     property bool indicated: false
@@ -61,10 +61,10 @@ UniDeskBase{
     function deleteCom(){
         UniDeskComponentsData.removeComponent(base.identification);
         UniDeskComManager.component_list.splice(UniDeskComManager.getIndexById(base.identification),1);
-        var pidx=UniDeskComManager.pageIdxConvert(base.pageIdx)
-        for(var i=0;i<UniDeskComManager.compModels[pidx].count;i++){
-            if(UniDeskComManager.compModels[pidx].get(i).display===base.identification){
-                UniDeskComManager.compModels[pidx].remove(i)
+        var pidx=UniDeskComManager.pid2pindex(base.pageid)
+        for(var i=0;i<UniDeskComManager.compModels.get(pidx).value.count;i++){
+            if(UniDeskComManager.compModels.get(pidx).value.get(i).display===base.identification){
+                UniDeskComManager.compModels.get(pidx).value.remove(i);
             }
         }
         base.baseClose();

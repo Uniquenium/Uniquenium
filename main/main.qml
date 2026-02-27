@@ -100,7 +100,7 @@ UniDeskObject{
                 radius: width / 2
                 onClicked:{
                     UniDeskComWindow.parentId="";
-                    UniDeskComWindow.pageIdx=UniDeskComManager.pageIndex;
+                    UniDeskComWindow.pageid=UniDeskComManager.currentPid;
                     UniDeskComWindow.showActivate();
                 }
             }
@@ -162,16 +162,31 @@ UniDeskObject{
             UniDeskMenu{
                 id: mi_toggle_page
                 title: qsTr("切换页面")
-                Repeater{
+                // modal: UniDeskComManager.page_list
+                // UniDeskMenuItem{
+                //     text: model.text
+                //     font.family: UniDeskTextStyle.little.family
+                //     font.pixelSize: UniDeskTextStyle.little.pixelSize
+                //     font.bold: UniDeskComManager.pindex2pid(index)==UniDeskComManager.currentPid
+                //     onClicked: {
+                //         UniDeskComManager.toggle_page_to(model.pid);
+                //     }
+                // }
+                Instantiator {
+                    id: inst
                     model: UniDeskComManager.page_list
-                    UniDeskMenuItem{
+                    UniDeskMenuItem {
                         text: model.text
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: UniDeskComManager.getPageIdx(index)==UniDeskComManager.pageIndex
-                        onClicked: {
-                            UniDeskComManager.toggle_page_to(model.idx);
-                        }
+                        font.bold: UniDeskComManager.pindex2pid(index) === UniDeskComManager.currentPid
+                        onTriggered: UniDeskComManager.toggle_page_to(model.pid)
+                    }
+                    onObjectAdded: function(index, object){
+                        mi_toggle_page.insertItem(index, object)
+                    }
+                    onObjectRemoved: function(object){
+                        mi_toggle_page.removeItem(object)
                     }
                 }
             }

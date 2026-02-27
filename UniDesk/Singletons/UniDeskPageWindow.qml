@@ -19,6 +19,7 @@ UniDeskWindow{
     property bool isMove: false
     property int moveIndex
     property string moveComId
+    property bool isMenuPopup: false
     ScrollView{    
         anchors.fill: parent
         Rectangle {
@@ -46,7 +47,7 @@ UniDeskWindow{
                         visible: !dele.editing
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: UniDeskComManager.getPageIdx(index)===UniDeskComManager.pageIndex
+                        font.bold: UniDeskComManager.pindex2pid(index)===UniDeskComManager.currentPid
                         anchors.verticalCenter: parent.verticalCenter
                         x: 10
                     }
@@ -64,9 +65,10 @@ UniDeskWindow{
                         visible: window.isMove
                         onClicked:{
                             window.isMove=false;
-                            UniDeskComManager.move_com_to_page(window.moveComId,index)
+                            UniDeskComManager.move_com_to_page(window.moveComId,index);
+                            UniDeskComManager.toggle_page_to(UniDeskComManager.pindex2pid(index));
                             window.currentIndex=index;
-                            liview.model=UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
+                            liview.model=UniDeskComManager.compModels.get(UniDeskComManager.pid2pindex(window.currentIndex)).value;
                         }
                     }
                     Component.onCompleted: {
@@ -78,13 +80,13 @@ UniDeskWindow{
                     color: index==window.currentIndex ? UniDeskSettings.primaryColor : "transparent"
                     UniDeskTextField{
                         id: rename_page_field
-                        property int pageIdx
+                        property int pageid
                         anchors.fill: parent
                         anchors.margins: 5
                         visible: dele.editing
                         onEditingFinished: {
                             dele.editing=false;
-                            UniDeskComManager.rename_page(pageIdx,text)
+                            UniDeskComManager.rename_page(pageid,text)
                             option4_listView.model=UniDeskComManager.page_list;
                         }
                     }
@@ -94,12 +96,13 @@ UniDeskWindow{
                         hoverEnabled: true
                         visible: (!dele.editing)&&(!window.isMove)
                         onClicked: (mouse)=> {
-                            if(mouse.button===Qt.LeftButton){
+                            if(mouse.button===Qt.LeftButton&&(!isMenuPopup)){
                                 window.currentIndex=index;
-                                liview.model=UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
+                                liview.model=UniDeskComManager.compModels.get(window.currentIndex).value
                             }
                             if(mouse.button===Qt.RightButton){
                                 m_list.popup(dele,mouseX,mouseY)
+                                isMenuPopup=true;
                             }
                         }
                     }
@@ -107,9 +110,9 @@ UniDeskWindow{
                         id: m_list
                         UniDeskMenuItem{
                             text: qsTr("重命名")
-                            disabled: UniDeskComManager.getPageIdx(index)===0
+                            disabled: UniDeskComManager.pindex2pid(index)===0
                             onClicked: {
-                                rename_page_field.pageIdx=index;
+                                rename_page_field.pageid=index;
                                 rename_page_field.text=model.text
                                 dele.editing=true;
                             }
@@ -135,7 +138,8 @@ UniDeskWindow{
                         UniDeskMenuItem{
                             text: qsTr("切换到此页")
                             onClicked: {
-                                UniDeskComManager.toggle_page_to(UniDeskComManager.getPageIdx(index));
+                                UniDeskComManager.toggle_page_to(UniDeskComManager.pindex2pid(index));
+                                currentIndex=index;
                             }
                         }
                         UniDeskMenuItem{
@@ -159,6 +163,9 @@ UniDeskWindow{
                                 UniDeskComManager.remove_page(index)
                             }
                         }
+                        onAboutToHide: {
+                            isMenuPopup=false;
+                        }
                     }
                 }
                 ScrollBar.vertical: ScrollBar {}
@@ -179,7 +186,7 @@ UniDeskWindow{
                 id: liview
                 anchors.fill: parent
                 anchors.margins: 10
-                model: UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
+                model: UniDeskComManager.compModels.get(UniDeskComManager.pid2pindex(window.currentIndex)).value
                 ScrollBar.vertical: ScrollBar {}
                 spacing: 10
                 delegate: Rectangle{
@@ -223,7 +230,7 @@ UniDeskWindow{
                             visible: UniDeskComManager.getComById(model.display)?UniDeskComManager.getComById(model.display).subComponentable:false
                             onClicked:{
                                 UniDeskComWindow.parentId=model.display;
-                                UniDeskComWindow.pageIdx=UniDeskComManager.getComById(model.display).pageIdx;
+                                UniDeskComWindow.pageid=UniDeskComManager.getComById(model.display).pageid;
                                 UniDeskComWindow.showActivate();
                             }
                         }
@@ -237,7 +244,7 @@ UniDeskWindow{
                             radius: width / 2
                             onClicked:{
                                 UniDeskComManager.getComById(model.display).deleteCom();
-                                liview.model=UniDeskComManager.compModels[UniDeskComManager.pageIdxConvert(window.currentIndex)]
+                                liview.model=UniDeskComManager.compModels.value(UniDeskComManager.pid2pindex(window.currentIndex)).value
                             }
                         }
                         UniDeskButton{

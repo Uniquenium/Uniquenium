@@ -58,42 +58,49 @@ CPUStats getCPUStats_win() {
     return stats;
 }
 
-NetSnapshot getWinNetSnapshot(DWORD index = 0) {
+NetworkStats getNetworkStats_win() {
     DWORD dwSize = 0;
     GetIfTable(nullptr, &dwSize, FALSE);
     PMIB_IFTABLE pIfTable = (PMIB_IFTABLE)malloc(dwSize);
-    NetSnapshot snap{};
-    if (GetIfTable(pIfTable, &dwSize, FALSE) == NO_ERROR && index < pIfTable->dwNumEntries) {
-        auto& row = pIfTable->table[index];
-        snap.bytesRecv = row.dwInOctets;
-        snap.bytesSend = row.dwOutOctets;
-        snap.packetsRecv = row.dwInUcastPkts + row.dwInNUcastPkts;
-        snap.packetsSend = row.dwOutUcastPkts + row.dwOutNUcastPkts;
-        snap.dropRecv = row.dwInDiscards;
-        snap.dropSend = row.dwOutDiscards;
+    static uint64_t lastRecv = 0, lastSend = 0;
+    static uint64_t lastPacketsRecv = 0, lastPacketsSend = 0;
+    static uint64_t lastDropRecv = 0, lastDropSend = 0;
+    NetworkStats ns{};
+    uint64_t packetsRecv = 0, packetsSend = 0, dropRecv = 0, dropSend = 0;
+
+    if (GetIfTable(pIfTable, &dwSize, FALSE) == NO_ERROR) {
+        for (DWORD i = 0; i < pIfTable->dwNumEntries; ++i) {
+            auto& row = pIfTable->table[i];
+            // 跳过loopback、未启用、无效类型等
+            if (row.dwType == MIB_IF_TYPE_LOOPBACK )
+                continue;
+            ns.bytesRecv += row.dwInOctets;
+            ns.bytesSend += row.dwOutOctets;
+            packetsRecv += row.dwInUcastPkts + row.dwInNUcastPkts;
+            packetsSend += row.dwOutUcastPkts + row.dwOutNUcastPkts;
+            dropRecv += row.dwInDiscards;
+            dropSend += row.dwOutDiscards;
+        }
     }
     free(pIfTable);
-    return snap;
-}
 
-NetworkStats getNetworkStats_win() {
-    NetSnapshot now = getWinNetSnapshot();
-    NetworkStats ns{};
-    ns.bytesRecv = now.bytesRecv;
-    ns.bytesSend = now.bytesSend;
-    ns.bytesRecvPerSec = now.bytesRecv - last.bytesRecv;
-    ns.bytesSendPerSec = now.bytesSend - last.bytesSend;
+    // 速率与丢包率：要采样两次
+    ns.bytesRecvPerSec = ns.bytesRecv - lastRecv;
+    ns.bytesSendPerSec = ns.bytesSend - lastSend;
 
-    uint64_t deltaPacketsRecv = now.packetsRecv - last.packetsRecv;
-    uint64_t deltaPacketsSend = now.packetsSend - last.packetsSend;
-    uint64_t deltaDropRecv = now.dropRecv - last.dropRecv;
-    uint64_t deltaDropSend = now.dropSend - last.dropSend;
+    uint64_t deltaPackets = (packetsRecv - lastPacketsRecv) + (packetsSend - lastPacketsSend);
+    uint64_t deltaDrops   = (dropRecv - lastDropRecv) + (dropSend - lastDropSend);
 
-    uint64_t totalPackets = deltaPacketsRecv + deltaPacketsSend;
-    uint64_t totalDrops = deltaDropRecv + deltaDropSend;
-    ns.dropPercent = totalPackets ? (double)totalDrops / totalPackets * 100 : 0;
+    ns.dropPercent = deltaPackets ? (double)deltaDrops / deltaPackets * 100.0 : 0.0;
 
-    last = now;
+    // 更新为下一次采样
+    lastRecv = ns.bytesRecv;
+    lastSend = ns.bytesSend;
+    lastPacketsRecv = packetsRecv;
+    lastPacketsSend = packetsSend;
+    lastDropRecv = dropRecv;
+    lastDropSend = dropSend;
+
     return ns;
 }
 
@@ -132,6 +139,7 @@ BatteryStats getBatteryStats_win() {
 #include <sstream>
 #include <thread>
 #include <chrono>
+#include <regex>
 
 static NetSnapshot last;
 
@@ -169,20 +177,38 @@ CPUStats getCPUStats_linux() {
     return stats;
 }
 
+std::string getDefaultIface() {
+    std::ifstream file("/proc/net/dev");
+    std::string line;
+    std::regex ifaceRegex(R"(([\w\d]+):)");
+    while (std::getline(file, line)) {
+        std::smatch m;
+        if (std::regex_search(line, m, ifaceRegex)) {
+            std::string iface = m[1];
+            if (iface != "lo")   // 忽略loopback
+                return iface;
+        }
+    }
+    return "eth0";
+}
+
 NetSnapshot getNetSnapshot_linux(const std::string& iface) {
     std::ifstream file("/proc/net/dev");
     std::string line;
     NetSnapshot snap{};
     while(std::getline(file, line)) {
         if(line.find(iface) != std::string::npos) {
+            // 去除接口名和 ':' 后，按顺序取字段
             std::istringstream iss(line.substr(line.find(":")+1));
-            iss >> snap.bytesRecv
-                >> snap.packetsRecv
-                >> snap.dropRecv;
-            for(int i=0;i<5;i++) iss >> std::ws;  // 跳到发送部分
-            iss >> snap.bytesSend
-                >> snap.packetsSend
-                >> snap.dropSend;
+            iss >> snap.bytesRecv     // 1  接收 bytes
+                >> snap.packetsRecv   // 2  接收 packets
+                >> std::ws            // 3  errs
+                >> snap.dropRecv      // 4  drop
+                >> std::ws >> std::ws >> std::ws >> std::ws
+                >> snap.bytesSend     // 9  发送 bytes
+                >> snap.packetsSend   // 10 发送 packets
+                >> std::ws            // 11 errs
+                >> snap.dropSend;     // 12 drop
             break;
         }
     }
@@ -269,7 +295,7 @@ SystemStats UDCTextUtils::getSystemStats() {
     s.bat = getBatteryStats_win();
 #elif defined(Q_OS_LINUX)
     s.cpu = getCPUStats_linux();
-    s.net = getNetworkStats_linux("eth0");
+    s.net = getNetworkStats_linux(getDefaultIface());
     s.mem = getMemoryStats_linux();
     s.bat = getBatteryStats_linux();
 #endif

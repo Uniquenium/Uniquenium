@@ -2,6 +2,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QDebug>
+#include <QDate>
 #include "UDCTextTools.h"
 #include "UDCTextUtils.h"
 #include "exprtk.hpp"
@@ -20,13 +21,6 @@ UDCTextTools::UDCTextTools(QQuickItem *parent)
 
 void UDCTextTools::startThread() {
     QThread* thread = QThread::create([this]() {
-
-        // py::scoped_interpreter guard{};
-        // py::object psutil = py::module_::import("psutil");
-        // py::object calendar = py::module_::import("calendar");
-        // py::object datetime_mod = py::module_::import("datetime");
-        // py::object time_mod = py::module_::import("time");
-        // qint64 prevSend = 0, prevRecv = 0;
         while (true) {
             systemStats(UDCTextUtils::getInstance()->getSystemStats());
             QThread::sleep(1);
@@ -38,12 +32,16 @@ void UDCTextTools::startThread() {
 QString UDCTextTools::convertStr(const QString &text) {
     QString result = text;
     QDateTime dt = QDateTime::currentDateTime();
-    result.replace("%%", "[(*&*%^*$^%#%%^^&&*^*&(^))]");
-    // result.replace("%isLeapYear", QString::number(calendar.attr("isleap")(dt.toString("yyyy").toInt()).cast<bool>()));
-    // result.replace("%yearDays", QString::number(calendar.attr("isleap")(dt.toString("yyyy").toInt()).cast<bool>() ? 366 : 365));
-    // result.replace("%monthDays", QString::number(calendar.attr("monthrange")(dt.toString("yyyy").toInt(), dt.toString("M").toInt()).attr("__getitem__")(1).cast<int>()));
-    // result.replace("%dayOfYear", QString::number(dt2.attr("timetuple")().attr("tm_yday").cast<int>()));
+    QDate qd=QDate::currentDate();
     SystemStats stats=systemStats();
+    bool plugged = stats.bat.charging;
+    int minsleft = stats.bat.remainMinutes;
+    result.replace("%%", "[(*&*%^*$^%#%%^^&&*^*&(^))]");
+    result.replace("%isLeapYear", QString::number(qd.daysInYear()==366));
+    result.replace("%yearDays", QString::number(qd.daysInYear()));
+    result.replace("%monthDays", QString::number(qd.daysInMonth()));
+    result.replace("%dayOfYear", QString::number(qd.dayOfYear()));
+    result.replace("%dayOfWeek", QString::number(qd.dayOfWeek()));
     result.replace("%cpuPercent", QString::number(stats.cpu.usagePercent));
     result.replace("%bytesSendTotal", QString::number(stats.net.bytesSend));
     result.replace("%bytesRecvTotal", QString::number(stats.net.bytesRecv));
@@ -57,8 +55,6 @@ QString UDCTextTools::convertStr(const QString &text) {
     result.replace("%virtmemPercent", QString::number(stats.mem.virtmemPercent));
     result.replace("%swapmemPercent", QString::number(stats.mem.swapmemPercent));
     result.replace("%bpercent", QString::number(stats.bat.batteryPercent));
-    bool plugged = stats.bat.charging;
-    int minsleft = stats.bat.remainMinutes;
     result.replace("%bleftdays", plugged ? "UNLIMITED" : QString::number(minsleft / 6440));
     result.replace("%blefthoursr", plugged ? "UNLIMITED" : QString::number((minsleft % 6440) / 60));
     result.replace("%bleftminsr", plugged ? "UNLIMITED" : QString::number(minsleft % 60));
@@ -88,7 +84,6 @@ QString UDCTextTools::convertStr(const QString &text) {
     result.replace("%zzz", dt.toString("zzz"));
     result.replace("%z", dt.toString("z"));
     result.replace("%t", dt.toString("t"));
-    // // %{exp} 表达式支持
     int idx = 0;
     while ((idx = result.indexOf("%{")) != -1) {
         int idx2 = result.indexOf("}", idx);
