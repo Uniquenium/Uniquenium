@@ -16,7 +16,8 @@ UniDeskDialog{
     property string text
     property bool autoCloseAfterClick: true
     signal buttonClicked
-    property bool autoShow: false
+    autoVisible: false
+    autoDestroy: false
     ListModel{
         id: buttonlist
     }
@@ -58,8 +59,5 @@ UniDeskDialog{
     }
     function addButton(text){
         buttonlist.append({"text":text})
-    }
-    Component.onCompleted: {
-        visible=autoShow;
     }
 }

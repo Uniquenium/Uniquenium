@@ -57,7 +57,7 @@ UniDeskComBase{
             text: qsTr("编辑")
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
-                optionsText.showActivate()
+                optionsText.show()
             }
         }
         UniDeskMenuItem{

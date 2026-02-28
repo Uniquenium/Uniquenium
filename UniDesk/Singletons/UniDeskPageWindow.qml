@@ -231,7 +231,7 @@ UniDeskWindow{
                             onClicked:{
                                 UniDeskComWindow.parentId=model.display;
                                 UniDeskComWindow.pageid=UniDeskComManager.getComById(model.display).pageid;
-                                UniDeskComWindow.showActivate();
+                                UniDeskComWindow.show();
                             }
                         }
                         UniDeskButton{

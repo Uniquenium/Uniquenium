@@ -125,10 +125,6 @@ Window {
         Component.onDestruction: {
             frameless.onDestruction();
         }
-        onEffectiveChanged: {
-            if (effective) {
-            }
-        }
         onFocusOut: {
             window.focusOut();
         }
@@ -328,9 +324,8 @@ Window {
         return layout_container;
     }
     function showActivate(){
-        frameless.componentComplete();
-        if (visible){
-            window.requestActivate()
+        if(visible){
+            window.requestActivate();
         }
         else{
             window.show();

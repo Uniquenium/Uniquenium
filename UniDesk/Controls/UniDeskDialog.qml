@@ -8,6 +8,7 @@ import UniDesk.Controls
 import UniDesk
 
 UniDeskWindow{
+    id: control
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowMinimizeButtonHint
     showMaximize: false
     fixSize: true

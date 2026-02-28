@@ -47,7 +47,7 @@ UniDeskObject{
                 iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                 radius: width / 2
                 onClicked:{
-                    confirm_exit_dialog.show();
+                    confirm_exit_dialog.showActivate();
                 }
             }
             UniDeskButton{
@@ -105,7 +105,6 @@ UniDeskObject{
                 }
             }
         }
-        
         Behavior on height{
             NumberAnimation{
                 duration: 500
@@ -162,16 +161,6 @@ UniDeskObject{
             UniDeskMenu{
                 id: mi_toggle_page
                 title: qsTr("切换页面")
-                // modal: UniDeskComManager.page_list
-                // UniDeskMenuItem{
-                //     text: model.text
-                //     font.family: UniDeskTextStyle.little.family
-                //     font.pixelSize: UniDeskTextStyle.little.pixelSize
-                //     font.bold: UniDeskComManager.pindex2pid(index)==UniDeskComManager.currentPid
-                //     onClicked: {
-                //         UniDeskComManager.toggle_page_to(model.pid);
-                //     }
-                // }
                 Instantiator {
                     id: inst
                     model: UniDeskComManager.page_list
@@ -224,7 +213,6 @@ UniDeskObject{
         }
         onButtonClicked: {
             if(clickedIndex==0){
-                // print(UniDeskComManager)
                 UniDeskComManager.close_all();
                 base.baseClose();
                 object.closeAllWindows();
@@ -233,7 +221,7 @@ UniDeskObject{
         }
     }
     UniDeskMessageBox{
-        id: error_dialog
+        id: shutdown_dialog
         title: qsTr("确认关机")
         text: qsTr("确认要关机吗？")
         Component.onCompleted: {

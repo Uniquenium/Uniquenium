@@ -95,6 +95,7 @@ endif ()
 
 set(PROJECT_SOURCES
     launcher.cpp
+    main/main.qml
     resources.qrc
 )
 
