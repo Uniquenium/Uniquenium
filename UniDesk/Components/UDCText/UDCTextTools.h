@@ -21,8 +21,7 @@ public:
 
     Q_INVOKABLE QString convertStr(const QString &text);
 
-public slots:
-    void startThread();
+    Q_INVOKABLE void startThread();
 
 private:
     void updateData();

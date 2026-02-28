@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Controls.Basic
 import QtQuick.Templates as T
-import Qt5Compat.GraphicalEffects
+import UniDesk.GraphicalEffects
 import UniDesk.Controls
 import UniDesk
 

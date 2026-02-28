@@ -7,6 +7,7 @@ import QtQuick.Controls.Basic
 import UniDesk
 import UniDesk.Controls
 import UniDesk.Singletons
+import UniDesk
 
 UniDeskWindow{
     id: window

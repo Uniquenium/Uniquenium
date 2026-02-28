@@ -31,7 +31,6 @@ public:
     Q_INVOKABLE void setCurrentPage(int idx);
     Q_INVOKABLE int getCurrentPage();
     Q_INVOKABLE QVariant getComponentTypes();
-    Q_INVOKABLE void startFuncs();
 };
 
 #endif // UNIDESKCOMPONENTSDATA_H

@@ -27,7 +27,7 @@ constexpr hash_t hash_compile_time(char const* str, hash_t last_value = basis)
 
 /**
  * @brief The UniDeskUtils class. Contains some small utils.
- * @since LingmoUI 3.0
+ * @since UniDesk 3.0
  */
 class UniDeskUtils : public QObject {
     Q_OBJECT
