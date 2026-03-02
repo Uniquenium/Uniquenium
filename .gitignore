@@ -9,4 +9,5 @@ _deps/
 .pyproject
 */.qmlls.ini
 *.user
+*.user.*
 

@@ -95,9 +95,19 @@ endif ()
 
 set(PROJECT_SOURCES
     launcher.cpp
-    main/main.qml
+    main.qml
     resources.qrc
 )
+
+#如果是Windows平台，则生成rc文件
+set(EXAMPLE_VERSION_RC_PATH "")
+if (WIN32)
+    set(EXAMPLE_VERSION_RC_PATH ${CMAKE_CURRENT_BINARY_DIR}/version_${PROJECT_NAME}.rc)
+    configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/version_exe.rc.in
+            ${EXAMPLE_VERSION_RC_PATH}
+    )
+endif ()
 
 #exprtk
 set(EXPRTK_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/extern/exprtk)
@@ -111,6 +121,7 @@ qt_add_executable(${PROJECT_NAME}
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
     # ${QM_FILES}
+    ${EXAMPLE_VERSION_RC_PATH}
 )
 target_link_libraries(${PROJECT_NAME}
         PUBLIC

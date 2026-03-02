@@ -1,2 +1,0 @@
-
-python -u launcher.py

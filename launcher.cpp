@@ -21,7 +21,7 @@ int main(int argc,char* argv[]){
     py::scoped_interpreter guard{}; // Start the Python interpreter
     QQmlApplicationEngine engine;
     engine.addImportPath(QDir::currentPath()+"/temp");
-    const QUrl url(QStringLiteral("qrc:/main/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/main.qml"));
     engine.load(url);
     if (engine.rootObjects().isEmpty())
         return -1;
