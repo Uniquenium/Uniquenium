@@ -34,7 +34,7 @@ UniDeskComBase{
     chosen: optionsText ? optionsText.visible : false
     UniDeskText{
         id: cont
-        text: base.textContent ? UDCTextTools.convertStr(base.textContent) : qsTr("请输入文本内容")
+        text: base.textContent ? UniDeskExpr.convertStr(base.textContent) : qsTr("请输入文本内容")
         textColor: base.textColor
         font.family: base.fontFamily
         font.pixelSize: base.fontSize
@@ -93,7 +93,7 @@ UniDeskComBase{
         id: flushText
         interval: 50
         onTriggered: {
-            cont.text=base.textContent ? UDCTextTools.convertStr(base.textContent) : qsTr("请输入文本内容");
+            cont.text=base.textContent ? UniDeskExpr.convertStr(base.textContent) : qsTr("请输入文本内容");
         }
         repeat: true
     }
@@ -178,7 +178,7 @@ UniDeskComBase{
     Component.onCompleted:{
         flushText.start();
     }
-    Component.onDestruction: {
+    onCloseSignal: ()=>{
         if(optionsText){
             optionsText.close();
         }

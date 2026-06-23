@@ -3,8 +3,8 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDate>
-#include "UDCTextTools.h"
-#include "UDCTextUtils.h"
+#include "UniDeskExpr.h"
+#include "UniDeskSystemInfo.h"
 #include "exprtk.hpp"
 
 typedef exprtk::symbol_table<double> symbol_table_t;
@@ -12,24 +12,30 @@ typedef exprtk::expression<double>   expression_t;
 typedef exprtk::parser<double>       parser_t;
 typedef exprtk::parser_error::type   error_t;
 
-UDCTextTools::UDCTextTools(QQuickItem *parent)
+UniDeskExpr::UniDeskExpr(QQuickItem *parent)
     : QQuickItem(parent)
 {
 
     startThread();
 }
 
-void UDCTextTools::startThread() {
-    QThread* thread = QThread::create([this]() {
+void UniDeskExpr::startThread() {
+    thread(QThread::create([this]() {
         while (true) {
-            systemStats(UDCTextUtils::getInstance()->getSystemStats());
+            systemStats(UniDeskSystemInfo::getInstance()->getSystemStats());
             QThread::sleep(1);
         }
-    });
-    thread->start();
+    }));
+    thread()->start();
 }
 
-QString UDCTextTools::convertStr(const QString &text) {
+void UniDeskExpr::stopThread(){
+    thread()->terminate();
+    thread()->wait(1000);
+}
+
+
+QString UniDeskExpr::convertStr(const QString &text) {      
     QString result = text;
     QDateTime dt = QDateTime::currentDateTime();
     QDate qd=QDate::currentDate();

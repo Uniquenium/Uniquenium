@@ -17,7 +17,7 @@ public:
     SINGLETON(UniDeskGlobals)
     static auto create(QQmlEngine*, QJSEngine*) { return getInstance(); }
 
-    Q_INVOKABLE void updateIsLight(int val = -1);
+    Q_INVOKABLE void updateIsLight();
     Q_INVOKABLE void emitApplicationQuit();
     Q_INVOKABLE void startThread();
     Q_INVOKABLE void startListener();

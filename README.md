@@ -67,6 +67,7 @@ An open-source desktop extension tool that combines beautification and practical
   - [ ] RSS
   - [ ] Screen Using Time
   - [ ] ClipBoard
+  - [ ] Encoder/Decoder
 
 # Acknowledgements
 

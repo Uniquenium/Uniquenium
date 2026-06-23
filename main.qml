@@ -213,10 +213,7 @@ UniDeskObject{
         }
         onButtonClicked: {
             if(clickedIndex==0){
-                UniDeskComManager.close_all();
-                base.baseClose();
-                object.closeAllWindows();
-                UniDeskGlobals.emitApplicationQuit();
+                exitAll();
             }
         }
     }
@@ -267,7 +264,18 @@ UniDeskObject{
         UniDeskComWindow.close();
         UniDeskPageWindow.close();
     }
+    function exitAll(){
+        UniDeskComManager.close_all();
+        base.baseClose();
+        object.closeAllWindows();
+        UniDeskExpr.stopThread();
+        UniDeskGlobals.emitApplicationQuit();
+    }
     Component.onCompleted: {
         UniDeskSettingsWindow.hide();
+        UniDeskComManager.loadComponentTypesFromData();
+        UniDeskComManager.currentPid=UniDeskComponentsData.getCurrentPage();
+        UniDeskComManager.loadPagesFromData();
+        UniDeskComManager.loadComponentsFromData();
     }
 }

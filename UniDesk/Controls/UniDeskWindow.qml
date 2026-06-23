@@ -331,4 +331,10 @@ Window {
             window.show();
         }
     }
+    Connections{
+        target: UniDeskGlobals
+        function onApplicationQuit() {
+            window.close();
+        }
+    }
 }

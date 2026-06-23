@@ -10,6 +10,7 @@ import UniDesk
 
 UniDeskBase{
     id: base
+    signal closeSignal
     property alias bg: rect_bg
     property double mouseX: mouseArea.mouseX
     property double mouseY: mouseArea.mouseY
@@ -67,12 +68,19 @@ UniDeskBase{
                 UniDeskComManager.compModels.get(pidx).value.remove(i);
             }
         }
+        base.closeSignal();
         base.baseClose();
-        base.destroy();
+        // base.destroy();  //this cause the whole process terminated
     }
     function baseClose(){
         indicator_base.close();
         base.close();
     }
-
+    Connections{
+        target: UniDeskGlobals
+        function onApplicationQuit() {
+            base.closeSignal();
+            base.baseClose();
+        }
+    }
 }

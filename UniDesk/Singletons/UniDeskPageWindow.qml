@@ -15,6 +15,7 @@ UniDeskWindow{
     width: 1000
     height: 700
     title: qsTr("页面层级")
+    autoDestroy: false// keep the system appbar hidden (temporary solution)
     property int currentIndex: 0
     property bool isMove: false
     property int moveIndex

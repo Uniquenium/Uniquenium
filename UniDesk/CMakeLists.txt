@@ -26,7 +26,6 @@ target_link_libraries(${TARGET}
         Qt6::GuiPrivate
         Qt6::Core5Compat
         QHotkey::QHotkey
-        pybind11::embed
         )
 target_include_directories(${TARGET} 
         PRIVATE 

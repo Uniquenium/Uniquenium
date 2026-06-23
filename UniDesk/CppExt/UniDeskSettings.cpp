@@ -1,11 +1,9 @@
-#include <pybind11/embed.h>
 #include "UniDeskSettings.h"
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-
-namespace py=pybind11;
+#include <QDir>
 
 static QString settingsFile = "./data/settings.json";
 
@@ -38,11 +36,7 @@ static QJsonObject defaultSettings() {
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
     QFile f(file);
-    py::exec(R"(
-    import os
-    if not os.path.exists("./data"):
-        os.mkdir("./data")
-    )");
+    QDir().mkdir("./data");
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QJsonDocument doc(obj);
     f.write(doc.toJson(QJsonDocument::Indented));

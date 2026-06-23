@@ -15,6 +15,7 @@ UniDeskWindow{
     width: 500
     height: 350
     title: qsTr("选择控件")
+    autoDestroy: false// keep the system appbar hidden (temporary solution)
     property string parentId
     property int pageid
     ScrollView{

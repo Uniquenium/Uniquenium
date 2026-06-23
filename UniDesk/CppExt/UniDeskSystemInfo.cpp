@@ -2,9 +2,9 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QDebug>
-#include "UDCTextUtils.h"
+#include "UniDeskSystemInfo.h"
 
-UDCTextUtils::UDCTextUtils() {}
+UniDeskSystemInfo::UniDeskSystemInfo() {}
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -286,7 +286,7 @@ BatteryStats getBatteryStats_linux() {
 
 #endif
 
-SystemStats UDCTextUtils::getSystemStats() {
+SystemStats UniDeskSystemInfo::getSystemStats() {  
     SystemStats s;
 #ifdef Q_OS_WIN
     s.cpu = getCPUStats_win();

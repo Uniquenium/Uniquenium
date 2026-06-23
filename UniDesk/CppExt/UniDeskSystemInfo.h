@@ -1,5 +1,5 @@
-#ifndef UDCTEXTUTILS_H
-#define UDCTEXTUTILS_H
+#ifndef UDCSYSTEMINFO_H
+#define UDCSYSTEMINFO_H
 
 #include <QQuickItem>
 #include <QtQml/qqml.h>
@@ -47,16 +47,16 @@ struct SystemStats {
     BatteryStats bat;
 };
 
-class UDCTextUtils: public QObject{
+class UniDeskSystemInfo: public QObject{
     Q_OBJECT
-    QML_NAMED_ELEMENT(LingmoColor)
+    QML_NAMED_ELEMENT(UniDeskSystemInfo)
     QML_SINGLETON
 private:
-    explicit UDCTextUtils();
+    explicit UniDeskSystemInfo();
 public:
-    SINGLETON(UDCTextUtils)
+    SINGLETON(UniDeskSystemInfo)
     static auto create(QQmlEngine*, QJSEngine*) { return getInstance(); }
     SystemStats getSystemStats();
 };
 
-#endif // UDCTEXTUTILS_H
+#endif // UNIDEKSYSTEMINFO_H

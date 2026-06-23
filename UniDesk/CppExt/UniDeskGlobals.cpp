@@ -1,16 +1,13 @@
-#include <pybind11/embed.h>
 #include "UniDeskGlobals.h"
 #include <QGuiApplication>
 #include <QPalette>
 #include <QTimer>
-#include <thread>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFile>
-namespace py = pybind11;
 
 static QMap<QString, QVariant> g_config;
-static std::thread th;
+static QTimer* themeTimer = nullptr;
 
 UniDeskGlobals::UniDeskGlobals(QQuickItem *parent)
     : QQuickItem(parent)
@@ -28,7 +25,7 @@ static QJsonObject readJsonFile(const QString &file) {
     return doc.object();
 }
 
-void UniDeskGlobals::updateIsLight(int val) {
+void UniDeskGlobals::updateIsLight() {
     bool prev = isLight();
     QJsonObject obj = readJsonFile("./data/settings.json");
     int colorMode = obj.value("colorMode").toInt();
@@ -50,18 +47,20 @@ void UniDeskGlobals::updateIsLight(int val) {
 
 void UniDeskGlobals::emitApplicationQuit() {
     emit applicationQuit();
+    QGuiApplication::quit();
 }
 
 void UniDeskGlobals::startThread() {
-    th = std::thread([this]() { startListener(); });
-    th.detach();
+    if (themeTimer) return;
+    themeTimer = new QTimer(this);
+    connect(themeTimer, &QTimer::timeout, this, [this]() {
+        updateIsLight();
+    });
+    themeTimer->start(1000); // 每秒检测一次主题变化
 }
 
 void UniDeskGlobals::startListener() {
-    py::scoped_interpreter guard{};
-    py::module darkdetect = py::module::import("darkdetect");
-    auto listener = darkdetect.attr("listener");
-    listener([this](int val){
-        QMetaObject::invokeMethod(this, [this, val](){ updateIsLight(val); }, Qt::QueuedConnection);
-    });
+    startThread();
 }
+
+

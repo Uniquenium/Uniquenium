@@ -1,4 +1,3 @@
-#include <pybind11/embed.h>
 #include "UniDeskTools.h"
 #include "UniDeskSettings.h"
 #include <QFontDatabase>
@@ -18,8 +17,6 @@
 #include <windows.h>
 #include <winreg.h>
 #endif
-
-namespace py = pybind11;
 
 UniDeskTools::UniDeskTools(QQuickItem *parent)
     : QQuickItem(parent)
@@ -46,7 +43,11 @@ QColor UniDeskTools::switchColor(const QColor &normal, const QColor &hover, cons
 }
 
 void UniDeskTools::systemCommand(const QString &command) {
-    py::exec("os.system('" + command.toStdString() + "')");
+#ifdef Q_OS_WIN
+    QProcess::startDetached("cmd.exe", QStringList() << "/c" << command);
+#else
+    QProcess::startDetached("sh", QStringList() << "-c" << command);
+#endif
 }
 
 QFont UniDeskTools::font(const QString &family, int size) {

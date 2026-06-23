@@ -16,7 +16,7 @@ UniDeskObject{
     property int serialComponentCnt: 1
     property int serialPageCnt: 1
     property int delta: 100
-    property list<UniDeskComBase> component_list
+    property list<var> component_list
     property int newX: 0
     property int newY: 0
     property alias page_list: page_list_model
@@ -206,11 +206,5 @@ UniDeskObject{
         compModels.get(pid2pindex(c.pageid)).value.remove(index_in_compModels(comId));
         c.pageid=pindex2pid(indexPage);
         c.saveComToFile();
-    }
-    Component.onCompleted: {
-        loadComponentTypesFromData();
-        currentPid=UniDeskComponentsData.getCurrentPage();
-        loadPagesFromData();
-        loadComponentsFromData();
     }
 }

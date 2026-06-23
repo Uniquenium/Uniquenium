@@ -112,7 +112,7 @@ endif ()
 #exprtk
 set(EXPRTK_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/extern/exprtk)
 
-add_subdirectory(extern/pybind11)
+# Removed pybind11 dependency - using pure C++ implementation
 
 add_subdirectory(UniDesk)
 
@@ -136,7 +136,6 @@ target_link_libraries(${PROJECT_NAME}
         Qt6::GuiPrivate
         Qt6::Core5Compat
         QHotkey::QHotkey
-        pybind11::embed
         ${TARGET}
         )
 target_include_directories(${PROJECT_NAME}

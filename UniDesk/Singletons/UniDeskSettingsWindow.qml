@@ -15,6 +15,7 @@ UniDeskWindow{
     width: 1000
     height: 700
     title: qsTr("设置")
+    autoDestroy: false// keep the system appbar hidden (temporary solution)
     UniDeskTabBar{
         id: tabBar
         x: 10
@@ -147,7 +148,7 @@ UniDeskWindow{
                 currentIndex: UniDeskSettings.colorMode
                 onCurrentIndexChanged: {
                     UniDeskSettings.set("colorMode", currentIndex);
-                    UniDeskGlobals.updateIsLight(0);
+                    UniDeskGlobals.updateIsLight();
                 }
             }
             UniDeskText{

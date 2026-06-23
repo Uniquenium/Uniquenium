@@ -11,16 +11,16 @@ import UniDesk
 
 UniDeskComboBox{
     id: control
-    property UniDeskComBase editingComponent
+    property var editingComponent
     enableComDelegate: true
     model: getIds(componentList);
-    property list<UniDeskComBase> componentList: UniDeskComManager.component_list
+    property list<var> componentList: UniDeskComManager.component_list
     editable: true
     width: 300
     function getIds(list){
         var ids = [qsTr("桌面")];
         for(var i=0;i<list.length;i++){
-            if(list[i]!==editingComponent){  
+            if(list[i]&&(list[i]!==editingComponent)){
                 ids.push(list[i].identification);
             }
         }

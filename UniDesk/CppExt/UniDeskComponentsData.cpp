@@ -1,4 +1,3 @@
-#include <pybind11/embed.h>
 #include "UniDeskComponentsData.h"
 #include <QFile>
 #include <QJsonDocument>
@@ -6,12 +5,8 @@
 #include <QJsonArray>
 #include <QTextStream>
 #include <QDir>
-#include <QFile>
-#include <QTextStream>
 #include <QQmlEngine>
 #include <QDebug>
-
-namespace py = pybind11;
 
 static QString componentsFile = "./data/components.json";
 
@@ -24,11 +19,7 @@ static QJsonObject defaultComponents() {
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
     QFile f(file);
-    py::exec(R"(
-    import os
-    if not os.path.exists("./data"):
-        os.mkdir("./data")
-    )");
+    QDir().mkdir("./data");
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QJsonDocument doc(obj);
     f.write(doc.toJson(QJsonDocument::Indented));
