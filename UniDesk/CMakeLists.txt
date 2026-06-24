@@ -3,15 +3,16 @@ qt_standard_project_setup()
 # Create Qt6 library target
 qt_add_library(${TARGET} SHARED)
 
-file(STRINGS Components/components-list COMPONENT_LIST)
+# 使用 JSON 文件代替 components-list
+# file(STRINGS Components/components-list COMPONENT_LIST)
 
 set(UNIDESK_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-set(component_lib_list "")
-set(component_dir_list "")
-foreach(line IN LISTS COMPONENT_LIST)
-    # list(APPEND component_lib_list ${TARGET}${line})
-    list(APPEND component_dir_list ${CMAKE_CURRENT_SOURCE_DIR}/Components/${line})
-endforeach()
+# set(component_lib_list "")
+# set(component_dir_list "")
+# foreach(line IN LISTS COMPONENT_LIST)
+#     # list(APPEND component_lib_list ${TARGET}${line})
+#     list(APPEND component_dir_list ${CMAKE_CURRENT_SOURCE_DIR}/Components/${line})
+# endforeach()
 
 target_link_libraries(${TARGET}
         PUBLIC
@@ -31,7 +32,7 @@ target_include_directories(${TARGET}
         PRIVATE 
         ${QHOTKEY_INCLUDE_DIR} 
         ${CMAKE_CURRENT_SOURCE_DIR}/CppExt 
-        ${component_dir_list}
+        # ${component_dir_list}
         ${EXPRTK_INCLUDE}
         )
 
@@ -102,7 +103,8 @@ foreach (respath ${RES_PATHS})
     endforeach ()
 endforeach (respath)
 
-list(APPEND resource_files "Components/components-list")
+list(APPEND resource_files "Components/basic-com-list.json")
+list(APPEND resource_files "Components/extra-com-list.json")
 # list(APPEND sources_files "${EXPRTK_INCLUDE}")
 
 # Set Qt6 QMl Plugins

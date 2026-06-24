@@ -16,11 +16,13 @@ UniDeskWindow{
     height: 700
     title: qsTr("页面层级")
     autoDestroy: false// keep the system appbar hidden (temporary solution)
+    autoVisible: false
     property int currentIndex: 0
     property bool isMove: false
     property int moveIndex
     property string moveComId
     property bool isMenuPopup: false
+    property var comManager
     ScrollView{    
         anchors.fill: parent
         Rectangle {
@@ -33,7 +35,7 @@ UniDeskWindow{
             color: "transparent"
             ListView{
                 id: option4_listView
-                model: UniDeskComManager.page_list
+                model: comManager.page_list
                 anchors.fill: parent
                 anchors.margins: 10
                 spacing: 10
@@ -48,7 +50,7 @@ UniDeskWindow{
                         visible: !dele.editing
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: UniDeskComManager.pindex2pid(index)===UniDeskComManager.currentPid
+                        font.bold: comManager.pindex2pid(index)===comManager.currentPid
                         anchors.verticalCenter: parent.verticalCenter
                         x: 10
                     }
@@ -66,10 +68,10 @@ UniDeskWindow{
                         visible: window.isMove
                         onClicked:{
                             window.isMove=false;
-                            UniDeskComManager.move_com_to_page(window.moveComId,index);
-                            UniDeskComManager.toggle_page_to(UniDeskComManager.pindex2pid(index));
+                            comManager.move_com_to_page(window.moveComId,index);
+                            comManager.toggle_page_to(comManager.pindex2pid(index));
                             window.currentIndex=index;
-                            liview.model=UniDeskComManager.compModels.get(UniDeskComManager.pid2pindex(window.currentIndex)).value;
+                            liview.model=comManager.compModels.get(comManager.pid2pindex(window.currentIndex)).value;
                         }
                     }
                     Component.onCompleted: {
@@ -87,8 +89,8 @@ UniDeskWindow{
                         visible: dele.editing
                         onEditingFinished: {
                             dele.editing=false;
-                            UniDeskComManager.rename_page(pageid,text)
-                            option4_listView.model=UniDeskComManager.page_list;
+                            comManager.rename_page(pageid,text)
+                            option4_listView.model=comManager.page_list;
                         }
                     }
                     MouseArea{
@@ -99,7 +101,7 @@ UniDeskWindow{
                         onClicked: (mouse)=> {
                             if(mouse.button===Qt.LeftButton&&(!isMenuPopup)){
                                 window.currentIndex=index;
-                                liview.model=UniDeskComManager.compModels.get(window.currentIndex).value
+                                liview.model=comManager.compModels.get(window.currentIndex).value
                             }
                             if(mouse.button===Qt.RightButton){
                                 m_list.popup(dele,mouseX,mouseY)
@@ -111,7 +113,7 @@ UniDeskWindow{
                         id: m_list
                         UniDeskMenuItem{
                             text: qsTr("重命名")
-                            disabled: UniDeskComManager.pindex2pid(index)===0
+                            disabled: comManager.pindex2pid(index)===0
                             onClicked: {
                                 rename_page_field.pageid=index;
                                 rename_page_field.text=model.text
@@ -122,24 +124,24 @@ UniDeskWindow{
                             text: qsTr("在上方新建页面")
                             disabled: index==0
                             onClicked: {
-                                UniDeskComManager.insert_new_page(index)
+                                comManager.insert_new_page(index)
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("在下方新建页面")
                             onClicked: {
-                                if(index==UniDeskComManager.page_list.count-1){
-                                    UniDeskComManager.new_page()
+                                if(index==comManager.page_list.count-1){
+                                    comManager.new_page()
                                 }
                                 else{
-                                    UniDeskComManager.insert_new_page(index+1)
+                                    comManager.insert_new_page(index+1)
                                 }
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("切换到此页")
                             onClicked: {
-                                UniDeskComManager.toggle_page_to(UniDeskComManager.pindex2pid(index));
+                                comManager.toggle_page_to(comManager.pindex2pid(index));
                                 currentIndex=index;
                             }
                         }
@@ -147,21 +149,21 @@ UniDeskWindow{
                             text: qsTr("上移")
                             disabled: index==0 || index==1
                             onClicked: {
-                                UniDeskComManager.move_page_up(index)
+                                comManager.move_page_up(index)
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("下移")
-                            disabled: index==0 || index==UniDeskComManager.page_list.count-1
+                            disabled: index==0 || index==comManager.page_list.count-1
                             onClicked: {
-                                UniDeskComManager.move_page_down(index)
+                                comManager.move_page_down(index)
                             }
                         }
                         UniDeskMenuItem{
                             text: qsTr("删除")
                             disabled: index==0
                             onClicked: {
-                                UniDeskComManager.remove_page(index)
+                                comManager.remove_page(index)
                             }
                         }
                         onAboutToHide: {
@@ -187,7 +189,7 @@ UniDeskWindow{
                 id: liview
                 anchors.fill: parent
                 anchors.margins: 10
-                model: UniDeskComManager.compModels.get(UniDeskComManager.pid2pindex(window.currentIndex)).value
+                model: comManager.compModels.get(comManager.pid2pindex(window.currentIndex)).value
                 ScrollBar.vertical: ScrollBar {}
                 spacing: 10
                 delegate: Rectangle{
@@ -209,7 +211,7 @@ UniDeskWindow{
                         onHoveredChanged: {
                             rect_.color=hovered? UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.05) : Qt.rgba(0,0,0,0.5).lighter(1.05)  : "transparent"   
                             
-                            var com=UniDeskComManager.getComById(model.display)
+                            var com=comManager.getComById(model.display)
                             if(com){
                                 com.indicated=hovered;
                             }
@@ -228,10 +230,10 @@ UniDeskWindow{
                             bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                             iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                             radius: width / 2
-                            visible: UniDeskComManager.getComById(model.display)?UniDeskComManager.getComById(model.display).subComponentable:false
+                            visible: comManager.getComById(model.display)?comManager.getComById(model.display).subComponentable:false
                             onClicked:{
                                 UniDeskComWindow.parentId=model.display;
-                                UniDeskComWindow.pageid=UniDeskComManager.getComById(model.display).pageid;
+                                UniDeskComWindow.pageid=comManager.getComById(model.display).pageid;
                                 UniDeskComWindow.show();
                             }
                         }
@@ -244,8 +246,8 @@ UniDeskWindow{
                             iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                             radius: width / 2
                             onClicked:{
-                                UniDeskComManager.getComById(model.display).deleteCom();
-                                liview.model=UniDeskComManager.compModels.value(UniDeskComManager.pid2pindex(window.currentIndex)).value
+                                comManager.getComById(model.display).deleteCom();
+                                liview.model=comManager.compModels.value(comManager.pid2pindex(window.currentIndex)).value
                             }
                         }
                         UniDeskButton{

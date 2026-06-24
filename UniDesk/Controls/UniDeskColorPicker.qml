@@ -10,6 +10,7 @@ import UniDesk
 Item{
     id: root
     property color selectedColor
+    property var comManager
     property UniDeskComboBox colorTypeBox: combobox
     
     RowLayout{
@@ -27,6 +28,7 @@ Item{
         }
         UniDeskComboBox{
             id: combobox
+            comManager: root.comManager
             model: ["RGBA","HSLA","HSVA","HEX"]
             currentIndex: 0
             Layout.preferredWidth: 100 

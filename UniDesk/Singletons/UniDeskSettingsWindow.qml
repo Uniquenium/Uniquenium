@@ -16,6 +16,8 @@ UniDeskWindow{
     height: 700
     title: qsTr("设置")
     autoDestroy: false// keep the system appbar hidden (temporary solution)
+    autoVisible: false
+    property var comManager
     UniDeskTabBar{
         id: tabBar
         x: 10
@@ -141,6 +143,7 @@ UniDeskWindow{
             }
             UniDeskComboBox {
                 id: option1
+                comManager: window.comManager
                 model: [qsTr("浅色"), qsTr("深色"), qsTr("跟随系统")]
                 anchors.top: parent.top
                 anchors.right: parent.right
@@ -184,6 +187,7 @@ UniDeskWindow{
             }
             UniDeskFontBox{
                 id: option3
+                comManager: window.comManager
                 anchors.top: option2.bottom
                 anchors.right: parent.right
                 anchors.margins: 10

@@ -9,6 +9,9 @@ import Qt.labs.platform as QLP
 UniDeskObject{
     id: object
     property bool isExpand: true
+    UniDeskComManager{
+        id: component_manager
+    }
     UniDeskComBase {
         id: base
         visible: true
@@ -100,7 +103,7 @@ UniDeskObject{
                 radius: width / 2
                 onClicked:{
                     UniDeskComWindow.parentId="";
-                    UniDeskComWindow.pageid=UniDeskComManager.currentPid;
+                    UniDeskComWindow.pageid=component_manager.currentPid;
                     UniDeskComWindow.showActivate();
                 }
             }
@@ -163,13 +166,13 @@ UniDeskObject{
                 title: qsTr("切换页面")
                 Instantiator {
                     id: inst
-                    model: UniDeskComManager.page_list
+                    model: component_manager.page_list
                     UniDeskMenuItem {
                         text: model.text
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: UniDeskComManager.pindex2pid(index) === UniDeskComManager.currentPid
-                        onTriggered: UniDeskComManager.toggle_page_to(model.pid)
+                        font.bold: component_manager.pindex2pid(index) === component_manager.currentPid
+                        onTriggered: component_manager.toggle_page_to(model.pid)
                     }
                     onObjectAdded: function(index, object){
                         mi_toggle_page.insertItem(index, object)
@@ -186,7 +189,7 @@ UniDeskObject{
                 text: qsTr("添加页面")
                 iconSource: "qrc:/media/img/add-line.svg"
                 onClicked: {
-                    UniDeskComManager.new_page();
+                    component_manager.new_page();
                 }
             }
             UniDeskMenuItem{
@@ -265,17 +268,19 @@ UniDeskObject{
         UniDeskPageWindow.close();
     }
     function exitAll(){
-        UniDeskComManager.close_all();
+        component_manager.close_all();
         base.baseClose();
         object.closeAllWindows();
         UniDeskExpr.stopThread();
         UniDeskGlobals.emitApplicationQuit();
     }
     Component.onCompleted: {
-        UniDeskSettingsWindow.hide();
-        UniDeskComManager.loadComponentTypesFromData();
-        UniDeskComManager.currentPid=UniDeskComponentsData.getCurrentPage();
-        UniDeskComManager.loadPagesFromData();
-        UniDeskComManager.loadComponentsFromData();
+        UniDeskSettingsWindow.comManager=component_manager;
+        UniDeskComWindow.comManager=component_manager;
+        UniDeskPageWindow.comManager=component_manager;
+        component_manager.loadComponentTypesFromData();
+        component_manager.currentPid=UniDeskComponentsData.getCurrentPage();
+        component_manager.loadPagesFromData();
+        component_manager.loadComponentsFromData();
     }
 }

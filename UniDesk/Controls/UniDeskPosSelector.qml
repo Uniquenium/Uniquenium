@@ -13,6 +13,7 @@ Item{
     property var editingComponent
     property var horizontalAlignComponent
     property var verticalAlignment
+    property var comManager
     GridLayout{
         id: gridLayout
         columnSpacing: 10
@@ -92,6 +93,7 @@ Item{
         }
         UniDeskComBox{
             id: horizontalComBox
+            comManager: window.comManager
             Layout.preferredWidth: 200
             editingComponent: control.editingComponent
             Layout.column: 1
@@ -101,7 +103,7 @@ Item{
                     if(currentIndex === 0){
                         control.horizontalAlignComponent = undefined;
                     }else{
-                        control.horizontalAlignComponent = UniDeskComManager.getComById(currentText);
+                        control.horizontalAlignComponent = comManager.getComById(currentText);
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -109,6 +111,7 @@ Item{
         }
         UniDeskComBox{
             id: verticalComBox
+            comManager: window.comManager
             Layout.preferredWidth: 200
             editingComponent: control.editingComponent
             Layout.column: 1
@@ -118,7 +121,7 @@ Item{
                     if(currentIndex === 0){
                         control.verticalAlignment = undefined;
                     }else{
-                        control.verticalAlignment = UniDeskComManager.getComById(currentText);
+                        control.verticalAlignment = comManager.getComById(currentText);
                     }
                     control.editingComponent.saveComToFile();
                 }

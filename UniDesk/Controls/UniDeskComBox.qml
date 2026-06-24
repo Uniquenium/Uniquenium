@@ -14,7 +14,7 @@ UniDeskComboBox{
     property var editingComponent
     enableComDelegate: true
     model: getIds(componentList);
-    property list<var> componentList: UniDeskComManager.component_list
+    property list<var> componentList: comManager ? comManager.component_list : []
     editable: true
     width: 300
     function getIds(list){

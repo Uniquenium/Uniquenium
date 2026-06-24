@@ -39,8 +39,8 @@ UniDeskWindow{
             placeholderText: qsTr("请输入组件id")
             text: editingComponent ? editingComponent.identification : ""
             onEditingFinished: {
-                if(UniDeskComManager.validateId(text)){  
-                    if (editingComponent) {
+                if(comManager.validateId(text)){  
+                    if (editingComponent)   {
                         editingComponent.identification = text;
                     }
                 }
@@ -52,6 +52,7 @@ UniDeskWindow{
         }
         UniDeskPosSelector{
             id: posSelector
+            comManager: window.comManager
             anchors.top: idField.bottom
             anchors.left: parent.left
             anchors.right: parent.right
@@ -191,6 +192,7 @@ UniDeskWindow{
         }
         UniDeskFontBox{
             id: fontBox1
+            comManager: window.comManager
             anchors.top: colorPicker1.bottom
             anchors.right: parent.right
             anchors.margins: 10
@@ -413,6 +415,7 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             model: [qsTr("正常"), qsTr("凸起"), qsTr("描边"), qsTr("凹陷")]
+            comManager: window.comManager
             onCurrentIndexChanged: {
                 if (editingComponent) {
                     if (currentIndex === 0) {
@@ -465,6 +468,7 @@ UniDeskWindow{
             anchors.top: styleColorPicker.bottom
             anchors.right: parent.right
             anchors.margins: 10
+            comManager: window.comManager
             model: [qsTr("自动"), qsTr("纯文本"), qsTr("富文本（HTML）"), qsTr("Markdown")]
             onCurrentIndexChanged: {
                 if (editingComponent) {
@@ -489,6 +493,7 @@ UniDeskWindow{
             anchors.top: renderFormatComboBox.bottom
             anchors.right: parent.right
             anchors.margins: 10
+            comManager: window.comManager
             model: [qsTr("自动换行"), qsTr("不换行"), qsTr("任意位置换行"), qsTr("词边界换行")]
             onCurrentIndexChanged: {
                 if (editingComponent) {

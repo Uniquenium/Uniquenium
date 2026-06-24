@@ -9,6 +9,8 @@
 #include <QDebug>
 
 static QString componentsFile = "./data/components.json";
+static QString basicComTypeListFile = "./temp/UniDesk/Components/basic-com-list.json";
+static QString extraComTypeListFile = "./temp/UniDesk/Components/extra-com-list.json";
 
 static QJsonObject defaultComponents() {
     QJsonObject obj;
@@ -19,7 +21,9 @@ static QJsonObject defaultComponents() {
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
     QFile f(file);
-    QDir().mkdir("./data");
+    QFileInfo fInfo(file);
+    QDir().mkdir(fInfo.path());
+    f.setFileName(file);
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QJsonDocument doc(obj);
     f.write(doc.toJson(QJsonDocument::Indented));
@@ -182,39 +186,85 @@ int UniDeskComponentsData::getCurrentPage() {
 }
 
 QVariant UniDeskComponentsData::getComponentTypes() {
-    QFile f("./temp/UniDesk/Components/components-list");
-    QStringList types;
-    if (f.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        QTextStream in(&f);
-        while (!in.atEnd()) {
-            QString line = in.readLine();
-            if (!line.isEmpty())
-                types << line;
-        }
-        f.close();
+    QVariantList componentList;
+    
+    // 读取基础组件列表
+    QJsonObject basicObj = readJsonFile(basicComTypeListFile);
+    QJsonArray basicArr = basicObj.value("componentTypes").toArray();
+    for (const QJsonValue &v : basicArr) {
+        QJsonObject obj = v.toObject();
+        QVariantMap map;
+        map["filename"] = obj.value("filename").toString();
+        map["name"] = obj.value("name").toString();
+        map["icon"] = obj.value("icon").toString();
+        componentList.append(map);
     }
-    return types;
+    
+    // 读取额外组件列表
+    QJsonObject extraObj = readJsonFile(extraComTypeListFile);
+    QJsonArray extraArr = extraObj.value("componentTypes").toArray();
+    for (const QJsonValue &v : extraArr) {
+        QJsonObject obj = v.toObject();
+        QVariantMap map;
+        map["filename"] = obj.value("filename").toString();
+        map["name"] = obj.value("name").toString();
+        map["icon"] = obj.value("icon").toString();
+        componentList.append(map);
+    }
+    
+    return componentList;
 }
 
-void UniDeskComponentsData::startFuncs() {
-    QFile listFile("./UniDesk/Components/components-list");
-    if (!listFile.open(QIODevice::ReadOnly | QIODevice::Text)) return;
-    QTextStream listStream(&listFile);
-    while (!listStream.atEnd()) {
-        QString componentName = listStream.readLine().trimmed();
-        if (componentName.isEmpty()) continue;
-        QFile pypluginsFile("./UniDesk/Components/" + componentName + "/plugins-list");
-        if (!pypluginsFile.open(QIODevice::ReadOnly | QIODevice::Text)) continue;
-        QTextStream pypluginsStream(&pypluginsFile);
-        while (!pypluginsStream.atEnd()) {
-            QString pluginName = pypluginsStream.readLine().trimmed();
-            if (pluginName.isEmpty()) continue;
-            // 这里假设插件信息可通过某种方式获取，实际需根据你的插件结构调整
-            // 伪代码：调用插件初始化函数
-            // plugin->startFuncs();
-            // qDebug() << "Start funcs for plugin:" << componentName << pluginName;
-        }
-        pypluginsFile.close();
+QVariant UniDeskComponentsData::getBasicComponentTypes() {
+    QVariantList componentList;
+    QJsonObject obj = readJsonFile(basicComTypeListFile);
+    QJsonArray arr = obj.value("componentTypes").toArray();
+    for (const QJsonValue &v : arr) {
+        QJsonObject com = v.toObject();
+        QVariantMap map;
+        map["filename"] = com.value("filename").toString();
+        map["name"] = com.value("name").toString();
+        map["icon"] = com.value("icon").toString();
+        componentList.append(map);
     }
-    listFile.close();
+    return componentList;
 }
+
+QVariant UniDeskComponentsData::getExtraComponentTypes() {
+    QVariantList componentList;
+    QJsonObject obj = readJsonFile(extraComTypeListFile);
+    QJsonArray arr = obj.value("componentTypes").toArray();
+    for (const QJsonValue &v : arr) {
+        QJsonObject com = v.toObject();
+        QVariantMap map;
+        map["filename"] = com.value("filename").toString();
+        map["name"] = com.value("name").toString();
+        map["icon"] = com.value("icon").toString();
+        componentList.append(map);
+    }
+    return componentList;
+}
+
+
+// void UniDeskComponentsData::startFuncs() {
+//     QFile listFile("./UniDesk/Components/components-list");
+//     if (!listFile.open(QIODevice::ReadOnly | QIODevice::Text)) return;
+//     QTextStream listStream(&listFile);
+//     while (!listStream.atEnd()) {
+//         QString componentName = listStream.readLine().trimmed();
+//         if (componentName.isEmpty()) continue;
+//         QFile pypluginsFile("./UniDesk/Components/" + componentName + "/plugins-list");
+//         if (!pypluginsFile.open(QIODevice::ReadOnly | QIODevice::Text)) continue;
+//         QTextStream pypluginsStream(&pypluginsFile);
+//         while (!pypluginsStream.atEnd()) {
+//             QString pluginName = pypluginsStream.readLine().trimmed();
+//             if (pluginName.isEmpty()) continue;
+//             // 这里假设插件信息可通过某种方式获取，实际需根据你的插件结构调整
+//             // 伪代码：调用插件初始化函数
+//             // plugin->startFuncs();
+//             // qDebug() << "Start funcs for plugin:" << componentName << pluginName;
+//         }
+//         pypluginsFile.close();
+//     }
+//     listFile.close();
+// }

@@ -14,6 +14,7 @@ T.ComboBox {
 
     property bool enableFontDelegate: false
     property bool enableComDelegate: false
+    property var comManager
     padding: 5
     height: 30
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
@@ -37,7 +38,7 @@ T.ComboBox {
         hoverEnabled: control.hoverEnabled
         onHighlightedChanged: {
             if(control.enableComDelegate){
-                var com=UniDeskComManager.getComById(text)
+                var com=control.comManager.getComById(text)
                 if(com){
                     com.indicated=highlighted;
                 }

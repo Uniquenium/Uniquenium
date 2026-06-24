@@ -16,102 +16,76 @@ UniDeskWindow{
     height: 350
     title: qsTr("选择控件")
     autoDestroy: false// keep the system appbar hidden (temporary solution)
+    autoVisible: false
     property string parentId
     property int pageid
+    property var comManager
     ScrollView{
         anchors.fill: parent
         anchors.margins: 10
-        UniDeskText{
-            id: text1
-            text: qsTr("基础控件")
-            font: UniDeskTextStyle.small_
-            anchors.top: parent.top
-            anchors.left: parent.left
-        }
-        RowLayout{
+        ColumnLayout{
             spacing: 10
-            anchors.top: text1.bottom
-            anchors.left: parent.left
-            UniDeskButton{
-                id: button1
-                display: Button.TextBesideIcon
-                contentText: qsTr("文字")
-                iconSource: "qrc:/media/img/text.svg"
-                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                borderWidth: 1
-                radius: 5
-                onClicked: {
-                    UniDeskComManager.close_all();
-                    UniDeskComManager.add_com("UDCText",contentText,pageid);
-                    window.close();
+            anchors.fill: parent
+            // 基础控件部分
+            UniDeskText{
+                text: qsTr("基本控件")
+                font: UniDeskTextStyle.small_
+            }
+            RowLayout{
+                spacing: 10
+                Repeater{
+                    model: basicComponents
+                    UniDeskButton{
+                        display: Button.TextBesideIcon
+                        contentText: modelData.name
+                        iconSource: modelData.icon
+                        bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                        bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                        borderWidth: 1
+                        radius: 5
+                        onClicked: {
+                            comManager.add_com(modelData.filename, modelData.name, pageid);
+                            window.close();
+                        }
+                    }
                 }
             }
-            UniDeskButton{
-                id: button2
-                display: Button.TextBesideIcon
-                contentText: qsTr("按钮")
-                iconSource: "qrc:/media/img/arrow-down-box-line.svg"
-                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                borderWidth: 1
-                radius: 5
-                onClicked: {
-                    window.close();
+            // 高级控件部分
+            UniDeskText{
+                text: qsTr("高级控件")
+                font: UniDeskTextStyle.small_
+                visible: extraComponents.length > 0
+            }
+            RowLayout{
+                spacing: 10
+                visible: extraComponents.length > 0
+                Repeater{
+                    model: extraComponents
+                    UniDeskButton{
+                        display: Button.TextBesideIcon
+                        contentText: modelData.name
+                        iconSource: modelData.icon
+                        bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                        bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                        borderWidth: 1
+                        radius: 5
+                        onClicked: {
+                            window.close();
+                        }
+                    }
                 }
             }
-            UniDeskButton{
-                id: button3
-                display: Button.TextBesideIcon
-                contentText: qsTr("图片")
-                iconSource: "qrc:/media/img/image.svg"
-                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                borderWidth: 1
-                radius: 5
-                onClicked: {
-                    window.close();
-                }
-            }
-            UniDeskButton{
-                id: button4
-                display: Button.TextBesideIcon
-                contentText: qsTr("图表")
-                iconSource: "qrc:/media/img/line-chart-line.svg"
-                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                borderWidth: 1
-                radius: 5
-                onClicked: {
-                    window.close();
-                }
-            }
-            UniDeskButton{
-                id: button5
-                display: Button.TextBesideIcon
-                contentText: qsTr("分区框")
-                iconSource: "qrc:/media/img/checkbox.svg"
-                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                borderWidth: 1
-                radius: 5
-                onClicked: {
-                    window.close();
-                }
-            }
-            UniDeskButton{
-                id: button6
-                display: Button.TextBesideIcon
-                contentText: qsTr("分组")
-                iconSource: "qrc:/media/img/layout-2-fill.svg"
-                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                borderWidth: 1
-                radius: 5
-                onClicked: {
-                    window.close();
-                }
-            }
+        }
+    }
+    
+    // 动态加载组件信息
+    property list<var> basicComponents
+    property list<var> extraComponents
+    
+    onVisibleChanged: {
+        if(visible){
+            basicComponents = UniDeskComponentsData.getBasicComponentTypes();
+            extraComponents = UniDeskComponentsData.getExtraComponentTypes();
         }
     }
 }

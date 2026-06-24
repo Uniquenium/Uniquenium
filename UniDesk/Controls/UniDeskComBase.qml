@@ -27,6 +27,7 @@ UniDeskBase{
     property real geoY: 0
     property real geoWidth: 0
     property real geoHeight: 0
+    property var comManager
     width: rotatedWidth()
     height: rotatedHeight()
     color: "transparent"
@@ -68,11 +69,11 @@ UniDeskBase{
     }
     function deleteCom(){
         UniDeskComponentsData.removeComponent(base.identification);
-        UniDeskComManager.component_list.splice(UniDeskComManager.getIndexById(base.identification),1);
-        var pidx=UniDeskComManager.pid2pindex(base.pageid)
-        for(var i=0;i<UniDeskComManager.compModels.get(pidx).value.count;i++){
-            if(UniDeskComManager.compModels.get(pidx).value.get(i).display===base.identification){
-                UniDeskComManager.compModels.get(pidx).value.remove(i);
+        comManager.component_list.splice(comManager.getIndexById(base.identification),1);
+        var pidx=comManager.pid2pindex(base.pageid)
+        for(var i=0;i<comManager.compModels.get(pidx).value.count;i++){
+            if(comManager.compModels.get(pidx).value.get(i).display===base.identification){
+                comManager.compModels.get(pidx).value.remove(i);
             }
         }
         base.closeSignal();

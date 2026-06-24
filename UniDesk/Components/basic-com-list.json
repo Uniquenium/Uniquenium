@@ -1,0 +1,9 @@
+{
+    "componentTypes": [
+        {
+            "filename": "UDCText",
+            "name": "文字",
+            "icon": "qrc:/media/img/text.svg"
+        }
+    ]
+}   

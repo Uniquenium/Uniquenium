@@ -1,4 +1,4 @@
-pragma Singleton
+//please use 'comManager' property in other files
 import QtQuick 
 import QtQuick.Controls 
 import QtQuick.Layouts
@@ -22,6 +22,7 @@ UniDeskObject{
     property alias page_list: page_list_model
     property list<Component> type_list
     property list<string> typename_list
+    property list<var> componentInfoList
     property ListModel compModels: ListModel{}
     ListModel{
         id: page_list_model
@@ -51,7 +52,7 @@ UniDeskObject{
             currentPid=pageid;
         }
         let typid=typename_list.indexOf(typename);
-        let new_com=type_list[typid].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"x":newX,"y": newY,"pageid": currentPid});
+        let new_com=type_list[typid].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"pageid": currentPid,"comManager":object,"x":newX,"y":newY});
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com);
         for(var i=0;i<component_list.length;i++){
@@ -131,7 +132,7 @@ UniDeskObject{
             var new_com;
             for(var j=0;j<typename_list.length;j++){
                 if(data[i].type===typename_list[j]){
-                    new_com=type_list[j].createObject(null,{"identification":data[i].identification,"x":data[i].x,"y": data[i].y,"pageid": data[i].pageid});
+                    new_com=type_list[j].createObject(null,{"identification":data[i].identification,"pageid": data[i].pageid,"comManager":object,"geoX":data[i].x,"geoY":data[i].y});
                     new_com.loadPropertyData(data[i]);
                 }
             }
@@ -156,11 +157,15 @@ UniDeskObject{
         }
     }
     function loadComponentTypesFromData(){
-        typename_list=UniDeskComponentsData.getComponentTypes();
-        for(var i=0;i<typename_list.length;i++){
-            print(typename_list[i]+" Loading")
-            type_list.push(Qt.createComponent("UniDesk.Components."+typename_list[i],typename_list[i],Component.Synchronous, null));
-            print(typename_list[i]+" Loaded")
+        componentInfoList=UniDeskComponentsData.getComponentTypes();
+        typename_list=[];
+        type_list=[];
+        for(var i=0;i<componentInfoList.length;i++){
+            var info=componentInfoList[i];
+            typename_list.push(info.filename);
+            print(info.filename+" Loading")
+            type_list.push(Qt.createComponent("UniDesk.Components."+info.filename,info.filename,Component.Synchronous, null));
+            print(info.filename+" Loaded")
         }
     }
     function pid2pindex(pid){

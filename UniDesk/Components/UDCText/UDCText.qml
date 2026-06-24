@@ -12,8 +12,8 @@ import UniDesk.Components.UDCText
 UniDeskComBase{
     id: base
     visible: true
-    geoWidth: cont.width
-    geoHeight: cont.height
+    geoWidth: cont.width ? cont.width : 100
+    geoHeight: cont.height ? cont.height : 100
     type: "UDCText"
     property string textContent: qsTr("文字")
     property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
@@ -115,7 +115,7 @@ UniDeskComBase{
     UDCTextOptions{
         id: optionsText
         editingComponent: base
-        comManager: UniDeskComManager
+        comManager: base.comManager
     }
     onRightClicked: {
         menu.popup(cont);
@@ -200,7 +200,7 @@ UniDeskComBase{
     }
     function saveComToFile(){
         var data= propertyData();
-        UniDeskComponentsData.updateComponent(UniDeskComManager.getIndexById(identification), data);
+        UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
     }
     onMaxWidthChanged:{
         cont.width=base.maxWidth;
@@ -214,6 +214,11 @@ UniDeskComBase{
     }
     Component.onCompleted:{
         flushText.start();
+        cont.width=base.maxWidth;
+        cont.width=Math.min(base.maxWidth, cont.contentWidth);
+        cont.height=base.maxHeight;
+        cont.height=Math.min(base.maxHeight, cont.contentHeight);
+        optionsText.updateMaxSize();
     }
     onCloseSignal: ()=>{
         if(optionsText){

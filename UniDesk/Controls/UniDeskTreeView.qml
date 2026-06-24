@@ -15,6 +15,7 @@ TreeView{
     rowSpacing: 10
     property bool enableComDelegate: false
     property Component extraDelegate
+    property var comManager
     delegate: Item {
         id: treeDelegate
         implicitWidth: control.width
@@ -36,7 +37,7 @@ TreeView{
             onHoveredChanged: {
                 rect_.color=hovered? UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.05) : Qt.rgba(0,0,0,0.5).lighter(1.05)  : "transparent"   
                 if(control.enableComDelegate){
-                    var com=UniDeskComManager.getComById(model.display)
+                    var com=comManager.getComById(model.display)
                     if(com){
                         com.indicated=hovered;
                     }
