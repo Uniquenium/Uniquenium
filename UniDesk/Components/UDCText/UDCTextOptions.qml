@@ -16,12 +16,13 @@ UniDeskWindow{
     autoVisible: false
     showMinimize: false
     showMaximize: false
+    autoDestroy: false
     property var comManager
     property UniDeskComBase editingComponent
     ScrollView{
         anchors.fill: parent
         hoverEnabled: true
-        contentHeight: renderFormatComboBox.y+renderFormatComboBox.height-text0.y+30
+        contentHeight: wrapModeComboBox.y+wrapModeComboBox.height-text0.y+30
         UniDeskText{
             id: text0
             text: qsTr("组件id（不能重复）")
@@ -58,6 +59,85 @@ UniDeskWindow{
             editingComponent: window.editingComponent
         }
         UniDeskText{
+            id: textMaxWidth
+            text: qsTr("最大宽度")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.margins: 10
+            anchors.verticalCenter: maxWidthSpinBox.verticalCenter
+        }
+        UniDeskSpinBox{
+            id: maxWidthSpinBox
+            anchors.top: posSelector.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            from: 1
+            to: 2000
+            //avoid loop binding
+            onValueModified: {
+                if (editingComponent) {
+                    editingComponent.maxWidth = value;
+                    editingComponent.saveComToFile();
+                }
+            }
+            Component.onCompleted: {
+                value = editingComponent ? editingComponent.maxWidth : 1000
+            }
+        }
+        UniDeskText{
+            id: textMaxHeight
+            text: qsTr("最大高度")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.margins: 10
+            anchors.verticalCenter: maxHeightSpinBox.verticalCenter
+        }
+        UniDeskSpinBox{
+            id: maxHeightSpinBox
+            anchors.top: maxWidthSpinBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            from: 1
+            to: 2000
+            //avoid loop binding
+            onValueModified: {
+                if (editingComponent) {
+                    editingComponent.maxHeight = value;
+                    editingComponent.saveComToFile();
+                }
+            }
+            Component.onCompleted: {
+                value = editingComponent ? editingComponent.maxHeight : 1000
+            }
+        }
+        UniDeskText{
+            id: text13
+            text: qsTr("旋转角度")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: rotationSpinBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskSpinBox{
+            id: rotationSpinBox
+            anchors.top: maxHeightSpinBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            value: editingComponent ? editingComponent.rotation : 0
+            from: 0
+            to: 359
+            stepSize: 1
+            onValueChanged: {
+                if (editingComponent) {
+                    editingComponent.rotation = value;
+                    editingComponent.saveComToFile();
+                }
+            }
+        }
+        UniDeskText{
             id: text1
             text: qsTr("文本内容")
             font: UniDeskTextStyle.little
@@ -67,7 +147,7 @@ UniDeskWindow{
         }
         UniDeskTextArea{
             id: textField1
-            anchors.top: posSelector.bottom
+            anchors.top: rotationSpinBox.bottom
             anchors.right: parent.right
             anchors.margins: 10
             width: 300
@@ -396,6 +476,40 @@ UniDeskWindow{
                 currentIndex = editingComponent ? (editingComponent.textFormat === Text.AutoText ? 0 : editingComponent.textFormat === Text.PlainText ? 1 : editingComponent.textFormat === Text.RichText ? 2 : 3) : 0;
             }
         }
+        UniDeskText{
+            id: textWrapMode
+            text: qsTr("换行模式")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: wrapModeComboBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskComboBox{
+            id: wrapModeComboBox
+            anchors.top: renderFormatComboBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            model: [qsTr("自动换行"), qsTr("不换行"), qsTr("任意位置换行"), qsTr("词边界换行")]
+            onCurrentIndexChanged: {
+                if (editingComponent) {
+                    if (currentIndex === 0) editingComponent.wrapMode = Text.Wrap;
+                    else if (currentIndex === 1) editingComponent.wrapMode = Text.NoWrap;
+                    else if (currentIndex === 2) editingComponent.wrapMode = Text.WrapAnywhere;
+                    else if (currentIndex === 3) editingComponent.wrapMode = Text.WrapAtWordBoundaryOrAnywhere;
+                    editingComponent.saveComToFile();
+                }
+            }
+            Component.onCompleted: {
+                var idx = 0;
+                if (editingComponent) {
+                    if (editingComponent.wrapMode === Text.Wrap) idx = 0;
+                    else if (editingComponent.wrapMode === Text.NoWrap) idx = 1;
+                    else if (editingComponent.wrapMode === Text.WrapAnywhere) idx = 2;
+                    else if (editingComponent.wrapMode === Text.WrapAtWordBoundaryOrAnywhere) idx = 3;
+                }
+                currentIndex = idx;
+            }
+        }
     }
     Connections{
         target: UniDeskGlobals
@@ -405,5 +519,12 @@ UniDeskWindow{
     }
     function updatePosition(){
         posSelector.refreshPosition();
+    }
+    function updateMaxSize(){
+        maxWidthSpinBox.value = editingComponent.maxWidth;
+        maxHeightSpinBox.value = editingComponent.maxHeight;
+    }
+    Component.onCompleted: {
+        updatePosition();
     }
 }

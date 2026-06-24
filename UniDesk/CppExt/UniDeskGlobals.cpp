@@ -47,7 +47,7 @@ void UniDeskGlobals::updateIsLight() {
 
 void UniDeskGlobals::emitApplicationQuit() {
     emit applicationQuit();
-    QGuiApplication::quit();
+    QCoreApplication::exit(0);//force the application to quit
 }
 
 void UniDeskGlobals::startThread() {

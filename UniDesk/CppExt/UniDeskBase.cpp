@@ -43,6 +43,7 @@ void UniDeskBase::mousePressEvent(QMouseEvent *event) {
             startSystemResize(edges());
         } else if (property("canMove").toBool()) {
             startSystemMove();
+            setCursor(Qt::SizeAllCursor);
         }
     }
     QQuickWindow::mousePressEvent(event);
@@ -50,7 +51,11 @@ void UniDeskBase::mousePressEvent(QMouseEvent *event) {
 
 void UniDeskBase::mouseReleaseEvent(QMouseEvent *event){
     edges(Qt::Edges());
-    if (event->button() == Qt::RightButton) {
+    updateCursor();
+    if (event->button() == Qt::LeftButton) {
+        emit endDrag();
+    }
+    else if (event->button() == Qt::RightButton) {
         emit rightClicked();
     }
     QQuickWindow::mouseReleaseEvent(event);
@@ -59,13 +64,17 @@ void UniDeskBase::mouseReleaseEvent(QMouseEvent *event){
 void UniDeskBase::updateCursor() {
     if (edges() == Qt::Edges()) {
         setCursor(Qt::ArrowCursor);
-    } else if (edges() == Qt::LeftEdge || edges() == Qt::RightEdge) {
-        setCursor(Qt::SizeHorCursor);
-    } else if (edges() == Qt::TopEdge || edges() == Qt::BottomEdge) {
-        setCursor(Qt::SizeVerCursor);
-    } else if (edges() == (Qt::LeftEdge | Qt::TopEdge) || edges() == (Qt::RightEdge | Qt::BottomEdge)) {
-        setCursor(Qt::SizeFDiagCursor);
-    } else if (edges() == (Qt::RightEdge | Qt::TopEdge) || edges() == (Qt::LeftEdge | Qt::BottomEdge)) {
-        setCursor(Qt::SizeBDiagCursor);
+    } else if (property("canResize").toBool()) {
+        if (edges() == Qt::LeftEdge || edges() == Qt::RightEdge) {
+            setCursor(Qt::SizeHorCursor);
+        } else if (edges() == Qt::TopEdge || edges() == Qt::BottomEdge) {
+            setCursor(Qt::SizeVerCursor);
+        } else if (edges() == (Qt::LeftEdge | Qt::TopEdge) || edges() == (Qt::RightEdge | Qt::BottomEdge)) {
+            setCursor(Qt::SizeFDiagCursor);
+        } else if (edges() == (Qt::RightEdge | Qt::TopEdge) || edges() == (Qt::LeftEdge | Qt::BottomEdge)) {
+            setCursor(Qt::SizeBDiagCursor);
+        }
+    } else{
+        setCursor(Qt::ArrowCursor);
     }
 }

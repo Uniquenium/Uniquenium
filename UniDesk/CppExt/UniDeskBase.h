@@ -18,6 +18,7 @@ public:
 signals:
     void focusOut();
     void rightClicked();
+    void endDrag();
 
 protected:
     void focusOutEvent(QFocusEvent *event) override;

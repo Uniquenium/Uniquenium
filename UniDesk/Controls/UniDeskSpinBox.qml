@@ -39,6 +39,7 @@ T.SpinBox {
         inputMethodHints: control.inputMethodHints
         onTextEdited: {
             control.value= parseInt(text);
+            control.valueModified();
         }
     }
     up.indicator: Rectangle {

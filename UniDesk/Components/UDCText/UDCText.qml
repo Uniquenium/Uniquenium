@@ -12,8 +12,8 @@ import UniDesk.Components.UDCText
 UniDeskComBase{
     id: base
     visible: true
-    width: cont.width
-    height: cont.height
+    geoWidth: cont.width
+    geoHeight: cont.height
     type: "UDCText"
     property string textContent: qsTr("文字")
     property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
@@ -31,9 +31,14 @@ UniDeskComBase{
     property int style: Text.Normal
     property color styleColor: UniDeskSettings.primaryColor
     property int textFormat: Text.RichText
+    property int wrapMode: Text.Wrap
+    property int maxWidth: 1000
+    property int maxHeight: 1000
     chosen: optionsText ? optionsText.visible : false
     UniDeskText{
         id: cont
+        x: base.rotationOffsetX()
+        y: base.rotationOffsetY()
         text: base.textContent ? UniDeskExpr.convertStr(base.textContent) : qsTr("请输入文本内容")
         textColor: base.textColor
         font.family: base.fontFamily
@@ -50,6 +55,16 @@ UniDeskComBase{
         style: base.style
         styleColor: base.styleColor
         textFormat: base.textFormat
+        wrapMode: base.wrapMode
+        rotation: base.rotation
+        transformOrigin: Item.TopLeft
+        onTextChanged:{
+            cont.width=base.maxWidth;
+            cont.width=Math.min(base.maxWidth, cont.contentWidth);
+            cont.height=base.maxHeight;
+            cont.height=Math.min(base.maxHeight, cont.contentHeight);
+            optionsText.updateMaxSize();
+        }
     }
     UniDeskMenu{
         id: menu
@@ -105,21 +120,25 @@ UniDeskComBase{
     onRightClicked: {
         menu.popup(cont);
     }
-    onXChanged:{
+    onEndDrag: {
+        geoX=x+rotationOffsetX();
+        geoY=y+rotationOffsetY();
         optionsText.updatePosition();
         saveComToFile();
     }
-    onYChanged:{
+    onGeoXChanged:{
         optionsText.updatePosition();
-        saveComToFile();
+    }
+    onGeoYChanged:{
+        optionsText.updatePosition();
     }
     function propertyData(){
         return {
             "type": base.type,
             "identification": base.identification,
             "pageid": base.pageid,
-            "x": base.x,
-            "y": base.y,
+            "x": base.geoX,
+            "y": base.geoY,
             "canMove": base.canMove,
             "canResize": base.canResize,
             "textContent": base.textContent,
@@ -143,37 +162,55 @@ UniDeskComBase{
             "styleColorG": base.styleColor.g,
             "styleColorB": base.styleColor.b,
             "styleColorA": base.styleColor.a,
-            "textFormat": base.textFormat
+            "textFormat": base.textFormat,
+            "rotation": base.rotation,
+            "wrapMode": base.wrapMode,
+            "maxWidth": base.maxWidth,
+            "maxHeight": base.maxHeight
         }
     }
     function loadPropertyData(data){
-        base.type=data.type;
-        base.identification=data.identification;
-        base.pageid=data.pageid;
-        base.x=data.x;
-        base.y=data.y;
-        base.canMove=data.canMove;
-        base.canResize=data.canResize;
-        base.textContent=data.textContent;
-        base.textColor=Qt.rgba(data.textColorR,data.textColorG,data.textColorB,data.textColorA);
-        base.fontFamily=data.fontFamily;
-        base.fontSize=data.fontSize;
-        base.smallCaps=data.smallCaps;
-        base.bold=data.bold;
-        base.italic=data.italic;
-        base.underline=data.underline;
-        base.strikeout=data.strikeout;
-        base.letterSpacing=data.letterSpacing;
-        base.wordSpacing=data.wordSpacing;
-        base.lineHeight=data.lineHeight;
-        base.weight=data.weight;
-        base.style=data.style;
-        base.styleColor=Qt.rgba(data.styleColorR,data.styleColorG,data.styleColorB,data.styleColorA);
-        base.textFormat=data.textFormat;
+        if(data.type!==undefined){base.type=data.type;}
+        if(data.identification!==undefined){base.identification=data.identification;}       
+        if(data.pageid!==undefined){base.pageid=data.pageid;}
+        if(data.x!==undefined){base.geoX=data.x;}
+        if(data.y!==undefined){base.geoY=data.y;}
+        if(data.canMove!==undefined){base.canMove=data.canMove;}
+        if(data.canResize!==undefined){base.canResize=data.canResize;}
+        if(data.textContent!==undefined){base.textContent=data.textContent;}
+        if(data.textColorR!==undefined){base.textColor=Qt.rgba(data.textColorR,data.textColorG,data.textColorB,data.textColorA);}
+        if(data.fontFamily!==undefined){base.fontFamily=data.fontFamily;}
+        if(data.fontSize!==undefined){base.fontSize=data.fontSize;}
+        if(data.smallCaps!==undefined){base.smallCaps=data.smallCaps;}
+        if(data.bold!==undefined){base.bold=data.bold;}
+        if(data.italic!==undefined){base.italic=data.italic;}
+        if(data.underline!==undefined){base.underline=data.underline;}
+        if(data.strikeout!==undefined){base.strikeout=data.strikeout;}
+        if(data.letterSpacing!==undefined){base.letterSpacing=data.letterSpacing;}
+        if(data.wordSpacing!==undefined){base.wordSpacing=data.wordSpacing;}    
+        if(data.lineHeight!==undefined){base.lineHeight=data.lineHeight;}
+        if(data.weight!==undefined){base.weight=data.weight;}
+        if(data.style!==undefined){base.style=data.style;}
+        if(data.styleColorR!==undefined){base.styleColor=Qt.rgba(data.styleColorR,data.styleColorG,data.styleColorB,data.styleColorA);}
+        if(data.textFormat!==undefined){base.textFormat=data.textFormat;}
+        if(data.rotation!==undefined){base.rotation=data.rotation;}
+        if(data.wrapMode!==undefined){base.wrapMode=data.wrapMode;}
+        if(data.maxWidth!==undefined){base.maxWidth=data.maxWidth;}else{base.maxWidth=1000;}
+        if(data.maxHeight!==undefined){base.maxHeight=data.maxHeight;}else{base.maxHeight=1000;}
     }
     function saveComToFile(){
         var data= propertyData();
         UniDeskComponentsData.updateComponent(UniDeskComManager.getIndexById(identification), data);
+    }
+    onMaxWidthChanged:{
+        cont.width=base.maxWidth;
+        cont.width=Math.min(base.maxWidth, cont.contentWidth);
+        optionsText.updateMaxSize();
+    }
+    onMaxHeightChanged:{
+        cont.height=base.maxHeight;
+        cont.height=Math.min(base.maxHeight, cont.contentHeight);
+        optionsText.updateMaxSize();
     }
     Component.onCompleted:{
         flushText.start();

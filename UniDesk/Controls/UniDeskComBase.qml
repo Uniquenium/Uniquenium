@@ -22,6 +22,13 @@ UniDeskBase{
     property bool indicated: false
     property bool chosen: false
     property bool subComponentable: false
+    property real rotation: 0
+    property real geoX: 0
+    property real geoY: 0
+    property real geoWidth: 0
+    property real geoHeight: 0
+    width: rotatedWidth()
+    height: rotatedHeight()
     color: "transparent"
     Rectangle{
         id: rect_bg
@@ -75,6 +82,64 @@ UniDeskBase{
     function baseClose(){
         indicator_base.close();
         base.close();
+    }
+    function rotatedWidth(){
+        return Math.abs(Math.cos(base.rotation*Math.PI/180)*base.geoWidth)+Math.abs(Math.sin(base.rotation*Math.PI/180)*base.geoHeight);
+    }
+    function rotatedHeight(){
+        return Math.abs(Math.sin(base.rotation*Math.PI/180)*base.geoWidth)+Math.abs(Math.cos(base.rotation*Math.PI/180)*base.geoHeight);
+    }
+    function rotationOffsetX(){
+        if(0<=base.rotation && base.rotation<90){
+            return base.geoHeight*Math.sin(base.rotation*Math.PI/180);
+        }
+        else if(90<=base.rotation && base.rotation<180){
+            return rotatedWidth();
+        }
+        else if(180<=base.rotation && base.rotation<270){
+            return -base.geoWidth*Math.cos(base.rotation*Math.PI/180);
+        }
+        else if(270<=base.rotation && base.rotation<=360){
+            return 0;
+        }
+    }
+    function rotationOffsetY(){
+        if(0<=base.rotation && base.rotation<90){
+            return 0;
+        }
+        else if(90<=base.rotation && base.rotation<180){
+            return -base.geoHeight*Math.cos(base.rotation*Math.PI/180);
+        }
+        else if(180<=base.rotation && base.rotation<270){
+            return rotatedHeight();
+        }
+        else if(270<=base.rotation && base.rotation<=360){
+            return -base.geoWidth*Math.sin(base.rotation*Math.PI/180);
+        }
+    }
+    onRotationChanged:{
+        x=geoX-rotationOffsetX();
+        y=geoY-rotationOffsetY();
+        width=rotatedWidth();
+        height=rotatedHeight();
+    }
+    onGeoXChanged:{
+        x=geoX-rotationOffsetX();
+    }
+    onGeoYChanged:{
+        y=geoY-rotationOffsetY();
+    }
+    onGeoWidthChanged:{
+        x=geoX-rotationOffsetX();
+        y=geoY-rotationOffsetY();
+        width=rotatedWidth();
+        height=rotatedHeight();
+    }
+    onGeoHeightChanged:{
+        x=geoX-rotationOffsetX();
+        y=geoY-rotationOffsetY();
+        width=rotatedWidth();
+        height=rotatedHeight();
     }
     Connections{
         target: UniDeskGlobals
