@@ -28,7 +28,7 @@ public:
     Q_INVOKABLE void addPage(const QJsonValue &page);
     Q_INVOKABLE void insertPage(int index, const QJsonValue &page);
     Q_INVOKABLE void removePage(int idx);
-    Q_INVOKABLE void setCurrentPage(int idx);
+    Q_INVOKABLE void setCurrentPage(int id);
     Q_INVOKABLE int getCurrentPage();
     Q_INVOKABLE QVariant getComponentTypes();
     Q_INVOKABLE QVariant getBasicComponentTypes();

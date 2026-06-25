@@ -238,6 +238,19 @@ UniDeskWindow{
                             }
                         }
                         UniDeskButton{
+                            contentText: qsTr("编辑")
+                            iconSize: 15
+                            iconSource: "qrc:/media/img/edit.svg"
+                            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                            radius: width / 2
+                            onClicked:{
+                                comManager.toggle_page_to(comManager.pindex2pid(window.currentIndex))
+                                comManager.getComById(model.display).optionsWindow.show();
+                            }
+                        }
+                        UniDeskButton{
                             contentText: qsTr("删除")
                             iconSize: 15
                             iconSource: "qrc:/media/img/delete-bin.svg"

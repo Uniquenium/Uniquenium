@@ -34,6 +34,7 @@ UniDeskComBase{
     property int wrapMode: Text.Wrap
     property int maxWidth: 1000
     property int maxHeight: 1000
+    optionsWindow: optionsText
     chosen: optionsText ? optionsText.visible : false
     UniDeskText{
         id: cont

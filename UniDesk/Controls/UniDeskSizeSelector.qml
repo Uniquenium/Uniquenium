@@ -29,16 +29,16 @@ Item{
             Layout.column: 1
             Layout.row: 0
             editable: true
-            from: 0
-            to: 10000
-            onValueChanged:{
+            from: 1
+            to: 3000
+            onValueModified:{
                 if(control.editingComponent){
                     control.editingComponent.geoWidth = value;
                     control.editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
-                value = control.editingComponent ? control.editingComponent.geoWidth : 100
+                value = control.editingComponent ? control.editingComponent.geoWidth : 200
             }
         }
         UniDeskText{
@@ -55,16 +55,16 @@ Item{
             Layout.column: 1
             Layout.row: 1
             editable: true
-            from: 0
-            to: 10000
-            onValueChanged:{
+            from: 1
+            to: 3000
+            onValueModified:{
                 if(control.editingComponent){
                     control.editingComponent.geoHeight = value;
                     control.editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
-                value = control.editingComponent ? control.editingComponent.geoHeight : 100
+                value = control.editingComponent ? control.editingComponent.geoHeight : 200
             }
         }
     }
@@ -73,7 +73,7 @@ Item{
         implicitHeight = gridLayout.childrenRect.height
     }
     function refreshSize(){
-        widthSpinBox.value = control.editingComponent ? control.editingComponent.geoWidth : 100
-        heightSpinBox.value = control.editingComponent ? control.editingComponent.geoHeight : 100
+        widthSpinBox.value = control.editingComponent ? control.editingComponent.geoWidth : 200
+        heightSpinBox.value = control.editingComponent ? control.editingComponent.geoHeight : 200
     }
 }

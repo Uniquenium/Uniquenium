@@ -63,7 +63,7 @@ Item{
             Layout.row: 0
             editable: true
             from: 0
-            to: UniDeskTools.desktopGeometry(editingComponent).width - 10
+            to: UniDeskTools.desktopGeometry(Window.window).width - 10
             onValueChanged:{
                 if(control.editingComponent){
                     control.editingComponent.geoX = value;
@@ -80,7 +80,7 @@ Item{
             Layout.row: 2
             editable: true
             from: 0
-            to: UniDeskTools.desktopGeometry(editingComponent).height - 10 
+            to: UniDeskTools.desktopGeometry(Window.window).height - 10
             onValueChanged:{
                 if(control.editingComponent){
                     control.editingComponent.geoY = value;
@@ -164,7 +164,7 @@ Item{
                         control.editingComponent.geoX = hac.geoX - hac.rotationOffsetX() + hac.width/2 - ec.width/2 + ec.rotationOffsetX();
                     }
                     else{
-                        control.editingComponent.geoX = UniDeskTools.desktopGeometry(ec).width /2 - ec.width /2 + ec.rotationOffsetX();
+                        control.editingComponent.geoX = UniDeskTools.desktopGeometry(Window.window).width /2 - ec.width /2 + ec.rotationOffsetX();
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -184,7 +184,7 @@ Item{
                         control.editingComponent.geoX = hac.geoX - hac.rotationOffsetX() + hac.width - ec.width + ec.rotationOffsetX();
                     }
                     else{
-                        control.editingComponent.geoX = UniDeskTools.desktopGeometry(ec).width - ec.width + ec.rotationOffsetX();
+                        control.editingComponent.geoX = UniDeskTools.desktopGeometry(Window.window).width - ec.width + ec.rotationOffsetX();
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -230,7 +230,7 @@ Item{
                         control.editingComponent.geoY = vac.geoY - vac.rotationOffsetY() + vac.height/2 - ec.height/2 + ec.rotationOffsetY();
                     }
                     else{
-                        control.editingComponent.geoY = UniDeskTools.desktopGeometry(ec).height /2 - ec.height /2 + ec.rotationOffsetY();
+                        control.editingComponent.geoY = UniDeskTools.desktopGeometry(Window.window).height /2 - ec.height /2 + ec.rotationOffsetY();
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -250,7 +250,7 @@ Item{
                         control.editingComponent.geoY = vac.geoY - vac.rotationOffsetY() + vac.height - ec.height + ec.rotationOffsetY();
                     }
                     else{
-                        control.editingComponent.geoY = UniDeskTools.desktopGeometry(ec).height - ec.height + ec.rotationOffsetY();
+                        control.editingComponent.geoY = UniDeskTools.desktopGeometry(Window.window).height - ec.height + ec.rotationOffsetY();
                     }
                     control.editingComponent.saveComToFile();
                 }

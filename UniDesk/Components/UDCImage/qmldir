@@ -1,0 +1,3 @@
+module UniDesk.Components.UDCImage
+UDCImage 1.0 UDCImage.qml
+UDCImageOptions 1.0 UDCImageOptions.qml

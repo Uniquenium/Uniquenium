@@ -6,23 +6,34 @@ import UniDesk.Controls
 import UniDesk.Singletons
 import Qt.labs.platform as QLP
 
-UniDeskObject{
+UniDeskRoot{
     id: object
+    x:0
+    y:0
+    width: Screen.desktopAvailableWidth
+    height: Screen.desktopAvailableHeight
+    title: qsTr("UniDesk")
+    visible: true
+    color: "transparent"
+    Rectangle{
+        id: rect_bg
+        anchors.fill: parent
+        color: "transparent"
+    }
     property bool isExpand: true
     UniDeskComManager{
         id: component_manager
+        root: object
     }
     UniDeskComBase {
         id: base
         visible: true
         bg.color: "transparent"
-        x: Screen.width-width-10
+        x: Screen.desktopAvailableWidth-width-10
         y: 10
         width: btns.width
         height: object.isExpand ? btns.height+15 : btn_spread.height+15
-        onWidthChanged:{
-            x=Screen.width-width-10;
-        }
+        clip: true
         ColumnLayout{
             id: btns
             anchors.right: parent ? parent.right : undefined 
@@ -174,11 +185,11 @@ UniDeskObject{
                         font.bold: component_manager.pindex2pid(index) === component_manager.currentPid
                         onTriggered: component_manager.toggle_page_to(model.pid)
                     }
-                    onObjectAdded: function(index, object){
-                        mi_toggle_page.insertItem(index, object)
+                    onObjectAdded: function(index, obj){
+                        mi_toggle_page.insertItem(index, obj)
                     }
-                    onObjectRemoved: function(object){
-                        mi_toggle_page.removeItem(object)
+                    onObjectRemoved: function(obj){
+                        mi_toggle_page.removeItem(obj)
                     }
                 }
             }
@@ -268,11 +279,21 @@ UniDeskObject{
         UniDeskPageWindow.close();
     }
     function exitAll(){
-        component_manager.close_all();
-        base.baseClose();
         object.closeAllWindows();
         UniDeskExpr.stopThread();
         UniDeskGlobals.emitApplicationQuit();
+    }
+    onMouseMoved:(pos) => {
+        
+        updateMouseClickThrough(pos);
+        //Check  if the mouse is on "base"
+        
+
+        // print(component_manager.mouse_on_any_com(pos));
+    }
+    onMousePressed:(button, pos) => {
+    }
+    onMouseReleased:(button, pos) => {
     }
     Component.onCompleted: {
         UniDeskSettingsWindow.comManager=component_manager;
@@ -282,5 +303,10 @@ UniDeskObject{
         component_manager.currentPid=UniDeskComponentsData.getCurrentPage();
         component_manager.loadPagesFromData();
         component_manager.loadComponentsFromData();
+    }
+    function updateMouseClickThrough(pos){
+        let moac=component_manager.mouse_on_any_com(pos)
+        let bcgp=base.containsGlobalPoint(pos)
+        mouseClickThrough=!(moac||bcgp);
     }
 }

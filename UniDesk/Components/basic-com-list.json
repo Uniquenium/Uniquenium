@@ -4,6 +4,11 @@
             "filename": "UDCText",
             "name": "文字",
             "icon": "qrc:/media/img/text.svg"
+        },
+        {
+            "filename": "UDCImage",
+            "name": "图片",
+            "icon": "qrc:/media/img/image.svg"
         }
     ]
 }   

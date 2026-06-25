@@ -16,7 +16,7 @@ UniDeskObject{
     property int serialComponentCnt: 1
     property int serialPageCnt: 1
     property int delta: 100
-    property list<var> component_list
+    property list<Item> component_list
     property int newX: 0
     property int newY: 0
     property alias page_list: page_list_model
@@ -24,6 +24,7 @@ UniDeskObject{
     property list<string> typename_list
     property list<var> componentInfoList
     property ListModel compModels: ListModel{}
+    property var root
     ListModel{
         id: page_list_model
         ListElement{
@@ -52,7 +53,7 @@ UniDeskObject{
             currentPid=pageid;
         }
         let typid=typename_list.indexOf(typename);
-        let new_com=type_list[typid].createObject(null,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"pageid": currentPid,"comManager":object,"x":newX,"y":newY});
+        let new_com=type_list[typid].createObject(root.contentItem,{"identification":qsTr(typenameTr)+" "+serialComponentCnt,"pageid": currentPid,"comManager":object,"x":newX,"y":newY});
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com);
         for(var i=0;i<component_list.length;i++){
@@ -68,14 +69,9 @@ UniDeskObject{
         serialComponentCnt+=1;
         compModels.get(pid2pindex(currentPid)).value.append({"display":new_com.identification});
     }
-    function close_all(){
-        for(var i=0;i<component_list.length;i++){
-            component_list[i].close();
-        }
-    }
-    function toggle_page_to(index){
-        currentPid=index;
-        UniDeskComponentsData.setCurrentPage(index);
+    function toggle_page_to(id){
+        currentPid=id;
+        UniDeskComponentsData.setCurrentPage(id);
     }
     function new_page(index){
         page_list_model.append({"text": qsTr("页面")+serialPageCnt.toString(),"pid": serialPageCnt});
@@ -132,7 +128,7 @@ UniDeskObject{
             var new_com;
             for(var j=0;j<typename_list.length;j++){
                 if(data[i].type===typename_list[j]){
-                    new_com=type_list[j].createObject(null,{"identification":data[i].identification,"pageid": data[i].pageid,"comManager":object,"geoX":data[i].x,"geoY":data[i].y});
+                    new_com=type_list[j].createObject(root.contentItem,{"identification":data[i].identification,"pageid": data[i].pageid,"comManager":object,"geoX":data[i].x,"geoY":data[i].y});
                     new_com.loadPropertyData(data[i]);
                 }
             }
@@ -211,5 +207,15 @@ UniDeskObject{
         compModels.get(pid2pindex(c.pageid)).value.remove(index_in_compModels(comId));
         c.pageid=pindex2pid(indexPage);
         c.saveComToFile();
+    }
+    function mouse_on_any_com(mousePos){
+        for(var i=0;i<component_list.length;i++){
+            if(component_list[i].visible){
+                if(component_list[i].containsGlobalPoint(mousePos)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

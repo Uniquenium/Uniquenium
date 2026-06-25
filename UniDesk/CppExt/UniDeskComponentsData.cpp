@@ -174,9 +174,9 @@ void UniDeskComponentsData::removePage(int idx) {
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::setCurrentPage(int idx) {
+void UniDeskComponentsData::setCurrentPage(int id) {
     QJsonObject obj = readJsonFile(componentsFile);
-    obj["currentPid"] = idx;
+    obj["currentPid"] = id;   
     writeJsonFile(componentsFile, obj);
 }
 
