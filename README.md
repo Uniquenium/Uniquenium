@@ -11,6 +11,7 @@
 [Official Docs](https://docs.uniquenium.qyadbr.top) ·
 [DeepWiki Docs](https://deepwiki.com/Uniquenium/Uniquenium) ·
 [中文](./README-ZH_CN.md)
+[TODO](./TODO.md)
 
 </div>
 An open-source desktop extension tool that combines beautification and practical functions
@@ -21,53 +22,7 @@ An open-source desktop extension tool that combines beautification and practical
 - [exprtk](https://github.com/ArashPartow/exprtk)
 - QHotkey
 
-# Todo List
 
-- [ ] Main Page
-  - [ ] Exit
-    - [x] System
-      - [x] Shutdown
-      - [x] Restart
-      - [x] Sleep
-      - [ ] Update
-      - [x] Log Off
-      - [x] Lock Screen
-    - [x] Pages View
-      - [ ] Manage Pages
-    - [ ] Settings
-      - [ ] System
-      - [ ] Appearance
-      - [ ] Behavior
-      - [ ] Hotkeys
-      - [ ] About
-    - [x] New Component
-- [ ] Controls
-- [ ] Basic Components
-  - [ ] Text
-  - [ ] Button
-  - [ ] Image
-  - [ ] Chart(CPU,GPU,Network status,etc.)
-  - [ ] Frame
-  - [ ] Group
-- [ ] Extra Components
-  - [ ] Calculator
-  - [ ] Screen Capture
-  - [ ] Color Picker
-  - [ ] Translator
-  - [ ] Music
-  - [ ] Todo List
-  - [ ] Explorer
-  - [ ] Typing Follower
-  - [ ] Work Sheets
-  - [ ] Calendar
-  - [ ] Schedule
-  - [ ] Notepad
-  - [ ] Codepad
-  - [ ] Rapid File Downloader
-  - [ ] RSS
-  - [ ] Screen Using Time
-  - [ ] ClipBoard
-  - [ ] Encoder/Decoder
 
 # Acknowledgements
 

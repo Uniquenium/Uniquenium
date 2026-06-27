@@ -35,7 +35,7 @@ UniDeskWindow{
             color: "transparent"
             ListView{
                 id: option4_listView
-                model: comManager.page_list
+                model: window.comManager.page_list
                 anchors.fill: parent
                 anchors.margins: 10
                 spacing: 10
@@ -50,7 +50,7 @@ UniDeskWindow{
                         visible: !dele.editing
                         font.family: UniDeskTextStyle.little.family
                         font.pixelSize: UniDeskTextStyle.little.pixelSize
-                        font.bold: comManager.pindex2pid(index)===comManager.currentPid
+                        font.bold: comManager.pindex2pid(index)===comManager.currentPid   
                         anchors.verticalCenter: parent.verticalCenter
                         x: 10
                     }
@@ -230,7 +230,6 @@ UniDeskWindow{
                             bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
                             iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                             radius: width / 2
-                            visible: comManager.getComById(model.display)?comManager.getComById(model.display).subComponentable:false
                             onClicked:{
                                 UniDeskComWindow.parentId=model.display;
                                 UniDeskComWindow.pageid=comManager.getComById(model.display).pageid;

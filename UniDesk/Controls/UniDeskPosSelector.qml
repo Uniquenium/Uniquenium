@@ -64,14 +64,15 @@ Item{
             editable: true
             from: 0
             to: UniDeskTools.desktopGeometry(Window.window).width - 10
-            onValueChanged:{
+            value:control.editingComponent ? control.editingComponent.x : 0
+            onValueModified:{
                 if(control.editingComponent){
-                    control.editingComponent.geoX = value;
+                    control.editingComponent.x = value;
                     control.editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
-                value=control.editingComponent ? control.editingComponent.geoX : 0
+                value=control.editingComponent ? control.editingComponent.x : 0
             }
         }
         UniDeskSpinBox{
@@ -81,14 +82,15 @@ Item{
             editable: true
             from: 0
             to: UniDeskTools.desktopGeometry(Window.window).height - 10
-            onValueChanged:{
+            value:control.editingComponent ? control.editingComponent.y : 0
+            onValueModified:{
                 if(control.editingComponent){
-                    control.editingComponent.geoY = value;
+                    control.editingComponent.y = value;
                     control.editingComponent.saveComToFile();
                 }
             }  
             Component.onCompleted: {
-                value = control.editingComponent ? control.editingComponent.geoY : 0
+                value = control.editingComponent ? control.editingComponent.y : 0
             }
         }
         UniDeskComBox{
@@ -141,10 +143,10 @@ Item{
                     var ec=control.editingComponent;
                     var hac=control.horizontalAlignComponent;
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.geoX = hac.geoX-hac.rotationOffsetX()+ec.rotationOffsetX();
+                        control.editingComponent.x = hac.x;
                     }
                     else{
-                        control.editingComponent.geoX = ec.rotationOffsetX();
+                        control.editingComponent.x = 0;
                     }
                     control.editingComponent.saveComToFile();  
                 }
@@ -161,10 +163,10 @@ Item{
                     var ec=control.editingComponent;
                     var hac=control.horizontalAlignComponent;
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.geoX = hac.geoX - hac.rotationOffsetX() + hac.width/2 - ec.width/2 + ec.rotationOffsetX();
+                        control.editingComponent.x = hac.x  + hac.width/2 - ec.width/2 ;
                     }
                     else{
-                        control.editingComponent.geoX = UniDeskTools.desktopGeometry(Window.window).width /2 - ec.width /2 + ec.rotationOffsetX();
+                        control.editingComponent.x = UniDeskTools.desktopGeometry(Window.window).width /2 - ec.width /2 ;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -181,10 +183,10 @@ Item{
                     var ec=control.editingComponent;
                     var hac=control.horizontalAlignComponent;
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.geoX = hac.geoX - hac.rotationOffsetX() + hac.width - ec.width + ec.rotationOffsetX();
+                        control.editingComponent.x = hac.x  + hac.width - ec.width;
                     }
                     else{
-                        control.editingComponent.geoX = UniDeskTools.desktopGeometry(Window.window).width - ec.width + ec.rotationOffsetX();
+                        control.editingComponent.x = UniDeskTools.desktopGeometry(Window.window).width - ec.width;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -207,10 +209,10 @@ Item{
                     var ec=control.editingComponent;
                     var vac=control.verticalAlignComponent;
                     if(control.verticalAlignComponent){
-                        control.editingComponent.geoY = vac.geoY - vac.rotationOffsetY() + ec.rotationOffsetY();
+                        control.editingComponent.y = vac.y;
                     }
                     else{
-                        control.editingComponent.geoY=ec.rotationOffsetY();
+                        control.editingComponent.y=0;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -227,10 +229,10 @@ Item{
                     var ec=control.editingComponent;
                     var vac=control.verticalAlignComponent;
                     if(control.verticalAlignComponent){
-                        control.editingComponent.geoY = vac.geoY - vac.rotationOffsetY() + vac.height/2 - ec.height/2 + ec.rotationOffsetY();
+                        control.editingComponent.y = vac.y  + vac.height/2 - ec.height/2 ;
                     }
                     else{
-                        control.editingComponent.geoY = UniDeskTools.desktopGeometry(Window.window).height /2 - ec.height /2 + ec.rotationOffsetY();
+                        control.editingComponent.y = UniDeskTools.desktopGeometry(Window.window).height /2 - ec.height /2 ;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -247,10 +249,10 @@ Item{
                     var ec=control.editingComponent;
                     var vac=control.verticalAlignComponent;
                     if(control.verticalAlignComponent){
-                        control.editingComponent.geoY = vac.geoY - vac.rotationOffsetY() + vac.height - ec.height + ec.rotationOffsetY();
+                        control.editingComponent.y = vac.y  + vac.height - ec.height;
                     }
                     else{
-                        control.editingComponent.geoY = UniDeskTools.desktopGeometry(Window.window).height - ec.height + ec.rotationOffsetY();
+                        control.editingComponent.y = UniDeskTools.desktopGeometry(Window.window).height - ec.height;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -265,7 +267,7 @@ Item{
         implicitHeight=gridLayout.childrenRect.height
     }
     function refreshPosition(){
-        horizontalCoordTextField.value=control.editingComponent.geoX;
-        verticalCoordTextField.value=control.editingComponent.geoY;
+        horizontalCoordTextField.value=control.editingComponent.x;
+        verticalCoordTextField.value=control.editingComponent.y;
     }
 }

@@ -29,16 +29,17 @@ Item{
             Layout.column: 1
             Layout.row: 0
             editable: true
-            from: 1
+            from: 0
             to: 3000
+            value: control.editingComponent ? control.editingComponent.width : 100
             onValueModified:{
                 if(control.editingComponent){
-                    control.editingComponent.geoWidth = value;
+                    control.editingComponent.width = value;
                     control.editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
-                value = control.editingComponent ? control.editingComponent.geoWidth : 200
+                value = control.editingComponent.width
             }
         }
         UniDeskText{
@@ -55,25 +56,30 @@ Item{
             Layout.column: 1
             Layout.row: 1
             editable: true
-            from: 1
+            from: 0
             to: 3000
+            value: control.editingComponent ? control.editingComponent.height : 50
             onValueModified:{
                 if(control.editingComponent){
-                    control.editingComponent.geoHeight = value;
+                    control.editingComponent.height = value;
                     control.editingComponent.saveComToFile();
                 }
             }
             Component.onCompleted: {
-                value = control.editingComponent ? control.editingComponent.geoHeight : 200
+                value = control.editingComponent.height
             }
         }
     }
     Component.onCompleted: {
         implicitWidth = gridLayout.childrenRect.width
         implicitHeight = gridLayout.childrenRect.height
+        refreshSize();
     }
     function refreshSize(){
-        widthSpinBox.value = control.editingComponent ? control.editingComponent.geoWidth : 200
-        heightSpinBox.value = control.editingComponent ? control.editingComponent.geoHeight : 200
+        widthSpinBox.value = control.editingComponent.width 
+        heightSpinBox.value = control.editingComponent.height 
+    }
+    onEditingComponentChanged: {
+        refreshSize();
     }
 }

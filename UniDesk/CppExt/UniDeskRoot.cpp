@@ -102,11 +102,13 @@ bool UniDeskRoot::eventFilter(QObject *obj, QEvent *event) {
     } else if (event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
         if (mouseEvent) {
+            isMousePressed(true);
             emit mousePressed(mouseEvent->button(), mouseEvent->position().toPoint());
         }
     } else if (event->type() == QEvent::MouseButtonRelease) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
         if (mouseEvent) {
+            isMousePressed(false);
             emit mouseReleased(mouseEvent->button(), mouseEvent->position().toPoint());
         }
     }

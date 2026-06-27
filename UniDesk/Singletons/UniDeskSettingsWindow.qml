@@ -22,16 +22,12 @@ UniDeskWindow{
         id: tabBar
         x: 10
         UniDeskTabButton{
-            text: qsTr("系统")
-            //任务栏、桌面壁纸、鼠标样式，桌面图标显示
+            text: qsTr("行为")
+            //任务栏、桌面壁纸、鼠标样式，桌面图标显示、开机启动，检查更新的模式、显示语言、
         }
         UniDeskTabButton{
             text: qsTr("外观")
             //颜色模式，各控件颜色、字体、圆角大小、外框粗细、主面板外观
-        }
-        UniDeskTabButton{
-            text: qsTr("行为")
-            //开机启动，检查更新的模式、显示语言、
         }
         UniDeskTabButton{
             text: qsTr("热键")
@@ -149,7 +145,7 @@ UniDeskWindow{
                 anchors.right: parent.right
                 anchors.margins: 10
                 currentIndex: UniDeskSettings.colorMode
-                onCurrentIndexChanged: {
+                onCurrentTextChanged:  {
                     UniDeskSettings.set("colorMode", currentIndex);
                     UniDeskGlobals.updateIsLight();
                 }

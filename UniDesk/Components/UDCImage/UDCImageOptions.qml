@@ -19,6 +19,7 @@ UniDeskWindow{
     autoDestroy: false
     property var comManager
     property UniDeskComBase editingComponent
+    property UniDeskComBase ec: editingComponent
     
     ScrollView{
         anchors.fill: parent
@@ -40,17 +41,17 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             placeholderText: qsTr("请输入组件id")
-            text: editingComponent ? editingComponent.identification : ""
+            text: window.ec ? window.ec.identification : ""
             onEditingFinished: {
-                if(UniDeskComManager.validateId(text)){  
-                    if (editingComponent) {
-                        editingComponent.identification = text
+                if(window.comManager.validateId(text)){  
+                    if (window.ec) {
+                        window.ec.identification = text
                     }
                 }
                 else{
-                    text = editingComponent.identification
+                    text = window.ec.identification
                 }
-                editingComponent.saveComToFile()
+                window.ec.saveComToFile()
             }
         }
         
@@ -60,7 +61,33 @@ UniDeskWindow{
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
-            editingComponent: window.editingComponent
+            editingComponent: window.ec
+        }
+
+        UniDeskText{
+            id: textRotation
+            text: qsTr("旋转角度")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: rotationSpinBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskSpinBox{
+            id: rotationSpinBox
+            anchors.top: posSelector.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            value: window.ec ? window.ec.rotation : 0
+            from: 0
+            to: 359
+            stepSize: 1
+            onValueModified: {
+                if (window.ec) {
+                    window.ec.rotation = value;
+                    window.ec.saveComToFile();
+                }
+            }
         }
         
         UniDeskText{
@@ -74,15 +101,15 @@ UniDeskWindow{
         
         UniDeskPathSelector{
             id: pathSelector
-            anchors.top: posSelector.bottom
+            anchors.top: rotationSpinBox.bottom
             anchors.left: textImagePath.right
             anchors.right: parent.right
             anchors.margins: 10
-            path: editingComponent ? editingComponent.imagePath : ""
+            path: window.ec ? window.ec.imagePath : ""
             onSubmit: {
-                if (editingComponent) {
-                    editingComponent.imagePath = path.toString()
-                    editingComponent.saveComToFile()
+                if (window.ec) {
+                    window.ec.imagePath = path.toString()
+                    window.ec.saveComToFile()
                 }
             }
         }
@@ -93,7 +120,7 @@ UniDeskWindow{
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
-            editingComponent: window.editingComponent
+            editingComponent: window.ec
         }
         
         UniDeskText{
@@ -111,26 +138,25 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             model: [qsTr("拉伸"), qsTr("保持比例适应"), qsTr("保持比例裁剪"), qsTr("平铺"), qsTr("保持比例填充")]
-            onCurrentIndexChanged: {
-                if (editingComponent) {
-                    if (currentIndex === 0) editingComponent.fillMode = Image.Stretch
-                    else if (currentIndex === 1) editingComponent.fillMode = Image.PreserveAspectFit
-                    else if (currentIndex === 2) editingComponent.fillMode = Image.PreserveAspectCrop
-                    else if (currentIndex === 3) editingComponent.fillMode = Image.Tile
-                    else if (currentIndex === 4) editingComponent.fillMode = Image.Pad
-                    editingComponent.saveComToFile()
+            currentIndex: {
+                if (window.ec) {
+                    if (window.ec.fillMode === Image.Stretch) return 0
+                    else if (window.ec.fillMode === Image.PreserveAspectFit) return 1
+                    else if (window.ec.fillMode === Image.PreserveAspectCrop) return 2
+                    else if (window.ec.fillMode === Image.Tile) return 3
+                    else if (window.ec.fillMode === Image.Pad) return 4
                 }
+                return 0
             }
-            Component.onCompleted: {
-                var idx = 0
-                if (editingComponent) {
-                    if (editingComponent.fillMode === Image.Stretch) idx = 0
-                    else if (editingComponent.fillMode === Image.PreserveAspectFit) idx = 1
-                    else if (editingComponent.fillMode === Image.PreserveAspectCrop) idx = 2
-                    else if (editingComponent.fillMode === Image.Tile) idx = 3
-                    else if (editingComponent.fillMode === Image.Pad) idx = 4
+            onCurrentTextChanged:  {
+                if (window.ec) {
+                    if (currentIndex === 0) window.ec.fillMode = Image.Stretch
+                    else if (currentIndex === 1) window.ec.fillMode = Image.PreserveAspectFit
+                    else if (currentIndex === 2) window.ec.fillMode = Image.PreserveAspectCrop
+                    else if (currentIndex === 3) window.ec.fillMode = Image.Tile
+                    else if (currentIndex === 4) window.ec.fillMode = Image.Pad
+                    window.ec.saveComToFile()
                 }
-                currentIndex = idx
             }
         }
         
@@ -149,59 +175,31 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             editable: true
-            value: editingComponent ? editingComponent.opacity * 100 : 100
+            value: window.ec ? window.ec.opacity * 100 : 100
             from: 0
             to: 100
             stepSize: 1
             onValueModified: {
-                if (editingComponent) {
-                    editingComponent.opacity = value / 100
-                    editingComponent.saveComToFile()
+                if (window.ec) {
+                    window.ec.opacity = value / 100
+                    window.ec.saveComToFile()
                 }
             }
         }
         
-        UniDeskCheckBox{
-            id: canMoveCheckBox
-            text: qsTr("可拖动")
-            anchors.top: opacitySpinBox.bottom
-            anchors.left: parent.left
-            anchors.margins: 10
-            checked: editingComponent ? editingComponent.canMove : true
-            onCheckedChanged: {
-                if (editingComponent) {
-                    editingComponent.canMove = checked
-                    editingComponent.saveComToFile()
-                }
-            }
-        }
-
-        UniDeskCheckBox{
-            id: canResizeCheckBox
-            text: qsTr("可拖拽调整大小")
-            anchors.top: canMoveCheckBox.bottom
-            anchors.left: parent.left
-            anchors.margins: 10
-            checked: editingComponent ? editingComponent.canResize : true
-            onCheckedChanged: {
-                if (editingComponent) {
-                    editingComponent.canResize = checked
-                    editingComponent.saveComToFile()
-                }
-            }
-        }
+        
 
         UniDeskCheckBox{
             id: smoothCheckBox
             text: qsTr("平滑")
-            anchors.top: canResizeCheckBox.bottom
+            anchors.top: opacitySpinBox.bottom
             anchors.left: parent.left
             anchors.margins: 10
-            checked: editingComponent ? editingComponent.smooth : true
+            checked: window.ec ? window.ec.smooth : true
             onCheckedChanged: {
-                if (editingComponent) {
-                    editingComponent.smooth = checked
-                    editingComponent.saveComToFile()
+                if (window.ec) {
+                    window.ec.smooth = checked
+                    window.ec.saveComToFile()
                 }
             }
         }
@@ -212,11 +210,11 @@ UniDeskWindow{
             anchors.top: smoothCheckBox.bottom
             anchors.left: parent.left
             anchors.margins: 10
-            checked: editingComponent ? editingComponent.mipmap : false
+            checked: window.ec ? window.ec.mipmap : false
             onCheckedChanged: {
-                if (editingComponent) {
-                    editingComponent.mipmap = checked
-                    editingComponent.saveComToFile()
+                if (window.ec) {
+                    window.ec.mipmap = checked
+                    window.ec.saveComToFile()
                 }
             }
         }

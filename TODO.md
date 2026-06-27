@@ -1,0 +1,72 @@
+# Todo List
+
+- Main Page
+  - [x] Exit
+  - System
+    - [x] Shutdown
+    - [x] Restart
+    - [x] Sleep
+    - [ ] Update
+    - [x] Log Off
+    - [x] Lock Screen
+  - Pages View
+    - [x] Manage Pages
+  - Settings
+    - Behavior
+      - [x] Taskbar Show/Hide
+      - [ ] Desktop Wallpaper
+      - [ ] Mouse Style
+      - [ ] Desktop Icon
+      - [ ] Auto Start With Booting
+      - [ ] Update Mode
+      - [ ] Language
+    - [ ] Appearance
+    - [ ] Hotkeys
+    - [ ] Plugin
+    - [ ] Theme
+    - [ ] About
+  - [x] New Component
+- [x] Controls
+- Basic Components
+  - [x] Text
+  - [ ] Button
+  - [x] Image
+  - [ ] Chart(CPU,GPU,Network status,etc.)
+  - [ ] Frame
+- Extra Components
+  - [ ] Calculator
+  - [ ] Screen Capture
+  - [ ] Color Picker
+  - [ ] Translator
+  - [ ] Music
+  - [ ] Todo List
+  - [ ] Explorer
+  - [ ] Typing Follower
+  - [ ] Work Sheets
+  - [ ] Calendar
+  - [ ] Schedule
+  - [ ] Notepad
+  - [ ] Codepad
+  - [ ] Rapid File Downloader
+  - [ ] RSS
+  - [ ] Screen Using Time
+  - [ ] ClipBoard
+  - [ ] Encoder/Decoder
+- Miscellaneous
+  - [ ] Copy Components
+  - [ ] Paste Text/Image From Clipboard
+  - [ ] Theme
+  - [ ] Plugin
+  - [ ] Tray Icon & Menu
+  - [ ] Previous/Next Page Button
+  - [ ] Checking Components When Deleting a Page
+  - [ ] Parent Component Relationship
+  - [ ] Border Radius for UniDeskImage
+  - [x] Text Default Alignment
+  - [ ] Improve Component Identity Generation
+- Bugs
+  - [ ] Program Terminates Abnormally When Deleting a Page
+  - [ ] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity
+  - [x] Supporting: UDCText's canMove property changing by menu(it has problems so it's temporarily hidden)(it has fixed by binding "canMove" with "chosen")
+
+

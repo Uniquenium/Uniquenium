@@ -37,6 +37,7 @@ public:
     Q_INVOKABLE void removeFontFamily(const QString &id);
     Q_INVOKABLE QVariant getCustomFonts();
     Q_INVOKABLE bool isValidUrl(const QUrl &url);
+    Q_INVOKABLE QPoint getCursorPosition();
 
 signals:
     void customFontsChanged();

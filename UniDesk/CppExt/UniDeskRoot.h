@@ -28,6 +28,7 @@ class UniDeskRoot : public QQuickWindow, public QAbstractNativeEventFilter {
     Q_PROPERTY_AUTO(int, margins)
     Q_PROPERTY_AUTO(Qt::Edges, edges)
     Q_PROPERTY_AUTO(bool, mouseClickThrough)
+    Q_PROPERTY_AUTO(bool, isMousePressed)
     QML_NAMED_ELEMENT(UniDeskRoot)
 public:
     explicit UniDeskRoot(QQuickWindow *parent = nullptr);

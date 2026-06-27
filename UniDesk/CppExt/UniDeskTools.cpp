@@ -13,6 +13,7 @@
 #include <QWindow>
 #include <QFile>
 #include <QQuickWindow>
+#include <QCursor>
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <winreg.h>
@@ -185,3 +186,9 @@ QVariant UniDeskTools::getCustomFonts() {
 bool UniDeskTools::isValidUrl(const QUrl &url) {
     return url.isValid();
 }
+
+QPoint UniDeskTools::getCursorPosition() {
+    return QCursor::pos();
+}
+
+

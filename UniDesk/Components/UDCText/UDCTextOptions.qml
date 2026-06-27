@@ -22,7 +22,7 @@ UniDeskWindow{
     ScrollView{
         anchors.fill: parent
         hoverEnabled: true
-        contentHeight: wrapModeComboBox.y+wrapModeComboBox.height-text0.y+30
+        contentHeight: verticalAlignmentComboBox.y+verticalAlignmentComboBox.height-text0.y+30
         UniDeskText{
             id: text0
             text: qsTr("组件id（不能重复）")
@@ -59,59 +59,13 @@ UniDeskWindow{
             anchors.margins: 10
             editingComponent: window.editingComponent
         }
-        UniDeskText{
-            id: textMaxWidth
-            text: qsTr("最大宽度")
-            font: UniDeskTextStyle.little
-            anchors.left: parent.left
-            anchors.margins: 10
-            anchors.verticalCenter: maxWidthSpinBox.verticalCenter
-        }
-        UniDeskSpinBox{
-            id: maxWidthSpinBox
+        UniDeskSizeSelector{
+            id: sizeSelector
             anchors.top: posSelector.bottom
-            anchors.right: parent.right
-            anchors.margins: 10
-            editable: true
-            from: 1
-            to: 2000
-            //avoid loop binding
-            onValueModified: {
-                if (editingComponent) {
-                    editingComponent.maxWidth = value;
-                    editingComponent.saveComToFile();
-                }
-            }
-            Component.onCompleted: {
-                value = editingComponent ? editingComponent.maxWidth : 1000
-            }
-        }
-        UniDeskText{
-            id: textMaxHeight
-            text: qsTr("最大高度")
-            font: UniDeskTextStyle.little
             anchors.left: parent.left
-            anchors.margins: 10
-            anchors.verticalCenter: maxHeightSpinBox.verticalCenter
-        }
-        UniDeskSpinBox{
-            id: maxHeightSpinBox
-            anchors.top: maxWidthSpinBox.bottom
             anchors.right: parent.right
             anchors.margins: 10
-            editable: true
-            from: 1
-            to: 2000
-            //avoid loop binding
-            onValueModified: {
-                if (editingComponent) {
-                    editingComponent.maxHeight = value;
-                    editingComponent.saveComToFile();
-                }
-            }
-            Component.onCompleted: {
-                value = editingComponent ? editingComponent.maxHeight : 1000
-            }
+            editingComponent: window.editingComponent
         }
         UniDeskText{
             id: text13
@@ -123,7 +77,7 @@ UniDeskWindow{
         }
         UniDeskSpinBox{
             id: rotationSpinBox
-            anchors.top: maxHeightSpinBox.bottom
+            anchors.top: sizeSelector.bottom
             anchors.right: parent.right
             anchors.margins: 10
             editable: true
@@ -131,7 +85,7 @@ UniDeskWindow{
             from: 0
             to: 359
             stepSize: 1
-            onValueChanged: {
+            onValueModified: {
                 if (editingComponent) {
                     editingComponent.rotation = value;
                     editingComponent.saveComToFile();
@@ -222,7 +176,7 @@ UniDeskWindow{
             from: 1
             to: 1000
             stepSize: 1
-            onValueChanged: {
+            onValueModified: {
                 if (editingComponent) {
                     editingComponent.fontSize = value;
                     editingComponent.saveComToFile();
@@ -246,7 +200,8 @@ UniDeskWindow{
             from: 100
             to: 1000
             stepSize: 100
-            onValueChanged: {
+            value: editingComponent ? editingComponent.weight : 400
+            onValueModified: {
                 if (editingComponent) {
                     editingComponent.weight = value;
                     editingComponent.saveComToFile();
@@ -257,21 +212,9 @@ UniDeskWindow{
             }
         }
         UniDeskCheckBox{
-            id: canMoveCheckBox
-            text: qsTr("可拖动")
-            anchors.top: fontWeightSpinBox.bottom
-            anchors.left: parent.left
-            anchors.margins: 10
-            checked: editingComponent ? editingComponent.canMove : false
-            onCheckedChanged: {
-                editingComponent.canMove=checked;
-                editingComponent.saveComToFile();
-            }
-        }
-        UniDeskCheckBox{
             id: smallCapsCheckBox
             text: qsTr("小大写字母")
-            anchors.top: canMoveCheckBox.bottom
+            anchors.top: fontWeightSpinBox.bottom
             anchors.left: parent.left
             anchors.margins: 10
             checked: editingComponent ? editingComponent.smallCaps : false
@@ -346,7 +289,7 @@ UniDeskWindow{
             from: -1000
             to: 1000
             stepSize: 1
-            onValueChanged: {
+            onValueModified: {
                 if (editingComponent) {
                     editingComponent.letterSpacing = value;
                     editingComponent.saveComToFile();
@@ -371,7 +314,7 @@ UniDeskWindow{
             from: -1000
             to: 1000
             stepSize: 1
-            onValueChanged: {
+            onValueModified: {
                 if (editingComponent) {
                     editingComponent.wordSpacing = value;
                     editingComponent.saveComToFile();
@@ -416,7 +359,8 @@ UniDeskWindow{
             anchors.margins: 10
             model: [qsTr("正常"), qsTr("凸起"), qsTr("描边"), qsTr("凹陷")]
             comManager: window.comManager
-            onCurrentIndexChanged: {
+            currentIndex: editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style===Text.Outline ? 2 : 3) : 0
+            onCurrentTextChanged:  {
                 if (editingComponent) {
                     if (currentIndex === 0) {
                         editingComponent.style = Text.Normal;
@@ -429,9 +373,6 @@ UniDeskWindow{
                     }
                 }
                 editingComponent.saveComToFile();
-            }
-            Component.onCompleted: {
-                currentIndex = editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style===Text.Outline ? 2 : 3) : 0
             }
         }
         UniDeskText{
@@ -470,14 +411,12 @@ UniDeskWindow{
             anchors.margins: 10
             comManager: window.comManager
             model: [qsTr("自动"), qsTr("纯文本"), qsTr("富文本（HTML）"), qsTr("Markdown")]
-            onCurrentIndexChanged: {
+            currentIndex: editingComponent ? (editingComponent.textFormat === Text.AutoText ? 0 : editingComponent.textFormat === Text.PlainText ? 1 : editingComponent.textFormat === Text.RichText ? 2 : 3) : 0
+            onCurrentTextChanged:  {
                 if (editingComponent) {
                     editingComponent.textFormat = currentIndex === 0 ? Text.AutoText : currentIndex === 1 ? Text.PlainText : currentIndex === 2 ? Text.RichText : Text.MarkdownText;
                     editingComponent.saveComToFile();
                 }
-            }
-            Component.onCompleted: {
-                currentIndex = editingComponent ? (editingComponent.textFormat === Text.AutoText ? 0 : editingComponent.textFormat === Text.PlainText ? 1 : editingComponent.textFormat === Text.RichText ? 2 : 3) : 0;
             }
         }
         UniDeskText{
@@ -495,7 +434,17 @@ UniDeskWindow{
             anchors.margins: 10
             comManager: window.comManager
             model: [qsTr("自动换行"), qsTr("不换行"), qsTr("任意位置换行"), qsTr("词边界换行")]
-            onCurrentIndexChanged: {
+            currentIndex: {
+                var idx = 0;
+                if (editingComponent) {
+                    if (editingComponent.wrapMode === Text.Wrap) idx = 0;
+                    else if (editingComponent.wrapMode === Text.NoWrap) idx = 1;
+                    else if (editingComponent.wrapMode === Text.WrapAnywhere) idx = 2;
+                    else if (editingComponent.wrapMode === Text.WrapAtWordBoundaryOrAnywhere) idx = 3;
+                }
+                return idx;
+            }
+            onCurrentTextChanged:  {
                 if (editingComponent) {
                     if (currentIndex === 0) editingComponent.wrapMode = Text.Wrap;
                     else if (currentIndex === 1) editingComponent.wrapMode = Text.NoWrap;
@@ -504,15 +453,71 @@ UniDeskWindow{
                     editingComponent.saveComToFile();
                 }
             }
-            Component.onCompleted: {
-                var idx = 0;
+        }
+        UniDeskText{
+            id: textHorizontalAlignment
+            text: qsTr("水平对齐")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: horizontalAlignmentComboBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskComboBox{
+            id: horizontalAlignmentComboBox
+            anchors.top: wrapModeComboBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            comManager: window.comManager
+            model: [qsTr("左对齐"), qsTr("居中对齐"), qsTr("右对齐")]
+            currentIndex: {
+                var idx = 1;
                 if (editingComponent) {
-                    if (editingComponent.wrapMode === Text.Wrap) idx = 0;
-                    else if (editingComponent.wrapMode === Text.NoWrap) idx = 1;
-                    else if (editingComponent.wrapMode === Text.WrapAnywhere) idx = 2;
-                    else if (editingComponent.wrapMode === Text.WrapAtWordBoundaryOrAnywhere) idx = 3;
+                    if (editingComponent.horizontalAlignment === Text.AlignLeft) idx = 0;
+                    else if (editingComponent.horizontalAlignment === Text.AlignHCenter) idx = 1;
+                    else if (editingComponent.horizontalAlignment === Text.AlignRight) idx = 2;
                 }
-                currentIndex = idx;
+                return idx;
+            }
+            onCurrentTextChanged:  {
+                if (editingComponent) {
+                    if (currentIndex === 0) editingComponent.horizontalAlignment = Text.AlignLeft;
+                    else if (currentIndex === 1) editingComponent.horizontalAlignment = Text.AlignHCenter;
+                    else if (currentIndex === 2) editingComponent.horizontalAlignment = Text.AlignRight;
+                    editingComponent.saveComToFile();
+                }
+            }
+        }
+        UniDeskText{
+            id: textVerticalAlignment
+            text: qsTr("垂直对齐")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.verticalCenter: verticalAlignmentComboBox.verticalCenter
+            anchors.margins: 10
+        }
+        UniDeskComboBox{
+            id: verticalAlignmentComboBox
+            anchors.top: horizontalAlignmentComboBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            comManager: window.comManager
+            model: [qsTr("顶部对齐"), qsTr("居中对齐"), qsTr("底部对齐")]
+            currentIndex: {
+                var idx = 1;
+                if (editingComponent) {
+                    if (editingComponent.verticalAlignment === Text.AlignTop) idx = 0;
+                    else if (editingComponent.verticalAlignment === Text.AlignVCenter) idx = 1;
+                    else if (editingComponent.verticalAlignment === Text.AlignBottom) idx = 2;
+                }
+                return idx;
+            }
+            onCurrentTextChanged:  {
+                if (editingComponent) {
+                    if (currentIndex === 0) editingComponent.verticalAlignment = Text.AlignTop;
+                    else if (currentIndex === 1) editingComponent.verticalAlignment = Text.AlignVCenter;
+                    else if (currentIndex === 2) editingComponent.verticalAlignment = Text.AlignBottom;
+                    editingComponent.saveComToFile();
+                }
             }
         }
     }
@@ -525,9 +530,8 @@ UniDeskWindow{
     function updatePosition(){
         posSelector.refreshPosition();
     }
-    function updateMaxSize(){
-        maxWidthSpinBox.value = editingComponent.maxWidth;
-        maxHeightSpinBox.value = editingComponent.maxHeight;
+    function updateSize(){
+        sizeSelector.refreshSize();
     }
     Component.onCompleted: {
         updatePosition();

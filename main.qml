@@ -188,7 +188,7 @@ UniDeskRoot{
                     onObjectAdded: function(index, obj){
                         mi_toggle_page.insertItem(index, obj)
                     }
-                    onObjectRemoved: function(obj){
+                    onObjectRemoved: function(index,obj){
                         mi_toggle_page.removeItem(obj)
                     }
                 }
@@ -289,7 +289,6 @@ UniDeskRoot{
         //Check  if the mouse is on "base"
         
 
-        // print(component_manager.mouse_on_any_com(pos));
     }
     onMousePressed:(button, pos) => {
     }

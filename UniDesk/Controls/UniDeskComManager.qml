@@ -128,8 +128,8 @@ UniDeskObject{
             var new_com;
             for(var j=0;j<typename_list.length;j++){
                 if(data[i].type===typename_list[j]){
-                    new_com=type_list[j].createObject(root.contentItem,{"identification":data[i].identification,"pageid": data[i].pageid,"comManager":object,"geoX":data[i].x,"geoY":data[i].y});
-                    new_com.loadPropertyData(data[i]);
+                    new_com=type_list[j].createObject(root.contentItem,{"identification":data[i].identification,"pageid": data[i].pageid,"comManager":object,"x":data[i].x,"y":data[i].y});
+                    new_com.loadPropertyData(data[i]); 
                 }
             }
             component_list.push(new_com)

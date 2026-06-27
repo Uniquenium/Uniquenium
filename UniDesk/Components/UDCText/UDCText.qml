@@ -12,8 +12,6 @@ import UniDesk.Components.UDCText
 UniDeskComBase{
     id: base
     visible: true
-    geoWidth: cont.width ? cont.width : 100
-    geoHeight: cont.height ? cont.height : 100
     type: "UDCText"
     property string textContent: qsTr("文字")
     property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
@@ -32,14 +30,14 @@ UniDeskComBase{
     property color styleColor: UniDeskSettings.primaryColor
     property int textFormat: Text.RichText
     property int wrapMode: Text.Wrap
-    property int maxWidth: 1000
-    property int maxHeight: 1000
+    property int horizontalAlignment: Text.AlignHCenter
+    property int verticalAlignment: Text.AlignVCenter
     optionsWindow: optionsText
     chosen: optionsText ? optionsText.visible : false
+    width: 100
+    height: 50
     UniDeskText{
         id: cont
-        x: base.rotationOffsetX()
-        y: base.rotationOffsetY()
         text: base.textContent ? UniDeskExpr.convertStr(base.textContent) : qsTr("请输入文本内容")
         textColor: base.textColor
         font.family: base.fontFamily
@@ -57,15 +55,10 @@ UniDeskComBase{
         styleColor: base.styleColor
         textFormat: base.textFormat
         wrapMode: base.wrapMode
-        rotation: base.rotation
-        transformOrigin: Item.TopLeft
-        onTextChanged:{
-            cont.width=base.maxWidth;
-            cont.width=Math.min(base.maxWidth, cont.contentWidth);
-            cont.height=base.maxHeight;
-            cont.height=Math.min(base.maxHeight, cont.contentHeight);
-            optionsText.updateMaxSize();
-        }
+        horizontalAlignment: base.horizontalAlignment
+        verticalAlignment: base.verticalAlignment
+        width: base.width
+        height: base.height
     }
     UniDeskMenu{
         id: menu
@@ -74,27 +67,6 @@ UniDeskComBase{
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
                 optionsText.show()
-            }
-        }
-        UniDeskMenuItem{
-            id: mi_drag
-            text: qsTr("可拖动")
-            iconSource: "qrc:/media/img/move.svg"
-            checkable: true
-            onClicked: {
-                base.canMove=checked;
-                checked=!checked;
-                base.saveComToFile();
-                menu.close();
-            }
-            Component.onCompleted: {
-                checked=base.canMove;
-            }
-            Connections{
-                target: base
-                function onCanMoveChanged(){
-                    mi_drag.checked=base.canMove;
-                }
             }
         }
         UniDeskMenuItem{
@@ -122,26 +94,16 @@ UniDeskComBase{
         menu.popup(cont);
     }
     onEndDrag: {
-        geoX=x+rotationOffsetX();
-        geoY=y+rotationOffsetY();
         optionsText.updatePosition();
         saveComToFile();
-    }
-    onGeoXChanged:{
-        optionsText.updatePosition();
-    }
-    onGeoYChanged:{
-        optionsText.updatePosition();
     }
     function propertyData(){
         return {
             "type": base.type,
             "identification": base.identification,
             "pageid": base.pageid,
-            "x": base.geoX,
-            "y": base.geoY,
-            "canMove": base.canMove,
-            "canResize": base.canResize,
+            "x": base.x,
+            "y": base.y,
             "textContent": base.textContent,
             "textColorR": base.textColor.r,
             "textColorG": base.textColor.g,
@@ -166,18 +128,20 @@ UniDeskComBase{
             "textFormat": base.textFormat,
             "rotation": base.rotation,
             "wrapMode": base.wrapMode,
-            "maxWidth": base.maxWidth,
-            "maxHeight": base.maxHeight
+            "horizontalAlignment": base.horizontalAlignment,
+            "verticalAlignment": base.verticalAlignment,
+            "width": base.width,
+            "height": base.height
         }
     }
     function loadPropertyData(data){
         if(data.type!==undefined){base.type=data.type;}
         if(data.identification!==undefined){base.identification=data.identification;}       
         if(data.pageid!==undefined){base.pageid=data.pageid;}
-        if(data.x!==undefined){base.geoX=data.x;}
-        if(data.y!==undefined){base.geoY=data.y;}
-        if(data.canMove!==undefined){base.canMove=data.canMove;}
-        if(data.canResize!==undefined){base.canResize=data.canResize;}
+        if(data.x!==undefined){base.x=data.x;}
+        if(data.y!==undefined){base.y=data.y;}
+        if(data.width!==undefined){base.width=data.width;}
+        if(data.height!==undefined){base.height=data.height;}
         if(data.textContent!==undefined){base.textContent=data.textContent;}
         if(data.textColorR!==undefined){base.textColor=Qt.rgba(data.textColorR,data.textColorG,data.textColorB,data.textColorA);}
         if(data.fontFamily!==undefined){base.fontFamily=data.fontFamily;}
@@ -196,30 +160,29 @@ UniDeskComBase{
         if(data.textFormat!==undefined){base.textFormat=data.textFormat;}
         if(data.rotation!==undefined){base.rotation=data.rotation;}
         if(data.wrapMode!==undefined){base.wrapMode=data.wrapMode;}
-        if(data.maxWidth!==undefined){base.maxWidth=data.maxWidth;}else{base.maxWidth=1000;}
-        if(data.maxHeight!==undefined){base.maxHeight=data.maxHeight;}else{base.maxHeight=1000;}
+        if(data.horizontalAlignment!==undefined){base.horizontalAlignment=data.horizontalAlignment;}else{base.horizontalAlignment=Text.AlignHCenter;}
+        if(data.verticalAlignment!==undefined){base.verticalAlignment=data.verticalAlignment;}else{base.verticalAlignment=Text.AlignVCenter;}
     }
     function saveComToFile(){
         var data= propertyData();
         UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
     }
-    onMaxWidthChanged:{
-        cont.width=base.maxWidth;
-        cont.width=Math.min(base.maxWidth, cont.contentWidth);
-        optionsText.updateMaxSize();
-    }
-    onMaxHeightChanged:{
-        cont.height=base.maxHeight;
-        cont.height=Math.min(base.maxHeight, cont.contentHeight);
-        optionsText.updateMaxSize();
-    }
     Component.onCompleted:{
         flushText.start();
-        cont.width=base.maxWidth;
-        cont.width=Math.min(base.maxWidth, cont.contentWidth);
-        cont.height=base.maxHeight;
-        cont.height=Math.min(base.maxHeight, cont.contentHeight);
-        optionsText.updateMaxSize();
+        optionsText.updatePosition();
+        optionsText.updateSize();
+    }
+    onXChanged: ()=>{
+        optionsText.updatePosition();
+    }
+    onYChanged: ()=>{
+        optionsText.updatePosition();
+    }
+    onWidthChanged: {
+        optionsText.updateSize();
+    }
+    onHeightChanged: {
+        optionsText.updateSize();
     }
     onCloseSignal: ()=>{
         if(optionsText){
