@@ -50,42 +50,16 @@ UniDeskWindow{
                     }
                 }
             }
-            // 高级控件部分
-            UniDeskText{
-                text: qsTr("高级控件")
-                font: UniDeskTextStyle.small_
-                visible: extraComponents.length > 0
-            }
-            RowLayout{
-                spacing: 10
-                visible: extraComponents.length > 0
-                Repeater{
-                    model: extraComponents
-                    UniDeskButton{
-                        display: Button.TextBesideIcon
-                        contentText: modelData.name
-                        iconSource: modelData.icon
-                        bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                        bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                        borderWidth: 1
-                        radius: 5
-                        onClicked: {
-                            window.close();
-                        }
-                    }
-                }
-            }
+            
         }
     }
     
     // 动态加载组件信息
     property list<var> basicComponents
-    property list<var> extraComponents
     
     onVisibleChanged: {
         if(visible){
             basicComponents = UniDeskComponentsData.getBasicComponentTypes();
-            extraComponents = UniDeskComponentsData.getExtraComponentTypes();
         }
     }
 }

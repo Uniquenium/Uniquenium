@@ -10,7 +10,6 @@
 
 static QString componentsFile = "./data/components.json";
 static QString basicComTypeListFile = "./temp/UniDesk/Components/basic-com-list.json";
-static QString extraComTypeListFile = "./temp/UniDesk/Components/extra-com-list.json";
 
 static QJsonObject defaultComponents() {
     QJsonObject obj;
@@ -188,27 +187,15 @@ int UniDeskComponentsData::getCurrentPage() {
 QVariant UniDeskComponentsData::getComponentTypes() {
     QVariantList componentList;
     
-    // 读取基础组件列表
-    QJsonObject basicObj = readJsonFile(basicComTypeListFile);
-    QJsonArray basicArr = basicObj.value("componentTypes").toArray();
-    for (const QJsonValue &v : basicArr) {
-        QJsonObject obj = v.toObject();
+    // 读取组件列表
+    QJsonObject obj = readJsonFile(basicComTypeListFile);
+    QJsonArray arr = obj.value("componentTypes").toArray();
+    for (const QJsonValue &v : arr) {
+        QJsonObject com = v.toObject();
         QVariantMap map;
-        map["filename"] = obj.value("filename").toString();
-        map["name"] = obj.value("name").toString();
-        map["icon"] = obj.value("icon").toString();
-        componentList.append(map);
-    }
-    
-    // 读取额外组件列表
-    QJsonObject extraObj = readJsonFile(extraComTypeListFile);
-    QJsonArray extraArr = extraObj.value("componentTypes").toArray();
-    for (const QJsonValue &v : extraArr) {
-        QJsonObject obj = v.toObject();
-        QVariantMap map;
-        map["filename"] = obj.value("filename").toString();
-        map["name"] = obj.value("name").toString();
-        map["icon"] = obj.value("icon").toString();
+        map["filename"] = com.value("filename").toString();
+        map["name"] = com.value("name").toString();
+        map["icon"] = com.value("icon").toString();
         componentList.append(map);
     }
     
@@ -230,20 +217,7 @@ QVariant UniDeskComponentsData::getBasicComponentTypes() {
     return componentList;
 }
 
-QVariant UniDeskComponentsData::getExtraComponentTypes() {
-    QVariantList componentList;
-    QJsonObject obj = readJsonFile(extraComTypeListFile);
-    QJsonArray arr = obj.value("componentTypes").toArray();
-    for (const QJsonValue &v : arr) {
-        QJsonObject com = v.toObject();
-        QVariantMap map;
-        map["filename"] = com.value("filename").toString();
-        map["name"] = com.value("name").toString();
-        map["icon"] = com.value("icon").toString();
-        componentList.append(map);
-    }
-    return componentList;
-}
+
 
 
 // void UniDeskComponentsData::startFuncs() {

@@ -105,7 +105,6 @@ foreach (respath ${RES_PATHS})
 endforeach (respath)
 
 list(APPEND resource_files "Components/basic-com-list.json")
-list(APPEND resource_files "Components/extra-com-list.json")
 # list(APPEND sources_files "${EXPRTK_INCLUDE}")
 
 # Set Qt6 QMl Plugins

@@ -44,6 +44,7 @@
   - [x] Copy Components
   - [ ] Paste Text/Image From Clipboard
   - [ ] Theme
+  - [ ] Tree View in Page Manage Window
   - [x] Checking Components When Deleting a Page
   - [ ] Border Radius for UniDeskImage
   - [ ] Improve Component Identity Generation

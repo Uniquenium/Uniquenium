@@ -32,7 +32,6 @@ public:
     Q_INVOKABLE int getCurrentPage();
     Q_INVOKABLE QVariant getComponentTypes();
     Q_INVOKABLE QVariant getBasicComponentTypes();
-    Q_INVOKABLE QVariant getExtraComponentTypes();
     // Q_INVOKABLE void startFuncs();
 };
 
