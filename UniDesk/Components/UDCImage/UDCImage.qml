@@ -25,7 +25,7 @@ UniDeskComBase{
         id: cont
         source: base.imagePath ? base.imagePath : "qrc:/media/logo/unidesk-l-bg.png"
         fillMode: base.fillMode
-        opacity: base.opacity
+        opacity: base.itemOpacity
         smooth: base.smooth
         mipmap: base.mipmap
         width: base.width
@@ -40,6 +40,22 @@ UniDeskComBase{
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
                 optionsImage.show()
+            }
+        }
+        UniDeskMenuItem{
+            text: qsTr("复制")
+            iconSource: "qrc:/media/img/copy.svg"
+            onClicked: {
+                base.copyCom()
+            }
+        }
+        UniDeskMenuItem{
+            text: qsTr("新建子组件")
+            iconSource: "qrc:/media/img/add-line.svg"
+            onClicked: {
+                comManager.parentOfNewCom = base;
+                comManager.comWindow.pageid = base.pageid;
+                comManager.comWindow.showActivate();
             }
         }
         UniDeskMenuItem{
@@ -75,11 +91,13 @@ UniDeskComBase{
             "pageid": base.pageid,
             "x": base.x,
             "y": base.y,
+            "name": base.name,
+            "parent": base.parent === comManager.root.contentItem ? "Desktop" : base.parent.identification,
             "width": base.width,
             "height": base.height,
             "imagePath": base.imagePath,
             "fillMode": base.fillMode,
-            "opacity": base.opacity,
+            "opacity": base.itemOpacity,
             "smooth": base.smooth,
             "mipmap": base.mipmap,
             "rotation": base.rotation
@@ -90,13 +108,15 @@ UniDeskComBase{
         if(data.type!==undefined){base.type=data.type}
         if(data.identification!==undefined){base.identification=data.identification}       
         if(data.pageid!==undefined){base.pageid=data.pageid}
+        if(data.name!==undefined){base.name=data.name}
+        if(data.parent!==undefined){base.parent = base.comManager.getComById(data.parent)}
         if(data.x!==undefined){base.x=data.x}
         if(data.y!==undefined){base.y=data.y}
         if(data.width!==undefined){base.width=data.width}
         if(data.height!==undefined){base.height=data.height}
         if(data.imagePath!==undefined){base.imagePath=data.imagePath}
         if(data.fillMode!==undefined){base.fillMode=data.fillMode}
-        if(data.opacity!==undefined){base.opacity=data.opacity}
+        if(data.opacity!==undefined){base.itemOpacity=data.opacity}
         if(data.smooth!==undefined){base.smooth=data.smooth}
         if(data.mipmap!==undefined){base.mipmap=data.mipmap}
         if(data.rotation!==undefined){base.rotation=data.rotation}

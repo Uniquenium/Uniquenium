@@ -27,9 +27,9 @@ public:
     Q_INVOKABLE bool isSystemColorLight();
     Q_INVOKABLE void web_browse(const QString &url);
     Q_INVOKABLE void setTaskbarVisible(bool vis);
-    Q_INVOKABLE QUrl get_wallpaper();
+    Q_INVOKABLE QUrl get_system_wallpaper();
     Q_INVOKABLE QRect desktopGeometry(QQuickWindow *window);
-    Q_INVOKABLE void set_wallpaper(const QUrl &path);
+    Q_INVOKABLE void set_system_wallpaper(const QUrl &path);
     Q_INVOKABLE QUrl fromLocalFile(const QString &path);
     Q_INVOKABLE QVariant applicationFontFamilies();
     Q_INVOKABLE int fontIndex(const QString &familyName);
@@ -37,6 +37,7 @@ public:
     Q_INVOKABLE void removeFontFamily(const QString &id);
     Q_INVOKABLE QVariant getCustomFonts();
     Q_INVOKABLE bool isValidUrl(const QUrl &url);
+    Q_INVOKABLE bool localFileExists(const QUrl &url);
     Q_INVOKABLE QPoint getCursorPosition();
 
 signals:

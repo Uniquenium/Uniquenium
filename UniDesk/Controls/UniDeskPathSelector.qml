@@ -10,8 +10,9 @@ import UniDesk
 
 Item{
     id: root
-    property url path
+    property string path
     property int mode: UniDeskFileMode.FileModeFile
+    property Window parentWindow: null
     signal submit
     RowLayout{
         id: row_layout
@@ -19,14 +20,21 @@ Item{
         spacing: 10
         UniDeskTextField{
             id: path_textfield
-            text: root.path.toString().slice(8)
+            text: root.path
             Layout.fillWidth: true
             placeholderText: qsTr("输入路径（按回车确认）")
             onEditingFinished: {
-                root.submit();
-            }
-            onTextEdited: {
-                root.path=UniDeskTools.fromLocalFile(text)
+                if(UniDeskTools.localFileExists(UniDeskTools.fromLocalFile(path_textfield.text))){
+                    root.path=UniDeskTools.fromLocalFile(path_textfield.text).toString()
+                    root.submit();
+                }
+                else if (UniDeskTools.isValidUrl(Qt.url(path_textfield.text))){
+                    root.path=Qt.url(path_textfield.text).toString()
+                    root.submit();
+                }
+                else if(root.parentWindow){
+                    root.parentWindow.showError("路径无效")
+                }
             }
         }
         UniDeskButton{

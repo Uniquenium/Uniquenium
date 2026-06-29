@@ -12,7 +12,7 @@ Item{
     id: control
     property var editingComponent
     property var horizontalAlignComponent
-    property var verticalAlignment
+    property var verticalAlignComponent
     property var comManager
     GridLayout{
         id: gridLayout
@@ -62,7 +62,7 @@ Item{
             Layout.column: 2
             Layout.row: 0
             editable: true
-            from: 0
+            from: - UniDeskTools.desktopGeometry(Window.window).width + 10
             to: UniDeskTools.desktopGeometry(Window.window).width - 10
             value:control.editingComponent ? control.editingComponent.x : 0
             onValueModified:{
@@ -80,7 +80,7 @@ Item{
             Layout.column: 2
             Layout.row: 2
             editable: true
-            from: 0
+            from: - UniDeskTools.desktopGeometry(Window.window).height + 10
             to: UniDeskTools.desktopGeometry(Window.window).height - 10
             value:control.editingComponent ? control.editingComponent.y : 0
             onValueModified:{
@@ -95,17 +95,17 @@ Item{
         }
         UniDeskComBox{
             id: horizontalComBox
-            comManager: window.comManager
+            comManager: control.comManager
             Layout.preferredWidth: 200
             editingComponent: control.editingComponent
             Layout.column: 1
             Layout.row: 1
-            onCurrentTextChanged: {
+            onActivated: {
                 if(control.editingComponent){
                     if(currentIndex === 0){
                         control.horizontalAlignComponent = undefined;
                     }else{
-                        control.horizontalAlignComponent = comManager.getComById(currentText);
+                        control.horizontalAlignComponent = horizontalComBox.getComByIndex(currentIndex);
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -113,17 +113,17 @@ Item{
         }
         UniDeskComBox{
             id: verticalComBox
-            comManager: window.comManager
+            comManager: control.comManager
             Layout.preferredWidth: 200
             editingComponent: control.editingComponent
             Layout.column: 1
             Layout.row: 3
-            onCurrentTextChanged: {
+            onActivated: {
                 if(control.editingComponent){
                     if(currentIndex === 0){
-                        control.verticalAlignment = undefined;
+                        control.verticalAlignComponent = undefined;
                     }else{
-                        control.verticalAlignment = comManager.getComById(currentText);
+                        control.verticalAlignComponent = verticalComBox.getComByIndex(currentIndex);
                     }
                     control.editingComponent.saveComToFile();
                 }

@@ -18,11 +18,13 @@ UniDeskWindow{
     autoDestroy: false// keep the system appbar hidden (temporary solution)
     autoVisible: false
     property int currentIndex: 0
+    property int menuIndex: 0
     property bool isMove: false
     property int moveIndex
     property string moveComId
     property bool isMenuPopup: false
     property var comManager
+    property var comWindow
     ScrollView{    
         anchors.fill: parent
         Rectangle {
@@ -104,70 +106,10 @@ UniDeskWindow{
                                 liview.model=comManager.compModels.get(window.currentIndex).value
                             }
                             if(mouse.button===Qt.RightButton){
+                                window.menuIndex=index;
                                 m_list.popup(dele,mouseX,mouseY)
                                 isMenuPopup=true;
                             }
-                        }
-                    }
-                    UniDeskMenu{
-                        id: m_list
-                        UniDeskMenuItem{
-                            text: qsTr("重命名")
-                            disabled: comManager.pindex2pid(index)===0
-                            onClicked: {
-                                rename_page_field.pageid=index;
-                                rename_page_field.text=model.text
-                                dele.editing=true;
-                            }
-                        }
-                        UniDeskMenuItem{
-                            text: qsTr("在上方新建页面")
-                            disabled: index==0
-                            onClicked: {
-                                comManager.insert_new_page(index)
-                            }
-                        }
-                        UniDeskMenuItem{
-                            text: qsTr("在下方新建页面")
-                            onClicked: {
-                                if(index==comManager.page_list.count-1){
-                                    comManager.new_page()
-                                }
-                                else{
-                                    comManager.insert_new_page(index+1)
-                                }
-                            }
-                        }
-                        UniDeskMenuItem{
-                            text: qsTr("切换到此页")
-                            onClicked: {
-                                comManager.toggle_page_to(comManager.pindex2pid(index));
-                                currentIndex=index;
-                            }
-                        }
-                        UniDeskMenuItem{
-                            text: qsTr("上移")
-                            disabled: index==0 || index==1
-                            onClicked: {
-                                comManager.move_page_up(index)
-                            }
-                        }
-                        UniDeskMenuItem{
-                            text: qsTr("下移")
-                            disabled: index==0 || index==comManager.page_list.count-1
-                            onClicked: {
-                                comManager.move_page_down(index)
-                            }
-                        }
-                        UniDeskMenuItem{
-                            text: qsTr("删除")
-                            disabled: index==0
-                            onClicked: {
-                                comManager.remove_page(index)
-                            }
-                        }
-                        onAboutToHide: {
-                            isMenuPopup=false;
                         }
                     }
                 }
@@ -177,6 +119,88 @@ UniDeskWindow{
             border.width: 1
             border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
             radius: 5
+        }
+        //place the menu out: the delete menuitem will delete the menu itself
+        UniDeskMenu{
+            id: m_list
+            UniDeskMenuItem{
+                text: qsTr("重命名")
+                disabled: comManager.pindex2pid(window.menuIndex)===0
+                onClicked: {
+                    rename_page_field.pageid=window.menuIndex;
+                    rename_page_field.text=model.text
+                    dele.editing=true;
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("在上方新建页面")
+                disabled: window.menuIndex==0
+                onClicked: {
+                    comManager.insert_new_page(window.menuIndex)
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("在下方新建页面")
+                onClicked: {
+                    if(window.menuIndex==comManager.page_list.count-1){
+                        comManager.new_page()
+                    }
+                    else{
+                        comManager.insert_new_page(window.menuIndex+1)
+                    }
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("切换到此页")
+                onClicked: {
+                    comManager.toggle_page_to(comManager.pindex2pid(window.menuIndex));
+                    window.currentIndex=window.menuIndex;
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("上移")
+                disabled: window.menuIndex==0 || window.menuIndex==1
+                onClicked: {
+                    comManager.move_page_up(window.menuIndex)
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("下移")
+                disabled: window.menuIndex==0 || window.menuIndex==comManager.page_list.count-1
+                onClicked: {
+                    comManager.move_page_down(window.menuIndex)
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("复制")
+                onClicked: {
+                    comManager.copy_page(window.menuIndex)
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("清空")
+                disabled: comManager.compModels.get(window.menuIndex).value.count==0
+                onClicked: {
+                    comManager.clear_page(window.menuIndex)
+                    liview.model=comManager.compModels.get(window.currentIndex).value
+                }
+            }
+            UniDeskMenuItem{
+                text: qsTr("删除")
+                disabled: window.menuIndex==0 || comManager.compModels.get(window.menuIndex).value.count>0
+                onClicked: {
+                    // 调整currentIndex到安全范围
+                    if(window.currentIndex == window.menuIndex){
+                        window.currentIndex = 0
+                    }
+                    // 更新右侧列表的model
+                    liview.model = comManager.compModels.get(window.currentIndex).value;
+                    comManager.remove_page(window.menuIndex)
+                }
+            }
+            onAboutToHide: {
+                window.isMenuPopup=false;
+            }
         }
         Rectangle{
             anchors.left: listview_rect.right
@@ -205,7 +229,7 @@ UniDeskWindow{
                         anchors.left: parent.left
                         anchors.leftMargin: 10
                         anchors.verticalCenter: parent.verticalCenter
-                        text: model.display
+                        text: comManager.getComById(model.display).name
                     }
                     HoverHandler{
                         onHoveredChanged: {
@@ -231,9 +255,9 @@ UniDeskWindow{
                             iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                             radius: width / 2
                             onClicked:{
-                                UniDeskComWindow.parentId=model.display;
-                                UniDeskComWindow.pageid=comManager.getComById(model.display).pageid;
-                                UniDeskComWindow.show();
+                                comManager.parentOfNewCom=comManager.getComById(model.display);
+                                comWindow.pageid=comManager.getComById(model.display).pageid;
+                                comWindow.show();
                             }
                         }
                         UniDeskButton{
@@ -247,6 +271,19 @@ UniDeskWindow{
                             onClicked:{
                                 comManager.toggle_page_to(comManager.pindex2pid(window.currentIndex))
                                 comManager.getComById(model.display).optionsWindow.show();
+                            }
+                        }
+                        UniDeskButton{
+                            contentText: qsTr("复制")
+                            iconSize: 15
+                            iconSource: "qrc:/media/img/copy.svg"
+                            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                            iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                            radius: width / 2
+                            onClicked:{
+                                var newCom = comManager.getComById(model.display).copyCom();
+                                liview.model = comManager.compModels.get(comManager.pid2pindex(window.currentIndex)).value;
                             }
                         }
                         UniDeskButton{

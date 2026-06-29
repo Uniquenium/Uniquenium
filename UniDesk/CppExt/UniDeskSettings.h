@@ -25,6 +25,12 @@ class UniDeskSettings : public QQuickItem {
     Q_PROPERTY_AUTO(QColor, fontPrimaryColorLight)
     Q_PROPERTY_AUTO(QColor, fontSecondaryColorLight)
     Q_PROPERTY_AUTO(QColor, fontTertiaryColorLight)
+    // 壁纸相关属性
+    Q_PROPERTY_AUTO(int, wallpaperMode)           // 0=关闭, 1=Lolicon API, 2=自定义图片, 3=自定义视频
+    Q_PROPERTY_AUTO(int, wallpaperRefreshInterval) // 刷新间隔（秒）
+    Q_PROPERTY_AUTO(QString, wallpaperImageUrl)   // 自定义图片URL
+    Q_PROPERTY_AUTO(QString, wallpaperVideoUrl)   // 自定义视频URL
+    Q_PROPERTY_AUTO(int, wallpaperVolume)         // 音量（0-100，仅视频）
     QML_NAMED_ELEMENT(UniDeskSettings)
     QML_SINGLETON
 private:

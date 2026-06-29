@@ -35,7 +35,7 @@ find_package(ECM REQUIRED NO_MODULE)
 list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 message(STATUS "ECM version: ${ECM_VERSION}")
 
-set(QT Core Widgets Quick QuickControls2 DBus Core5Compat)
+set(QT Core Widgets Quick QuickControls2 DBus Core5Compat LabsPlatform)
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED ${QT})
 if (UNIX)
     if (NOT APPLE)
@@ -135,6 +135,7 @@ target_link_libraries(${PROJECT_NAME}
         Qt6::QuickControls2
         Qt6::GuiPrivate
         Qt6::Core5Compat
+        Qt6::LabsPlatform
         QHotkey::QHotkey
         ${TARGET}
         )

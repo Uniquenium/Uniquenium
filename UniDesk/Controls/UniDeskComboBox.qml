@@ -38,7 +38,7 @@ T.ComboBox {
         hoverEnabled: control.hoverEnabled
         onHighlightedChanged: {
             if(control.enableComDelegate){
-                var com=control.comManager.getComById(text)
+                var com=control.comManager.getComByName(text)
                 if(com){
                     com.indicated=highlighted;
                 }

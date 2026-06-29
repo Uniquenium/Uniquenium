@@ -24,15 +24,15 @@ Button{
 
     property color bgHoverColor: UniDeskGlobals.isLight ? bgNormalColor.darker(1.2) : bgNormalColor.lighter(1.2)
     property color bgPressColor: UniDeskGlobals.isLight ? bgNormalColor.darker(1.5) : bgNormalColor.lighter(1.5)
-    property color bgDisableColor: UniDeskGlobals.isLight ? bgNormalColor.lighter(1.5) : bgNormalColor.darker(1.5)
+    property color bgDisableColor: "transparent"
 
     property color iconHoverColor: UniDeskGlobals.isLight ? iconNormalColor.darker(1.2) : iconNormalColor.lighter(1.2)
     property color iconPressColor: UniDeskGlobals.isLight ? iconNormalColor.darker(1.5) : iconNormalColor.lighter(1.5)
-    property color iconDisableColor: UniDeskGlobals.isLight ? iconNormalColor.lighter(1.5) : iconNormalColor.darker(1.5)
+    property color iconDisableColor: Qt.rgba(0.5,0.5,0.5,1)
 
     property color textHoverColor: UniDeskGlobals.isLight ? textNormalColor.darker(1.2) : textNormalColor.lighter(1.2)
     property color textPressColor: UniDeskGlobals.isLight ? textNormalColor.darker(1.5) : textNormalColor.lighter(1.5)
-    property color textDisableColor: UniDeskGlobals.isLight ? textNormalColor.lighter(1.5) : textNormalColor.darker(1.5)
+    property color textDisableColor: Qt.rgba(0.5,0.5,0.5,1)
 
     property color bgColor: UniDeskTools.switchColor(bgNormalColor,bgHoverColor,bgPressColor,bgDisableColor,hovered,pressed,disabled)
     property color iconColor: UniDeskTools.switchColor(iconNormalColor,iconHoverColor,iconPressColor,iconDisableColor,hovered,pressed,disabled)

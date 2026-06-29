@@ -12,18 +12,30 @@ import UniDesk
 UniDeskComboBox{
     id: control
     property var editingComponent
+    property var currentComponent
+    currentIndex: (currentComponent && currentComponent!==comManager.root.contentItem) ? 
+            model.indexOf(currentComponent.name) : 0
+    property bool allPages: false
     enableComDelegate: true
-    model: getIds(componentList);
-    property list<var> componentList: comManager ? comManager.component_list : []
+    model: getNames(comManager ? comManager.component_list : []);
     editable: true
     width: 300
-    function getIds(list){
-        var ids = [qsTr("桌面")];
+    function getNames(list){
+        var names = [qsTr("桌面")];
         for(var i=0;i<list.length;i++){
-            if(list[i]&&(list[i]!==editingComponent)){
-                ids.push(list[i].identification);
+            if(list[i]&&(list[i]!==editingComponent)&&(allPages||list[i].pageid===editingComponent.pageid)){
+                names.push(list[i].name);
             }
         }
-        return ids;
+        return names;
+    }
+    function getComByIndex(index){
+        var coms = [comManager.root.contentItem];
+        for(var i=0;i<comManager.component_list.length;i++){
+            if(comManager.component_list[i]&&(comManager.component_list[i]!==editingComponent)&&(allPages||comManager.component_list[i].pageid===editingComponent.pageid)){
+                coms.push(comManager.component_list[i]);
+            }
+        }
+        return coms[index];
     }
 }

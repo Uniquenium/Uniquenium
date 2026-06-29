@@ -131,13 +131,13 @@ void UniDeskComponentsData::addComponent(const QJsonObject &component) {
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::removeComponent(const QString &componentIdentification) {
+void UniDeskComponentsData::removeComponent(const int &componentIdentification) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray components = obj.value("components").toArray();
     QJsonArray newComponents;
     for (const QJsonValue &v : components) {
         QJsonObject comp = v.toObject();
-        if (comp.value("identification").toString() != componentIdentification)
+        if (comp.value("identification").toInt() != componentIdentification)
             newComponents.append(comp);
     }
     obj["components"] = newComponents;
@@ -161,13 +161,13 @@ void UniDeskComponentsData::insertPage(int index, const QJsonValue &page) {
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::removePage(int idx) {
+void UniDeskComponentsData::removePage(int pid) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray pages = obj.value("pages").toArray();
     QJsonArray newPages;
     for (const QJsonValue &v : pages) {
         QJsonObject page = v.toObject();
-        if (page.value("idx").toInt() != idx)
+        if (page.value("pid").toInt() != pid)
             newPages.append(page);
     }
     obj["pages"] = newPages;

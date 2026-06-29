@@ -13,10 +13,8 @@
     - [x] Manage Pages
   - Settings
     - Behavior
-      - [x] Taskbar Show/Hide
       - [ ] Desktop Wallpaper
       - [ ] Mouse Style
-      - [ ] Desktop Icon
       - [ ] Auto Start With Booting
       - [ ] Update Mode
       - [ ] Language
@@ -33,7 +31,27 @@
   - [x] Image
   - [ ] Chart(CPU,GPU,Network status,etc.)
   - [ ] Frame
-- Extra Components
+- Miscellaneous
+  - [x] Text Default Alignment
+  - [x] Support Web Images for UDCImage
+  - [x] Wallpaper Layer Window
+  - [x] Previous/Next Page Button
+  - [x] Tray Icon & Menu
+  - [x] Parent Component Relationship
+  - [ ] Plugin
+  - [ ] Support Custom API for Wallpaper
+  - [ ] Component Z-Index
+  - [x] Copy Components
+  - [ ] Paste Text/Image From Clipboard
+  - [ ] Theme
+  - [x] Checking Components When Deleting a Page
+  - [ ] Border Radius for UniDeskImage
+  - [ ] Improve Component Identity Generation
+- Bugs
+  - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)
+  - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity
+  - [x] Supporting: UDCText's canMove property changing by menu(it has problems so it's temporarily hidden)(it has fixed by binding "canMove" with "chosen")
+- Components in Official Plugin
   - [ ] Calculator
   - [ ] Screen Capture
   - [ ] Color Picker
@@ -52,21 +70,5 @@
   - [ ] Screen Using Time
   - [ ] ClipBoard
   - [ ] Encoder/Decoder
-- Miscellaneous
-  - [ ] Copy Components
-  - [ ] Paste Text/Image From Clipboard
-  - [ ] Theme
-  - [ ] Plugin
-  - [ ] Tray Icon & Menu
-  - [ ] Previous/Next Page Button
-  - [ ] Checking Components When Deleting a Page
-  - [ ] Parent Component Relationship
-  - [ ] Border Radius for UniDeskImage
-  - [x] Text Default Alignment
-  - [ ] Improve Component Identity Generation
-- Bugs
-  - [ ] Program Terminates Abnormally When Deleting a Page
-  - [ ] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity
-  - [x] Supporting: UDCText's canMove property changing by menu(it has problems so it's temporarily hidden)(it has fixed by binding "canMove" with "chosen")
 
 

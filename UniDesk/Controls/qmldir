@@ -25,6 +25,7 @@ UniDeskPosSelector 1.0 UniDeskPosSelector.qml
 UniDeskRadioButton 1.0 UniDeskRadioButton.qml
 UniDeskShadow 1.0 UniDeskShadow.qml
 UniDeskSizeSelector 1.0 UniDeskSizeSelector.qml
+UniDeskSlider 1.0 UniDeskSlider.qml
 UniDeskSpinBox 1.0 UniDeskSpinBox.qml
 UniDeskTabBar 1.0 UniDeskTabBar.qml
 UniDeskTabButton 1.0 UniDeskTabButton.qml

@@ -14,10 +14,10 @@ UniDeskWindow{
     id: window
     width: 500
     height: 350
-    title: qsTr("选择控件")
+    title: qsTr("选择控件（父控件：") + (comManager.parentOfNewCom === comManager.root.contentItem ? 
+        qsTr("桌面") : comManager.parentOfNewCom.name) + qsTr("）")
     autoDestroy: false// keep the system appbar hidden (temporary solution)
     autoVisible: false
-    property string parentId
     property int pageid
     property var comManager
     ScrollView{

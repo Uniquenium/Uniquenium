@@ -15,7 +15,7 @@ print("Regenerate resources.qrc started")
 with open("./resources.qrc","w",encoding="utf-8") as f:
     f.write("""<RCC>
     <qresource prefix='/'>
-        <file>main/main.qml</file>\n""")
+        <file>main.qml</file>\n""")
     for i,j,k in os.walk("media"):
         if j==[]:
             for p in k:

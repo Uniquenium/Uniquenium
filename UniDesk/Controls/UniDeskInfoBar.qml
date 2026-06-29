@@ -226,7 +226,7 @@ UniDeskObject {
                         text: _super.moremsg
                         visible: _super.moremsg
                         wrapMode: Text.WordWrap
-                        textColor: LingmoColor.Grey120
+                        textColor: Qt.rgba(119/255, 119/255, 119/255, 1)
                         width: Math.min(implicitWidth, mcontrol.maxWidth)
                     }
                 }

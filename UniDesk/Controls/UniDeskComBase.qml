@@ -15,8 +15,9 @@ Item{
     signal rightClicked()
     signal endDrag()
     property alias bg: rect_bg
+    property string name
     property string type
-    property string identification
+    property int identification
     property int pageid
     property bool canMove: chosen
     property bool indicated: false
@@ -30,6 +31,7 @@ Item{
     property real initialMouseY: 0
     property real initialBaseX: 0
     property real initialBaseY: 0
+    property real itemOpacity: 1
     transformOrigin: Item.TopLeft
     Rectangle{
         id: rect_bg
@@ -38,7 +40,7 @@ Item{
     }
     UniDeskTooltip{
         id: indicator_base
-        text: base.identification
+        text: base.name
         visible: base.indicated && base.visible
         closePolicy: undefined
     }
@@ -47,7 +49,7 @@ Item{
         anchors.fill: parent
         comManager: base.comManager
         editingComponent: base
-        z: 32766
+        z: 32767
     }
     MouseArea {
         id: mouseArea
@@ -88,17 +90,10 @@ Item{
         }
     }
     function deleteCom(){
-        UniDeskComponentsData.removeComponent(base.identification);
-        comManager.component_list.splice(comManager.getIndexById(base.identification),1);
-        var pidx=comManager.pid2pindex(base.pageid)
-        for(var i=0;i<comManager.compModels.get(pidx).value.count;i++){
-            if(comManager.compModels.get(pidx).value.get(i).display===base.identification){
-                comManager.compModels.get(pidx).value.remove(i);
-            }
-        }
-        base.closeSignal();
-        base.visible=false;
-        // UniDeskUtils.deleteLater(base); //this may cause the whole process terminated
+        comManager.delete_com(base.identification);
+    }
+    function copyCom(){
+        return comManager.copy_com(base);
     }
     Connections{
         target: UniDeskGlobals
@@ -108,5 +103,11 @@ Item{
     }
     function containsGlobalPoint(point) {
         return base.contains(base.mapFromGlobal(point))||rect_border.hoverOnAnyButton(point);
+    }
+    function changeParentWithoutMoving(p){
+        let point = p.mapFromItem(base,0,0);
+        base.x = point.x;
+        base.y = point.y;
+        base.parent = p;
     }
 }

@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QUrl>
@@ -13,7 +13,9 @@
 #include <UniDeskComponentsData.h>
 
 int main(int argc,char* argv[]){
-    QGuiApplication app(argc,argv);
+    //QApplication for System Tray Icon
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication app(argc,argv);
     app.setWindowIcon(QIcon(":/media/logo/uq-l-bg.png"));
     QQmlApplicationEngine engine;
     engine.addImportPath(QDir::currentPath()+"/temp");

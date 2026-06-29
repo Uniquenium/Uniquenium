@@ -32,6 +32,12 @@ static QJsonObject defaultSettings() {
     obj["fontTertiaryColorDark"]=fontTertiaryColorDark;
     QJsonObject fontTertiaryColorLight{{"<type>", "QColor"},{"red", 153},{"green",153},{"blue",153},{"alpha",255}};
     obj["fontTertiaryColorLight"]=fontTertiaryColorLight;
+    // 壁纸相关默认值
+    obj["wallpaperMode"] = 0;                   // 0=关闭
+    obj["wallpaperRefreshInterval"] = 300;      // 5分钟
+    obj["wallpaperImageUrl"] = QString();
+    obj["wallpaperVideoUrl"] = QString();
+    obj["wallpaperVolume"] = 0;
     return obj;
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
@@ -124,6 +130,12 @@ UniDeskSettings::UniDeskSettings(QQuickItem *parent)
     for (const QJsonValue &v : obj.value("customFontFamilyPaths").toArray())
         fontPaths << v.toString();
     customFontFamilyPaths(fontPaths);
+    // 加载壁纸设置
+    wallpaperMode(obj.value("wallpaperMode").toInt());
+    wallpaperRefreshInterval(obj.value("wallpaperRefreshInterval").toInt());
+    wallpaperImageUrl(obj.value("wallpaperImageUrl").toString());
+    wallpaperVideoUrl(obj.value("wallpaperVideoUrl").toString());
+    wallpaperVolume(obj.value("wallpaperVolume").toInt());
 }
 
 QVariant UniDeskSettings::get(const QString &prop) {
@@ -168,5 +180,11 @@ void UniDeskSettings::notify(const QString &prop) {
     else if (prop == "fontSecondaryColorLight") fontSecondaryColorLight(json2object(obj.value(prop)).value<QColor>());
     else if (prop == "fontTertiaryColorDark") fontTertiaryColorDark(json2object(obj.value(prop)).value<QColor>());
     else if (prop == "fontTertiaryColorLight") fontTertiaryColorLight(json2object(obj.value(prop)).value<QColor>());
+    // 壁纸属性通知
+    else if (prop == "wallpaperMode") wallpaperMode(obj.value(prop).toInt());
+    else if (prop == "wallpaperRefreshInterval") wallpaperRefreshInterval(obj.value(prop).toInt());
+    else if (prop == "wallpaperImageUrl") wallpaperImageUrl(obj.value(prop).toString());
+    else if (prop == "wallpaperVideoUrl") wallpaperVideoUrl(obj.value(prop).toString());
+    else if (prop == "wallpaperVolume") wallpaperVolume(obj.value(prop).toInt());
 }
 

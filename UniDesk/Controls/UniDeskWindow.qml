@@ -148,7 +148,7 @@ Window {
                 asynchronous: true
                 Component.onCompleted: {
                     img_back.updateLayout();
-                    source = UniDeskTools.get_wallpaper();
+                    source = UniDeskTools.get_system_wallpaper();
                 }
                 Connections {
                     target: window
@@ -169,7 +169,7 @@ Window {
                 //     }
                 //     function onBlurBehindWindowEnabledChanged() {
                 //         if (LingmoTheme.blurBehindWindowEnabled) {
-                //             img_back.source = UniDeskUtils.getUrlByFilePath(UniDeskTools.get_wallpaper());
+                //             img_back.source = UniDeskUtils.getUrlByFilePath(UniDeskTools.get_system_wallpaper());
                 //         } else {
                 //             img_back.source = "";
                 //         }
@@ -180,7 +180,7 @@ Window {
                     interval: 150
                     onTriggered: {
                         img_back.source = "";
-                        img_back.source = UniDeskUtils.getUrlByFilePath(UniDeskTools.get_wallpaper());
+                        img_back.source = UniDeskUtils.getUrlByFilePath(UniDeskTools.get_system_wallpaper());
                     }
                 }
             }

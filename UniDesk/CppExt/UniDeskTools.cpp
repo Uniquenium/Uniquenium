@@ -14,6 +14,7 @@
 #include <QFile>
 #include <QQuickWindow>
 #include <QCursor>
+#include <QFileInfo>
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <winreg.h>
@@ -64,11 +65,7 @@ bool UniDeskTools::isSystemColorLight() {
 }
 
 void UniDeskTools::web_browse(const QString &url) {
-#ifdef Q_OS_WIN
-    QProcess::startDetached("start " + url);
-#else
     QDesktopServices::openUrl(QUrl(url));
-#endif
 }
 
 void UniDeskTools::setTaskbarVisible(bool vis) {
@@ -78,7 +75,7 @@ void UniDeskTools::setTaskbarVisible(bool vis) {
 #endif
 }
 
-QUrl UniDeskTools::get_wallpaper() {
+QUrl UniDeskTools::get_system_wallpaper() {
 #ifdef Q_OS_WIN
     wchar_t path[MAX_PATH] = {0};
     HKEY hKey;
@@ -99,7 +96,7 @@ QRect UniDeskTools::desktopGeometry(QQuickWindow *window) {
     return QRect();
 }
 
-void UniDeskTools::set_wallpaper(const QUrl &path) {
+void UniDeskTools::set_system_wallpaper(const QUrl &path) {
 #ifdef Q_OS_WIN
     QString filePath = path.toLocalFile();
     HKEY hKey;
@@ -191,4 +188,7 @@ QPoint UniDeskTools::getCursorPosition() {
     return QCursor::pos();
 }
 
-
+bool UniDeskTools::localFileExists(const QUrl &url) {
+    QFileInfo fileInfo(url.toLocalFile());
+    return url.scheme() == "file" && fileInfo.exists();
+}

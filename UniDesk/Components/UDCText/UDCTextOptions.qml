@@ -25,7 +25,7 @@ UniDeskWindow{
         contentHeight: verticalAlignmentComboBox.y+verticalAlignmentComboBox.height-text0.y+30
         UniDeskText{
             id: text0
-            text: qsTr("组件id（不能重复）")
+            text: qsTr("组件名称（不能重复）")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
@@ -36,24 +36,45 @@ UniDeskWindow{
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.margins: 10
-            placeholderText: qsTr("请输入组件id")
-            text: editingComponent ? editingComponent.identification : ""
+            placeholderText: qsTr("请输入组件名称")
+            text: editingComponent ? editingComponent.name : ""
             onEditingFinished: {
-                if(comManager.validateId(text)){  
+                if(comManager.validateName(text)){  
                     if (editingComponent)   {
-                        editingComponent.identification = text;
+                        editingComponent.name = text;
                     }
                 }
                 else{
-                    text = editingComponent.identification;
+                    text = editingComponent.name;
                 }
+                editingComponent.saveComToFile();
+            }
+        }
+        UniDeskText{
+            text: qsTr("父组件")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.margins: 10
+            anchors.verticalCenter: parentComboBox.verticalCenter
+        }
+        UniDeskComBox{
+            id: parentComboBox
+            anchors.top: idField.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            comManager: window.comManager
+            editingComponent: window.editingComponent
+            currentComponent: window.editingComponent.parent
+            onActivated: {
+                let p = parentComboBox.getComByIndex(currentIndex);
+                editingComponent.changeParentWithoutMoving(p);
                 editingComponent.saveComToFile();
             }
         }
         UniDeskPosSelector{
             id: posSelector
             comManager: window.comManager
-            anchors.top: idField.bottom
+            anchors.top: parentComboBox.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
@@ -211,10 +232,35 @@ UniDeskWindow{
                 value = editingComponent ? editingComponent.weight : 400;
             }
         }
+        UniDeskText{
+            id: textOpacity
+            text: qsTr("透明度")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.margins: 10
+            anchors.verticalCenter: opacitySpinBox.verticalCenter
+        }
+        UniDeskSpinBox{
+            id: opacitySpinBox
+            anchors.top: fontWeightSpinBox.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            editable: true
+            value: editingComponent ? editingComponent.itemOpacity * 100 : 100
+            from: 0
+            to: 100
+            stepSize: 1
+            onValueModified: {
+                if (editingComponent) {
+                    editingComponent.itemOpacity = value / 100;
+                    editingComponent.saveComToFile();
+                }
+            }
+        }
         UniDeskCheckBox{
             id: smallCapsCheckBox
             text: qsTr("小大写字母")
-            anchors.top: fontWeightSpinBox.bottom
+            anchors.top: opacitySpinBox.bottom
             anchors.left: parent.left
             anchors.margins: 10
             checked: editingComponent ? editingComponent.smallCaps : false
@@ -360,7 +406,7 @@ UniDeskWindow{
             model: [qsTr("正常"), qsTr("凸起"), qsTr("描边"), qsTr("凹陷")]
             comManager: window.comManager
             currentIndex: editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style===Text.Outline ? 2 : 3) : 0
-            onCurrentTextChanged:  {
+            onActivated:  {
                 if (editingComponent) {
                     if (currentIndex === 0) {
                         editingComponent.style = Text.Normal;
@@ -412,7 +458,7 @@ UniDeskWindow{
             comManager: window.comManager
             model: [qsTr("自动"), qsTr("纯文本"), qsTr("富文本（HTML）"), qsTr("Markdown")]
             currentIndex: editingComponent ? (editingComponent.textFormat === Text.AutoText ? 0 : editingComponent.textFormat === Text.PlainText ? 1 : editingComponent.textFormat === Text.RichText ? 2 : 3) : 0
-            onCurrentTextChanged:  {
+            onActivated:  {
                 if (editingComponent) {
                     editingComponent.textFormat = currentIndex === 0 ? Text.AutoText : currentIndex === 1 ? Text.PlainText : currentIndex === 2 ? Text.RichText : Text.MarkdownText;
                     editingComponent.saveComToFile();
@@ -444,7 +490,7 @@ UniDeskWindow{
                 }
                 return idx;
             }
-            onCurrentTextChanged:  {
+            onActivated:  {
                 if (editingComponent) {
                     if (currentIndex === 0) editingComponent.wrapMode = Text.Wrap;
                     else if (currentIndex === 1) editingComponent.wrapMode = Text.NoWrap;
@@ -478,7 +524,7 @@ UniDeskWindow{
                 }
                 return idx;
             }
-            onCurrentTextChanged:  {
+            onActivated:  {
                 if (editingComponent) {
                     if (currentIndex === 0) editingComponent.horizontalAlignment = Text.AlignLeft;
                     else if (currentIndex === 1) editingComponent.horizontalAlignment = Text.AlignHCenter;
@@ -511,7 +557,7 @@ UniDeskWindow{
                 }
                 return idx;
             }
-            onCurrentTextChanged:  {
+            onActivated:  {
                 if (editingComponent) {
                     if (currentIndex === 0) editingComponent.verticalAlignment = Text.AlignTop;
                     else if (currentIndex === 1) editingComponent.verticalAlignment = Text.AlignVCenter;

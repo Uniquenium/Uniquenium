@@ -59,6 +59,7 @@ UniDeskComBase{
         verticalAlignment: base.verticalAlignment
         width: base.width
         height: base.height
+        opacity: base.itemOpacity
     }
     UniDeskMenu{
         id: menu
@@ -67,6 +68,22 @@ UniDeskComBase{
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
                 optionsText.show()
+            }
+        }
+        UniDeskMenuItem{
+            text: qsTr("复制")
+            iconSource: "qrc:/media/img/copy.svg"
+            onClicked: {
+                base.copyCom();
+            }
+        }
+        UniDeskMenuItem{
+            text: qsTr("新建子组件")
+            iconSource: "qrc:/media/img/add-line.svg"
+            onClicked: {
+                comManager.parentOfNewCom = base;
+                comManager.comWindow.pageid = base.pageid;
+                comManager.comWindow.showActivate();
             }
         }
         UniDeskMenuItem{
@@ -104,6 +121,8 @@ UniDeskComBase{
             "pageid": base.pageid,
             "x": base.x,
             "y": base.y,
+            "name": base.name,
+            "parent": base.parent === comManager.root.contentItem ? "Desktop" : base.parent.identification,
             "textContent": base.textContent,
             "textColorR": base.textColor.r,
             "textColorG": base.textColor.g,
@@ -130,6 +149,7 @@ UniDeskComBase{
             "wrapMode": base.wrapMode,
             "horizontalAlignment": base.horizontalAlignment,
             "verticalAlignment": base.verticalAlignment,
+            "opacity": base.itemOpacity,
             "width": base.width,
             "height": base.height
         }
@@ -140,6 +160,8 @@ UniDeskComBase{
         if(data.pageid!==undefined){base.pageid=data.pageid;}
         if(data.x!==undefined){base.x=data.x;}
         if(data.y!==undefined){base.y=data.y;}
+        if(data.name!==undefined){base.name=data.name;}
+        if(data.parent!==undefined){base.parent=base.comManager.getComById(data.parent);}
         if(data.width!==undefined){base.width=data.width;}
         if(data.height!==undefined){base.height=data.height;}
         if(data.textContent!==undefined){base.textContent=data.textContent;}
@@ -162,6 +184,7 @@ UniDeskComBase{
         if(data.wrapMode!==undefined){base.wrapMode=data.wrapMode;}
         if(data.horizontalAlignment!==undefined){base.horizontalAlignment=data.horizontalAlignment;}else{base.horizontalAlignment=Text.AlignHCenter;}
         if(data.verticalAlignment!==undefined){base.verticalAlignment=data.verticalAlignment;}else{base.verticalAlignment=Text.AlignVCenter;}
+        if(data.opacity!==undefined){base.itemOpacity=data.opacity;}else{base.itemOpacity=1;}
     }
     function saveComToFile(){
         var data= propertyData();

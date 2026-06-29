@@ -8,9 +8,11 @@
         <file>media/font/ZhuZiAWan2.ttf</file>
         <file>media/img/add-line.svg</file>
         <file>media/img/arrow-down-box-line.svg</file>
+        <file>media/img/arrow-down-line.svg</file>
         <file>media/img/arrow-down-s-line.svg</file>
         <file>media/img/arrow-left-s-line.svg</file>
         <file>media/img/arrow-right-s-line.svg</file>
+        <file>media/img/arrow-up-line.svg</file>
         <file>media/img/arrow-up-s-line.svg</file>
         <file>media/img/calculator-line.svg</file>
         <file>media/img/carousel-view.svg</file>
@@ -18,6 +20,7 @@
         <file>media/img/checkbox-multi.svg</file>
         <file>media/img/checkbox.svg</file>
         <file>media/img/close.svg</file>
+        <file>media/img/copy.svg</file>
         <file>media/img/delete-bin.svg</file>
         <file>media/img/edit.svg</file>
         <file>media/img/image.svg</file>
@@ -41,6 +44,7 @@
         <file>media/img/shut-down-line.svg</file>
         <file>media/img/subtract.svg</file>
         <file>media/img/text.svg</file>
+        <file>media/logo/favicon.ico</file>
         <file>media/logo/unidesk-d-bg.png</file>
         <file>media/logo/unidesk-d.png</file>
         <file>media/logo/unidesk-d.svg</file>

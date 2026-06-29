@@ -28,7 +28,7 @@ UniDeskWindow{
         
         UniDeskText{
             id: text0
-            text: qsTr("组件id（不能重复）")
+            text: qsTr("组件名称（不能重复）")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
@@ -40,24 +40,44 @@ UniDeskWindow{
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.margins: 10
-            placeholderText: qsTr("请输入组件id")
-            text: window.ec ? window.ec.identification : ""
+            placeholderText: qsTr("请输入组件名称")
+            text: window.ec ? window.ec.name : ""
             onEditingFinished: {
-                if(window.comManager.validateId(text)){  
+                if(window.comManager.validateName(text)){  
                     if (window.ec) {
-                        window.ec.identification = text
+                        window.ec.name = text
                     }
                 }
                 else{
-                    text = window.ec.identification
+                    text = window.ec.name
                 }
                 window.ec.saveComToFile()
             }
         }
-        
+        UniDeskText{
+            text: qsTr("父组件")
+            font: UniDeskTextStyle.little
+            anchors.left: parent.left
+            anchors.margins: 10
+            anchors.verticalCenter: parentComboBox.verticalCenter
+        }
+        UniDeskComBox{
+            id: parentComboBox
+            anchors.top: idField.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            comManager: window.comManager
+            editingComponent: window.editingComponent
+            currentComponent: window.editingComponent.parent
+            onActivated: {
+                let p = parentComboBox.getComByIndex(currentIndex);
+                editingComponent.changeParentWithoutMoving(p);
+                editingComponent.saveComToFile();
+            }
+        }
         UniDeskPosSelector{
             id: posSelector
-            anchors.top: idField.bottom
+            anchors.top: parentComboBox.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
@@ -92,7 +112,7 @@ UniDeskWindow{
         
         UniDeskText{
             id: textImagePath
-            text: qsTr("图片路径")
+            text: qsTr("图片地址（支持网络图片）")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
@@ -106,9 +126,10 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             path: window.ec ? window.ec.imagePath : ""
+            parentWindow: window
             onSubmit: {
                 if (window.ec) {
-                    window.ec.imagePath = path.toString()
+                    window.ec.imagePath = path
                     window.ec.saveComToFile()
                 }
             }
@@ -148,7 +169,7 @@ UniDeskWindow{
                 }
                 return 0
             }
-            onCurrentTextChanged:  {
+            onActivated:  {
                 if (window.ec) {
                     if (currentIndex === 0) window.ec.fillMode = Image.Stretch
                     else if (currentIndex === 1) window.ec.fillMode = Image.PreserveAspectFit
@@ -175,13 +196,13 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             editable: true
-            value: window.ec ? window.ec.opacity * 100 : 100
+            value: window.ec ? window.ec.itemOpacity * 100 : 100
             from: 0
             to: 100
             stepSize: 1
             onValueModified: {
                 if (window.ec) {
-                    window.ec.opacity = value / 100
+                    window.ec.itemOpacity = value / 100
                     window.ec.saveComToFile()
                 }
             }
