@@ -279,10 +279,32 @@ UniDeskObject{
         type_list=[];
         for(var i=0;i<componentInfoList.length;i++){
             var info=componentInfoList[i];
-            typename_list.push(info.filename);
             print(info.filename+" Loading")
-            type_list.push(Qt.createComponent("UniDesk.Components."+info.filename,info.filename,Component.Synchronous, null));
-            print(info.filename+" Loaded")
+            var component = Qt.createComponent("UniDesk.Components."+info.filename,info.filename,Component.Synchronous, null)
+            if(component.status===Component.Ready){
+                type_list.push(component);
+                typename_list.push(info.filename);
+                print(info.filename+" Loaded")
+            }
+            else if(component.status===Component.Error){
+                print("Error loading "+info.filename+": "+component.errorString())
+            }
+        }
+        var plugins=UniDeskPluginMgr.plugins_list;
+        for(var i=0;i<plugins.length;i++){
+            for(var j=0;j<plugins[i].components.length;j++){
+                var info=plugins[i].components[j];
+                print(info.name+" Loading")
+                var component = Qt.createComponent(Qt.resolvedUrl("file:///"+plugins[i].dirpath+"/"+info.path),Component.Synchronous, null)
+                if(component.status===Component.Ready){
+                    type_list.push(component);
+                    typename_list.push(info.name);
+                    print(info.name+" Loaded")
+                }
+                else if(component.status===Component.Error){
+                    print("Error loading "+info.name+": "+component.errorString())
+                }
+            }
         }
     }
     function pid2pindex(pid){

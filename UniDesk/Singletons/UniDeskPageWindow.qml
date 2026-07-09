@@ -209,6 +209,7 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             color: "transparent"
+            clip: true
             ListView{
                 id: liview
                 anchors.fill: parent

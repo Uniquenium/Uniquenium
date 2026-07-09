@@ -24,7 +24,7 @@ ScrollView{
     }
     UniDeskText{
         id: versionText
-        text: "v1.0.0"
+        text: "V"+UniDeskTools.getModuleVersionMajor()+"."+UniDeskTools.getModuleVersionMinor()+"."+UniDeskTools.getModuleVersionPatch()
         font: UniDeskTextStyle.large
         x: (parent.width-width)/2
         y: unideskLogo.y+unideskLogo.height+10

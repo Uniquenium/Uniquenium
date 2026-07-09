@@ -192,3 +192,16 @@ bool UniDeskTools::localFileExists(const QUrl &url) {
     QFileInfo fileInfo(url.toLocalFile());
     return url.scheme() == "file" && fileInfo.exists();
 }
+
+QString UniDeskTools::getModuleVersionMajor() {
+    return MODULE_VERSION_MAJOR;
+}
+QString UniDeskTools::getModuleVersionMinor() {
+    return MODULE_VERSION_MINOR;
+}
+QString UniDeskTools::getModuleVersionPatch() {
+    return MODULE_VERSION_PATCH;
+}
+void UniDeskTools::openInExplorer(const QString &path) {
+    QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+}

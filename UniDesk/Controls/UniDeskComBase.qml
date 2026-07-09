@@ -95,6 +95,11 @@ Item{
     function copyCom(){
         return comManager.copy_com(base);
     }
+    function createSubComponent(){
+        comManager.parentOfNewCom = base;
+        comManager.comWindow.pageid = base.pageid;
+        comManager.comWindow.showActivate();
+    }
     Connections{
         target: UniDeskGlobals
         function onApplicationQuit() {

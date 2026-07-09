@@ -6,6 +6,7 @@
 #include <QVariant>
 #include <QString>
 #include <QList>
+#include <QJsonArray>
 #include <QJsonObject>
 #include <QtQml/qqml.h>
 
@@ -19,8 +20,8 @@ public:
     SINGLETON(UniDeskComponentsData)
     static auto create(QQmlEngine*, QJSEngine*) { return getInstance(); }
 
-    Q_INVOKABLE QJsonValue getPages();
-    Q_INVOKABLE QJsonValue getComponents();
+    Q_INVOKABLE QJsonArray getPages();
+    Q_INVOKABLE QJsonArray getComponents();
     Q_INVOKABLE void updatePage(int pIndex, const QJsonValue &page);
     Q_INVOKABLE void updateComponent(int componentIndex, const QJsonValue &component);
     Q_INVOKABLE void addComponent(const QJsonObject &component);

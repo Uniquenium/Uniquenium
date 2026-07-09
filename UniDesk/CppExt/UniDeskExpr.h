@@ -19,6 +19,7 @@ class UniDeskExpr : public QQuickItem {
 
 public:
     explicit UniDeskExpr(QQuickItem *parent = nullptr);
+    static auto create(QQmlEngine*, QJSEngine*) { return getInstance(); }
 
     Q_INVOKABLE QString convertStr(const QString &text);
 

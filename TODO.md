@@ -13,12 +13,12 @@
     - [x] Manage Pages
   - Settings
     - Behavior
-      - [ ] Desktop Wallpaper
-      - [ ] Mouse Style
       - [ ] Auto Start With Booting
       - [ ] Update Mode
       - [ ] Language
     - [ ] Appearance
+      - [x] Desktop Wallpaper
+      - [ ] Mouse Style
     - [ ] Hotkeys
     - [ ] Plugin
     - [ ] Theme
@@ -38,6 +38,7 @@
   - [x] Previous/Next Page Button
   - [x] Tray Icon & Menu
   - [x] Parent Component Relationship
+  - [ ] Multiple Image Wallpaper
   - [ ] Plugin
   - [ ] Support Custom API for Wallpaper
   - [ ] Component Z-Index

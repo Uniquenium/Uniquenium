@@ -31,7 +31,7 @@ UniDeskWindow{
                 text: qsTr("基本控件")
                 font: UniDeskTextStyle.small_
             }
-            RowLayout{
+            Flow{
                 spacing: 10
                 Repeater{
                     model: basicComponents
@@ -50,7 +50,42 @@ UniDeskWindow{
                     }
                 }
             }
-            
+            Repeater{
+                model: UniDeskPluginMgr.plugins_list
+                Item{
+                    UniDeskText{
+                        id: com_name_text
+                        text: qsTr(modelData.name)
+                        font: UniDeskTextStyle.small_
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                    }
+                    Flow{
+                        spacing: 10
+                        anchors.left: parent.left
+                        anchors.top: com_name_text.bottom
+                        anchors.topMargin: 10
+                        anchors.bottom: parent.bottom
+                        
+                        Repeater{
+                            model: modelData.components
+                            UniDeskButton{
+                                display: Button.TextOnly
+                                contentText: modelData.nameTr
+                                // iconSource: modelData.icon
+                                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                                borderWidth: 1
+                                radius: 5
+                                onClicked: {
+                                    comManager.add_com(modelData.name, modelData.nameTr, pageid);
+                                    window.close();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     

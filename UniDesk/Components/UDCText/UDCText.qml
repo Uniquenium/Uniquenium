@@ -81,9 +81,7 @@ UniDeskComBase{
             text: qsTr("新建子组件")
             iconSource: "qrc:/media/img/add-line.svg"
             onClicked: {
-                comManager.parentOfNewCom = base;
-                comManager.comWindow.pageid = base.pageid;
-                comManager.comWindow.showActivate();
+                base.createSubComponent();
             }
         }
         UniDeskMenuItem{

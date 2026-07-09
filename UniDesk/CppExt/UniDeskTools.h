@@ -39,6 +39,10 @@ public:
     Q_INVOKABLE bool isValidUrl(const QUrl &url);
     Q_INVOKABLE bool localFileExists(const QUrl &url);
     Q_INVOKABLE QPoint getCursorPosition();
+    Q_INVOKABLE QString getModuleVersionMajor();
+    Q_INVOKABLE QString getModuleVersionMinor();
+    Q_INVOKABLE QString getModuleVersionPatch();
+    Q_INVOKABLE void openInExplorer(const QString &path);
 
 signals:
     void customFontsChanged();

@@ -329,6 +329,8 @@ UniDeskObject{
         onMouseReleased:(button, pos) => {
         }
         Component.onCompleted: {
+            UniDeskPluginMgr.setEngine(QQMLENGINE);
+            UniDeskPluginMgr.loadPlugins();
             UniDeskSettingsWindow.customWallpaper=custom_wallpaper;
             UniDeskSettingsWindow.comManager=component_manager;
             UniDeskComWindow.comManager=component_manager;
@@ -338,6 +340,9 @@ UniDeskObject{
             component_manager.currentPid=UniDeskComponentsData.getCurrentPage();
             component_manager.loadPagesFromData();
             component_manager.loadComponentsFromData();
+            
+            // 插件加载完成后初始化壁纸
+            custom_wallpaper.initWallpaper();
         }
         function updateMouseClickThrough(pos){
             let moac=component_manager.mouse_on_any_com(pos)
@@ -386,13 +391,14 @@ UniDeskObject{
         MediaPlayer {
             id: wallpaperMediaPlayer
             source: custom_wallpaper.wallpaperVideoUrl
-            autoPlay: true
+            autoPlay: false  // 禁用自动播放，手动控制
             loops: MediaPlayer.Infinite
             audioOutput: AudioOutput {
                 id: wallpaperAudioOutput
                 volume: custom_wallpaper.wallpaperVolume / 100.0
             }
             videoOutput: wallpaperVideo
+
         }
         VideoOutput {
             id: wallpaperVideo
@@ -421,6 +427,11 @@ UniDeskObject{
         // 监听wallpaperVolume变化
         onWallpaperVolumeChanged: {
             wallpaperAudioOutput.volume = wallpaperVolume / 100.0;
+        }
+        // 程序退出时清理MediaPlayer，防止音频线程崩溃
+        Component.onDestruction: {
+            wallpaperMediaPlayer.stop();
+            wallpaperMediaPlayer.source = "";
         }
         // 壁纸刷新定时器
         Timer {
@@ -475,9 +486,18 @@ UniDeskObject{
                 wallpaperImage.source = custom_wallpaper.wallpaperImageUrl;
             }
         }
-        // 重启刷新定时器
-        Component.onCompleted: {
+        // 初始化壁纸（延迟到插件加载完成后调用）
+        function initWallpaper() {
             updateWallpaper();
+            // 如果是视频模式，手动启动MediaPlayer
+            if (custom_wallpaper.wallpaperMode === 3 && custom_wallpaper.wallpaperVideoUrl !== "") {
+                wallpaperMediaPlayer.source = custom_wallpaper.wallpaperVideoUrl;
+                wallpaperMediaPlayer.play();
+            }
+        }
+        // 组件创建完成时不自动初始化，等待插件加载
+        Component.onCompleted: {
+            // 等待主窗口的Component.onCompleted调用initWallpaper()
         }
     }
     Connections {

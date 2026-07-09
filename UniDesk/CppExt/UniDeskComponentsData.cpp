@@ -8,8 +8,8 @@
 #include <QQmlEngine>
 #include <QDebug>
 
-static QString componentsFile = "./data/components.json";
-static QString basicComTypeListFile = "./temp/UniDesk/Components/basic-com-list.json";
+static QString componentsFile = QCoreApplication::applicationDirPath() + "/data/components.json";
+static QString basicComTypeListFile = QCoreApplication::applicationDirPath() + "/temp/UniDesk/Components/basic-com-list.json";
 
 static QJsonObject defaultComponents() {
     QJsonObject obj;
@@ -94,14 +94,14 @@ UniDeskComponentsData::UniDeskComponentsData(QQuickItem *parent)
     : QQuickItem(parent)
 {}
 
-QJsonValue UniDeskComponentsData::getPages() {
+QJsonArray UniDeskComponentsData::getPages() {
     QJsonObject obj = readJsonFile(componentsFile);
-    return obj.value("pages");
+    return obj.value("pages").toArray();
 }
 
-QJsonValue UniDeskComponentsData::getComponents() {
+QJsonArray UniDeskComponentsData::getComponents() {
     QJsonObject obj = readJsonFile(componentsFile);
-    return obj.value("components");
+    return obj.value("components").toArray();
 }
 
 void UniDeskComponentsData::updatePage(int pIndex, const QJsonValue &page) {
