@@ -14,6 +14,7 @@ Item{
     signal focusOut()
     signal rightClicked()
     signal endDrag()
+    signal componentCompleted()
     property alias bg: rect_bg
     property string name
     property string type
@@ -114,5 +115,8 @@ Item{
         base.x = point.x;
         base.y = point.y;
         base.parent = p;
+    }
+    Component.onCompleted: {
+        base.componentCompleted();
     }
 }

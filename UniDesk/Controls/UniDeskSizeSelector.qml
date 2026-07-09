@@ -82,4 +82,20 @@ Item{
     onEditingComponentChanged: {
         refreshSize();
     }
+    Connections{
+        target: control.editingComponent
+        function onComponentCompleted(){
+            refreshSize();
+        }
+        function onEndDrag(){
+            refreshSize();
+            control.editingComponent.saveComToFile();
+        }
+        function onWidthChanged(){
+            refreshSize();
+        }
+        function onHeightChanged(){
+            refreshSize();
+        }
+    }
 }

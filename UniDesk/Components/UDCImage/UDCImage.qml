@@ -76,11 +76,6 @@ UniDeskComBase{
         menu.popup(cont)
     }
     
-    onEndDrag: {
-        optionsImage.updatePosition()
-        optionsImage.updateSize()
-        saveComToFile()
-    }
     
     function propertyData(){
         return {
@@ -123,23 +118,6 @@ UniDeskComBase{
     function saveComToFile(){
         var data= propertyData()
         UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data)
-    }
-    
-    Component.onCompleted:{
-        optionsImage.updatePosition()
-        optionsImage.updateSize()
-    }
-    onXChanged: ()=>{
-        optionsImage.updatePosition();
-    }
-    onYChanged: ()=>{
-        optionsImage.updatePosition();
-    }
-    onWidthChanged: {
-        optionsImage.updateSize();
-    }
-    onHeightChanged: {
-        optionsImage.updateSize();
     }
     onCloseSignal: ()=>{
         if(optionsImage){

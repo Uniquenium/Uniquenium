@@ -108,10 +108,6 @@ UniDeskComBase{
     onRightClicked: {
         menu.popup(cont);
     }
-    onEndDrag: {
-        optionsText.updatePosition();
-        saveComToFile();
-    }
     function propertyData(){
         return {
             "type": base.type,
@@ -190,20 +186,6 @@ UniDeskComBase{
     }
     Component.onCompleted:{
         flushText.start();
-        optionsText.updatePosition();
-        optionsText.updateSize();
-    }
-    onXChanged: ()=>{
-        optionsText.updatePosition();
-    }
-    onYChanged: ()=>{
-        optionsText.updatePosition();
-    }
-    onWidthChanged: {
-        optionsText.updateSize();
-    }
-    onHeightChanged: {
-        optionsText.updateSize();
     }
     onCloseSignal: ()=>{
         if(optionsText){

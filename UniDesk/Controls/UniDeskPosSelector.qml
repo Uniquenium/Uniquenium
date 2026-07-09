@@ -270,4 +270,20 @@ Item{
         horizontalCoordTextField.value=control.editingComponent.x;
         verticalCoordTextField.value=control.editingComponent.y;
     }
+    Connections{
+        target: control.editingComponent
+        function onComponentCompleted(){
+            control.refreshPosition();
+        }
+        function onEndDrag(){
+            control.refreshPosition();
+            control.editingComponent.saveComToFile();
+        }
+        function onXChanged(){
+            control.refreshPosition();
+        }
+        function onYChanged(){
+            control.refreshPosition();
+        }
+    }
 }

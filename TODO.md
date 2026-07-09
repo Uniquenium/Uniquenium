@@ -27,9 +27,8 @@
 - [x] Controls
 - Basic Components
   - [x] Text
-  - [ ] Button
-  - [x] Image
-  - [ ] Chart(CPU,GPU,Network status,etc.)
+  - [x] Image/Button
+  
   - [ ] Frame
 - Miscellaneous
   - [x] Text Default Alignment
@@ -39,7 +38,7 @@
   - [x] Tray Icon & Menu
   - [x] Parent Component Relationship
   - [ ] Multiple Image Wallpaper
-  - [ ] Plugin
+  - [x] Plugin
   - [ ] Support Custom API for Wallpaper
   - [ ] Component Z-Index
   - [x] Copy Components
@@ -72,5 +71,6 @@
   - [ ] Screen Using Time
   - [ ] ClipBoard
   - [ ] Encoder/Decoder
+  - [ ] Chart(CPU,GPU,Network status,etc.)
 
 

@@ -247,16 +247,7 @@ UniDeskWindow{
             window.close()
         }
     }
-    
-    function updatePosition(){
-        posSelector.refreshPosition()
-    }
-    
-    function updateSize(){
-        sizeSelector.refreshSize()
-    }
-    
     Component.onCompleted: {
-        updatePosition()
+        posSelector.refreshPosition();
     }
 }

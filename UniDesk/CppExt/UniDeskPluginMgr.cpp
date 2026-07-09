@@ -74,7 +74,6 @@ void UniDeskPluginMgr::loadPlugins()
         pluginInfo["dirpath"] = pluginsDir.absoluteFilePath(pluginDirName);
         pluginList.append(pluginInfo);
         m_engine->addImportPath(pluginsDir.absoluteFilePath(pluginDirName));
-        qDebug()<< m_engine->importPathList();
     }
     plugins_list(pluginList);
 }
