@@ -6,6 +6,9 @@
 
 [![GitHub License](https://img.shields.io/github/license/Uniquenium/Uniquenium)](LICENSE)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Uniquenium/Uniquenium)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Uniquenium/Uniquenium)
+
+
 
 [官方文档](https://docs.uniquenium.qyadbr.top) ·
 [DeepWiki 文档](https://deepwiki.com/Uniquenium/Uniquenium) ·
