@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Templates as T
 import QtQuick.Controls.Basic
+import Qt5Compat.GraphicalEffects
 import UniDesk
 import UniDesk.Controls
 import UniDesk.Singletons
@@ -19,19 +20,64 @@ UniDeskComBase{
     property int fillMode: Image.Stretch
     smooth: true
     property bool mipmap: false
+    // 圆角功能
+    property int radius: 0
+    // 按钮功能
+    property bool isButton: false
+    // 按钮动作类型: UniDeskButtonActionType.ButtonActionApp/ButtonActionWeb/ButtonActionCommand
+    property int buttonActionType: UniDeskButtonActionType.ButtonActionApp
+    // 按钮动作目标: 应用程序路径/网页URL/命令
+    property string buttonActionTarget: ""
     optionsWindow: optionsImage
     chosen: optionsImage ? optionsImage.visible : false
+
+    
     AnimatedImage{
         id: cont
         source: base.imagePath ? base.imagePath : "qrc:/media/logo/unidesk-l-bg.png"
         fillMode: base.fillMode
-        opacity: base.itemOpacity
+        opacity: base.itemOpacity 
         smooth: base.smooth
         mipmap: base.mipmap
         width: base.width
         height: base.height
         transformOrigin: Item.TopLeft
         playing: status === AnimatedImage.Ready
+        clip: true
+        layer.enabled: true
+        layer.smooth: true
+        layer.effect: OpacityMask{
+            maskSource: Rectangle {
+                width: cont.width
+                height: cont.height
+                radius: base.radius
+            }
+        }
+        
+    }
+    ColorOverlay{
+        id: overlay_image
+        anchors.fill: parent
+        source: cont
+        color: {
+            if(base.controlPressed){
+                return Qt.rgba(0, 0, 0, 0.3)
+            }
+            else if (base.controlHovered){
+                return Qt.rgba(0, 0, 0, 0.2)
+            }
+            return "transparent"
+        }
+        visible: base.isButton && !base.chosen && base.controlHovered
+        layer.enabled: true
+        layer.smooth: true
+        layer.effect: OpacityMask{
+            maskSource: Rectangle {
+                width: cont.width
+                height: cont.height
+                radius: base.radius
+            }
+        }
     }
     UniDeskMenu{
         id: menu
@@ -76,7 +122,19 @@ UniDeskComBase{
         menu.popup(cont)
     }
     
-    
+    // 按钮点击处理 - 使用函数数组消除if判断
+    onLeftClicked: {
+        if (base.isButton && !base.chosen && !menu.visible) {
+            var actionHandlers = [
+                function(t) { UniDeskTools.openFileOrDir(t) },
+                function(t) { UniDeskTools.web_browse(t) },
+                function(t) { UniDeskTools.systemCommand(t) }
+            ]
+            if (base.buttonActionType >= 0 && base.buttonActionType < actionHandlers.length) {
+                actionHandlers[base.buttonActionType](base.buttonActionTarget)
+            }
+        }
+    }
     function propertyData(){
         return {
             "type": base.type,
@@ -93,7 +151,11 @@ UniDeskComBase{
             "opacity": base.itemOpacity,
             "smooth": base.smooth,
             "mipmap": base.mipmap,
-            "rotation": base.rotation
+            "rotation": base.rotation,
+            "radius": base.radius,
+            "isButton": base.isButton,
+            "buttonActionType": base.buttonActionType,
+            "buttonActionTarget": base.buttonActionTarget
         }
     }
     
@@ -113,6 +175,10 @@ UniDeskComBase{
         if(data.smooth!==undefined){base.smooth=data.smooth}
         if(data.mipmap!==undefined){base.mipmap=data.mipmap}
         if(data.rotation!==undefined){base.rotation=data.rotation}
+        if(data.radius!==undefined){base.radius=data.radius}
+        if(data.isButton!==undefined){base.isButton=data.isButton}
+        if(data.buttonActionType!==undefined){base.buttonActionType = data.buttonActionType}
+        if(data.buttonActionTarget!==undefined){base.buttonActionTarget=data.buttonActionTarget}
     }
     
     function saveComToFile(){

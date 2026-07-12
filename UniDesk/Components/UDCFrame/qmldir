@@ -1,0 +1,3 @@
+module UniDesk.Components.UDCFrame
+UDCFrame 1.0 UDCFrame.qml
+UDCFrameOptions 1.0 UDCFrameOptions.qml

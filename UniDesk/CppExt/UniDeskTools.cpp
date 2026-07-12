@@ -9,6 +9,7 @@
 #include <QList>
 #include <QFont>
 #include <QPalette>
+#include <QDir>
 #include <QProcess>
 #include <QWindow>
 #include <QFile>
@@ -202,6 +203,17 @@ QString UniDeskTools::getModuleVersionMinor() {
 QString UniDeskTools::getModuleVersionPatch() {
     return MODULE_VERSION_PATCH;
 }
-void UniDeskTools::openInExplorer(const QString &path) {
+void UniDeskTools::openFileOrDir(const QString &path) {
     QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
+void UniDeskTools::showFileInExplorer(const QString &path) {
+#ifdef Q_OS_WIN
+    const QString explorer = "explorer";
+    QStringList param;
+    if(!QFileInfo(path).isDir())
+        param<<QLatin1String("/select,");
+    param<<QDir::toNativeSeparators(path);
+    QProcess::startDetached(explorer,param);
+#endif
+}
+    

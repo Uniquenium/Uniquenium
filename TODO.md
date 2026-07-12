@@ -6,7 +6,6 @@
     - [x] Shutdown
     - [x] Restart
     - [x] Sleep
-    - [ ] Update
     - [x] Log Off
     - [x] Lock Screen
   - Pages View
@@ -14,22 +13,23 @@
   - Settings
     - Behavior
       - [ ] Auto Start With Booting
-      - [ ] Update Mode
       - [ ] Language
     - [ ] Appearance
       - [x] Desktop Wallpaper
       - [ ] Mouse Style
+      - [ ] Colors
     - [ ] Hotkeys
-    - [ ] Plugin
+    - [x] Plugin
     - [ ] Theme
     - [ ] About
-  - [x] New Component
+  - New
+    - [x] Component
+    - [ ] Components By Templete
 - [x] Controls
 - Basic Components
   - [x] Text
-  - [x] Image/Button
-  
-  - [ ] Frame
+  - [ ] Image/Button
+  - [x] Frame
 - Miscellaneous
   - [x] Text Default Alignment
   - [x] Support Web Images for UDCImage
@@ -37,15 +37,16 @@
   - [x] Previous/Next Page Button
   - [x] Tray Icon & Menu
   - [x] Parent Component Relationship
-  - [ ] Multiple Image Wallpaper
   - [x] Plugin
-  - [ ] Support Custom API for Wallpaper
-  - [ ] Component Z-Index
   - [x] Copy Components
-  - [ ] Paste Text/Image From Clipboard
-  - [ ] Theme
-  - [ ] Tree View in Page Manage Window
   - [x] Checking Components When Deleting a Page
+  - [ ] Paste Text/Image From Clipboard
+  - [ ] Multiple Image Wallpaper
+  - [ ] Support Custom API for Wallpaper
+  - [ ] Tree View in Page Manage Window
+  - [ ] Component Z-Index Swaping
+  - [ ] Theme
+  - [ ] Multi Component Edition
   - [ ] Border Radius for UniDeskImage
   - [ ] Improve Component Identity Generation
 - Bugs

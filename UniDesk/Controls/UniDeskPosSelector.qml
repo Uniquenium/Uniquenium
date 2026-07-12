@@ -143,10 +143,10 @@ Item{
                     var ec=control.editingComponent;
                     var hac=control.horizontalAlignComponent;
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.x = hac.x;
+                        control.editingComponent.x = hac.x+ec.parent.mapFromGlobal(0,0).x;
                     }
                     else{
-                        control.editingComponent.x = 0;
+                        control.editingComponent.x = ec.parent.mapFromGlobal(0,0).x;
                     }
                     control.editingComponent.saveComToFile();  
                 }
@@ -163,10 +163,10 @@ Item{
                     var ec=control.editingComponent;
                     var hac=control.horizontalAlignComponent;
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.x = hac.x  + hac.width/2 - ec.width/2 ;
+                        control.editingComponent.x = hac.x  + hac.width/2 - ec.width/2 +ec.parent.mapFromGlobal(0,0).x;
                     }
                     else{
-                        control.editingComponent.x = UniDeskTools.desktopGeometry(Window.window).width /2 - ec.width /2 ;
+                        control.editingComponent.x = UniDeskTools.desktopGeometry(Window.window).width /2 - ec.width /2 +ec.parent.mapFromGlobal(0,0).x;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -183,10 +183,10 @@ Item{
                     var ec=control.editingComponent;
                     var hac=control.horizontalAlignComponent;
                     if(control.horizontalAlignComponent){
-                        control.editingComponent.x = hac.x  + hac.width - ec.width;
+                        control.editingComponent.x = hac.x  + hac.width - ec.width +ec.parent.mapFromGlobal(0,0).x;
                     }
                     else{
-                        control.editingComponent.x = UniDeskTools.desktopGeometry(Window.window).width - ec.width;
+                        control.editingComponent.x = UniDeskTools.desktopGeometry(Window.window).width - ec.width +ec.parent.mapFromGlobal(0,0).x;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -209,10 +209,10 @@ Item{
                     var ec=control.editingComponent;
                     var vac=control.verticalAlignComponent;
                     if(control.verticalAlignComponent){
-                        control.editingComponent.y = vac.y;
+                        control.editingComponent.y = vac.y+ec.parent.mapFromGlobal(0,0).y;
                     }
                     else{
-                        control.editingComponent.y=0;
+                        control.editingComponent.y=ec.parent.mapFromGlobal(0,0).y;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -229,10 +229,10 @@ Item{
                     var ec=control.editingComponent;
                     var vac=control.verticalAlignComponent;
                     if(control.verticalAlignComponent){
-                        control.editingComponent.y = vac.y  + vac.height/2 - ec.height/2 ;
+                        control.editingComponent.y = vac.y  + vac.height/2 - ec.height/2 +ec.parent.mapFromGlobal(0,0).y;
                     }
                     else{
-                        control.editingComponent.y = UniDeskTools.desktopGeometry(Window.window).height /2 - ec.height /2 ;
+                        control.editingComponent.y = UniDeskTools.desktopGeometry(Window.window).height /2 - ec.height /2 +ec.parent.mapFromGlobal(0,0).y;
                     }
                     control.editingComponent.saveComToFile();
                 }
@@ -249,10 +249,10 @@ Item{
                     var ec=control.editingComponent;
                     var vac=control.verticalAlignComponent;
                     if(control.verticalAlignComponent){
-                        control.editingComponent.y = vac.y  + vac.height - ec.height;
+                        control.editingComponent.y = vac.y  + vac.height - ec.height +ec.parent.mapFromGlobal(0,0).y;
                     }
                     else{
-                        control.editingComponent.y = UniDeskTools.desktopGeometry(Window.window).height - ec.height;
+                        control.editingComponent.y = UniDeskTools.desktopGeometry(Window.window).height - ec.height +ec.parent.mapFromGlobal(0,0).y;
                     }
                     control.editingComponent.saveComToFile();
                 }

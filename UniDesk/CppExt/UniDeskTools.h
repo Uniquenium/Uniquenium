@@ -42,7 +42,8 @@ public:
     Q_INVOKABLE QString getModuleVersionMajor();
     Q_INVOKABLE QString getModuleVersionMinor();
     Q_INVOKABLE QString getModuleVersionPatch();
-    Q_INVOKABLE void openInExplorer(const QString &path);
+    Q_INVOKABLE void openFileOrDir(const QString &path);
+    Q_INVOKABLE void showFileInExplorer(const QString &path);
 
 signals:
     void customFontsChanged();

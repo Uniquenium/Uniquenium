@@ -30,10 +30,9 @@ UniDeskObject{
             root: object
             comWindow: UniDeskComWindow
         }
-        UniDeskComBase {
+        Item {
             id: base
             visible: true
-            bg.color: "transparent"
             x: Screen.desktopAvailableWidth-width-10
             y: 10
             width: btns.width
@@ -245,10 +244,6 @@ UniDeskObject{
                     }
                 }
             }
-            onFocusOut: {
-                system_menu.close();
-                page_menu.close();
-            }
         }
         UniDeskMessageBox{
             id: confirm_exit_dialog
@@ -346,7 +341,7 @@ UniDeskObject{
         }
         function updateMouseClickThrough(pos){
             let moac=component_manager.mouse_on_any_com(pos)
-            let bcgp=base.containsGlobalPoint(pos)
+            let bcgp=base.contains(base.mapFromGlobal(pos))
             mouseClickThrough=!(moac||bcgp);
         }
     }

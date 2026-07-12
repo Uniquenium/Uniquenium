@@ -12,10 +12,13 @@ Item{
     id: base
     signal closeSignal()
     signal focusOut()
+    signal leftClicked()
     signal rightClicked()
     signal endDrag()
     signal componentCompleted()
     property alias bg: rect_bg
+    property alias controlPressed: mouseArea.pressed
+    property bool controlHovered
     property string name
     property string type
     property int identification
@@ -59,6 +62,7 @@ Item{
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onPressed: (mouse) => {
             if (mouse.button === Qt.LeftButton) {
+                base.leftClicked();
                 if (base.canMove) {
                     base.moving = true;
                     mouseArea.cursorShape = Qt.SizeAllCursor;
@@ -74,8 +78,8 @@ Item{
             mouseArea.cursorShape = Qt.ArrowCursor;
             base.edges = 0;
             if (mouse.button === Qt.LeftButton) {
-                base.endDrag();
-            } else if (mouse.button === Qt.RightButton) {
+                    base.endDrag();
+                } else if (mouse.button === Qt.RightButton) {
                 base.rightClicked();
             }
             base.moving = false;
@@ -118,5 +122,11 @@ Item{
     }
     Component.onCompleted: {
         base.componentCompleted();
+    }
+    Connections{
+        target: comManager.root
+        function onMouseMoved(){
+            base.controlHovered = base.contains(base.mapFromGlobal(UniDeskTools.getCursorPosition()));
+        }
     }
 }

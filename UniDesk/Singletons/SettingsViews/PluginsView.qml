@@ -62,7 +62,7 @@ Item{
                         iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
                         radius: width / 2
                         onClicked:{
-                            UniDeskTools.openInExplorer(modelData.dirpath);
+                            UniDeskTools.openFileOrDir(modelData.dirpath);
                         }
                     }
                 }

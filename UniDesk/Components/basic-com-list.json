@@ -7,8 +7,13 @@
         },
         {
             "filename": "UDCImage",
-            "name": "图片",
+            "name": "图片/按钮",
             "icon": "qrc:/media/img/image.svg"
+        },
+        {
+            "filename": "UDCFrame",
+            "name": "框架",
+            "icon": "qrc:/media/img/checkbox.svg"
         }
     ]
 }   
