@@ -336,6 +336,9 @@ UniDeskObject{
             component_manager.loadPagesFromData();
             component_manager.loadComponentsFromData();
             
+            // 加载保存的语言设置
+            UniDeskGlobals.translate(object, UniDeskSettings.language)
+            
             // 插件加载完成后初始化壁纸
             custom_wallpaper.initWallpaper();
         }

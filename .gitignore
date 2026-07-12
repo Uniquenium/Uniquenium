@@ -10,4 +10,5 @@ _deps/
 */.qmlls.ini
 *.user
 *.user.*
+toolscripts/
 

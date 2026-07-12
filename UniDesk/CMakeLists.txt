@@ -51,6 +51,8 @@ set(sources_files "")
 set(qml_files "")
 set(resource_files "")
 
+
+
 #遍历所有Cpp文件
 file(GLOB CPP_FILES CppExt/*.cpp Components/*/*.cpp)
 foreach (filepath ${CPP_FILES})
@@ -106,6 +108,57 @@ endforeach (respath)
 
 list(APPEND resource_files "Components/basic-com-list.json")
 # list(APPEND sources_files "${EXPRTK_INCLUDE}")
+# set_source_files_properties(${TS_FILES}
+#     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations")
+# 生成翻译文件
+qt_add_translations(${TARGET}
+    TS_FILES ${TS_FILES}
+    SOURCES ${sources_files} ${qml_files}
+    RESOURCE_PREFIX "/uniquenium/i18n"
+)
+
+list(APPEND resource_files )
+# 将QM文件添加到资源文件
+# 为每个QM文件设置QT_RESOURCE_ALIAS属性，使用相对路径以便资源系统正确访问
+foreach(qm_file ${QM_FILES})
+    # 获取文件名（不含路径）
+    get_filename_component(qm_filename ${qm_file} NAME)
+    # 设置资源别名，使QM文件在资源系统中可通过相对路径访问
+    set_source_files_properties(${qm_file} PROPERTIES
+        QT_RESOURCE_ALIAS "translations/${qm_filename}"
+    )
+    list(APPEND ${qm_file})
+endforeach()
+
+# 在CMake配置阶段自动运行lupdate，确保TS文件被填充
+# 这样在Qt Creator中配置项目时，翻译字符串会自动提取
+get_target_property(_lupdate_exe Qt6::lupdate LOCATION)
+if(_lupdate_exe)
+    # 将相对路径转换为绝对路径（sources_files和qml_files是相对于UniDesk/目录的）
+    set(_all_sources "")
+    foreach(_file ${sources_files} ${qml_files})
+        list(APPEND _all_sources "${CMAKE_CURRENT_SOURCE_DIR}/${_file}")
+    endforeach()
+    # 添加根目录的main.qml
+    list(APPEND _all_sources "${CMAKE_CURRENT_SOURCE_DIR}/../main.qml")
+    
+    # 运行lupdate提取翻译字符串
+    execute_process(
+        COMMAND ${_lupdate_exe} ${_all_sources} -ts ${TS_FILES}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE _lupdate_result
+        OUTPUT_VARIABLE _lupdate_output
+        ERROR_VARIABLE _lupdate_error
+    )
+    
+    if(_lupdate_result EQUAL 0)
+        message(STATUS "lupdate completed successfully.")
+    else()
+        message(WARNING "lupdate failed with exit code ${_lupdate_result}.\nError: ${_lupdate_error}")
+    endif()
+else()
+    message(WARNING "Qt6::lupdate not found, translation files will not be updated.")
+endif()
 
 # Set Qt6 QMl Plugins
 qt_add_qml_module(${TARGET}

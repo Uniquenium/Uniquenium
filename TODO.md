@@ -13,8 +13,8 @@
   - Settings
     - Behavior
       - [ ] Auto Start With Booting
-      - [ ] Language
-    - [ ] Appearance
+      - [x] Language
+    - Appearance
       - [x] Desktop Wallpaper
       - [ ] Mouse Style
       - [ ] Colors

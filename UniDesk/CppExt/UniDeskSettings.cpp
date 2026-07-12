@@ -38,6 +38,8 @@ static QJsonObject defaultSettings() {
     obj["wallpaperImageUrl"] = QString();
     obj["wallpaperVideoUrl"] = QString();
     obj["wallpaperVolume"] = 0;
+    // 语言设置默认值
+    obj["language"] = "zh_CN";                 // 默认中文
     return obj;
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
@@ -136,6 +138,8 @@ UniDeskSettings::UniDeskSettings(QQuickItem *parent)
     wallpaperImageUrl(obj.value("wallpaperImageUrl").toString());
     wallpaperVideoUrl(obj.value("wallpaperVideoUrl").toString());
     wallpaperVolume(obj.value("wallpaperVolume").toInt());
+    // 加载语言设置
+    language(obj.value("language").toString());
 }
 
 QVariant UniDeskSettings::get(const QString &prop) {
@@ -186,5 +190,7 @@ void UniDeskSettings::notify(const QString &prop) {
     else if (prop == "wallpaperImageUrl") wallpaperImageUrl(obj.value(prop).toString());
     else if (prop == "wallpaperVideoUrl") wallpaperVideoUrl(obj.value(prop).toString());
     else if (prop == "wallpaperVolume") wallpaperVolume(obj.value(prop).toInt());
+    // 语言属性通知
+    else if (prop == "language") language(obj.value(prop).toString());
 }
 

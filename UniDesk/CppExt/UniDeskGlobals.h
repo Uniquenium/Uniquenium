@@ -4,6 +4,8 @@
 #include "singleton.h"
 #include "stdafx.h"
 #include <QQuickItem>
+#include <QTranslator>
+#include <QLocale>
 #include <QtQml/qqml.h>
 
 class UniDeskGlobals : public QQuickItem {
@@ -13,6 +15,7 @@ class UniDeskGlobals : public QQuickItem {
     QML_SINGLETON
 private:
     explicit UniDeskGlobals(QQuickItem *parent = nullptr);
+    QTranslator* _translator = nullptr;
 public:
     SINGLETON(UniDeskGlobals)
     static auto create(QQmlEngine*, QJSEngine*) { return getInstance(); }
@@ -21,6 +24,7 @@ public:
     Q_INVOKABLE void emitApplicationQuit();
     Q_INVOKABLE void startThread();
     Q_INVOKABLE void startListener();
+    Q_INVOKABLE void translate(QObject* object, QString locale);
 
 signals:
     void isLightChanged(bool);

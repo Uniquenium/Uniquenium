@@ -31,6 +31,8 @@ class UniDeskSettings : public QQuickItem {
     Q_PROPERTY_AUTO(QString, wallpaperImageUrl)   // 自定义图片URL
     Q_PROPERTY_AUTO(QString, wallpaperVideoUrl)   // 自定义视频URL
     Q_PROPERTY_AUTO(int, wallpaperVolume)         // 音量（0-100，仅视频）
+    // 语言设置
+    Q_PROPERTY_AUTO(QString, language)            // "zh_CN" 或 "en_US"
     QML_NAMED_ELEMENT(UniDeskSettings)
     QML_SINGLETON
 private:

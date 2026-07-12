@@ -3,6 +3,7 @@
 #include <QPalette>
 #include <QTimer>
 #include <QJsonObject>
+#include <QQmlEngine>
 #include <QJsonArray>
 #include <QFile>
 
@@ -13,7 +14,8 @@ UniDeskGlobals::UniDeskGlobals(QQuickItem *parent)
     : QQuickItem(parent)
 {
     isLight(true);
-
+    _translator = new QTranslator(this);
+    QGuiApplication::installTranslator(_translator);
 }
 
 
@@ -63,4 +65,10 @@ void UniDeskGlobals::startListener() {
     startThread();
 }
 
-
+void UniDeskGlobals::translate(QObject* object, QString locale) {
+    QQmlEngine* _engine = qmlEngine(object);
+    bool p=_translator->load(":/uniquenium/i18n/uniquenium_" + locale);
+    if(p){
+        _engine->retranslate();
+    }
+}

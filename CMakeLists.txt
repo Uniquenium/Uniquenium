@@ -16,6 +16,10 @@ set(MODULE_VERSION_PATCH 1)
 set(MODULE_VERSION ${MODULE_VERSION_MAJOR}.${MODULE_VERSION_MINOR}.${MODULE_VERSION_PATCH})
 add_compile_definitions(MODULE_VERSION_MAJOR="${MODULE_VERSION_MAJOR}" MODULE_VERSION_MINOR="${MODULE_VERSION_MINOR}" MODULE_VERSION_PATCH="${MODULE_VERSION_PATCH}")
 set(TARGET ${PROJECT_NAME}${MODULE_VERSION_MAJOR})
+set(TS_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/translations/uniquenium_zh_CN.ts
+    ${CMAKE_CURRENT_SOURCE_DIR}/translations/uniquenium_en_US.ts
+)
 
 # Set this to allow indexing when we are using Qt Creator
 set(QML_IMPORT_PATH ${CMAKE_BINARY_DIR}/temp CACHE STRING "" FORCE)
@@ -36,7 +40,7 @@ find_package(ECM REQUIRED NO_MODULE)
 list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 message(STATUS "ECM version: ${ECM_VERSION}")
 
-set(QT Core Widgets Quick QuickControls2 DBus Core5Compat LabsPlatform)
+set(QT Core Widgets Quick QuickControls2 DBus Core5Compat LabsPlatform LinguistTools)
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED ${QT})
 if (UNIX)
     if (NOT APPLE)
@@ -115,15 +119,18 @@ set(EXPRTK_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/extern/exprtk)
 
 # Removed pybind11 dependency - using pure C++ implementation
 
+
 add_subdirectory(UniDesk)
+
 
 
 qt_add_executable(${PROJECT_NAME}
     MANUAL_FINALIZATION
     ${PROJECT_SOURCES}
-    # ${QM_FILES}
+    ${QM_FILES}
     ${EXAMPLE_VERSION_RC_PATH}
 )
+
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
         Qt6::Core
