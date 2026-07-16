@@ -28,7 +28,7 @@
 - [x] Controls
 - Basic Components
   - [x] Text
-  - [ ] Image/Button
+  - [x] Image/Button
   - [x] Frame
 - Miscellaneous
   - [x] Text Default Alignment
@@ -53,6 +53,7 @@
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)
   - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity
   - [x] Supporting: UDCText's canMove property changing by menu(it has problems so it's temporarily hidden)(it has fixed by binding "canMove" with "chosen")
+  - [x] UniDeskComboBox 's currentIndex is reset to 0 when language is changed
 - Components in Official Plugin
   - [ ] Calculator
   - [ ] Screen Capture

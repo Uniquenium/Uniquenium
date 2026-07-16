@@ -28,19 +28,16 @@ ScrollView{
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.margins: 10
-        model: [qsTr("中文"), qsTr("English")]
-        currentIndex: {
-            if (UniDeskSettings.language === "zh_CN") return 0
-            else if (UniDeskSettings.language === "en_US") return 1
-            return 0
-        }
+        model: ["中文", "English"]
+        currentIndex: ["zh_CN", "en_US"].indexOf(UniDeskSettings.language)
         onActivated: {
-            var lang = currentIndex === 0 ? "zh_CN" : "en_US"
+            var lang = ["zh_CN", "en_US"][currentIndex]
             UniDeskSettings.set("language", lang)
             UniDeskSettings.notify("language")
-            
-            var locale = currentIndex === 0 ? "zh_CN" : "en_US"
-            UniDeskGlobals.translate(languageComboBox, locale)
+            UniDeskGlobals.translate(languageComboBox, lang)
+        }
+        onModelChanged: {
+            currentIndex = ["zh_CN", "en_US"].indexOf(UniDeskSettings.language)
         }
     }
 }

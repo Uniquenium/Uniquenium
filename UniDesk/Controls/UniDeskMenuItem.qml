@@ -35,6 +35,7 @@ T.MenuItem {
     }
     contentItem: Item{
         Row{
+            id:content_row
             spacing: root.iconSpacing
             readonly property real arrowPadding: root.subMenu && root.arrow ? root.arrow.width + root.spacing : 0
             readonly property real indicatorPadding: root.checkable && root.indicator ? root.indicator.width + root.spacing : 0

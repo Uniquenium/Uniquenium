@@ -80,6 +80,6 @@ Item{
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 10
-        text: qsTr("已加载")+ UniDeskPluginMgr.plugins_list.length + qsTr("个插件")
+        text: qsTr("已加载")+" "+ UniDeskPluginMgr.plugins_list.length + " " + qsTr("个插件")
     }
 }

@@ -159,25 +159,21 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             model: [qsTr("拉伸"), qsTr("保持比例适应"), qsTr("保持比例裁剪"), qsTr("平铺"), qsTr("保持比例填充")]
-            currentIndex: {
+            currentIndex: mapToIndex()
+            onActivated:  {
                 if (window.ec) {
-                    if (window.ec.fillMode === Image.Stretch) return 0
-                    else if (window.ec.fillMode === Image.PreserveAspectFit) return 1
-                    else if (window.ec.fillMode === Image.PreserveAspectCrop) return 2
-                    else if (window.ec.fillMode === Image.Tile) return 3
-                    else if (window.ec.fillMode === Image.Pad) return 4
+                    window.ec.fillMode = [Image.Stretch, Image.PreserveAspectFit, Image.PreserveAspectCrop, Image.Tile, Image.Pad][currentIndex]
+                    window.ec.saveComToFile()
+                }
+            }
+            function mapToIndex(){
+                if (window.ec) {
+                    return [Image.Stretch, Image.PreserveAspectFit, Image.PreserveAspectCrop, Image.Tile, Image.Pad].indexOf(window.ec.fillMode)
                 }
                 return 0
             }
-            onActivated:  {
-                if (window.ec) {
-                    if (currentIndex === 0) window.ec.fillMode = Image.Stretch
-                    else if (currentIndex === 1) window.ec.fillMode = Image.PreserveAspectFit
-                    else if (currentIndex === 2) window.ec.fillMode = Image.PreserveAspectCrop
-                    else if (currentIndex === 3) window.ec.fillMode = Image.Tile
-                    else if (currentIndex === 4) window.ec.fillMode = Image.Pad
-                    window.ec.saveComToFile()
-                }
+            onModelChanged: {
+                currentIndex = mapToIndex()
             }
         }
         
@@ -307,6 +303,9 @@ UniDeskWindow{
                     window.ec.buttonActionTarget = ""
                     window.ec.saveComToFile()
                 }
+            }
+            onModelChanged: {
+                currentIndex = window.ec ? window.ec.buttonActionType : UniDeskButtonActionType.ButtonActionApp
             }
         }
         

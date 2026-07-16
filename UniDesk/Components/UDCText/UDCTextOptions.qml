@@ -408,17 +408,12 @@ UniDeskWindow{
             currentIndex: editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style===Text.Outline ? 2 : 3) : 0
             onActivated:  {
                 if (editingComponent) {
-                    if (currentIndex === 0) {
-                        editingComponent.style = Text.Normal;
-                    } else if (currentIndex === 1) {
-                        editingComponent.style = Text.Raised;
-                    } else if (currentIndex === 2) {
-                        editingComponent.style = Text.Outline;
-                    } else if (currentIndex === 3) {
-                        editingComponent.style = Text.Sunken;
-                    }
+                    editingComponent.style = [Text.Normal, Text.Raised, Text.Outline, Text.Sunken][currentIndex]
                 }
                 editingComponent.saveComToFile();
+            }
+            onModelChanged: {
+                currentIndex = [Text.Normal, Text.Raised, Text.Outline, Text.Sunken].indexOf(editingComponent.style)
             }
         }
         UniDeskText{
@@ -457,12 +452,15 @@ UniDeskWindow{
             anchors.margins: 10
             comManager: window.comManager
             model: [qsTr("自动"), qsTr("纯文本"), qsTr("富文本（HTML）"), qsTr("Markdown")]
-            currentIndex: editingComponent ? (editingComponent.textFormat === Text.AutoText ? 0 : editingComponent.textFormat === Text.PlainText ? 1 : editingComponent.textFormat === Text.RichText ? 2 : 3) : 0
+            currentIndex: editingComponent ? [Text.AutoText, Text.PlainText, Text.RichText, Text.MarkdownText].indexOf(editingComponent.textFormat) : 0
             onActivated:  {
                 if (editingComponent) {
-                    editingComponent.textFormat = currentIndex === 0 ? Text.AutoText : currentIndex === 1 ? Text.PlainText : currentIndex === 2 ? Text.RichText : Text.MarkdownText;
+                    editingComponent.textFormat = [Text.AutoText, Text.PlainText, Text.RichText, Text.MarkdownText][currentIndex]
                     editingComponent.saveComToFile();
                 }
+            }
+            onModelChanged: {
+                currentIndex = [Text.AutoText, Text.PlainText, Text.RichText, Text.MarkdownText].indexOf(editingComponent.textFormat)
             }
         }
         UniDeskText{
@@ -483,21 +481,19 @@ UniDeskWindow{
             currentIndex: {
                 var idx = 0;
                 if (editingComponent) {
-                    if (editingComponent.wrapMode === Text.Wrap) idx = 0;
-                    else if (editingComponent.wrapMode === Text.NoWrap) idx = 1;
-                    else if (editingComponent.wrapMode === Text.WrapAnywhere) idx = 2;
-                    else if (editingComponent.wrapMode === Text.WrapAtWordBoundaryOrAnywhere) idx = 3;
+                    idx = [Text.Wrap, Text.NoWrap, Text.WrapAnywhere, Text.WrapAtWordBoundaryOrAnywhere].indexOf(editingComponent.wrapMode);
+                    if (idx === -1) idx = 0;
                 }
                 return idx;
             }
             onActivated:  {
                 if (editingComponent) {
-                    if (currentIndex === 0) editingComponent.wrapMode = Text.Wrap;
-                    else if (currentIndex === 1) editingComponent.wrapMode = Text.NoWrap;
-                    else if (currentIndex === 2) editingComponent.wrapMode = Text.WrapAnywhere;
-                    else if (currentIndex === 3) editingComponent.wrapMode = Text.WrapAtWordBoundaryOrAnywhere;
+                    editingComponent.wrapMode = [Text.Wrap, Text.NoWrap, Text.WrapAnywhere, Text.WrapAtWordBoundaryOrAnywhere][currentIndex]
                     editingComponent.saveComToFile();
                 }
+            }
+            onModelChanged: {
+                currentIndex = [Text.Wrap, Text.NoWrap, Text.WrapAnywhere, Text.WrapAtWordBoundaryOrAnywhere].indexOf(editingComponent.wrapMode)
             }
         }
         UniDeskText{
@@ -518,19 +514,19 @@ UniDeskWindow{
             currentIndex: {
                 var idx = 1;
                 if (editingComponent) {
-                    if (editingComponent.horizontalAlignment === Text.AlignLeft) idx = 0;
-                    else if (editingComponent.horizontalAlignment === Text.AlignHCenter) idx = 1;
-                    else if (editingComponent.horizontalAlignment === Text.AlignRight) idx = 2;
+                    idx = [Text.AlignLeft, Text.AlignHCenter, Text.AlignRight].indexOf(editingComponent.horizontalAlignment);
+                    if (idx === -1) idx = 1;
                 }
                 return idx;
             }
             onActivated:  {
                 if (editingComponent) {
-                    if (currentIndex === 0) editingComponent.horizontalAlignment = Text.AlignLeft;
-                    else if (currentIndex === 1) editingComponent.horizontalAlignment = Text.AlignHCenter;
-                    else if (currentIndex === 2) editingComponent.horizontalAlignment = Text.AlignRight;
+                    editingComponent.horizontalAlignment = [Text.AlignLeft, Text.AlignHCenter, Text.AlignRight][currentIndex]
                     editingComponent.saveComToFile();
                 }
+            }
+            onModelChanged: {
+                currentIndex = [Text.AlignLeft, Text.AlignHCenter, Text.AlignRight].indexOf(editingComponent.horizontalAlignment)
             }
         }
         UniDeskText{
@@ -551,19 +547,19 @@ UniDeskWindow{
             currentIndex: {
                 var idx = 1;
                 if (editingComponent) {
-                    if (editingComponent.verticalAlignment === Text.AlignTop) idx = 0;
-                    else if (editingComponent.verticalAlignment === Text.AlignVCenter) idx = 1;
-                    else if (editingComponent.verticalAlignment === Text.AlignBottom) idx = 2;
+                    idx = [Text.AlignTop, Text.AlignVCenter, Text.AlignBottom].indexOf(editingComponent.verticalAlignment);
+                    if (idx === -1) idx = 1;
                 }
                 return idx;
             }
             onActivated:  {
                 if (editingComponent) {
-                    if (currentIndex === 0) editingComponent.verticalAlignment = Text.AlignTop;
-                    else if (currentIndex === 1) editingComponent.verticalAlignment = Text.AlignVCenter;
-                    else if (currentIndex === 2) editingComponent.verticalAlignment = Text.AlignBottom;
+                    editingComponent.verticalAlignment = [Text.AlignTop, Text.AlignVCenter, Text.AlignBottom][currentIndex]
                     editingComponent.saveComToFile();
                 }
+            }
+            onModelChanged: {
+                currentIndex = [Text.AlignTop, Text.AlignVCenter, Text.AlignBottom].indexOf(editingComponent.verticalAlignment)
             }
         }
     }

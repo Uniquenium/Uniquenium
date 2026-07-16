@@ -36,6 +36,10 @@ ScrollView{
             UniDeskSettings.set("colorMode", currentIndex);
             UniDeskGlobals.updateIsLight();
         }
+        onModelChanged: {
+            currentIndex = UniDeskSettings.colorMode
+            UniDeskGlobals.updateIsLight();
+        }
     }
     UniDeskText{
         id: labelPrimaryColor
@@ -305,12 +309,12 @@ ScrollView{
             customWallpaper.updateWallpaper();
         }
     }
-    UniDeskText{
-        id: textMouse
-        text: qsTr("鼠标")
-        font: UniDeskTextStyle.small_
-        anchors.top: (customWallpaper.wallpaperMode === 3) ? sliderVideoVolume.bottom : radioButtonVideo.bottom
-        anchors.left: parent.left
-        anchors.margins: 10
-    }
+    // UniDeskText{
+    //     id: textMouse
+    //     text: qsTr("鼠标")
+    //     font: UniDeskTextStyle.small_
+    //     anchors.top: (customWallpaper.wallpaperMode === 3) ? sliderVideoVolume.bottom : radioButtonVideo.bottom
+    //     anchors.left: parent.left
+    //     anchors.margins: 10
+    // }
 }

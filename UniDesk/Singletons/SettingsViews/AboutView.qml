@@ -56,12 +56,12 @@ ScrollView{
         RowLayout{
             spacing: 10
             UniDeskTextButton{
-                text: "仓库地址"
+                text: qsTr("仓库地址")
                 webLink: "https://github.com/Uniquenium/Uniquenium"
                 font: UniDeskTextStyle.little
             }
             UniDeskTextButton{
-                text: "官网"
+                text: qsTr("官网")
                 font: UniDeskTextStyle.little
             }
         }

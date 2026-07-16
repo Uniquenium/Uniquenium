@@ -45,7 +45,7 @@ T.Menu {
         ScrollBar.vertical: ScrollBar {}
     }
     background: Rectangle {
-        implicitWidth: 150
+        // implicitWidth: 150
         implicitHeight: 36
         color: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1 , 0.7) : Qt.rgba(0,0,0, 0.7)
         border.color: UniDeskGlobals.isLight ? Qt.rgba(0, 0, 0,1) : Qt.rgba(1, 1, 1, 1)
