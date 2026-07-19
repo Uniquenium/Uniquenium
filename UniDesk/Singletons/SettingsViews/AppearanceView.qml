@@ -13,8 +13,30 @@ import UniDesk
 ScrollView{
     property var comManager
     property var customWallpaper
-    contentHeight: textMouse.height+textMouse.y-labelColorMode.y+30
     hoverEnabled: true
+    UniDeskText{
+        id: textLanguage
+        text: qsTr("显示语言")
+        font: UniDeskTextStyle.little
+        anchors.left: parent.left
+        anchors.margins: 10
+        anchors.verticalCenter: languageComboBox.verticalCenter
+    }
+    
+    UniDeskComboBox{
+        id: languageComboBox
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.margins: 10
+        model: ["中文", "English"]
+        currentIndex: ["zh_CN", "en_US"].indexOf(UniDeskSettings.language)
+        onActivated: {
+            var lang = ["zh_CN", "en_US"][currentIndex]
+            UniDeskSettings.set("language", lang)
+             
+            UniDeskGlobals.translate(languageComboBox, lang)
+        }
+    }
     UniDeskText{
         id: labelColorMode
         text: qsTr("颜色模式")
@@ -28,7 +50,7 @@ ScrollView{
         id: optionColorMode
         comManager: UniDeskSettingsWindow.comManager
         model: [qsTr("浅色"), qsTr("深色"), qsTr("跟随系统")]
-        anchors.top: parent.top
+        anchors.top: languageComboBox.bottom
         anchors.right: parent.right
         anchors.margins: 10
         currentIndex: UniDeskSettings.colorMode
@@ -57,7 +79,7 @@ ScrollView{
         anchors.margins: 10
         onSelectedColorChanged:{
             UniDeskSettings.set("primaryColor", selectedColor);
-            UniDeskSettings.notify("primaryColor")
+             
         }
         Component.onCompleted:{
             selectedColor=UniDeskSettings.primaryColor
@@ -183,10 +205,9 @@ ScrollView{
             if (checkedButton === radioButtonOff) {
                 UniDeskSettings.set("wallpaperMode", 0);
                 customWallpaper.updateWallpaper();
-            } else if (checkedButton === radioButtonLolicon) {
+            } else if (checkedButton === radioButtonApi) {
                 UniDeskSettings.set("wallpaperMode", 1);
                 customWallpaper.updateWallpaper();
-                customWallpaper.fetchLoliconWallpaper();
             } else if (checkedButton === radioButtonImage) {
                 UniDeskSettings.set("wallpaperMode", 2);
                 customWallpaper.updateWallpaper();
@@ -206,66 +227,222 @@ ScrollView{
         ButtonGroup.group: button_group1
     }
     UniDeskRadioButton{
-        id: radioButtonLolicon
-        text: qsTr("使用Lolicon Api壁纸")
+        id: radioButtonApi
+        text: qsTr("使用自定义API壁纸")
         anchors.top: radioButtonOff.bottom
         anchors.left: parent.left
         anchors.margins: 10
         checked: customWallpaper.wallpaperMode === 1
         ButtonGroup.group: button_group1
     }
-    UniDeskText{
-        id: textRefreshInterval
-        text: qsTr("刷新间隔（秒，设为0不刷新）")
-        font: UniDeskTextStyle.little
+    // 自定义API配置
+    Column{
+        id: apiConfigColumn
+        anchors.top: radioButtonApi.bottom
         anchors.left: parent.left
-        anchors.verticalCenter: spinboxRefresh.verticalCenter
-        visible: customWallpaper.wallpaperMode === 1
-        anchors.margins: 10
-    }
-    UniDeskSpinBox{
-        id: spinboxRefresh
-        anchors.top: radioButtonLolicon.bottom
         anchors.right: parent.right
         anchors.margins: 10
-        editable: true
-        from: 0
-        to: 3600
-        value: customWallpaper.refreshInterval
         visible: customWallpaper.wallpaperMode === 1
-        onValueModified: {
-            UniDeskSettings.set("wallpaperRefreshInterval", value);
-            customWallpaper.updateWallpaper();
+        spacing: 10
+        
+        // API地址和刷新间隔在同一行
+        RowLayout{
+            id: apiRowLayout
+            width: parent.width
+            
+            Column{
+                Layout.fillWidth: true
+                UniDeskText{
+                    text: qsTr("API地址")
+                    font: UniDeskTextStyle.little
+                }
+                UniDeskTextField{
+                    id: apiUrlField
+                    width: parent.width
+                    placeholderText: qsTr("https://api.example.com/images")
+                    text: UniDeskSettings.get("wallpaperApiUrl") || ""
+                    onEditingFinished: {
+                        UniDeskSettings.set("wallpaperApiUrl", text);
+                        
+                    }
+                }
+            }
+        }
+        
+        UniDeskText{
+            text: qsTr("提取表达式")
+            font: UniDeskTextStyle.little
+        }
+        UniDeskTextField{
+            id: apiExpressionField
+            width: parent.width
+            placeholderText: qsTr("response.data[0].url")
+            text: UniDeskSettings.get("wallpaperApiExpression") || ""
+            onEditingFinished: {
+                UniDeskSettings.set("wallpaperApiExpression", text);
+                
+            }
+        }
+        
+    
+        
+        // API模式下的刷新间隔
+        RowLayout{
+            width: parent.width
+            spacing: 10
+            
+            UniDeskText{
+                text: qsTr("刷新间隔（秒）")
+                font: UniDeskTextStyle.little
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+            UniDeskSpinBox{
+                id: spinboxRefresh
+                editable: true
+                from: 0
+                to: 3600
+                value: customWallpaper.refreshInterval
+                onValueModified: {
+                    UniDeskSettings.set("wallpaperRefreshInterval", value);
+                    
+                    customWallpaper.updateWallpaper();
+                }
+            }
         }
     }
+    
     UniDeskRadioButton{
         id: radioButtonImage
         text: qsTr("自定义图片/动图")
-        anchors.top: customWallpaper.wallpaperMode === 1 ? spinboxRefresh.bottom : radioButtonLolicon.bottom
+        anchors.top: customWallpaper.wallpaperMode === 1 ? apiConfigColumn.bottom : radioButtonApi.bottom
         anchors.left: parent.left
         anchors.margins: 10
         checked: customWallpaper.wallpaperMode === 2
         ButtonGroup.group: button_group1
     }
-    UniDeskPathSelector{
-        id: pathSelector1
+    
+    // 多图片配置（ListView方式）
+    Column{
+        id: imageConfigColumn
         anchors.top: radioButtonImage.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
-        path: customWallpaper.wallpaperImageUrl
         visible: customWallpaper.wallpaperMode === 2
-        onSubmit: {
-            UniDeskSettings.set("wallpaperImageUrl", path.toString());
-            if (radioButtonImage.checked) {
+        spacing: 10
+        
+        UniDeskText{
+            text: qsTr("图片列表")
+            font: UniDeskTextStyle.little
+        }
+        
+        // 图片列表容器
+        Rectangle{
+            width: parent.width
+            height: 200
+            border.width: 1
+            border.color: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
+            radius: 5
+            clip: true
+            color: "transparent"
+            ListView{
+                id: imageListView
+                anchors.fill: parent
+                anchors.margins: 10
+                spacing: 10
+                model: UniDeskSettings.get("wallpaperImageUrls") || []
+                
+                delegate: RowLayout{
+                    width: parent.width
+                    spacing: 5
+                    
+                    UniDeskPathSelector{
+                        id: pathSelector
+                        Layout.fillWidth: true
+                        path: modelData
+                        onSubmit: {
+                            var urls = UniDeskSettings.get("wallpaperImageUrls") || [];
+                            urls[index] = path.toString();
+                            UniDeskSettings.set("wallpaperImageUrls", urls);
+                            customWallpaper.updateWallpaper();
+                        }
+                    }
+                    
+                    UniDeskButton{
+                        iconSource: "qrc:/media/img/delete-bin.svg"
+                        iconSize: 15
+                        bgHoverColor: Qt.rgba(1, 0, 0, 0.2)
+                        bgPressColor: Qt.rgba(1, 0, 0, 0.4)
+                        iconColor: Qt.rgba(1, 0, 0, 1)
+                        radius: width / 2
+                        onClicked: {
+                            var urls = UniDeskSettings.get("wallpaperImageUrls") || [];
+                            urls.splice(index, 1);
+                            UniDeskSettings.set("wallpaperImageUrls", urls);
+                            customWallpaper.updateWallpaper();
+                            imageListView.model = urls;
+                        }
+                        Layout.alignment: Qt.AlignVCenter
+                        horizontalPadding: 0
+                        verticalPadding: 0
+                        padding: 0
+                        width: 24
+                        height: 24
+                    }
+                }
+                ScrollBar.vertical: ScrollBar {}
+            }
+        }
+        
+        // 新建项按钮
+        UniDeskButton{
+            id: addButton
+            display: Button.TextOnly
+            contentText: qsTr("添加图片")
+            bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+            bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+            borderWidth: 1
+            radius: 5
+            onClicked: {
+                var urls = UniDeskSettings.get("wallpaperImageUrls") || [];
+                urls.push("");
+                UniDeskSettings.set("wallpaperImageUrls", urls);
                 customWallpaper.updateWallpaper();
+                imageListView.model = urls;
+            }
+            anchors.left: parent.left
+        }
+        
+        // 图片模式下的刷新间隔
+        RowLayout{
+            width: parent.width
+            spacing: 10
+            
+            UniDeskText{
+                text: qsTr("刷新间隔（秒）")
+                font: UniDeskTextStyle.little
+                Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+            UniDeskSpinBox{
+                id: spinboxRefreshImage
+                editable: true
+                from: 0
+                to: 3600
+                value: customWallpaper.refreshInterval
+                onValueModified: {
+                    UniDeskSettings.set("wallpaperRefreshInterval", value);
+                       
+                    customWallpaper.updateWallpaper();
+                }
             }
         }
     }
     UniDeskRadioButton{
         id: radioButtonVideo
         text: qsTr("自定义视频")
-        anchors.top: (customWallpaper.wallpaperMode === 2) ? pathSelector1.bottom : radioButtonImage.bottom
+        anchors.top: (customWallpaper.wallpaperMode === 2) ? imageConfigColumn.bottom : radioButtonImage.bottom
         anchors.left: parent.left
         anchors.margins: 10
         checked: customWallpaper.wallpaperMode === 3
@@ -309,6 +486,7 @@ ScrollView{
             customWallpaper.updateWallpaper();
         }
     }
+    contentHeight: sliderVideoVolume.height+sliderVideoVolume.y-languageComboBox.y+20
     // UniDeskText{
     //     id: textMouse
     //     text: qsTr("鼠标")

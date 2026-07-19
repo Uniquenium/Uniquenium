@@ -106,7 +106,7 @@ foreach (respath ${RES_PATHS})
     endforeach ()
 endforeach (respath)
 
-list(APPEND resource_files "Components/basic-com-list.json")
+
 # list(APPEND sources_files "${EXPRTK_INCLUDE}")
 # set_source_files_properties(${TS_FILES}
 #     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations")
@@ -141,6 +141,7 @@ if(_lupdate_exe)
     endforeach()
     # 添加根目录的main.qml
     list(APPEND _all_sources "${CMAKE_CURRENT_SOURCE_DIR}/../main.qml")
+    list(APPEND _all_sources "${CMAKE_CURRENT_SOURCE_DIR}/../launcher.cpp")
     
     # 运行lupdate提取翻译字符串
     execute_process(

@@ -159,21 +159,15 @@ UniDeskWindow{
             anchors.right: parent.right
             anchors.margins: 10
             model: [qsTr("拉伸"), qsTr("保持比例适应"), qsTr("保持比例裁剪"), qsTr("平铺"), qsTr("保持比例填充")]
-            currentIndex: mapToIndex()
+            currentIndex: window.ec ? [Image.Stretch, Image.PreserveAspectFit, Image.PreserveAspectCrop, Image.Tile, Image.Pad].indexOf(window.ec.fillMode) : 0
             onActivated:  {
                 if (window.ec) {
                     window.ec.fillMode = [Image.Stretch, Image.PreserveAspectFit, Image.PreserveAspectCrop, Image.Tile, Image.Pad][currentIndex]
                     window.ec.saveComToFile()
                 }
             }
-            function mapToIndex(){
-                if (window.ec) {
-                    return [Image.Stretch, Image.PreserveAspectFit, Image.PreserveAspectCrop, Image.Tile, Image.Pad].indexOf(window.ec.fillMode)
-                }
-                return 0
-            }
             onModelChanged: {
-                currentIndex = mapToIndex()
+                currentIndex = [Image.Stretch, Image.PreserveAspectFit, Image.PreserveAspectCrop, Image.Tile, Image.Pad].indexOf(window.ec.fillMode)
             }
         }
         

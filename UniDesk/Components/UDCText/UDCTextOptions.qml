@@ -405,7 +405,7 @@ UniDeskWindow{
             anchors.margins: 10
             model: [qsTr("正常"), qsTr("凸起"), qsTr("描边"), qsTr("凹陷")]
             comManager: window.comManager
-            currentIndex: editingComponent ? (editingComponent.style===Text.Normal ? 0 : editingComponent.style===Text.Raised ? 1 : editingComponent.style===Text.Outline ? 2 : 3) : 0
+            currentIndex: editingComponent ? [Text.Normal, Text.Raised, Text.Outline, Text.Sunken].indexOf(editingComponent.style) : 0
             onActivated:  {
                 if (editingComponent) {
                     editingComponent.style = [Text.Normal, Text.Raised, Text.Outline, Text.Sunken][currentIndex]

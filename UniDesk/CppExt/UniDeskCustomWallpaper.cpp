@@ -57,8 +57,11 @@ UniDeskCustomWallpaper::UniDeskCustomWallpaper(QQuickWindow *parent)
     attachedToWallpaper(false);
     wallpaperMode(0);
     wallpaperImageUrl(QString());
+    wallpaperImageUrls(QStringList());
     wallpaperVideoUrl(QString());
     wallpaperVolume(0);
+    wallpaperApiUrl(QString());
+    wallpaperApiExpression(QString());
 }
 
 UniDeskCustomWallpaper::~UniDeskCustomWallpaper() {
@@ -129,7 +132,7 @@ void UniDeskCustomWallpaper::attachToWallpaper() {
         }
         if (newWorkerW) {
             SetParent(hwnd, newWorkerW);
-            // 使用DWM扩展框架到客户端区域，设置负边距使窗口透明（壁纸软件标准技术）
+            
             attachedToWallpaper(true);
         } else {
             attachedToWallpaper(false);
@@ -137,9 +140,6 @@ void UniDeskCustomWallpaper::attachToWallpaper() {
     } else {
         // 旧版Windows的方法：直接附加到分裂后的WorkerW下
         SetParent(hwnd, oldTargetWorkerW);
-        // 使用DWM扩展框架到客户端区域，设置负边距使窗口透明（壁纸软件标准技术）
-        MARGINS margins = {-1, -1, -1, -1};
-        DwmExtendFrameIntoClientArea(hwnd, &margins);
         // 确保窗口在壁纸层
         SetWindowPos(hwnd, shellDefView, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
         attachedToWallpaper(true);

@@ -1,36 +1,7 @@
 # Todo List
 
-- Main Page
-  - [x] Exit
-  - System
-    - [x] Shutdown
-    - [x] Restart
-    - [x] Sleep
-    - [x] Log Off
-    - [x] Lock Screen
-  - Pages View
-    - [x] Manage Pages
-  - Settings
-    - Behavior
-      - [ ] Auto Start With Booting
-      - [x] Language
-    - Appearance
-      - [x] Desktop Wallpaper
-      - [ ] Mouse Style
-      - [ ] Colors
-    - [ ] Hotkeys
-    - [x] Plugin
-    - [ ] Theme
-    - [ ] About
-  - New
-    - [x] Component
-    - [ ] Components By Templete
-- [x] Controls
-- Basic Components
-  - [x] Text
-  - [x] Image/Button
-  - [x] Frame
-- Miscellaneous
+
+- Main Application
   - [x] Text Default Alignment
   - [x] Support Web Images for UDCImage
   - [x] Wallpaper Layer Window
@@ -40,20 +11,33 @@
   - [x] Plugin
   - [x] Copy Components
   - [x] Checking Components When Deleting a Page
+  - [x] Border Radius for UniDeskImage
+  - [x] Close the app if another is already running
+  - [x] Multiple Image Wallpaper
+  - [x] Support Custom API for Wallpaper
+  - [ ] Auto Start With Booting Support
+  - [ ] Cursor Style
+  - [ ] UI Colors
+  - [ ] Theme
+  - [ ] Templete
+  - [ ] Hotkeys
   - [ ] Paste Text/Image From Clipboard
-  - [ ] Multiple Image Wallpaper
-  - [ ] Support Custom API for Wallpaper
   - [ ] Tree View in Page Manage Window
   - [ ] Component Z-Index Swaping
   - [ ] Theme
+  - [ ] Linux Support
+  - [ ] Click/Edit Toggle
   - [ ] Multi Component Edition
-  - [ ] Border Radius for UniDeskImage
-  - [ ] Improve Component Identity Generation
+  - [ ] Improve Component Identity Generation(Use UUID instead of index)
 - Bugs
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)
   - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity
   - [x] Supporting: UDCText's canMove property changing by menu(it has problems so it's temporarily hidden)(it has fixed by binding "canMove" with "chosen")
   - [x] UniDeskComboBox 's currentIndex is reset to 0 when language is changed
+  - [ ] Wallpaper breaks on Windows 10
+  - [x] Expr double % Converting bug
+  - [ ] Clickthrough is broken on Windows 10
+  - [x] App Can't Exit Successfully if Wallpaper Video is Set
 - Components in Official Plugin
   - [ ] Calculator
   - [ ] Screen Capture

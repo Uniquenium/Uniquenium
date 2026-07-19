@@ -35,9 +35,12 @@ static QJsonObject defaultSettings() {
     // 壁纸相关默认值
     obj["wallpaperMode"] = 0;                   // 0=关闭
     obj["wallpaperRefreshInterval"] = 300;      // 5分钟
-    obj["wallpaperImageUrl"] = QString();
     obj["wallpaperVideoUrl"] = QString();
     obj["wallpaperVolume"] = 0;
+    obj["wallpaperApiUrl"] = QString();
+    obj["wallpaperApiExpression"] = QString();
+    obj["wallpaperImageUrls"] = QJsonArray();
+
     // 语言设置默认值
     obj["language"] = "zh_CN";                 // 默认中文
     return obj;
@@ -117,6 +120,41 @@ static QJsonValue object2json(const QVariant &obj) {
 UniDeskSettings::UniDeskSettings(QQuickItem *parent)
     : QQuickItem(parent)
 {
+    notifyLoad();
+}
+
+QVariant UniDeskSettings::get(const QString &prop) {
+    QJsonObject obj = readJsonFile(settingsFile);
+    if (obj.value(prop).isUndefined()||obj.value(prop).isNull()) return json2object(defaultSettings()[prop]);
+    return json2object(obj.value(prop));
+}
+
+void UniDeskSettings::set(const QString &prop, const QVariant &val) {
+    QJsonObject obj = readJsonFile(settingsFile);
+    obj[prop] = object2json(val);
+    writeJsonFile(settingsFile, obj);
+    notifyLoad();
+}
+
+QVariant UniDeskSettings::getAll() {
+    QJsonObject obj = readJsonFile(settingsFile);
+    QVariantMap map;
+    for (auto it = obj.begin(); it != obj.end(); ++it)
+        map[it.key()] = json2object(it.value());
+    return map;
+}
+
+void UniDeskSettings::setAll(const QVariant &val) {
+    if (!val.canConvert<QVariantMap>()) return;
+    QVariantMap map = val.toMap();
+    QJsonObject obj;
+    for (auto it = map.begin(); it != map.end(); ++it)
+        obj[it.key()] = object2json(it.value());
+    writeJsonFile(settingsFile, obj);
+    notifyLoad();
+}
+
+void UniDeskSettings::notifyLoad() {
     QJsonObject obj = readJsonFile(settingsFile);
     hideTaskbar(obj.value("hideTaskbar").toBool());
     colorMode(obj.value("colorMode").toInt());
@@ -135,62 +173,15 @@ UniDeskSettings::UniDeskSettings(QQuickItem *parent)
     // 加载壁纸设置
     wallpaperMode(obj.value("wallpaperMode").toInt());
     wallpaperRefreshInterval(obj.value("wallpaperRefreshInterval").toInt());
-    wallpaperImageUrl(obj.value("wallpaperImageUrl").toString());
+    wallpaperApiUrl(obj.value("wallpaperApiUrl").toString());
+    wallpaperApiExpression(obj.value("wallpaperApiExpression").toString());
+    QStringList imageUrls;
+    for (const QJsonValue &v : obj.value("wallpaperImageUrls").toArray())
+        imageUrls << v.toString();
+    wallpaperImageUrls(imageUrls);
     wallpaperVideoUrl(obj.value("wallpaperVideoUrl").toString());
     wallpaperVolume(obj.value("wallpaperVolume").toInt());
     // 加载语言设置
     language(obj.value("language").toString());
-}
-
-QVariant UniDeskSettings::get(const QString &prop) {
-    QJsonObject obj = readJsonFile(settingsFile);
-    return json2object(obj.value(prop));
-}
-
-void UniDeskSettings::set(const QString &prop, const QVariant &val) {
-    QJsonObject obj = readJsonFile(settingsFile);
-    obj[prop] = object2json(val);
-    writeJsonFile(settingsFile, obj);
-}
-
-QVariant UniDeskSettings::getAll() {
-    QJsonObject obj = readJsonFile(settingsFile);
-    QVariantMap map;
-    for (auto it = obj.begin(); it != obj.end(); ++it)
-        map[it.key()] = json2object(it.value());
-    return map;
-}
-
-void UniDeskSettings::setAll(const QVariant &val) {
-    if (!val.canConvert<QVariantMap>()) return;
-    QVariantMap map = val.toMap();
-    QJsonObject obj;
-    for (auto it = map.begin(); it != map.end(); ++it)
-        obj[it.key()] = object2json(it.value());
-    writeJsonFile(settingsFile, obj);
-}
-
-void UniDeskSettings::notify(const QString &prop) {
-    // 触发属性变更信号
-    QJsonObject obj = readJsonFile(settingsFile);
-    if (prop == "hideTaskbar") hideTaskbar(obj.value(prop).toBool());
-    else if (prop == "colorMode") colorMode(obj.value(prop).toInt());
-    else if (prop == "primaryColor") primaryColor(json2object(obj.value(prop)).value<QColor>());
-    else if (prop == "globalFontFamily") globalFontFamily(obj.value(prop).toString());
-    else if (prop == "customFontFamilyPaths") emit customFontFamilyPathsChanged();
-    else if (prop == "fontPrimaryColorDark") fontPrimaryColorDark(json2object(obj.value(prop)).value<QColor>());
-    else if (prop == "fontPrimaryColorLight") fontPrimaryColorLight(json2object(obj.value(prop)).value<QColor>());
-    else if (prop == "fontSecondaryColorDark") fontSecondaryColorDark(json2object(obj.value(prop)).value<QColor>());
-    else if (prop == "fontSecondaryColorLight") fontSecondaryColorLight(json2object(obj.value(prop)).value<QColor>());
-    else if (prop == "fontTertiaryColorDark") fontTertiaryColorDark(json2object(obj.value(prop)).value<QColor>());
-    else if (prop == "fontTertiaryColorLight") fontTertiaryColorLight(json2object(obj.value(prop)).value<QColor>());
-    // 壁纸属性通知
-    else if (prop == "wallpaperMode") wallpaperMode(obj.value(prop).toInt());
-    else if (prop == "wallpaperRefreshInterval") wallpaperRefreshInterval(obj.value(prop).toInt());
-    else if (prop == "wallpaperImageUrl") wallpaperImageUrl(obj.value(prop).toString());
-    else if (prop == "wallpaperVideoUrl") wallpaperVideoUrl(obj.value(prop).toString());
-    else if (prop == "wallpaperVolume") wallpaperVolume(obj.value(prop).toInt());
-    // 语言属性通知
-    else if (prop == "language") language(obj.value(prop).toString());
 }
 

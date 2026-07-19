@@ -308,8 +308,10 @@ UniDeskObject{
             custom_wallpaper.close();
         }
         function exitAll(){
+            wallpaperMediaPlayer.stop();
+            wallpaperMediaPlayer.source = "";
             object.closeAllWindows();
-            UniDeskExpr.stopThread();
+            UniDeskExpr.stopTimer();
             UniDeskGlobals.emitApplicationQuit();
         }
         onMouseMoved:(pos) => {
@@ -324,6 +326,9 @@ UniDeskObject{
         onMouseReleased:(button, pos) => {
         }
         Component.onCompleted: {
+            custom_wallpaper.updateWallpaper();
+            custom_wallpaper.fetchCustomApiWallpaper();
+            custom_wallpaper.nextImage();
             UniDeskPluginMgr.setEngine(QQMLENGINE);
             UniDeskPluginMgr.loadPlugins();
             UniDeskSettingsWindow.customWallpaper=custom_wallpaper;
@@ -334,13 +339,11 @@ UniDeskObject{
             component_manager.loadComponentTypesFromData();
             component_manager.currentPid=UniDeskComponentsData.getCurrentPage();
             component_manager.loadPagesFromData();
-            component_manager.loadComponentsFromData();
-            
+            component_manager.loadComponentsFromData();      
+            //强制改变一次qsTr得到的内容   确保ComboBox的currentIndex正确
+            UniDeskGlobals.translate(object, "en_US")
             // 加载保存的语言设置
             UniDeskGlobals.translate(object, UniDeskSettings.language)
-            
-            // 插件加载完成后初始化壁纸
-            custom_wallpaper.initWallpaper();
         }
         function updateMouseClickThrough(pos){
             let moac=component_manager.mouse_on_any_com(pos)
@@ -358,19 +361,16 @@ UniDeskObject{
         color: "transparent"
         property real refreshInterval: 0
         property string temporaryImageUrl: ""
-        Rectangle {
-            id: wallpaperRect
-            anchors.fill: parent
-            color: UniDeskGlobals.isLight ? "white" : "black"
-        }
+        property int currentImageIndex: 0
+        property list<string> imageUrls: []
         // 壁纸图片
-        AnimatedImage {
+        UniDeskImage{
             id: wallpaperImage
             anchors.fill: parent
             fillMode: Image.PreserveAspectCrop
             source: {
                 if(custom_wallpaper.wallpaperMode === 0){
-                    return UniDeskTools.get_system_wallpaper();
+                    return "";
                 }
                 else if (custom_wallpaper.wallpaperMode === 1){
                     return custom_wallpaper.temporaryImageUrl;
@@ -380,16 +380,14 @@ UniDeskObject{
                 }
             }
             visible: 
-            custom_wallpaper.wallpaperMode === 0 ||
             custom_wallpaper.wallpaperMode === 1 || custom_wallpaper.wallpaperMode === 2
-            z: 32767
         }
         
         // 壁纸视频
         MediaPlayer {
             id: wallpaperMediaPlayer
-            source: custom_wallpaper.wallpaperVideoUrl
-            autoPlay: false  // 禁用自动播放，手动控制
+            source: custom_wallpaper.wallpaperMode === 3 ? custom_wallpaper.wallpaperVideoUrl : ""
+            autoPlay: true
             loops: MediaPlayer.Infinite
             audioOutput: AudioOutput {
                 id: wallpaperAudioOutput
@@ -406,6 +404,12 @@ UniDeskObject{
         }
         // 监听wallpaperMode变化
         onWallpaperModeChanged: {
+            if (wallpaperMode === 1) {
+                custom_wallpaper.fetchCustomApiWallpaper();
+            }
+            if (wallpaperMode === 2) {
+                custom_wallpaper.nextImage();
+            }
             if (wallpaperMode === 3) {
                 wallpaperMediaPlayer.play();
             }
@@ -420,83 +424,90 @@ UniDeskObject{
                 wallpaperMediaPlayer.source = wallpaperVideoUrl;
                 wallpaperMediaPlayer.play();
             }
+            else{
+                wallpaperMediaPlayer.stop();
+            }
         }
         
         // 监听wallpaperVolume变化
         onWallpaperVolumeChanged: {
             wallpaperAudioOutput.volume = wallpaperVolume / 100.0;
         }
-        // 程序退出时清理MediaPlayer，防止音频线程崩溃
-        Component.onDestruction: {
-            wallpaperMediaPlayer.stop();
-            wallpaperMediaPlayer.source = "";
-        }
+        
         // 壁纸刷新定时器
         Timer {
             id: wallpaperRefreshTimer
             interval: 1000 * custom_wallpaper.refreshInterval
-            running: custom_wallpaper.wallpaperMode === 1 && custom_wallpaper.refreshInterval > 0
+            running: (custom_wallpaper.wallpaperMode === 1 || custom_wallpaper.wallpaperMode === 2) && custom_wallpaper.refreshInterval > 0
             repeat: true
             onTriggered: {
-                custom_wallpaper.fetchLoliconWallpaper();
+                if (custom_wallpaper.wallpaperMode === 1) {
+                    custom_wallpaper.fetchCustomApiWallpaper();
+                } else if (custom_wallpaper.wallpaperMode === 2) {
+                    custom_wallpaper.nextImage();
+                }
             }
         }
         
-        // 获取Lolicon壁纸
-        function fetchLoliconWallpaper() {
+        // 获取自定义API壁纸
+        function fetchCustomApiWallpaper() {
+            var apiUrl = custom_wallpaper.wallpaperApiUrl;
+            var expression = custom_wallpaper.wallpaperApiExpression;
+            
+            if (!apiUrl || !expression) {
+                console.error("Custom API URL or expression is empty");
+                return;
+            }
+            
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         try {
-                            var response = JSON.parse(xhr.responseText);
-                            if (response.data && response.data.length > 0) {
-                                var url = response.data[0].urls.original;
-                                custom_wallpaper.temporaryImageUrl = url;
-                                custom_wallpaper.updateWallpaper();
-                            }
+                                // 使用UniDeskExpr.evalResponse解析响应并执行表达式
+                                // 表达式示例: response.data[0].urls.original
+                                var url = UniDeskExpr.evalResponse(xhr.responseText, expression).toString();
+
+                                if (url && !url.startsWith("Error:")) {
+                                    custom_wallpaper.temporaryImageUrl = url;
+                                } else if (url.startsWith("Error:")) {
+                                    console.error("Failed to evaluate expression:", url);
+                                }
                         } catch (e) {
-                            console.error("Failed to parse Lolicon API response:", e);
+                            console.error("Failed to parse API response:", e);
                         }
                     } else {
                         console.error("HTTP request failed with status:", xhr.status);
                     }
                 }
             }
-            xhr.open("GET", "https://api.lolicon.app/setu/v2?r18=0&num=1");
+            xhr.open("GET", apiUrl);
+            xhr.setRequestHeader("Accept", "application/json");
             xhr.send();
+        }
+        
+        // 切换到下一张图片（多图片模式）
+        function nextImage() {
+            var urls = custom_wallpaper.imageUrls;
+            if (urls.length === 0) {
+                return;
+            }
+            custom_wallpaper.currentImageIndex = (custom_wallpaper.currentImageIndex + 1) % urls.length;
+            custom_wallpaper.wallpaperImageUrl = urls[custom_wallpaper.currentImageIndex];
         }
         
         // 更新壁纸
         function updateWallpaper() {
             custom_wallpaper.refreshInterval = UniDeskSettings.get("wallpaperRefreshInterval");
             custom_wallpaper.wallpaperMode = UniDeskSettings.get("wallpaperMode");
-            custom_wallpaper.wallpaperImageUrl = UniDeskSettings.get("wallpaperImageUrl");
+            custom_wallpaper.imageUrls = UniDeskSettings.get("wallpaperImageUrls") || [];
             custom_wallpaper.wallpaperVideoUrl = UniDeskSettings.get("wallpaperVideoUrl");
             custom_wallpaper.wallpaperVolume = UniDeskSettings.get("wallpaperVolume");
-            if(custom_wallpaper.wallpaperMode === 0){
-                wallpaperImage.source = UniDeskTools.get_system_wallpaper();
-            }
-            else if (custom_wallpaper.wallpaperMode === 1){
-                wallpaperImage.source = custom_wallpaper.temporaryImageUrl;
-            }
-            else{
-                wallpaperImage.source = custom_wallpaper.wallpaperImageUrl;
-            }
+            custom_wallpaper.wallpaperApiUrl = UniDeskSettings.get("wallpaperApiUrl");
+            custom_wallpaper.wallpaperApiExpression = UniDeskSettings.get("wallpaperApiExpression");
         }
-        // 初始化壁纸（延迟到插件加载完成后调用）
-        function initWallpaper() {
-            updateWallpaper();
-            // 如果是视频模式，手动启动MediaPlayer
-            if (custom_wallpaper.wallpaperMode === 3 && custom_wallpaper.wallpaperVideoUrl !== "") {
-                wallpaperMediaPlayer.source = custom_wallpaper.wallpaperVideoUrl;
-                wallpaperMediaPlayer.play();
-            }
-        }
-        // 组件创建完成时不自动初始化，等待插件加载
-        Component.onCompleted: {
-            // 等待主窗口的Component.onCompleted调用initWallpaper()
-        }
+        
+        
     }
     Connections {
         target: UniDeskSystemTray

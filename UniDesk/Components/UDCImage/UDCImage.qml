@@ -34,7 +34,7 @@ UniDeskComBase{
     
     AnimatedImage{
         id: cont
-        source: base.imagePath ? base.imagePath : "qrc:/media/logo/unidesk-l-bg.png"
+        source: base.imagePath!=="" ? base.imagePath : "qrc:/media/logo/unidesk-l-bg.png"
         fillMode: base.fillMode
         opacity: base.itemOpacity 
         smooth: base.smooth
@@ -42,7 +42,7 @@ UniDeskComBase{
         width: base.width
         height: base.height
         transformOrigin: Item.TopLeft
-        playing: status === AnimatedImage.Ready
+        playing: status === Image.Ready
         clip: true
         layer.enabled: true
         layer.smooth: true
@@ -53,7 +53,6 @@ UniDeskComBase{
                 radius: base.radius
             }
         }
-        
     }
     ColorOverlay{
         id: overlay_image

@@ -26,11 +26,14 @@ class UniDeskSettings : public QQuickItem {
     Q_PROPERTY_AUTO(QColor, fontSecondaryColorLight)
     Q_PROPERTY_AUTO(QColor, fontTertiaryColorLight)
     // 壁纸相关属性
-    Q_PROPERTY_AUTO(int, wallpaperMode)           // 0=关闭, 1=Lolicon API, 2=自定义图片, 3=自定义视频
+    Q_PROPERTY_AUTO(int, wallpaperMode)           // 0=关闭, 1=自定义API, 2=自定义图片, 3=自定义视频
     Q_PROPERTY_AUTO(int, wallpaperRefreshInterval) // 刷新间隔（秒）
-    Q_PROPERTY_AUTO(QString, wallpaperImageUrl)   // 自定义图片URL
+    Q_PROPERTY_AUTO(QStringList, wallpaperImageUrls) // 自定义图片URL列表
     Q_PROPERTY_AUTO(QString, wallpaperVideoUrl)   // 自定义视频URL
     Q_PROPERTY_AUTO(int, wallpaperVolume)         // 音量（0-100，仅视频）
+    // 自定义API相关属性
+    Q_PROPERTY_AUTO(QString, wallpaperApiUrl)     // API地址
+    Q_PROPERTY_AUTO(QString, wallpaperApiExpression) // 从响应中提取图片链接的表达式
     // 语言设置
     Q_PROPERTY_AUTO(QString, language)            // "zh_CN" 或 "en_US"
     QML_NAMED_ELEMENT(UniDeskSettings)
@@ -47,7 +50,7 @@ public:
     Q_INVOKABLE QVariant getAll();
     Q_INVOKABLE void setAll(const QVariant &val);
 
-    Q_INVOKABLE void notify(const QString &prop);
+    Q_INVOKABLE void notifyLoad();
 };
 
 

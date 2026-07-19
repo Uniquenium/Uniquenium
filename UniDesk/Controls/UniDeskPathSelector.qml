@@ -28,8 +28,12 @@ Item{
                     root.path=UniDeskTools.fromLocalFile(path_textfield.text).toString()
                     root.submit();
                 }
-                else if (UniDeskTools.isValidUrl(Qt.url(path_textfield.text))){
+                else if (UniDeskTools.isValidUrl(path_textfield.text)){
                     root.path=Qt.url(path_textfield.text).toString()
+                    root.submit();
+                }
+                else if (path_textfield.text===""){
+                    root.path=""
                     root.submit();
                 }
                 else if(root.parentWindow){

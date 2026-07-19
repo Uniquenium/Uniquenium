@@ -23,12 +23,16 @@ public:
 
     Q_INVOKABLE QString convertStr(const QString &text);
 
-    Q_INVOKABLE void stopThread();
+    // 解析API响应并执行表达式，支持字典和列表访问
+    Q_INVOKABLE QVariant evalResponse(const QString &response, const QString &expression);
 
-public slots:
-    void startThread();
+    Q_INVOKABLE void stopTimer();
+    
+
 
 private:
+    QJSEngine* m_engine = nullptr;
+    QTimer* m_timer = nullptr;
     void updateData();
 };
 

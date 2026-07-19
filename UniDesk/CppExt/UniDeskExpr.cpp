@@ -3,6 +3,9 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDate>
+#include <QJSEngine>
+#include <QJSValue>
+#include <QJsonDocument>
 #include "UniDeskExpr.h"
 #include "UniDeskSystemInfo.h"
 #include "exprtk.hpp"
@@ -16,22 +19,23 @@ UniDeskExpr::UniDeskExpr(QQuickItem *parent)
     : QQuickItem(parent)
 {
 
-    startThread();
+    m_timer = new QTimer(this);
+    m_engine = new QJSEngine(this);
+    m_timer->setInterval(1000);
+    connect(m_timer, &QTimer::timeout, this, [this]() {
+        systemStats(UniDeskSystemInfo::getInstance()->getSystemStats());
+    });
+    m_timer->start();
 }
 
-void UniDeskExpr::startThread() {
-    thread(QThread::create([this]() {
-        while (true) {
-            systemStats(UniDeskSystemInfo::getInstance()->getSystemStats());
-            QThread::sleep(1);
-        }
-    }));
-    thread()->start();
-}
 
-void UniDeskExpr::stopThread(){
-    thread()->terminate();
-    thread()->wait(1000);
+
+void UniDeskExpr::stopTimer() {
+    if (m_timer) {
+        m_timer->stop();
+        delete m_timer;
+        m_timer = nullptr;
+    }
 }
 
 
@@ -39,7 +43,7 @@ QString UniDeskExpr::convertStr(const QString &text) {
     QString result = text;
     QDateTime dt = QDateTime::currentDateTime();
     QDate qd=QDate::currentDate();
-    SystemStats stats=systemStats();
+    SystemStats stats = systemStats();
     bool plugged = stats.bat.charging;
     int minsleft = stats.bat.remainMinutes;
     result.replace("%%", "[(*&*%^*$^%#%%^^&&*^*&(^))]");
@@ -92,9 +96,19 @@ QString UniDeskExpr::convertStr(const QString &text) {
     result.replace("%t", dt.toString("t"));
     int idx = 0;
     while ((idx = result.indexOf("%{")) != -1) {
-        int idx2 = result.indexOf("}", idx);
-        if (idx2 == -1) break;
-        QString exp = result.mid(idx + 2, idx2 - idx - 2);
+        // 使用括号计数法找到匹配的右括号
+        int idx2 = idx + 2;
+        int braceCount = 1;
+        while (idx2 < result.length() && braceCount > 0) {
+            if (result.at(idx2) == '{') {
+                braceCount++;
+            } else if (result.at(idx2) == '}') {
+                braceCount--;
+            }
+            idx2++;
+        }
+        if (braceCount != 0) break; // 括号不匹配
+        QString exp = result.mid(idx + 2, idx2 - idx - 3);
         QString res;
         const std::string expression_string = exp.toStdString();
         symbol_table_t symbol_table;
@@ -109,8 +123,32 @@ QString UniDeskExpr::convertStr(const QString &text) {
         res = QString::number(expression.value());
         result.replace("%{" + exp + "}", res);
     }
-    result.replace("%", "[(*&*%^*$^%#%%^^*^*&&*^*&(^))]");
+    // result.replace("%", "[(*&*%^*$^%#%%^^*^*&&*^*&(^))]");
     result.replace("[(*&*%^*$^%#%%^^&&*^*&(^))]", "%");
-    result.replace("[(*&*%^*$^%#%%^^*^*&&*^*&(^))]","");
+    // result.replace("[(*&*%^*$^%#%%^^*^*&&*^*&(^))]","");
     return result;
+}
+
+QVariant UniDeskExpr::evalResponse(const QString &response, const QString &expression) {
+    try {
+        // 解析JSON响应
+        QJsonDocument doc = QJsonDocument::fromJson(response.toUtf8());
+        if (doc.isNull()) {
+            return "Error: Invalid JSON";
+        }
+        // 使用QJSEngine执行表达式
+        if (m_engine == nullptr) {
+            m_engine = new QJSEngine(this);
+        }
+        QJSValue response_value = m_engine->toScriptValue(doc.toVariant());
+        m_engine->globalObject().setProperty("response", response_value);
+        
+        QJSValue result = m_engine->evaluate(expression);
+        if (result.isError()) {
+            return "Error: " + result.toString();
+        }
+        return result.toVariant();
+    } catch (...) {
+        return "Error: Unknown exception";
+    }
 }

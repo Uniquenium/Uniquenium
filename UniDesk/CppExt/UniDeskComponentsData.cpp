@@ -9,7 +9,7 @@
 #include <QDebug>
 
 static QString componentsFile = QCoreApplication::applicationDirPath() + "/data/components.json";
-static QString basicComTypeListFile = QCoreApplication::applicationDirPath() + "/temp/UniDesk/Components/basic-com-list.json";
+static QString basicComTypeListFile = QCoreApplication::applicationDirPath() + "/jsons/basic-com-list.json";
 
 static QJsonObject defaultComponents() {
     QJsonObject obj;

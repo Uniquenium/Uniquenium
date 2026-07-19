@@ -14,6 +14,7 @@ UniDeskDialog 1.0 UniDeskDialog.qml
 UniDeskFontBox 1.0 UniDeskFontBox.qml
 UniDeskFrame 1.0 UniDeskFrame.qml
 UniDeskIcon 1.0 UniDeskIcon.qml
+UniDeskImage 1.0 UniDeskImage.qml
 UniDeskInfoBar 1.0 UniDeskInfoBar.qml
 UniDeskMenu 1.0 UniDeskMenu.qml
 UniDeskMenuItem 1.0 UniDeskMenuItem.qml
