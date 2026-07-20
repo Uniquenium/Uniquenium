@@ -44,6 +44,7 @@ public:
     Q_INVOKABLE QString getModuleVersionPatch();
     Q_INVOKABLE void openFileOrDir(const QString &path);
     Q_INVOKABLE void showFileInExplorer(const QString &path);
+    Q_INVOKABLE QString createUuid();
 
 signals:
     void customFontsChanged();

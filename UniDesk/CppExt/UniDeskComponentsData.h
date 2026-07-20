@@ -25,12 +25,12 @@ public:
     Q_INVOKABLE void updatePage(int pIndex, const QJsonValue &page);
     Q_INVOKABLE void updateComponent(int componentIndex, const QJsonValue &component);
     Q_INVOKABLE void addComponent(const QJsonObject &component);
-    Q_INVOKABLE void removeComponent(const int &componentIdentification);
+    Q_INVOKABLE void removeComponent(const QString &componentIdentification);
     Q_INVOKABLE void addPage(const QJsonValue &page);
     Q_INVOKABLE void insertPage(int index, const QJsonValue &page);
-    Q_INVOKABLE void removePage(int idx);
-    Q_INVOKABLE void setCurrentPage(int id);
-    Q_INVOKABLE int getCurrentPage();
+    Q_INVOKABLE void removePage(const QString &idx);
+    Q_INVOKABLE void setCurrentPage(const QString &id);
+    Q_INVOKABLE QString getCurrentPage();
     Q_INVOKABLE QVariant getComponentTypes();
     Q_INVOKABLE QVariant getBasicComponentTypes();
     // Q_INVOKABLE void startFuncs();

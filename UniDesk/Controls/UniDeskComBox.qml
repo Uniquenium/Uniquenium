@@ -14,7 +14,7 @@ UniDeskComboBox{
     property var editingComponent
     property var currentComponent
     currentIndex: (currentComponent && currentComponent!==comManager.root.contentItem) ? 
-            model.indexOf(currentComponent.name) : 0
+            getIndexById(currentComponent.identification) : 0
     property bool allPages: false
     enableComDelegate: true
     model: getNames(comManager ? comManager.component_list : []);
@@ -37,5 +37,13 @@ UniDeskComboBox{
             }
         }
         return coms[index];
+    }
+    function getIndexById(id){
+        var list = comManager ? comManager.component_list : [];
+        for(var i=0;i<list.length;i++){
+            if(list[i]&&(list[i]!==editingComponent)&&(allPages||list[i].pageid===editingComponent.pageid)&&(list[i].identification===id)){
+                return i+1;
+            }
+        }
     }
 }

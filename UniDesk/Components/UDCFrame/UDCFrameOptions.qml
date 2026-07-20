@@ -28,7 +28,7 @@ UniDeskWindow{
         
         UniDeskText{
             id: text0
-            text: qsTr("组件名称（不能重复）")
+            text: qsTr("组件名称")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
@@ -42,13 +42,8 @@ UniDeskWindow{
             placeholderText: qsTr("请输入组件名称")
             text: editingComponent ? editingComponent.name : ""
             onEditingFinished: {
-                if(comManager.validateName(text)){  
-                    if (editingComponent)   {
-                        editingComponent.name = text;
-                    }
-                }
-                else{
-                    text = editingComponent.name;
+                if (editingComponent)   {
+                    editingComponent.name = text;
                 }
                 editingComponent.saveComToFile();
             }

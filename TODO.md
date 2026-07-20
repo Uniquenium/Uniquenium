@@ -15,20 +15,21 @@
   - [x] Close the app if another is already running
   - [x] Multiple Image Wallpaper
   - [x] Support Custom API for Wallpaper
-  - [ ] Auto Start With Booting Support
+
+  - [x] Improve Component Identity Generation(Use UUID instead of index)
   - [ ] Cursor Style
   - [ ] UI Colors
-  - [ ] Theme
-  - [ ] Templete
   - [ ] Hotkeys
-  - [ ] Paste Text/Image From Clipboard
+
   - [ ] Tree View in Page Manage Window
   - [ ] Component Z-Index Swaping
-  - [ ] Theme
-  - [ ] Linux Support
   - [ ] Click/Edit Toggle
   - [ ] Multi Component Edition
-  - [ ] Improve Component Identity Generation(Use UUID instead of index)
+  - [ ] Linux Support
+  
+  - [ ] Auto Start With Booting Support
+  - [ ] Theme
+  - [ ] Templete
 - Bugs
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)
   - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity

@@ -216,4 +216,6 @@ void UniDeskTools::showFileInExplorer(const QString &path) {
     QProcess::startDetached(explorer,param);
 #endif
 }
-    
+QString UniDeskTools::createUuid() {
+    return QUuid::createUuid().toString();
+}

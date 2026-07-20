@@ -14,7 +14,7 @@ static QString basicComTypeListFile = QCoreApplication::applicationDirPath() + "
 static QJsonObject defaultComponents() {
     QJsonObject obj;
     obj["pages"] = QJsonArray();
-    obj["currentPid"] = 0;
+    obj["currentPid"] = QString("default");
     obj["components"] = QJsonArray();
     return obj;
 }
@@ -130,13 +130,13 @@ void UniDeskComponentsData::addComponent(const QJsonObject &component) {
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::removeComponent(const int &componentIdentification) {
+void UniDeskComponentsData::removeComponent(const QString &componentIdentification) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray components = obj.value("components").toArray();
     QJsonArray newComponents;
     for (const QJsonValue &v : components) {
         QJsonObject comp = v.toObject();
-        if (comp.value("identification").toInt() != componentIdentification)
+        if (comp.value("identification").toString() != componentIdentification)
             newComponents.append(comp);
     }
     obj["components"] = newComponents;
@@ -160,28 +160,28 @@ void UniDeskComponentsData::insertPage(int index, const QJsonValue &page) {
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::removePage(int pid) {
+void UniDeskComponentsData::removePage(const QString &pid) {
     QJsonObject obj = readJsonFile(componentsFile);
     QJsonArray pages = obj.value("pages").toArray();
     QJsonArray newPages;
     for (const QJsonValue &v : pages) {
         QJsonObject page = v.toObject();
-        if (page.value("pid").toInt() != pid)
+        if (page.value("pid").toString() != pid)
             newPages.append(page);
     }
     obj["pages"] = newPages;
     writeJsonFile(componentsFile, obj);
 }
 
-void UniDeskComponentsData::setCurrentPage(int id) {
+void UniDeskComponentsData::setCurrentPage(const QString &id) {
     QJsonObject obj = readJsonFile(componentsFile);
     obj["currentPid"] = id;   
     writeJsonFile(componentsFile, obj);
 }
 
-int UniDeskComponentsData::getCurrentPage() {
+QString UniDeskComponentsData::getCurrentPage() {
     QJsonObject obj = readJsonFile(componentsFile);
-    return obj.value("currentPid").toInt();
+    return obj.value("currentPid").toString();
 }
 
 QVariant UniDeskComponentsData::getComponentTypes() {

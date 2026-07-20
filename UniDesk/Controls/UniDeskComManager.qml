@@ -12,7 +12,7 @@ import Qt.labs.platform as QLP
 
 UniDeskObject{
     id: object
-    property int currentPid: 0
+    property string currentPid: "default"
     property var parentOfNewCom: root.contentItem;
     property int serialComponentCnt: 1
     property int serialPageCnt: 1
@@ -29,7 +29,7 @@ UniDeskObject{
         id: page_list_model
         ListElement{
             text: qsTr("默认页面")
-            pid: 0
+            pid: "default"
         }
     }
     Component{
@@ -53,7 +53,8 @@ UniDeskObject{
             currentPid=pageid;
         }
         let typid=typename_list.indexOf(typename);
-        let new_com=type_list[typid].createObject(parentOfNewCom,{"name":qsTr(typenameTr)+" "+serialComponentCnt,"identification":serialComponentCnt,"pageid": currentPid,"comManager":object,"x":50,"y":50});
+        let uuid = UniDeskTools.createUuid();
+        let new_com=type_list[typid].createObject(parentOfNewCom,{"name":qsTr(typenameTr)+" "+serialComponentCnt,"identification":uuid,"pageid": currentPid,"comManager":object,"x":50,"y":50});
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com);
         for(var i=0;i<component_list.length;i++){
@@ -72,9 +73,10 @@ UniDeskObject{
         UniDeskComponentsData.setCurrentPage(id);
     }
     function new_page(){
-        page_list_model.append({"text": qsTr("页面")+serialPageCnt.toString(),"pid": serialPageCnt});
+        let uuid = UniDeskTools.createUuid();
+        page_list_model.append({"text": qsTr("页面")+serialPageCnt.toString(),"pid": uuid});
         compModels.append({"value":com_tree_model.createObject(null,{})});
-        UniDeskComponentsData.addPage({"text": qsTr("页面")+serialPageCnt.toString(),"pid": serialPageCnt});
+        UniDeskComponentsData.addPage({"text": qsTr("页面")+serialPageCnt.toString(),"pid": uuid});
         serialPageCnt+=1;
     }
     function rename_page(index,newname){
@@ -100,9 +102,10 @@ UniDeskObject{
         var typid = typename_list.indexOf(typename);
         if (typid === -1) return;
         // 创建新组件（位置偏移delta）
+        let uuid = UniDeskTools.createUuid();
         var new_com = type_list[typid].createObject(com.parent, {
             "name": qsTr(typename) + " " + serialComponentCnt,
-            "identification": serialComponentCnt,
+            "identification": uuid,
             "pageid": com.pageid,
             "comManager": object,
         });
@@ -153,11 +156,11 @@ UniDeskObject{
         var sourcePageData = page_list_model.get(index);
         // 创建新页面
         var newPageName = sourcePageData.text + qsTr("副本");
-        var newPid = serialPageCnt;
+        var newPid = UniDeskTools.createUuid();
         page_list_model.append({"text": newPageName, "pid": newPid});
         compModels.append({"value": com_tree_model.createObject(null, {})});
         UniDeskComponentsData.addPage({"text": newPageName, "pid": newPid});
-        serialPageCnt += 1;
+        serialPageCnt+=1;
         // 复制该页面的所有组件
         for (var i = 0; i < component_list.length; i++) {
             var com = component_list[i];
@@ -168,9 +171,10 @@ UniDeskObject{
                 var typid = typename_list.indexOf(typename);
                 if (typid === -1) continue;
                 
+                let uuid = UniDeskTools.createUuid();
                 var new_com = type_list[typid].createObject(com.parent, {
                     "name": qsTr(typename) + " " + serialComponentCnt,
-                    "identification": serialComponentCnt,
+                    "identification": uuid,
                     "pageid": newPid,
                     "comManager": object,
                     "x": com.x,
@@ -219,14 +223,6 @@ UniDeskObject{
         }
         return null;
     }
-    function getComByName(name){
-        for(var i=0;i<component_list.length;i++){
-            if(component_list[i].name===name){
-                return component_list[i];
-            }
-        }
-        return null;
-    }
     function getIndexByCom(com){
         for(var i=0;i<component_list.length;i++){
             if(component_list[i]===com){
@@ -249,9 +245,6 @@ UniDeskObject{
             component_list.push(new_com)
             compModels.get(pid2pindex(new_com.pageid)).value.append({"display":new_com.identification});
             new_com.visible=new_com.pageid===currentPid;
-            if(!isNaN(id_num)&&id_num>=serialComponentCnt){
-                serialComponentCnt=id_num+1;
-            }
         }
         for(var i=0;i<data.length;i++){
             var id_num=data[i].identification;
@@ -267,10 +260,6 @@ UniDeskObject{
         for(var i=0;i<data.length;i++){
             page_list_model.append({"text": data[i].text,"pid": data[i].pid});
             compModels.append({"value":com_tree_model.createObject(null,{})});
-            var idx_num=data[i].pid;
-            if(!isNaN(idx_num)&&idx_num>=serialPageCnt){
-                serialPageCnt=idx_num+1;
-            }
         }
     }
     function loadComponentTypesFromData(){
@@ -316,7 +305,7 @@ UniDeskObject{
         return 0;
     }
     function pindex2pid(index){
-        return page_list_model.get(index) ?page_list_model.get(index).pid : -1
+        return page_list_model.get(index) ?page_list_model.get(index).pid : ""
     }
     function move_page_up(index){
         page_list_model.move(index,index-1,1);
@@ -331,10 +320,11 @@ UniDeskObject{
         UniDeskComponentsData.updatePage(index,page_list_model.get(index+1));
     }
     function insert_new_page(index){
-        page_list_model.insert(index,{"text": qsTr("页面")+serialPageCnt.toString(),"pid": serialPageCnt});
+        let uuid = UniDeskTools.createUuid();
+        page_list_model.insert(index,{"text": qsTr("页面")+serialPageCnt.toString(),"pid": uuid});
         compModels.insert(index,{"value":com_tree_model.createObject(null,{})});
         //Don't change "index-1" for unnecessary reasons!
-        UniDeskComponentsData.insertPage(index-1,{"text": qsTr("页面")+serialPageCnt.toString(),"pid": serialPageCnt});
+        UniDeskComponentsData.insertPage(index-1,{"text": qsTr("页面")+serialPageCnt.toString(),"pid": uuid});
         serialPageCnt+=1;
     }
     function index_in_compModels(comId){

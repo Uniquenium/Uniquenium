@@ -21,8 +21,8 @@ Item{
     property bool controlHovered
     property string name
     property string type
-    property int identification
-    property int pageid
+    property string identification
+    property string pageid
     property bool canMove: chosen
     property bool indicated: false
     property bool chosen: false

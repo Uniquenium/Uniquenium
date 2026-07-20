@@ -18,7 +18,7 @@ UniDeskWindow{
         qsTr("桌面") : comManager.parentOfNewCom.name) + qsTr("）")
     autoDestroy: false// keep the system appbar hidden (temporary solution)
     autoVisible: false
-    property int pageid
+    property string pageid
     property var comManager
     ScrollView{
         anchors.fill: parent

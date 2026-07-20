@@ -85,7 +85,7 @@ UniDeskWindow{
                     color: index==window.currentIndex ? UniDeskSettings.primaryColor : "transparent"
                     UniDeskTextField{
                         id: rename_page_field
-                        property int pageid
+                        property string pageid
                         anchors.fill: parent
                         anchors.margins: 5
                         visible: dele.editing
