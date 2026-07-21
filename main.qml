@@ -533,6 +533,20 @@ UniDeskObject{
             object.exitAll()
         }
     }
+    UniDeskHotkey {
+        id: hotkeyOpenSettings
+        sequence: UniDeskSettings.hotkey_open_settings
+        onActivated: {
+            UniDeskSettingsWindow.showActivate();
+        }
+    }
+    UniDeskHotkey {
+        id: hotkeyOpenPageManager
+        sequence: UniDeskSettings.hotkey_open_page_manager
+        onActivated: {
+            UniDeskPageWindow.showActivate();
+        }
+    }
     Component.onCompleted: {
         UniDeskSystemTray.setIcon(":/media/logo/uq-l-bg.png")
         UniDeskSystemTray.setTooltip(qsTr("UniDesk"))

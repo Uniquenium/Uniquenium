@@ -54,10 +54,7 @@ echo [4/5] Copying UniDesk to qml directory...
 xcopy /e /i "%BUILD_DIR%/Qt_MSVC2022_64bit-Release/temp/UniDesk" "%QML_DIR%/UniDesk"
 echo Done.
 
-:: 5. 复制jsons文件夹
-echo [5/5] Copying jsons directory...
-xcopy /e /i "%PROJECT_DIR%\jsons" "%DEPLOY_DIR%/jsons"
-echo Done.
+
 
 echo.
 echo ================================================

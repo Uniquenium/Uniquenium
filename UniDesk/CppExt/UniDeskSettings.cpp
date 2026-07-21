@@ -43,6 +43,8 @@ static QJsonObject defaultSettings() {
 
     // 语言设置默认值
     obj["language"] = "zh_CN";                 // 默认中文
+    obj["hotkey_open_settings"] = "Ctrl+Shift+S";
+    obj["hotkey_open_page_manager"] = "Ctrl+Shift+P";
     return obj;
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
@@ -183,5 +185,8 @@ void UniDeskSettings::notifyLoad() {
     wallpaperVolume(obj.value("wallpaperVolume").toInt());
     // 加载语言设置
     language(obj.value("language").toString());
+    // 加载快捷键设置
+    hotkey_open_settings(obj.value("hotkey_open_settings").toString());
+    hotkey_open_page_manager(obj.value("hotkey_open_page_manager").toString());
 }
 

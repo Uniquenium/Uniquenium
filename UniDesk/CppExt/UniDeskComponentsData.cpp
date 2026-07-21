@@ -18,6 +18,31 @@ static QJsonObject defaultComponents() {
     obj["components"] = QJsonArray();
     return obj;
 }
+static QJsonObject defaultBasicComTypeList() {
+    QJsonObject obj;
+    QJsonArray componentTypes;
+    
+    QJsonObject textCom;
+    textCom["filename"] = "UDCText";
+    textCom["name"] = "文字";
+    textCom["icon"] = "qrc:/media/img/text.svg";
+    componentTypes.append(textCom);
+    
+    QJsonObject imageCom;
+    imageCom["filename"] = "UDCImage";
+    imageCom["name"] = "图片/按钮";
+    imageCom["icon"] = "qrc:/media/img/image.svg";
+    componentTypes.append(imageCom);
+    
+    QJsonObject frameCom;
+    frameCom["filename"] = "UDCFrame";
+    frameCom["name"] = "框架";
+    frameCom["icon"] = "qrc:/media/img/checkbox.svg";
+    componentTypes.append(frameCom);
+    
+    obj["componentTypes"] = componentTypes;
+    return obj;
+}
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
     QFile f(file);
     QFileInfo fInfo(file);
@@ -28,10 +53,10 @@ static void writeJsonFile(const QString &file, const QJsonObject &obj) {
     f.write(doc.toJson(QJsonDocument::Indented));
     f.close();
 }
-static QJsonObject readJsonFile(const QString &file) {
+static QJsonObject readJsonFile(const QString &file, const QJsonObject &defaultObj) {
     QFile f(file);
     if (!f.exists()) {
-        QJsonObject obj = defaultComponents();
+        QJsonObject obj = defaultObj;
         writeJsonFile(file, obj);
         return obj;
     }
@@ -95,17 +120,17 @@ UniDeskComponentsData::UniDeskComponentsData(QQuickItem *parent)
 {}
 
 QJsonArray UniDeskComponentsData::getPages() {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     return obj.value("pages").toArray();
 }
 
 QJsonArray UniDeskComponentsData::getComponents() {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     return obj.value("components").toArray();
 }
 
 void UniDeskComponentsData::updatePage(int pIndex, const QJsonValue &page) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     QJsonArray pages = obj.value("pages").toArray();
     if (pIndex < 0 || pIndex >= pages.size()) return;
     pages[pIndex] = page;
@@ -114,7 +139,7 @@ void UniDeskComponentsData::updatePage(int pIndex, const QJsonValue &page) {
 }
 
 void UniDeskComponentsData::updateComponent(int componentIndex, const QJsonValue &component) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     QJsonArray components = obj.value("components").toArray();
     if (componentIndex < 0 || componentIndex >= components.size()) return;
     components[componentIndex] = component;
@@ -123,7 +148,7 @@ void UniDeskComponentsData::updateComponent(int componentIndex, const QJsonValue
 }
 
 void UniDeskComponentsData::addComponent(const QJsonObject &component) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     QJsonArray components = obj.value("components").toArray();
     components.append(component);
     obj["components"] = components;
@@ -131,7 +156,7 @@ void UniDeskComponentsData::addComponent(const QJsonObject &component) {
 }
 
 void UniDeskComponentsData::removeComponent(const QString &componentIdentification) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     QJsonArray components = obj.value("components").toArray();
     QJsonArray newComponents;
     for (const QJsonValue &v : components) {
@@ -144,7 +169,7 @@ void UniDeskComponentsData::removeComponent(const QString &componentIdentificati
 }
 
 void UniDeskComponentsData::addPage(const QJsonValue &page) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     QJsonArray pages = obj.value("pages").toArray();
     pages.append(page);
     obj["pages"] = pages;
@@ -152,7 +177,7 @@ void UniDeskComponentsData::addPage(const QJsonValue &page) {
 }
 
 void UniDeskComponentsData::insertPage(int index, const QJsonValue &page) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     QJsonArray pages = obj.value("pages").toArray();
     if (index < 0 || index > pages.size()) return;
     pages.insert(index, page);
@@ -161,7 +186,7 @@ void UniDeskComponentsData::insertPage(int index, const QJsonValue &page) {
 }
 
 void UniDeskComponentsData::removePage(const QString &pid) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     QJsonArray pages = obj.value("pages").toArray();
     QJsonArray newPages;
     for (const QJsonValue &v : pages) {
@@ -174,13 +199,13 @@ void UniDeskComponentsData::removePage(const QString &pid) {
 }
 
 void UniDeskComponentsData::setCurrentPage(const QString &id) {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     obj["currentPid"] = id;   
     writeJsonFile(componentsFile, obj);
 }
 
 QString UniDeskComponentsData::getCurrentPage() {
-    QJsonObject obj = readJsonFile(componentsFile);
+    QJsonObject obj = readJsonFile(componentsFile, defaultComponents());
     return obj.value("currentPid").toString();
 }
 
@@ -188,7 +213,7 @@ QVariant UniDeskComponentsData::getComponentTypes() {
     QVariantList componentList;
     
     // 读取组件列表
-    QJsonObject obj = readJsonFile(basicComTypeListFile);
+    QJsonObject obj = readJsonFile(basicComTypeListFile, defaultBasicComTypeList());
     QJsonArray arr = obj.value("componentTypes").toArray();
     for (const QJsonValue &v : arr) {
         QJsonObject com = v.toObject();
@@ -204,7 +229,7 @@ QVariant UniDeskComponentsData::getComponentTypes() {
 
 QVariant UniDeskComponentsData::getBasicComponentTypes() {
     QVariantList componentList;
-    QJsonObject obj = readJsonFile(basicComTypeListFile);
+    QJsonObject obj = readJsonFile(basicComTypeListFile, defaultBasicComTypeList());
     QJsonArray arr = obj.value("componentTypes").toArray();
     for (const QJsonValue &v : arr) {
         QJsonObject com = v.toObject();
@@ -220,25 +245,4 @@ QVariant UniDeskComponentsData::getBasicComponentTypes() {
 
 
 
-// void UniDeskComponentsData::startFuncs() {
-//     QFile listFile("./UniDesk/Components/components-list");
-//     if (!listFile.open(QIODevice::ReadOnly | QIODevice::Text)) return;
-//     QTextStream listStream(&listFile);
-//     while (!listStream.atEnd()) {
-//         QString componentName = listStream.readLine().trimmed();
-//         if (componentName.isEmpty()) continue;
-//         QFile pypluginsFile("./UniDesk/Components/" + componentName + "/plugins-list");
-//         if (!pypluginsFile.open(QIODevice::ReadOnly | QIODevice::Text)) continue;
-//         QTextStream pypluginsStream(&pypluginsFile);
-//         while (!pypluginsStream.atEnd()) {
-//             QString pluginName = pypluginsStream.readLine().trimmed();
-//             if (pluginName.isEmpty()) continue;
-//             // 这里假设插件信息可通过某种方式获取，实际需根据你的插件结构调整
-//             // 伪代码：调用插件初始化函数
-//             // plugin->startFuncs();
-//             // qDebug() << "Start funcs for plugin:" << componentName << pluginName;
-//         }
-//         pypluginsFile.close();
-//     }
-//     listFile.close();
-// }
+

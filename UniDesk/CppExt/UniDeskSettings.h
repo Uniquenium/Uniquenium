@@ -36,6 +36,9 @@ class UniDeskSettings : public QQuickItem {
     Q_PROPERTY_AUTO(QString, wallpaperApiExpression) // 从响应中提取图片链接的表达式
     // 语言设置
     Q_PROPERTY_AUTO(QString, language)            // "zh_CN" 或 "en_US"
+    // 快捷键设置
+    Q_PROPERTY_AUTO(QString, hotkey_open_settings) // 打开设置窗口的快捷键
+    Q_PROPERTY_AUTO(QString, hotkey_open_page_manager) // 打开页面管理器的快捷键
     QML_NAMED_ELEMENT(UniDeskSettings)
     QML_SINGLETON
 private:
