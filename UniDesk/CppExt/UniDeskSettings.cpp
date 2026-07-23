@@ -45,6 +45,15 @@ static QJsonObject defaultSettings() {
     obj["language"] = "zh_CN";                 // 默认中文
     obj["hotkey_open_settings"] = "Ctrl+Shift+S";
     obj["hotkey_open_page_manager"] = "Ctrl+Shift+P";
+    // 主面板默认值
+    QJsonObject mainPanelColorDark{{"<type>", "QColor"},{"red", 0},{"green",0},{"blue",0},{"alpha",150}};
+    obj["mainPanelColorDark"] = mainPanelColorDark;
+    QJsonObject mainPanelColorLight{{"<type>", "QColor"},{"red", 255},{"green",255},{"blue",255},{"alpha",150}};
+    obj["mainPanelColorLight"] = mainPanelColorLight;
+    obj["mainPanelOrientation"] = 0;           // 默认横向
+    obj["mainPanelPosition"] = 1;              // 默认底部
+    obj["customCursorEnabled"] = false;          // 默认关闭自定义光标
+    obj["customCursorStylePath"] = QString();
     return obj;
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
@@ -188,5 +197,12 @@ void UniDeskSettings::notifyLoad() {
     // 加载快捷键设置
     hotkey_open_settings(obj.value("hotkey_open_settings").toString());
     hotkey_open_page_manager(obj.value("hotkey_open_page_manager").toString());
+    // 加载主面板设置
+    mainPanelColorDark(json2object(obj.value("mainPanelColorDark")).value<QColor>());
+    mainPanelColorLight(json2object(obj.value("mainPanelColorLight")).value<QColor>());
+    mainPanelOrientation(obj.value("mainPanelOrientation").toInt());
+    mainPanelPosition(obj.value("mainPanelPosition").toInt());
+    customCursorEnabled(obj.value("customCursorEnabled").toBool());
+    customCursorStylePath(obj.value("customCursorStylePath").toString());
 }
 

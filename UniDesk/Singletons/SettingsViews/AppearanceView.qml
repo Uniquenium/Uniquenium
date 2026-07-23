@@ -11,6 +11,7 @@ import UniDesk.Singletons
 import UniDesk
 
 ScrollView{
+    id: view
     property var comManager
     property var customWallpaper
     hoverEnabled: true
@@ -486,13 +487,138 @@ ScrollView{
             customWallpaper.updateWallpaper();
         }
     }
-    contentHeight: sliderVideoVolume.height+sliderVideoVolume.y-languageComboBox.y+20
-    // UniDeskText{
-    //     id: textMouse
-    //     text: qsTr("鼠标")
-    //     font: UniDeskTextStyle.small_
-    //     anchors.top: (customWallpaper.wallpaperMode === 3) ? sliderVideoVolume.bottom : radioButtonVideo.bottom
-    //     anchors.left: parent.left
-    //     anchors.margins: 10
-    // }
+    UniDeskText{
+        id: textMainPanel
+        text: qsTr("主面板")
+        font: UniDeskTextStyle.small_
+        anchors.top: (customWallpaper.wallpaperMode === 3) ? sliderVideoVolume.bottom : radioButtonVideo.bottom
+        anchors.left: parent.left
+        anchors.margins: 10
+    }
+    Column{
+        id: mainPanelConfigColumn
+        spacing: 10
+        anchors.top: textMainPanel.bottom
+        anchors.left: parent.left
+        anchors.margins: 10
+        UniDeskText{
+            id: textMainPanelColorDark
+            text: qsTr("颜色(深色)")
+            font: UniDeskTextStyle.little
+            height: colorPickerMainPanelColorDark.height
+        }
+        UniDeskText{
+            id: textMainPanelColorLight
+            text: qsTr("颜色(浅色)")
+            font: UniDeskTextStyle.little
+            height: colorPickerMainPanelColorLight.height
+        }
+        UniDeskText{
+            id: textMainPanelOrientation
+            text: qsTr("方向")
+            font: UniDeskTextStyle.little
+            height: comboBoxMainPanelOrientation.height
+        }
+        UniDeskText{
+            id: textMainPanelPosition
+            text: qsTr("位置")
+            font: UniDeskTextStyle.little
+            height: comboBoxMainPanelPosition.height
+        }
+    }
+    UniDeskColorPicker{
+        id: colorPickerMainPanelColorDark
+        y: textMainPanelColorDark.y + mainPanelConfigColumn.y 
+        anchors.right: parent.right
+        anchors.margins: 10
+        onSelectedColorChanged: {
+            UniDeskSettings.set("mainPanelColorDark", selectedColor);
+        }
+        Component.onCompleted: {
+            selectedColor = UniDeskSettings.mainPanelColorDark;
+        }
+    }
+    UniDeskColorPicker{
+        id: colorPickerMainPanelColorLight
+        y: textMainPanelColorLight.y + mainPanelConfigColumn.y 
+        anchors.right: parent.right
+        anchors.margins: 10
+        onSelectedColorChanged: {
+            UniDeskSettings.set("mainPanelColorLight", selectedColor);
+        }
+        Component.onCompleted: {
+            selectedColor = UniDeskSettings.mainPanelColorLight;
+        }
+    }
+    UniDeskComboBox{
+        id: comboBoxMainPanelOrientation
+        y: textMainPanelOrientation.y + mainPanelConfigColumn.y 
+        anchors.right: parent.right
+        anchors.margins: 10
+        model: [qsTr("横向"), qsTr("纵向")]
+        currentIndex: UniDeskSettings.mainPanelOrientation
+        onActivated: {
+            UniDeskSettings.set("mainPanelOrientation", currentIndex);
+        }
+    }
+    UniDeskComboBox{
+        id: comboBoxMainPanelPosition
+        y: textMainPanelPosition.y + mainPanelConfigColumn.y 
+        anchors.right: parent.right
+        anchors.margins: 10
+        model: [qsTr("顶部"), qsTr("底部")]
+        currentIndex: UniDeskSettings.mainPanelPosition
+        onActivated: {
+            UniDeskSettings.set("mainPanelPosition", currentIndex);
+        }
+    }
+    UniDeskText{
+        id: textMouse
+        text: qsTr("鼠标")
+        font: UniDeskTextStyle.small_
+        anchors.left: parent.left
+        anchors.top: mainPanelConfigColumn.bottom
+        anchors.margins: 10
+    }
+    UniDeskCheckBox{
+        id: checkBoxMouseCursorEnabled
+        text: qsTr("启用自定义光标")
+        anchors.top: textMouse.bottom
+        anchors.left: parent.left
+        anchors.margins: 10
+        checked: UniDeskSettings.customCursorEnabled
+        onCheckedChanged: {
+            UniDeskSettings.set("customCursorEnabled", checked);
+            view.updateCursorStyle();
+        }
+    }
+    UniDeskText{
+        id: textMouseCursorStylePath
+        text: qsTr("自定义光标样式路径")
+        anchors.top: checkBoxMouseCursorEnabled.bottom
+        anchors.left: parent.left
+        anchors.margins: 10
+        height: pathSelector3.height
+    }
+    UniDeskPathSelector{
+        id: pathSelector3
+        y: textMouseCursorStylePath.y  
+        anchors.left: textMouseCursorStylePath.right
+        anchors.right: parent.right
+        anchors.margins: 10
+        mode: UniDeskFileMode.FileModeFolder
+        path: UniDeskSettings.customCursorStylePath
+        onSubmit: {
+            UniDeskSettings.set("customCursorStylePath", path);
+            view.updateCursorStyle();
+        }
+    }
+    function updateCursorStyle(){
+        if (UniDeskSettings.customCursorEnabled&&(!(UniDeskSettings.customCursorStylePath===""))) {
+            UniDeskCursorManager.loadCustomByPath(UniDeskSettings.customCursorStylePath);
+        } else {
+            UniDeskCursorManager.restoreSystem();
+        }
+    }
+    contentHeight: pathSelector3.height+pathSelector3.y+10
 }

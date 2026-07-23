@@ -76,4 +76,28 @@ Q_ENUM_NS(ButtonActionType)
 QML_NAMED_ELEMENT(UniDeskButtonActionType)
 }
 
+namespace UniDeskMainPanelOrientation {
+Q_NAMESPACE
+enum MainPanelOrientation {
+    Horizontal = 0,  // 横向
+    Vertical = 1     // 纵向
+};
+
+Q_ENUM_NS(MainPanelOrientation)
+
+QML_NAMED_ELEMENT(UniDeskMainPanelOrientation)
+}
+
+namespace UniDeskMainPanelPosition {
+Q_NAMESPACE
+enum MainPanelPosition {
+    Top = 0,    // 顶部
+    Bottom = 1  // 底部
+};
+
+Q_ENUM_NS(MainPanelPosition)
+
+QML_NAMED_ELEMENT(UniDeskMainPanelPosition)
+}
+
 #endif // UNIDESKDEFINES_H

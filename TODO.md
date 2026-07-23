@@ -17,20 +17,19 @@
   - [x] Support Custom API for Wallpaper
   - [x] Improve Component Identity Generation(Use UUID instead of index)
   - [x] Hotkeys
+  - [x] Main Panel Color, Orientation, and Position
 
-  - [ ] Improve SettingsWindow Layout Positioning
-  - [ ] UI Colors
   - [ ] Cursor Style
-  - [ ] Auto Start With Booting Support
-
-  - [ ] Tree View in Page Manage Window
-  - [ ] Component Z-Index Swaping
   - [ ] Click/Edit Toggle
   - [ ] Multi Component Edition
-  - [ ] Linux Support
+  - [ ] Auto Start With Booting Support
+  
+  - [ ] Tree View in Page Manage Window
+  - [ ] Component Z-Index Swaping
   
   - [ ] Templete
   - [ ] Theme
+  - [ ] Linux Support
 - Bugs
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)
   - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity

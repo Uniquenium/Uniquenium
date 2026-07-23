@@ -39,6 +39,14 @@ class UniDeskSettings : public QQuickItem {
     // 快捷键设置
     Q_PROPERTY_AUTO(QString, hotkey_open_settings) // 打开设置窗口的快捷键
     Q_PROPERTY_AUTO(QString, hotkey_open_page_manager) // 打开页面管理器的快捷键
+    // 主面板设置
+    Q_PROPERTY_AUTO(QColor, mainPanelColorDark)    // 主面板颜色（深色模式）
+    Q_PROPERTY_AUTO(QColor, mainPanelColorLight)   // 主面板颜色（浅色模式）
+    Q_PROPERTY_AUTO(int, mainPanelOrientation)     // 主面板方向（0=横向, 1=纵向）
+    Q_PROPERTY_AUTO(int, mainPanelPosition)        // 主面板位置（0=顶部, 1=底部）
+    // 鼠标光标设置
+    Q_PROPERTY_AUTO(bool, customCursorEnabled)      // 是否启用自定义光标
+    Q_PROPERTY_AUTO(QString, customCursorStylePath) // 自定义光标样式路径
     QML_NAMED_ELEMENT(UniDeskSettings)
     QML_SINGLETON
 private:

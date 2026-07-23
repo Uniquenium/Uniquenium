@@ -34,22 +34,53 @@ UniDeskObject{
             id: base
             visible: true
             x: Screen.desktopAvailableWidth-width-10
-            y: 10
-            width: btns.width
-            height: object.isExpand ? btns.height+15 : btn_spread.height+15
+            y: UniDeskSettings.mainPanelPosition == UniDeskMainPanelPosition.Top ? 10 : Screen.desktopAvailableHeight-height-10
+            function isHorizontal(){
+                return UniDeskSettings.mainPanelOrientation == UniDeskMainPanelOrientation.Horizontal 
+            }
+            function isVertical(){
+                return UniDeskSettings.mainPanelOrientation == UniDeskMainPanelOrientation.Vertical 
+            }
+            function iconCollapse(){
+                if(base.isVertical()){
+                    if(UniDeskSettings.mainPanelPosition == UniDeskMainPanelPosition.Top){
+                        return "qrc:/media/img/arrow-up-s-line.svg"
+                    }else{
+                        return "qrc:/media/img/arrow-down-s-line.svg"
+                    }
+                }else{
+                    return "qrc:/media/img/arrow-right-s-line.svg"
+                }
+            }
+            function iconExpand(){
+                if(base.isVertical()){
+                    if(UniDeskSettings.mainPanelPosition == UniDeskMainPanelPosition.Top){
+                        return "qrc:/media/img/arrow-down-s-line.svg"
+                    }else{
+                        return "qrc:/media/img/arrow-up-s-line.svg"
+                    }
+                }else{
+                    return "qrc:/media/img/arrow-left-s-line.svg"
+                }
+            }
+            width: base.isHorizontal() ? (object.isExpand ? btns.width : btn_spread.width) : btns.width
+            height: base.isVertical() ? (object.isExpand ? btns.height : btn_spread.height) : btns.height
             clip: true
-            ColumnLayout{
+            GridLayout{
                 id: btns
                 anchors.right: parent ? parent.right : undefined 
-                spacing: 5
+                columnSpacing: 5
+                rowSpacing: 5
+                layoutDirection: Qt.RightToLeft
+                flow: base.isHorizontal() ? GridLayout.LeftToRight : GridLayout.TopToBottom
                 UniDeskButton{
                     id: btn_spread
                     contentText: object.isExpand ? qsTr("收起") : qsTr("展开")
                     iconSize: 15
-                    iconSource: object.isExpand ? "qrc:/media/img/arrow-up-s-line.svg" : "qrc:/media/img/arrow-down-s-line.svg"
+                    iconSource: object.isExpand ? base.iconCollapse() : base.iconExpand()
                     bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                     bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
                     radius: width / 2
                     onClicked:{
                         object.isExpand = !object.isExpand
@@ -62,7 +93,7 @@ UniDeskObject{
                     iconSource: "qrc:/media/img/logout-box-line.svg"
                     bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                     bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
                     radius: width / 2
                     onClicked:{
                         confirm_exit_dialog.showActivate();
@@ -75,24 +106,10 @@ UniDeskObject{
                     iconSource: "qrc:/media/img/shut-down-line.svg"
                     bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                     bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
                     radius: width / 2
                     onClicked:{
                         system_menu.popup(btn_system,Qt.point(-152,0));
-                    }
-                }
-                UniDeskButton{
-                    id: btn_previous_page
-                    contentText: qsTr("上一页")
-                    iconSize: 15
-                    iconSource: "qrc:/media/img/arrow-up-line.svg"
-                    bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                    bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
-                    radius: width / 2
-                    disabled: component_manager.is_first_page()
-                    onClicked:{
-                        component_manager.previous_page();
                     }
                 }
                 UniDeskButton{
@@ -102,24 +119,10 @@ UniDeskObject{
                     iconSource: "qrc:/media/img/carousel-view.svg"
                     bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                     bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
                     radius: width / 2
                     onClicked:{
                         page_menu.popup(btn_page,Qt.point(-152,0));
-                    }
-                }
-                UniDeskButton{
-                    id: btn_next_page
-                    contentText: qsTr("下一页")
-                    iconSize: 15
-                    iconSource: "qrc:/media/img/arrow-down-line.svg"
-                    bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
-                    bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
-                    radius: width / 2
-                    disabled: component_manager.is_last_page()
-                    onClicked:{
-                        component_manager.next_page();
                     }
                 }
                 UniDeskButton{
@@ -129,7 +132,7 @@ UniDeskObject{
                     iconSource: "qrc:/media/img/settings.svg"
                     bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                     bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
                     radius: width / 2
                     onClicked:{
                         UniDeskSettingsWindow.showActivate()
@@ -142,7 +145,7 @@ UniDeskObject{
                     iconSource: "qrc:/media/img/add-line.svg"
                     bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
                     bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
-                    iconNormalColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
                     radius: width / 2
                     onClicked:{
                         component_manager.parentOfNewCom=object.contentItem;
@@ -151,9 +154,14 @@ UniDeskObject{
                     }
                 }
             }
+            Behavior on width{
+                NumberAnimation{
+                    duration: base.isHorizontal() ? 500 : 0
+                }
+            }
             Behavior on height{
                 NumberAnimation{
-                    duration: 500
+                    duration: base.isVertical() ? 500 : 0
                 }
             }
             UniDeskMenu{
@@ -223,6 +231,26 @@ UniDeskObject{
                         onObjectRemoved: function(index,obj){
                             mi_toggle_page.removeItem(obj)
                         }
+                    }
+                }
+                UniDeskMenuSeparator{
+                }
+                UniDeskMenuItem{
+                    id: mi_previous_page
+                    text: qsTr("上一页")
+                    iconSource: "qrc:/media/img/arrow-up-line.svg"
+                    disabled: component_manager.is_first_page()
+                    onClicked: {
+                        component_manager.previous_page();
+                    }
+                }
+                UniDeskMenuItem{
+                    id: mi_next_page
+                    text: qsTr("下一页")
+                    iconSource: "qrc:/media/img/arrow-down-line.svg"
+                    disabled: component_manager.is_last_page()
+                    onClicked: {
+                        component_manager.next_page();
                     }
                 }
                 UniDeskMenuSeparator{
@@ -308,6 +336,7 @@ UniDeskObject{
             custom_wallpaper.close();
         }
         function exitAll(){
+            UniDeskCursorManager.restoreSystem();
             wallpaperMediaPlayer.stop();
             wallpaperMediaPlayer.source = "";
             object.closeAllWindows();
