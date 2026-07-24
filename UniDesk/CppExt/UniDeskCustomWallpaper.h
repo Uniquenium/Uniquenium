@@ -35,14 +35,21 @@ class UniDeskCustomWallpaper : public QQuickWindow, public QAbstractNativeEventF
     // 自定义API相关属性
     Q_PROPERTY_AUTO(QString, wallpaperApiUrl)     // API地址
     Q_PROPERTY_AUTO(QString, wallpaperApiExpression) // 从响应中提取图片链接的表达式
+    Q_PROPERTY_AUTO(bool, isMousePressed) // 是否正在按下鼠标键
     QML_NAMED_ELEMENT(UniDeskCustomWallpaper)
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
 public:
     explicit UniDeskCustomWallpaper(QQuickWindow *parent = nullptr);
     ~UniDeskCustomWallpaper() override;
     bool nativeEventFilter(const QByteArray& eventType, void* message,
                           QT_NATIVE_EVENT_RESULT_TYPE* result) override;
-    void showEvent(QShowEvent *event) override;
     Q_INVOKABLE void attachToWallpaper();
+    void showEvent(QShowEvent *event) override;
+signals:
+    void mouseMoved(const QPoint &pos);
+    void mousePressed(const Qt::MouseButton &button, const QPoint &pos);
+    void mouseReleased(const Qt::MouseButton &button, const QPoint &pos);
 };
 
 #endif // UNIDESKCUSTOMWALLPAPER_H

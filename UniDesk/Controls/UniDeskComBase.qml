@@ -25,12 +25,14 @@ Item{
     property string pageid
     property bool canMove: chosen
     property bool indicated: false
+    property bool selected: false
     property bool chosen: false
     property var comManager
     property var optionsWindow
     property int margins: 4
     property int edges: 0
     property bool moving: false
+    property bool moved: false
     property real initialMouseX: 0
     property real initialMouseY: 0
     property real initialBaseX: 0
@@ -65,32 +67,45 @@ Item{
                 base.leftClicked();
                 if (base.canMove) {
                     base.moving = true;
-                    mouseArea.cursorShape = Qt.SizeAllCursor;
                 }
                 base.initialMouseX = UniDeskTools.getCursorPosition().x;
                 base.initialMouseY = UniDeskTools.getCursorPosition().y;
-                base.initialBaseX = base.x;
-                base.initialBaseY = base.y;
+                if(base.comManager.selectMode===UniDeskComponentSelectMode.MultiSelect){
+                    base.comManager.prepare_multi_move();
+                }else{
+                    base.initialBaseX = base.x;
+                    base.initialBaseY = base.y;
+                }
             }
         }
 
         onReleased: (mouse) => {
-            mouseArea.cursorShape = Qt.ArrowCursor;
             base.edges = 0;
             if (mouse.button === Qt.LeftButton) {
-                    base.endDrag();
-                } else if (mouse.button === Qt.RightButton) {
+                base.endDrag();
+                if(base.comManager.selectMode!==UniDeskComponentSelectMode.NoSelect&&(!base.moved)){
+                    base.comManager.select_com(base);
+                }
+            } else if (mouse.button === Qt.RightButton) {
                 base.rightClicked();
             }
             base.moving = false;
+            base.moved= false;
+            mouseArea.cursorShape = Qt.ArrowCursor;
         }
         
         onPositionChanged: (mouse) => {
             let offsetX=UniDeskTools.getCursorPosition().x - base.initialMouseX;
             let offsetY=UniDeskTools.getCursorPosition().y - base.initialMouseY;
             if (base.moving) {
-                base.x = base.initialBaseX + offsetX;
-                base.y = base.initialBaseY + offsetY;
+                base.moved= true;
+                mouseArea.cursorShape = Qt.SizeAllCursor;
+                if(base.comManager.selectMode===UniDeskComponentSelectMode.MultiSelect){
+                    base.comManager.multi_move(offsetX, offsetY);
+                }else{
+                    base.x = base.initialBaseX + offsetX;
+                    base.y = base.initialBaseY + offsetY;
+                }
             }
         }
     }

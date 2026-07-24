@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix='/'>
         <file>main.qml</file>
         <file>media/font/SanJiNengLiangHeiJianTi-2.ttf</file>
         <file>media/font/XiaWuWenKai.ttf</file>
@@ -33,6 +33,7 @@
         <file>media/img/loop-left-line.svg</file>
         <file>media/img/menu-line.svg</file>
         <file>media/img/move.svg</file>
+        <file>media/img/multiselect.svg</file>
         <file>media/img/noise.png</file>
         <file>media/img/open-folder.svg</file>
         <file>media/img/page-separator.svg</file>
@@ -41,6 +42,7 @@
         <file>media/img/rest-time-line.svg</file>
         <file>media/img/restart-line.svg</file>
         <file>media/img/screenshot-2-line.svg</file>
+        <file>media/img/select.svg</file>
         <file>media/img/settings.svg</file>
         <file>media/img/shut-down-line.svg</file>
         <file>media/img/subtract.svg</file>

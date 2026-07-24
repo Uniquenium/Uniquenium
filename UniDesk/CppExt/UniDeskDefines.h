@@ -100,4 +100,29 @@ Q_ENUM_NS(MainPanelPosition)
 QML_NAMED_ELEMENT(UniDeskMainPanelPosition)
 }
 
+namespace UniDeskCustomCursorType {
+Q_NAMESPACE
+enum CustomCursorType {
+    Native = 0,    // 通过替换系统注册表
+    Qml = 1  // 通过获取鼠标指针的标准状态并传递给QML
+};
+
+Q_ENUM_NS(CustomCursorType)
+
+QML_NAMED_ELEMENT(UniDeskCustomCursorType)
+}
+
+namespace UniDeskComponentSelectMode {
+Q_NAMESPACE
+enum ComponentSelectMode {
+    NoSelect = 0,    // 鼠标模式
+    SingleSelect = 1,    // 单选
+    MultiSelect = 2    // 多选
+};
+
+Q_ENUM_NS(ComponentSelectMode)
+
+QML_NAMED_ELEMENT(UniDeskComponentSelectMode)
+}
+
 #endif // UNIDESKDEFINES_H

@@ -17,8 +17,7 @@ UniDeskComBase{
     width: 200
     height: 150
     optionsWindow: optionsFrame
-    chosen: optionsFrame ? optionsFrame.visible : false
-    
+    chosen: comManager.selectMode===UniDeskComponentSelectMode.NoSelect ? (optionsWindow.visible) : selected
     // 框架属性
     property int borderWidth: 1
     property color borderColor: UniDeskGlobals.isLight ? Qt.rgba(0, 0, 0, 1) : Qt.rgba(255, 255, 255, 1)
@@ -43,6 +42,7 @@ UniDeskComBase{
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
                 optionsFrame.show()
+                base.comManager.select_com(base);
             }
         }
         UniDeskMenuItem{
@@ -75,7 +75,9 @@ UniDeskComBase{
     }
     
     onRightClicked: {
-        menu.popup(cont);
+        if(base.comManager.selectMode===UniDeskComponentSelectMode.NoSelect){
+            menu.popup(cont);
+        }
     }
     
     function propertyData(){

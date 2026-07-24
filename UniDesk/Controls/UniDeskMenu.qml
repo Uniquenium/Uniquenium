@@ -36,6 +36,7 @@ T.Menu {
     }
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutside 
     contentItem: ListView {
+        implicitWidth: contentWidth
         implicitHeight: contentHeight
         model: control.contentModel
         interactive: Window.window ? contentHeight + control.topPadding

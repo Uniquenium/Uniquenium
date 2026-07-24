@@ -33,7 +33,7 @@ UniDeskComBase{
     property int horizontalAlignment: Text.AlignHCenter
     property int verticalAlignment: Text.AlignVCenter
     optionsWindow: optionsText
-    chosen: optionsText ? optionsText.visible : false
+    chosen: comManager.selectMode===UniDeskComponentSelectMode.NoSelect ? (optionsWindow.visible) : selected
     width: 100
     height: 50
     UniDeskText{
@@ -68,6 +68,7 @@ UniDeskComBase{
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
                 optionsText.show()
+                base.comManager.select_com(base);
             }
         }
         UniDeskMenuItem{
@@ -106,7 +107,9 @@ UniDeskComBase{
         comManager: base.comManager
     }
     onRightClicked: {
-        menu.popup(cont);
+        if(base.comManager.selectMode===UniDeskComponentSelectMode.NoSelect){
+            menu.popup(cont);
+        }
     }
     function propertyData(){
         return {

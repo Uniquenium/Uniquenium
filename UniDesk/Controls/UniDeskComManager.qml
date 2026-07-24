@@ -25,6 +25,9 @@ UniDeskObject{
     property ListModel compModels: ListModel{}
     property var root
     property var comWindow
+    property var selectMode: UniDeskComponentSelectMode.NoSelect
+    property list<Item> selectedComponents
+    property list<Item> needMoveComponents
     ListModel{
         id: page_list_model
         ListElement{
@@ -368,6 +371,66 @@ UniDeskObject{
         let currentPindex=pid2pindex(currentPid);
         if(!is_last_page()){
             toggle_page_to(pindex2pid(currentPindex+1));
+        }
+    }
+    function select_com(com){
+        if(selectMode===UniDeskComponentSelectMode.SingleSelect){
+            unselect_all_com();
+        }
+        if(com.selected){
+            selectedComponents.splice(selectedComponents.indexOf(com),1);
+            update_need_move_com();
+            com.selected=false;
+        }
+        else{
+            selectedComponents.push(com);
+            update_need_move_com();
+            com.selected=true;
+        }
+    }
+    function unselect_all_com(){
+        for(var i=0;i<selectedComponents.length;i++){
+            selectedComponents[i].selected=false;
+        }
+        selectedComponents=[];
+        update_need_move_com();
+    }
+    function update_need_move_com(){
+        //如果同时出现祖先和后代组件，去除后代组件
+        //使用while循环直到根组件
+        needMoveComponents=[];
+        let p;
+        for(var i=0;i<selectedComponents.length;i++){
+            p=selectedComponents[i].parent;
+            let flag=true;
+            while(p.identification){
+                if(selectedComponents.indexOf(p)!==-1){
+                    flag=false;
+                    break;
+                }
+                p=p.parent;
+            }
+            if(flag){
+                needMoveComponents.push(selectedComponents[i]);
+            }
+        }
+    }
+    function prepare_multi_move(){
+        for(var i=0;i<needMoveComponents.length;i++){
+            needMoveComponents[i].initialBaseX=needMoveComponents[i].x;
+            needMoveComponents[i].initialBaseY=needMoveComponents[i].y;
+        }
+    }
+    function multi_move(offsetX,offsetY){
+        for(var i=0;i<needMoveComponents.length;i++){
+            needMoveComponents[i].x=needMoveComponents[i].initialBaseX+offsetX;
+            needMoveComponents[i].y=needMoveComponents[i].initialBaseY+offsetY;
+            needMoveComponents[i].saveComToFile();
+        }
+    }
+    onSelectModeChanged: {
+        if(selectMode!==UniDeskComponentSelectMode.MultiSelect){
+            unselect_all_com();
         }
     }
 }

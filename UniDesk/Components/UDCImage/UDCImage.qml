@@ -29,9 +29,8 @@ UniDeskComBase{
     // 按钮动作目标: 应用程序路径/网页URL/命令
     property string buttonActionTarget: ""
     optionsWindow: optionsImage
-    chosen: optionsImage ? optionsImage.visible : false
 
-    
+    chosen: comManager.selectMode===UniDeskComponentSelectMode.NoSelect ? (optionsWindow.visible) : selected
     AnimatedImage{
         id: cont
         source: base.imagePath!=="" ? base.imagePath : "qrc:/media/logo/unidesk-l-bg.png"
@@ -85,6 +84,7 @@ UniDeskComBase{
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
                 optionsImage.show()
+                base.comManager.select_com(base);
             }
         }
         UniDeskMenuItem{
@@ -118,7 +118,9 @@ UniDeskComBase{
     }
     
     onRightClicked: {
-        menu.popup(cont)
+        if(base.comManager.selectMode===UniDeskComponentSelectMode.NoSelect){
+            menu.popup(cont);
+        }
     }
     
     // 按钮点击处理 - 使用函数数组消除if判断

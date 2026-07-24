@@ -139,6 +139,48 @@ UniDeskObject{
                     }
                 }
                 UniDeskButton{
+                    id: btn_singleselect
+                    contentText: qsTr("选择")
+                    iconSize: 15
+                    iconSource: "qrc:/media/img/select.svg"
+                    bgNormalColor: component_manager.selectMode===UniDeskComponentSelectMode.SingleSelect ? 
+                    (UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight.lighter(1.2) : UniDeskSettings.mainPanelColorDark.darker(1.2)) : "transparent";
+                    bgHoverColor: component_manager.selectMode===UniDeskComponentSelectMode.SingleSelect ? 
+                    (UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight.lighter(1.2) : UniDeskSettings.mainPanelColorDark.darker(1.2)) : 
+                    (UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2))
+                    bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
+                    radius: width / 2
+                    onClicked:{
+                        if(component_manager.selectMode===UniDeskComponentSelectMode.SingleSelect){
+                            component_manager.selectMode=UniDeskComponentSelectMode.NoSelect;
+                        }else{
+                            component_manager.selectMode=UniDeskComponentSelectMode.SingleSelect;
+                        }
+                    }
+                }
+                UniDeskButton{
+                    id: btn_multiselect
+                    contentText: qsTr("多选")
+                    iconSize: 15
+                    iconSource: "qrc:/media/img/multiselect.svg"
+                    bgNormalColor: component_manager.selectMode===UniDeskComponentSelectMode.MultiSelect ? 
+                    (UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight.lighter(1.2) : UniDeskSettings.mainPanelColorDark.darker(1.2)) : "transparent";
+                    bgHoverColor: component_manager.selectMode===UniDeskComponentSelectMode.SingleSelect ? 
+                    (UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight.lighter(1.2) : UniDeskSettings.mainPanelColorDark.darker(1.2)) : 
+                    (UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2))
+                    bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
+                    radius: width / 2
+                    onClicked:{
+                        if(component_manager.selectMode===UniDeskComponentSelectMode.MultiSelect){
+                            component_manager.selectMode=UniDeskComponentSelectMode.NoSelect;
+                        }else{
+                            component_manager.selectMode=UniDeskComponentSelectMode.MultiSelect;
+                        }
+                    }
+                }
+                UniDeskButton{
                     id: btn_add
                     contentText: qsTr("添加组件")
                     iconSize: 15
@@ -344,15 +386,7 @@ UniDeskObject{
             UniDeskGlobals.emitApplicationQuit();
         }
         onMouseMoved:(pos) => {
-            
             updateMouseClickThrough(pos);
-            //Check  if the mouse is on "base"
-            
-
-        }
-        onMousePressed:(button, pos) => {
-        }
-        onMouseReleased:(button, pos) => {
         }
         Component.onCompleted: {
             custom_wallpaper.updateWallpaper();
@@ -380,6 +414,7 @@ UniDeskObject{
             mouseClickThrough=!(moac||bcgp);
         }
     }
+    
     UniDeskCustomWallpaper{
         id: custom_wallpaper
         x:0
@@ -535,8 +570,6 @@ UniDeskObject{
             custom_wallpaper.wallpaperApiUrl = UniDeskSettings.get("wallpaperApiUrl");
             custom_wallpaper.wallpaperApiExpression = UniDeskSettings.get("wallpaperApiExpression");
         }
-        
-        
     }
     Connections {
         target: UniDeskSystemTray

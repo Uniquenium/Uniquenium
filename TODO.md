@@ -19,11 +19,12 @@
   - [x] Hotkeys
   - [x] Main Panel Color, Orientation, and Position
 
+  - [x] Click/Edit Toggle
+  - [x] Multi Component Edition
+  - [ ] Topmost Layer
   - [ ] Cursor Style
-  - [ ] Click/Edit Toggle
-  - [ ] Multi Component Edition
+
   - [ ] Auto Start With Booting Support
-  
   - [ ] Tree View in Page Manage Window
   - [ ] Component Z-Index Swaping
   

@@ -67,10 +67,6 @@ UniDeskCustomWallpaper::UniDeskCustomWallpaper(QQuickWindow *parent)
 UniDeskCustomWallpaper::~UniDeskCustomWallpaper() {
 }
 
-void UniDeskCustomWallpaper::showEvent(QShowEvent *event) {
-    QQuickWindow::showEvent(event);
-    attachToWallpaper();
-}
 
 //don't delete this function
 bool UniDeskCustomWallpaper::nativeEventFilter(const QByteArray& eventType, void* message,
@@ -147,9 +143,36 @@ void UniDeskCustomWallpaper::attachToWallpaper() {
 #endif
 }
 
+bool UniDeskCustomWallpaper::eventFilter(QObject *obj, QEvent *event) {
+    if (event->type() == QEvent::MouseMove) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+        if (mouseEvent) {
+            emit mouseMoved(mouseEvent->position().toPoint());
+        }
+    } else if (event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+        if (mouseEvent) {
+            isMousePressed(true);
+            emit mousePressed(mouseEvent->button(), mouseEvent->position().toPoint());
+        }
+    } else if (event->type() == QEvent::MouseButtonRelease) {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+        if (mouseEvent) {
+            isMousePressed(false);
+            emit mouseReleased(mouseEvent->button(), mouseEvent->position().toPoint());
+        }
+    }
+    return QObject::eventFilter(obj, event);
+}
 
-
-
-
+void UniDeskCustomWallpaper::showEvent(QShowEvent *event) {
+    QQuickWindow::showEvent(event);
+    attachToWallpaper();
+    // Install native event filter
+    if (QGuiApplication::instance()) {
+        QGuiApplication::instance()->installNativeEventFilter(this);
+        QGuiApplication::instance()->installEventFilter(this);
+    }
+}
 
 
