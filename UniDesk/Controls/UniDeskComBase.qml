@@ -130,10 +130,51 @@ Item{
         return base.contains(base.mapFromGlobal(point))||rect_border.hoverOnAnyButton(point);
     }
     function changeParentWithoutMoving(p){
-        let point = p.mapFromItem(base,0,0);
-        base.x = point.x;
-        base.y = point.y;
-        base.parent = p;
+        // 检查是否跨窗口重新父化
+        let currentWindow = base.currentLayer();
+        let targetWindow = null;
+        if(p===comManager.root.contentItem){
+            targetWindow = "Desktop";
+        }
+        else if(p===comManager.wallpaperLayer.contentItem){
+            targetWindow = "Wallpaper";
+        }
+        else if(p===comManager.topMostLayer.contentItem){
+            targetWindow = "TopMost";
+        }
+        else {
+            targetWindow = p.currentLayer();
+        }
+        // 如果在同一个窗口内，可以直接重新父化
+        if(currentWindow && targetWindow && currentWindow === targetWindow){
+            let point = p.mapFromItem(base,0,0);
+            base.x = point.x;
+            base.y = point.y;
+            base.parent = p;
+        } else {
+            let data= base.propertyData();
+            let point = p.mapFromItem(base,0,0);
+            data["x"] = point.x;
+            data["y"] = point.y;
+            data["parent"]=comManager.getComId(p)
+            UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
+            comManager.loadComponentsFromData();
+        }
+    }
+    function currentLayer(){
+        let p=base.parent
+        while(p.identification){
+            p=p.parent;
+        }
+        if(p===comManager.root.contentItem){
+            return "Desktop";
+        }
+        else if(p===comManager.wallpaperLayer.contentItem){
+            return "Wallpaper";
+        }
+        else if(p===comManager.topMostLayer.contentItem){
+            return "TopMost";
+        }
     }
     Component.onCompleted: {
         base.componentCompleted();

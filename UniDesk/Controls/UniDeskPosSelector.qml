@@ -102,7 +102,7 @@ Item{
             Layout.row: 1
             onActivated: {
                 if(control.editingComponent){
-                    if(currentIndex === 0){
+                    if(currentIndex < 3){
                         control.horizontalAlignComponent = undefined;
                     }else{
                         control.horizontalAlignComponent = horizontalComBox.getComByIndex(currentIndex);
@@ -120,7 +120,7 @@ Item{
             Layout.row: 3
             onActivated: {
                 if(control.editingComponent){
-                    if(currentIndex === 0){
+                    if(currentIndex < 3){
                         control.verticalAlignComponent = undefined;
                     }else{
                         control.verticalAlignComponent = verticalComBox.getComByIndex(currentIndex);

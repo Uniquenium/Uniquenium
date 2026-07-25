@@ -34,7 +34,6 @@ ScrollView{
         onActivated: {
             var lang = ["zh_CN", "en_US"][currentIndex]
             UniDeskSettings.set("language", lang)
-             
             UniDeskGlobals.translate(languageComboBox, lang)
         }
     }
@@ -105,6 +104,9 @@ ScrollView{
         onCurrentTextChanged: {
             UniDeskTextStyle.changeFontFamily(currentText);
             UniDeskSettings.set("globalFontFamily", currentText);
+        }
+        Component.onCompleted: {
+            UniDeskTextStyle.changeFontFamily(UniDeskSettings.globalFontFamily);
         }
     }
     UniDeskText{

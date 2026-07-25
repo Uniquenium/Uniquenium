@@ -50,7 +50,7 @@ UniDeskWindow{
             }
         }
         UniDeskText{
-            text: qsTr("父组件")
+            text: qsTr("父组件（设为壁纸层将冻结组件）")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
@@ -68,6 +68,9 @@ UniDeskWindow{
                 let p = parentComboBox.getComByIndex(currentIndex);
                 editingComponent.changeParentWithoutMoving(p);
                 editingComponent.saveComToFile();
+            }
+            Component.onCompleted: {
+                currentIndex=getIndexByCom(currentComponent);
             }
         }
         UniDeskPosSelector{
@@ -161,11 +164,7 @@ UniDeskWindow{
                     window.ec.saveComToFile()
                 }
             }
-            onModelChanged: {
-                currentIndex = [Image.Stretch, Image.PreserveAspectFit, Image.PreserveAspectCrop, Image.Tile, Image.Pad].indexOf(window.ec.fillMode)
-            }
         }
-        
         UniDeskText{
             id: textOpacity
             text: qsTr("透明度")
@@ -293,11 +292,7 @@ UniDeskWindow{
                     window.ec.saveComToFile()
                 }
             }
-            onModelChanged: {
-                currentIndex = window.ec ? window.ec.buttonActionType : UniDeskButtonActionType.ButtonActionApp
-            }
         }
-        
         // 按钮动作目标
         UniDeskText{
             id: textButtonActionTarget

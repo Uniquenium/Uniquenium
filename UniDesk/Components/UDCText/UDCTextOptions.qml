@@ -46,7 +46,7 @@ UniDeskWindow{
             }
         }
         UniDeskText{
-            text: qsTr("父组件")
+            text: qsTr("父组件（设为壁纸层将冻结组件）")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
@@ -64,6 +64,9 @@ UniDeskWindow{
                 let p = parentComboBox.getComByIndex(currentIndex);
                 editingComponent.changeParentWithoutMoving(p);
                 editingComponent.saveComToFile();
+            }
+            Component.onCompleted: {
+                currentIndex=getIndexByCom(currentComponent);
             }
         }
         UniDeskPosSelector{
@@ -407,9 +410,6 @@ UniDeskWindow{
                 }
                 editingComponent.saveComToFile();
             }
-            onModelChanged: {
-                currentIndex = [Text.Normal, Text.Raised, Text.Outline, Text.Sunken].indexOf(editingComponent.style)
-            }
         }
         UniDeskText{
             id: text10
@@ -454,9 +454,6 @@ UniDeskWindow{
                     editingComponent.saveComToFile();
                 }
             }
-            onModelChanged: {
-                currentIndex = [Text.AutoText, Text.PlainText, Text.RichText, Text.MarkdownText].indexOf(editingComponent.textFormat)
-            }
         }
         UniDeskText{
             id: textWrapMode
@@ -486,9 +483,6 @@ UniDeskWindow{
                     editingComponent.wrapMode = [Text.Wrap, Text.NoWrap, Text.WrapAnywhere, Text.WrapAtWordBoundaryOrAnywhere][currentIndex]
                     editingComponent.saveComToFile();
                 }
-            }
-            onModelChanged: {
-                currentIndex = [Text.Wrap, Text.NoWrap, Text.WrapAnywhere, Text.WrapAtWordBoundaryOrAnywhere].indexOf(editingComponent.wrapMode)
             }
         }
         UniDeskText{
@@ -520,9 +514,6 @@ UniDeskWindow{
                     editingComponent.saveComToFile();
                 }
             }
-            onModelChanged: {
-                currentIndex = [Text.AlignLeft, Text.AlignHCenter, Text.AlignRight].indexOf(editingComponent.horizontalAlignment)
-            }
         }
         UniDeskText{
             id: textVerticalAlignment
@@ -552,9 +543,6 @@ UniDeskWindow{
                     editingComponent.verticalAlignment = [Text.AlignTop, Text.AlignVCenter, Text.AlignBottom][currentIndex]
                     editingComponent.saveComToFile();
                 }
-            }
-            onModelChanged: {
-                currentIndex = [Text.AlignTop, Text.AlignVCenter, Text.AlignBottom].indexOf(editingComponent.verticalAlignment)
             }
         }
     }

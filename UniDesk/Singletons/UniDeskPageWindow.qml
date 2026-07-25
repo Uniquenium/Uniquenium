@@ -124,6 +124,7 @@ UniDeskWindow{
         UniDeskMenu{
             id: m_list
             UniDeskMenuItem{
+                id: rename_page_item
                 text: qsTr("重命名")
                 disabled: comManager.pindex2pid(window.menuIndex)===0
                 onClicked: {
@@ -133,6 +134,7 @@ UniDeskWindow{
                 }
             }
             UniDeskMenuItem{
+                id: insert_page_item1
                 text: qsTr("在上方新建页面")
                 disabled: window.menuIndex==0
                 onClicked: {
@@ -140,6 +142,7 @@ UniDeskWindow{
                 }
             }
             UniDeskMenuItem{
+                id: insert_page_item2
                 text: qsTr("在下方新建页面")
                 onClicked: {
                     if(window.menuIndex==comManager.page_list.count-1){
@@ -151,6 +154,7 @@ UniDeskWindow{
                 }
             }
             UniDeskMenuItem{
+                id: switch_page_item
                 text: qsTr("切换到此页")
                 onClicked: {
                     comManager.toggle_page_to(comManager.pindex2pid(window.menuIndex));
@@ -158,6 +162,7 @@ UniDeskWindow{
                 }
             }
             UniDeskMenuItem{
+                id: move_page_up_item
                 text: qsTr("上移")
                 disabled: window.menuIndex==0 || window.menuIndex==1
                 onClicked: {
@@ -165,6 +170,7 @@ UniDeskWindow{
                 }
             }
             UniDeskMenuItem{
+                id: move_page_down_item
                 text: qsTr("下移")
                 disabled: window.menuIndex==0 || window.menuIndex==comManager.page_list.count-1
                 onClicked: {
@@ -172,21 +178,26 @@ UniDeskWindow{
                 }
             }
             UniDeskMenuItem{
+                id: copy_page_item
                 text: qsTr("复制")
                 onClicked: {
                     comManager.copy_page(window.menuIndex)
                 }
             }
             UniDeskMenuItem{
+                id: clear_page_item
                 text: qsTr("清空")
-                disabled: comManager.compModels.get(window.menuIndex).value.count==0
+                textColor: Qt.rgba(1,0,0,1)
+                disabled: comManager.compModels.get(window.menuIndex) ? comManager.compModels.get(window.menuIndex).value.count==0 : false
                 onClicked: {
                     comManager.clear_page(window.menuIndex)
                     liview.model=comManager.compModels.get(window.currentIndex).value
                 }
             }
             UniDeskMenuItem{
+                id: delete_page_item
                 text: qsTr("删除")
+                textColor: Qt.rgba(1,0,0,1)
                 disabled: window.menuIndex==0 || comManager.compModels.get(window.menuIndex).value.count>0
                 onClicked: {
                     // 调整currentIndex到安全范围
@@ -200,6 +211,16 @@ UniDeskWindow{
             }
             onAboutToHide: {
                 window.isMenuPopup=false;
+            }
+            onVisibleChanged:{
+                rename_page_item.disabled=comManager.pindex2pid(window.menuIndex)===0
+                insert_page_item1.disabled=window.menuIndex==0
+                insert_page_item2.disabled=window.menuIndex==comManager.page_list.count-1
+                switch_page_item.disabled=window.menuIndex==0
+                move_page_up_item.disabled=window.menuIndex==0 || window.menuIndex==1
+                move_page_down_item.disabled=window.menuIndex==0 || window.menuIndex==comManager.page_list.count-1
+                clear_page_item.disabled=comManager.compModels.get(window.menuIndex) ? comManager.compModels.get(window.menuIndex).value.count==0 : false
+                delete_page_item.disabled=window.menuIndex==0 || comManager.compModels.get(window.menuIndex).value.count>0
             }
         }
         Rectangle{
@@ -230,7 +251,7 @@ UniDeskWindow{
                         anchors.left: parent.left
                         anchors.leftMargin: 10
                         anchors.verticalCenter: parent.verticalCenter
-                        text: comManager.getComById(model.display).name
+                        text: comManager.getComById(model.display) ? comManager.getComById(model.display).name : ""
                     }
                     HoverHandler{
                         onHoveredChanged: {

@@ -42,7 +42,6 @@ UniDeskComBase{
             iconSource: "qrc:/media/img/edit.svg"
             onClicked: {
                 optionsFrame.show()
-                base.comManager.select_com(base);
             }
         }
         UniDeskMenuItem{
@@ -75,7 +74,7 @@ UniDeskComBase{
     }
     
     onRightClicked: {
-        if(base.comManager.selectMode===UniDeskComponentSelectMode.NoSelect){
+        if(base.comManager.selectMode!==UniDeskComponentSelectMode.MultiSelect){
             menu.popup(cont);
         }
     }
@@ -88,7 +87,7 @@ UniDeskComBase{
             "x": base.x,
             "y": base.y,
             "name": base.name,
-            "parent": base.parent === comManager.root.contentItem ? "Desktop" : base.parent.identification,
+            "parent": base.comManager.getComId(base.parent),
             "width": base.width,
             "height": base.height,
             "borderWidth": base.borderWidth,

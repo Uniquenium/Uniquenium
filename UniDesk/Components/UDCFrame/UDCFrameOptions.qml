@@ -50,7 +50,7 @@ UniDeskWindow{
         }
         
         UniDeskText{
-            text: qsTr("父组件")
+            text: qsTr("父组件（设为壁纸层将冻结组件）")
             font: UniDeskTextStyle.little
             anchors.left: parent.left
             anchors.margins: 10
@@ -69,8 +69,10 @@ UniDeskWindow{
                 editingComponent.changeParentWithoutMoving(p);
                 editingComponent.saveComToFile();
             }
+            Component.onCompleted: {
+                currentIndex=getIndexByCom(currentComponent);
+            }
         }
-        
         UniDeskPosSelector{
             id: posSelector
             comManager: window.comManager

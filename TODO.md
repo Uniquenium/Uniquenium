@@ -18,16 +18,15 @@
   - [x] Improve Component Identity Generation(Use UUID instead of index)
   - [x] Hotkeys
   - [x] Main Panel Color, Orientation, and Position
-
   - [x] Click/Edit Toggle
   - [x] Multi Component Edition
-  - [ ] Topmost Layer
-  - [ ] Cursor Style
-
+  - [x] Topmost Layer
+  - [x] Native Cursor Style 
+  
+  - [ ] QML Cursor Style 
   - [ ] Auto Start With Booting Support
   - [ ] Tree View in Page Manage Window
   - [ ] Component Z-Index Swaping
-  
   - [ ] Templete
   - [ ] Theme
   - [ ] Linux Support

@@ -27,7 +27,9 @@ UniDeskObject{
         property bool isExpand: true
         UniDeskComManager{
             id: component_manager
+            wallpaperLayer: custom_wallpaper
             root: object
+            topMostLayer: top_most_layer
             comWindow: UniDeskComWindow
         }
         Item {
@@ -166,7 +168,7 @@ UniDeskObject{
                     iconSource: "qrc:/media/img/multiselect.svg"
                     bgNormalColor: component_manager.selectMode===UniDeskComponentSelectMode.MultiSelect ? 
                     (UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight.lighter(1.2) : UniDeskSettings.mainPanelColorDark.darker(1.2)) : "transparent";
-                    bgHoverColor: component_manager.selectMode===UniDeskComponentSelectMode.SingleSelect ? 
+                    bgHoverColor: component_manager.selectMode===UniDeskComponentSelectMode.MultiSelect ? 
                     (UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight.lighter(1.2) : UniDeskSettings.mainPanelColorDark.darker(1.2)) : 
                     (UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2))
                     bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
@@ -403,18 +405,39 @@ UniDeskObject{
             component_manager.currentPid=UniDeskComponentsData.getCurrentPage();
             component_manager.loadPagesFromData();
             component_manager.loadComponentsFromData();      
-            //强制改变一次qsTr得到的内容   确保ComboBox的currentIndex正确
-            UniDeskGlobals.translate(object, "en_US")
             // 加载保存的语言设置
             UniDeskGlobals.translate(object, UniDeskSettings.language)
         }
         function updateMouseClickThrough(pos){
-            let moac=component_manager.mouse_on_any_com(pos)
+            let moac=component_manager.mouse_on_any_com(pos,"Desktop")
             let bcgp=base.contains(base.mapFromGlobal(pos))
-            mouseClickThrough=!(moac||bcgp);
+            object.mouseClickThrough=!(moac||bcgp);
         }
     }
-    
+    UniDeskRoot{
+        id: top_most_layer
+        x:0
+        y:0
+        width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight
+        flags: Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint 
+        mouseClickThrough: true
+        title: qsTr("UniDesk")
+        visible: rootObject.appVisible
+        color: "transparent"
+        Rectangle{
+            id: rect_bg_top_layer
+            anchors.fill: parent
+            color: "transparent"
+        }
+        onMouseMoved:(pos) => {
+            updateMouseClickThrough(pos);
+        }
+        function updateMouseClickThrough(pos){
+            let moac=component_manager.mouse_on_any_com(pos,"TopMost")
+            top_most_layer.mouseClickThrough=!(moac);
+        }
+    }
     UniDeskCustomWallpaper{
         id: custom_wallpaper
         x:0

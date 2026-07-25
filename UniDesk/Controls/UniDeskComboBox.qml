@@ -9,14 +9,25 @@ import UniDesk.Controls
 import UniDesk.Singletons
 import UniDesk
 
-T.ComboBox {
+UniDeskButton {
     id: control
 
     property bool enableFontDelegate: false
     property bool enableComDelegate: false
     property var comManager
+    property int currentIndex: 0
+    property var model: []
+    property bool editable: false
+    property string displayText: model[currentIndex]
+    property string editText: displayText
+    property int inputMethodHints: Qt.ImhNoPredictiveText
+    property var validator: null
+    property bool selectTextByMouse: false
+    property string currentText: displayText ? displayText : editText
+    signal activated()
     padding: 5
     height: 30
+    verticalPadding: 0
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
@@ -26,40 +37,22 @@ T.ComboBox {
     leftPadding: padding + (!control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
     rightPadding: padding + (control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
     
-    delegate: UniDeskMenuItem {
-        required property var model
-        required property int index
 
-        width: ListView.view.width
-        text: model[control.textRole]
-        font: control.enableFontDelegate ? UniDeskTools.font(model[control.textRole],13) : UniDeskTextStyle.little
-
-        highlighted: control.highlightedIndex === index
-        hoverEnabled: control.hoverEnabled
-        onHighlightedChanged: {
-            if(control.enableComDelegate){
-                var com=control.getComByIndex(index)
-                if(com){
-                    com.indicated=highlighted;
-                }
-            }
-        }
-    }
-
-    indicator: UniDeskIcon {
+    UniDeskIcon {
+        id: icon_
         x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
-        source: popup.visible ? "qrc:/media/img/arrow-up-s-line.svg" : "qrc:/media/img/arrow-down-s-line.svg"
+        source: menu.visible ? "qrc:/media/img/arrow-up-s-line.svg" : "qrc:/media/img/arrow-down-s-line.svg"
         iconSize: 15
         opacity: enabled ? 1 : 0.3
         iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     }
 
     contentItem: UniDeskTextField {
+        id: field
         leftPadding: !control.mirrored ? 12 : control.editable && activeFocus ? 3 : 1
         rightPadding: control.mirrored ? 12 : control.editable && activeFocus ? 3 : 1
-        topPadding: 6 - control.padding
-        bottomPadding: 6 - control.padding
+        
 
         text: control.editable ? control.editText : control.displayText
         enabled: control.editable
@@ -79,8 +72,25 @@ T.ComboBox {
             color: "transparent"
         }
         enableFontDelegate: control.enableFontDelegate
+        onPressed:{
+            if(field.activeFocus){
+                control.clicked()
+            }
+        }
+        onAccepted:{
+            for(var i=0;i<control.model.length;i++){
+                if(control.model[i]===text){
+                    control.currentIndex = i;
+                    control.activated()
+                    break;
+                }
+            }
+        }
     }
-
+    Item{
+        id: d
+        property var window: Window.window
+    }
     background: Rectangle {
         implicitWidth: 140
         implicitHeight: 40
@@ -91,44 +101,58 @@ T.ComboBox {
         radius: 5
         visible: !control.flat || control.down
     }
-
-    popup: T.Popup {
-        y: control.height
+    onClicked: {
+        if(menu.count !==0){
+            var pos = control.mapToItem(null, 0, 0)
+            var containerHeight = menu.count*36
+            if(d.window.height>pos.y+control.height+containerHeight){
+                menu.y = control.height
+            }else if(pos.y>containerHeight){
+                menu.y = -containerHeight
+            }else{
+                menu.y = d.window.height-(pos.y+containerHeight)
+            }
+            menu.open()
+        }
+    }
+    UniDeskMenu{
+        id:menu
         width: control.width
         height: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin)
-        topMargin: 6
-        bottomMargin: 6
-        contentItem: ListView {
-            clip: true
-            implicitHeight: contentHeight
-            model: control.delegateModel
-            currentIndex: control.highlightedIndex
-            highlightMoveDuration: 10
-            ScrollBar.vertical: ScrollBar {}
+        onAboutToHide: {
+            icon_.source = "qrc:/media/img/arrow-down-s-line.svg"
         }
-
-        background: Rectangle {
-            width: parent.width
-            height: parent.height
-            color: UniDeskGlobals.isLight ? Qt.rgba(1, 1, 1 , 0.7) : Qt.rgba(0,0,0, 0.7)
-            border.color: UniDeskGlobals.isLight ? Qt.rgba(0, 0, 0,1) : Qt.rgba(1, 1, 1, 1)
-            border.width: 1
-            radius: 3
+        onAboutToShow: {
+            icon_.source = "qrc:/media/img/arrow-up-s-line.svg"
         }
-        enter: Transition {
-            NumberAnimation {
-                property: "opacity"
-                from: 0
-                to: 1
-                duration: 100
+        popupType: Popup.Item
+        Instantiator{
+            id: instantiator
+            model: control.model
+            delegate: UniDeskMenuItem {
+                required property var model
+                required property int index
+                text: control.model[index]
+                font: control.enableFontDelegate ? UniDeskTools.font(control.model[index],13) : UniDeskTextStyle.little  
+                hoverEnabled: control.hoverEnabled
+                onHighlightedChanged: {
+                    if(control.enableComDelegate){
+                        let com=control.getComByIndex(index)
+                        if(com){
+                            com.indicated=highlighted;
+                        }
+                    }
+                }
+                onTriggered: {
+                    control.currentIndex=index;
+                    control.activated()
+                }
             }
-        }
-        exit: Transition {
-            NumberAnimation {
-                property: "opacity"
-                from: 1
-                to: 0
-                duration: 100
+            onObjectAdded: function(index, obj){
+                menu.insertItem(index, obj)
+            }
+            onObjectRemoved: function(index,obj){
+                menu.removeItem(obj)
             }
         }
     }

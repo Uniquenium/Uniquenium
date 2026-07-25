@@ -23,7 +23,10 @@ UniDeskObject{
     property list<string> typename_list
     property list<var> componentInfoList
     property ListModel compModels: ListModel{}
+    property ListModel tempInfo: ListModel{}
+    property var wallpaperLayer
     property var root
+    property var topMostLayer
     property var comWindow
     property var selectMode: UniDeskComponentSelectMode.NoSelect
     property list<Item> selectedComponents
@@ -98,34 +101,15 @@ UniDeskObject{
         compModels.remove(index);
     }
     function copy_com(com){
-        // 获取源组件的类型和属性数据
-        var typename = com.type;
-        var data = com.propertyData();
-        // 查找类型索引
-        var typid = typename_list.indexOf(typename);
-        if (typid === -1) return;
         // 创建新组件（位置偏移delta）
         let uuid = UniDeskTools.createUuid();
-        var new_com = type_list[typid].createObject(com.parent, {
-            "name": qsTr(typename) + " " + serialComponentCnt,
+        var new_com=copy_com_basic(com,{
             "identification": uuid,
             "pageid": com.pageid,
-            "comManager": object,
+            "x": com.x+50,
+            "y": com.y+50,
+            "name": qsTr(com.type) + " " + serialComponentCnt
         });
-        // 设置属性数据（使用新的identification）
-        new_com.loadPropertyData(data);
-        new_com.x=com.x+50;
-        new_com.y=com.y+50;
-        new_com.name = qsTr(typename) + " " + serialComponentCnt;
-        // 添加到列表
-        UniDeskComponentsData.addComponent(new_com.propertyData());
-        component_list.push(new_com);
-        // 设置可见性
-        new_com.visible = new_com.pageid === currentPid;
-        // 更新索引
-        serialComponentCnt += 1;
-        // 更新右侧列表
-        compModels.get(pid2pindex(new_com.pageid)).value.append({"display": new_com.identification});
         return new_com;
     }
     function delete_com(id){
@@ -137,6 +121,9 @@ UniDeskObject{
         }
         UniDeskComponentsData.removeComponent(id);
         component_list.splice(getIndexById(id),1);
+        
+        if(selectedComponents.indexOf(com)!==-1)selectedComponents.splice(selectedComponents.indexOf(com),1);
+        update_need_move_com();
         var pidx=pid2pindex(com.pageid)
         for(var i=0;i<compModels.get(pidx).value.count;i++){
             if(compModels.get(pidx).value.get(i).display===id){
@@ -164,48 +151,31 @@ UniDeskObject{
         compModels.append({"value": com_tree_model.createObject(null, {})});
         UniDeskComponentsData.addPage({"text": newPageName, "pid": newPid});
         serialPageCnt+=1;
+        var oldIds=[];
+        var newIds=[];
         // 复制该页面的所有组件
         for (var i = 0; i < component_list.length; i++) {
             var com = component_list[i];
             if (com.pageid === sourcePid) {
-                // 复制组件到新页面
-                var typename = com.type;
-                var data = com.propertyData();
-                var typid = typename_list.indexOf(typename);
-                if (typid === -1) continue;
-                
-                let uuid = UniDeskTools.createUuid();
-                var new_com = type_list[typid].createObject(com.parent, {
-                    "name": qsTr(typename) + " " + serialComponentCnt,
-                    "identification": uuid,
+                var new_com=copy_com_basic(com,{
+                    "identification": UniDeskTools.createUuid(),
                     "pageid": newPid,
-                    "comManager": object,
                     "x": com.x,
-                    "y": com.y
-                });
-                
-                new_com.loadPropertyData(data);
-                new_com.pageid=newPid;
-                new_com.name = qsTr(typename) + " " + serialComponentCnt;
-                new_com.visible = new_com.pageid === currentPid;
-                
-                UniDeskComponentsData.addComponent(new_com.propertyData());
-                component_list.push(new_com);
-                compModels.get(pid2pindex(newPid)).value.append({"display": new_com.identification});
-                serialComponentCnt += 1;
+                    "y": com.y,
+                    "name": qsTr(com.type) + " " + serialComponentCnt
+                })
+                oldIds.push(com.identification);
+                newIds.push(new_com.identification);
             }
         }
-        
+        for(var i=0;i<newIds.length;i++){
+            var com=getComById(newIds[i]);
+            if(com.parent.identification){
+                com.parent=getComById(newIds[oldIds.indexOf(getComId(com.parent))]);
+            }
+            com.saveComToFile();
+        }
         return newPid;
-    }
-    function validateName(name){
-        if(name===""||name===qsTr("桌面"))return false;
-        for(var i=0;i<component_list.length;i++){
-            if(component_list[i].name===name){
-                return false;
-            }
-        }
-        return true;
     }
     function getIndexById(id){
         for(var i=0;i<component_list.length;i++){
@@ -216,8 +186,14 @@ UniDeskObject{
         return -1;
     }
     function getComById(id){
-        if(id==="Desktop"){
+        if(id==="Wallpaper"){
+            return wallpaperLayer.contentItem;
+        }
+        else if(id==="Desktop"){
             return root.contentItem;
+        }
+        else if(id==="TopMost"){
+            return topMostLayer.contentItem;
         }
         for(var i=0;i<component_list.length;i++){
             if(component_list[i].identification===id){
@@ -235,12 +211,24 @@ UniDeskObject{
         return -1;
     }
     function loadComponentsFromData(){
+        tempInfo.clear();
+        for(var i=0;i<component_list.length;i++){
+            tempInfo.append({"id":component_list[i].identification,"optionsWindowVis":component_list[i].optionsWindow ? component_list[i].optionsWindow.visible : false});
+            component_list[i].closeSignal();
+            component_list[i].visible=false;
+            UniDeskUtils.deleteLater(component_list[i]);
+        }
+        component_list=[];
+        for(var i=0;i<compModels.count;i++){
+            compModels.get(i).value.clear();
+        }
         var data=UniDeskComponentsData.getComponents();
         for(var i=0;i<data.length;i++){
             var id_num=data[i].identification;
             var new_com;
             for(var j=0;j<typename_list.length;j++){
                 if(data[i].type===typename_list[j]){
+                    //set parent to desktop layer temporarily
                     new_com=type_list[j].createObject(root.contentItem,{"identification":data[i].identification,"pageid": data[i].pageid,"comManager":object,"x":data[i].x,"y":data[i].y});
                     new_com.loadPropertyData(data[i]); 
                 }
@@ -254,6 +242,12 @@ UniDeskObject{
             var com=getComById(id_num);
             if(com){
                 com.parent=getComById(data[i].parent);
+            }
+        }
+        for(var i=0;i<tempInfo.count;i++){
+            var com=getComById(tempInfo.get(i).id);
+            if(tempInfo.get(i).optionsWindowVis){
+                com.optionsWindow.show();
             }
         }
     }
@@ -345,10 +339,10 @@ UniDeskObject{
         c.pageid=pindex2pid(indexPage);
         c.saveComToFile();
     }
-    function mouse_on_any_com(mousePos){
+    function mouse_on_any_com(mousePos,layer){
         for(var i=0;i<component_list.length;i++){
             if(component_list[i].visible){
-                if(component_list[i].containsGlobalPoint(mousePos)){
+                if(component_list[i].containsGlobalPoint(mousePos)&&component_list[i].currentLayer()===layer){
                     return true;
                 }
             }
@@ -423,14 +417,47 @@ UniDeskObject{
     }
     function multi_move(offsetX,offsetY){
         for(var i=0;i<needMoveComponents.length;i++){
-            needMoveComponents[i].x=needMoveComponents[i].initialBaseX+offsetX;
-            needMoveComponents[i].y=needMoveComponents[i].initialBaseY+offsetY;
-            needMoveComponents[i].saveComToFile();
+            if(needMoveComponents[i].pageid===currentPid){
+                needMoveComponents[i].x=needMoveComponents[i].initialBaseX+offsetX;
+                needMoveComponents[i].y=needMoveComponents[i].initialBaseY+offsetY;
+                needMoveComponents[i].saveComToFile();
+            }
         }
     }
     onSelectModeChanged: {
         if(selectMode!==UniDeskComponentSelectMode.MultiSelect){
             unselect_all_com();
         }
+    }
+    function getComId(com){
+        if(com===wallpaperLayer.contentItem){
+            return "Wallpaper";
+        }
+        else if(com===root.contentItem){
+            return "Desktop";
+        }
+        else if(com===topMostLayer.contentItem){
+            return "TopMost";
+        }
+        else{
+            return com.identification;
+        }
+    }
+    function copy_com_basic(com,data){
+        var new_com = type_list[typename_list.indexOf(com.type)].createObject(com.parent, {
+            "comManager": object
+        });
+        new_com.loadPropertyData(com.propertyData());
+        new_com.name=data.name;
+        new_com.identification=data.identification;
+        new_com.pageid=data.pageid;
+        new_com.x=data.x;
+        new_com.y=data.y;
+        new_com.visible = new_com.pageid === currentPid;
+        UniDeskComponentsData.addComponent(new_com.propertyData());
+        component_list.push(new_com);
+        compModels.get(pid2pindex(data.pageid)).value.append({"display": new_com.identification});
+        serialComponentCnt += 1;
+        return new_com;
     }
 }

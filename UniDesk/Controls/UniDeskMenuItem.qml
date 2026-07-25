@@ -56,7 +56,7 @@ T.MenuItem {
                 id:content_text
                 text: root.text
                 font: root.font
-                color: enabled ? root.textColor : Qt.rgba(0.5,0.5,0.5,1)
+                color: enabled ? root.textColor : Qt.rgba(0,0,0,0.5)
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
