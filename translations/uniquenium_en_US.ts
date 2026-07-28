@@ -52,68 +52,68 @@
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="68"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="64"/>
         <source>主题色</source>
         <translation>Accent Color</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="90"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="86"/>
         <source>全局字体</source>
         <translation>Global Font</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="114"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="110"/>
         <source>自定义字体</source>
         <translation>Custom Font</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="199"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="195"/>
         <source>壁纸</source>
         <translation>Wallpaper</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="225"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="221"/>
         <source>关闭</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="234"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="230"/>
         <source>使用自定义API壁纸</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="259"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="255"/>
         <source>API地址</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="265"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="261"/>
         <source>https://api.example.com/images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="276"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="272"/>
         <source>提取表达式</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="282"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="278"/>
         <source>response.data[0].url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="298"/>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="426"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="294"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="422"/>
         <source>刷新间隔（秒）</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="587"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="583"/>
         <source>启用自定义光标</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="599"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="595"/>
         <source>自定义光标样式路径</source>
         <translation type="unfinished"></translation>
     </message>
@@ -126,77 +126,77 @@
         <translation type="vanished">Refresh Interval (seconds, 0 to disable)</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="320"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="316"/>
         <source>自定义图片/动图</source>
         <translation>Custom Image/GIF</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="339"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="335"/>
         <source>图片列表</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="405"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="401"/>
         <source>添加图片</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="447"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="443"/>
         <source>自定义视频</source>
         <translation>Custom Video</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="471"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="467"/>
         <source>音量</source>
         <translation>Volume</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="494"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="490"/>
         <source>主面板</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="508"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="504"/>
         <source>颜色(深色)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="514"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="510"/>
         <source>颜色(浅色)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="520"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="516"/>
         <source>方向</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="526"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="522"/>
         <source>位置</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="560"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="556"/>
         <source>横向</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="560"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="556"/>
         <source>纵向</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="571"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="567"/>
         <source>顶部</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="571"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="567"/>
         <source>底部</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="579"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/AppearanceView.qml" line="575"/>
         <source>鼠标</source>
         <translation>Mouse</translation>
     </message>
@@ -257,30 +257,26 @@
 <context>
     <name>UDCFrame</name>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrame.qml" line="41"/>
         <source>编辑</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrame.qml" line="48"/>
         <source>复制</source>
-        <translation>Copy</translation>
+        <translation type="vanished">Copy</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrame.qml" line="55"/>
         <source>新建子组件</source>
-        <translation>New Sub-component</translation>
+        <translation type="vanished">New Sub-component</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrame.qml" line="62"/>
         <source>删除</source>
-        <translation>Delete</translation>
+        <translation type="vanished">Delete</translation>
     </message>
 </context>
 <context>
     <name>UDCFrameOptions</name>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="16"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="15"/>
         <source>框架选项</source>
         <translation>Frame Options</translation>
     </message>
@@ -289,12 +285,12 @@
         <translation type="vanished">Component Name (must be unique)</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="31"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="30"/>
         <source>组件名称</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="42"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="41"/>
         <source>请输入组件名称</source>
         <translation>Enter component name</translation>
     </message>
@@ -303,37 +299,37 @@
         <translation type="vanished">Parent Component</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="53"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="52"/>
         <source>父组件（设为壁纸层将冻结组件）</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="97"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="96"/>
         <source>边框宽度</source>
         <translation>Border Width</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="123"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="122"/>
         <source>边框圆角</source>
         <translation>Border Radius</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="149"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="148"/>
         <source>边框颜色</source>
         <translation>Border Color</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="171"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="170"/>
         <source>背景颜色</source>
         <translation>Background Color</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="194"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="193"/>
         <source>旋转角度</source>
         <translation>Rotation Angle</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="221"/>
+        <location filename="../UniDesk/Components/UDCFrame/UDCFrameOptions.qml" line="220"/>
         <source>透明度</source>
         <translation>Opacity</translation>
     </message>
@@ -341,24 +337,20 @@
 <context>
     <name>UDCImage</name>
     <message>
-        <location filename="../UniDesk/Components/UDCImage/UDCImage.qml" line="83"/>
         <source>编辑</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCImage/UDCImage.qml" line="90"/>
         <source>复制</source>
-        <translation>Copy</translation>
+        <translation type="vanished">Copy</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCImage/UDCImage.qml" line="97"/>
         <source>新建子组件</source>
-        <translation>New Sub-component</translation>
+        <translation type="vanished">New Sub-component</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCImage/UDCImage.qml" line="105"/>
         <source>删除</source>
-        <translation>Delete</translation>
+        <translation type="vanished">Delete</translation>
     </message>
 </context>
 <context>
@@ -510,35 +502,31 @@
 <context>
     <name>UDCText</name>
     <message>
-        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="16"/>
+        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="15"/>
         <source>文字</source>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="41"/>
-        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="99"/>
+        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="39"/>
+        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="66"/>
         <source>请输入文本内容</source>
         <translation>Enter text content</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="67"/>
         <source>编辑</source>
-        <translation>Edit</translation>
+        <translation type="vanished">Edit</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="74"/>
         <source>复制</source>
-        <translation>Copy</translation>
+        <translation type="vanished">Copy</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="81"/>
         <source>新建子组件</source>
-        <translation>New Sub-component</translation>
+        <translation type="vanished">New Sub-component</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Components/UDCText/UDCText.qml" line="88"/>
         <source>删除</source>
-        <translation>Delete</translation>
+        <translation type="vanished">Delete</translation>
     </message>
 </context>
 <context>
@@ -801,6 +789,29 @@
     </message>
 </context>
 <context>
+    <name>UniDeskComBase</name>
+    <message>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="45"/>
+        <source>编辑</source>
+        <translation type="unfinished">Edit</translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="54"/>
+        <source>复制</source>
+        <translation type="unfinished">Copy</translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="61"/>
+        <source>新建子组件</source>
+        <translation type="unfinished">New Sub-component</translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="68"/>
+        <source>删除</source>
+        <translation type="unfinished">Delete</translation>
+    </message>
+</context>
+<context>
     <name>UniDeskComBox</name>
     <message>
         <source>桌面</source>
@@ -825,27 +836,26 @@
 <context>
     <name>UniDeskComManager</name>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="37"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="38"/>
         <source>默认页面</source>
         <translation>Default Page</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="83"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="85"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="358"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="361"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="84"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="86"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="322"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="325"/>
         <source>页面</source>
         <translation>Page</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="168"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="149"/>
         <source>副本</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="209"/>
         <source>桌面</source>
-        <translation>Desktop</translation>
+        <translation type="vanished">Desktop</translation>
     </message>
 </context>
 <context>
@@ -917,64 +927,64 @@
         <translation>Move to This Page</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="127"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="128"/>
         <source>重命名</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="136"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="138"/>
         <source>在上方新建页面</source>
         <translation>New Page Above</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="143"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="146"/>
         <source>在下方新建页面</source>
         <translation>New Page Below</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="154"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="158"/>
         <source>切换到此页</source>
         <translation>Switch to This Page</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="161"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="166"/>
         <source>上移</source>
         <translation>Move Up</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="168"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="174"/>
         <source>下移</source>
         <translation>Move Down</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="175"/>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="278"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="182"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="299"/>
         <source>复制</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="181"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="189"/>
         <source>清空</source>
         <translation>Clear</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="189"/>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="291"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="199"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="312"/>
         <source>删除</source>
         <translation>Delete</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="251"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="272"/>
         <source>添加组件</source>
         <translation>Add Component</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="265"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="286"/>
         <source>编辑</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="304"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="325"/>
         <source>移动到页面</source>
         <translation>Move to Page</translation>
     </message>
@@ -1141,159 +1151,159 @@
     <name>main</name>
     <message>
         <location filename="../main.qml" line="19"/>
-        <location filename="../main.qml" line="425"/>
-        <location filename="../main.qml" line="637"/>
+        <location filename="../main.qml" line="433"/>
+        <location filename="../main.qml" line="660"/>
         <source>UniDesk</source>
         <translation>UniDesk</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="80"/>
+        <location filename="../main.qml" line="84"/>
         <source>收起</source>
         <translation>Collapse</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="80"/>
+        <location filename="../main.qml" line="84"/>
         <source>展开</source>
         <translation>Expand</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="93"/>
+        <location filename="../main.qml" line="97"/>
         <source>退出</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="106"/>
+        <location filename="../main.qml" line="110"/>
         <source>系统</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="284"/>
+        <location filename="../main.qml" line="290"/>
         <source>上一页</source>
         <translation>Previous Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="119"/>
+        <location filename="../main.qml" line="123"/>
         <source>页面</source>
         <translation>Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="293"/>
+        <location filename="../main.qml" line="299"/>
         <source>下一页</source>
         <translation>Next Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="132"/>
+        <location filename="../main.qml" line="136"/>
         <source>设置</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="145"/>
+        <location filename="../main.qml" line="149"/>
         <source>选择</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="166"/>
+        <location filename="../main.qml" line="170"/>
         <source>多选</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="187"/>
+        <location filename="../main.qml" line="191"/>
         <source>添加组件</source>
         <translation>Add Component</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="216"/>
+        <location filename="../main.qml" line="221"/>
         <source>关机</source>
         <translation>Shut Down</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="224"/>
+        <location filename="../main.qml" line="229"/>
         <source>重启</source>
         <translation>Restart</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="232"/>
+        <location filename="../main.qml" line="237"/>
         <source>休眠</source>
         <translation>Sleep</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="240"/>
+        <location filename="../main.qml" line="245"/>
         <source>注销</source>
         <translation>Log Off</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="248"/>
+        <location filename="../main.qml" line="253"/>
         <source>锁屏</source>
         <translation>Lock</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="261"/>
+        <location filename="../main.qml" line="267"/>
         <source>切换页面</source>
         <translation>Switch Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="304"/>
+        <location filename="../main.qml" line="310"/>
         <source>添加页面</source>
         <translation>Add Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="312"/>
+        <location filename="../main.qml" line="318"/>
         <source>管理页面</source>
         <translation>Manage Pages</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="322"/>
+        <location filename="../main.qml" line="328"/>
         <source>确认退出</source>
         <translation>Confirm Exit</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="323"/>
+        <location filename="../main.qml" line="329"/>
         <source>确认要退出吗？</source>
         <translation>Are you sure you want to exit?</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="325"/>
-        <location filename="../main.qml" line="339"/>
-        <location filename="../main.qml" line="353"/>
-        <location filename="../main.qml" line="367"/>
+        <location filename="../main.qml" line="331"/>
+        <location filename="../main.qml" line="345"/>
+        <location filename="../main.qml" line="359"/>
+        <location filename="../main.qml" line="373"/>
         <source>确定</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="326"/>
-        <location filename="../main.qml" line="340"/>
-        <location filename="../main.qml" line="354"/>
-        <location filename="../main.qml" line="368"/>
+        <location filename="../main.qml" line="332"/>
+        <location filename="../main.qml" line="346"/>
+        <location filename="../main.qml" line="360"/>
+        <location filename="../main.qml" line="374"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="336"/>
+        <location filename="../main.qml" line="342"/>
         <source>确认关机</source>
         <translation>Confirm Shutdown</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="337"/>
+        <location filename="../main.qml" line="343"/>
         <source>确认要关机吗？</source>
         <translation>Are you sure you want to shut down?</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="350"/>
+        <location filename="../main.qml" line="356"/>
         <source>确认重启</source>
         <translation>Confirm Restart</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="351"/>
+        <location filename="../main.qml" line="357"/>
         <source>确认要重启吗？</source>
         <translation>Are you sure you want to restart?</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="364"/>
+        <location filename="../main.qml" line="370"/>
         <source>确认注销</source>
         <translation>Confirm Log Off</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="365"/>
+        <location filename="../main.qml" line="371"/>
         <source>确认要注销吗？</source>
         <translation>Are you sure you want to log off?</translation>
     </message>

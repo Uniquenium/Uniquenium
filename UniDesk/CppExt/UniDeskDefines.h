@@ -125,6 +125,29 @@ Q_ENUM_NS(ComponentSelectMode)
 QML_NAMED_ELEMENT(UniDeskComponentSelectMode)
 }
 
+namespace UniDeskCursorStdState {
+Q_NAMESPACE
+enum CursorStdState {
+    Arrow = 0,
+    IBeam = 1,
+    Wait = 2,
+    Crosshair = 3,
+    Hand = 4,
+    Help = 5,
+    SizeAll = 6,
+    SizeNESW = 7,
+    SizeNS = 8,
+    SizeNWSE = 9,
+    SizeWE = 10,
+    UpArrow = 11,
+    AppStarting = 12,
+    Pin = 13,
+    No = 14,
+};
 
+Q_ENUM_NS(CursorStdState)
+
+QML_NAMED_ELEMENT(UniDeskCursorStdState)
+}
 
 #endif // UNIDESKDEFINES_H

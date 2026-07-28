@@ -22,8 +22,10 @@
   - [x] Multi Component Edition
   - [x] Topmost Layer
   - [x] Native Cursor Style 
-  
-  - [ ] QML Cursor Style 
+
+  - QML Cursor Style 
+    - [x] Blank Cursor For Hidding Cursor
+    - [x] Getting Cursor Standard State Support (Timer Bug)
   - [ ] Auto Start With Booting Support
   - [ ] Tree View in Page Manage Window
   - [ ] Component Z-Index Swaping
@@ -38,6 +40,7 @@
   - [ ] Wallpaper breaks on Windows 10
   - [x] Expr double % Converting bug
   - [ ] Clickthrough is broken on Windows 10
+  - [ ] Window Updating is Blocked when Moving or Resizing QQuickWindow
   - [x] App Can't Exit Successfully if Wallpaper Video is Set
 - Components in Official Plugin
   - [ ] Calculator
@@ -58,6 +61,7 @@
   - [ ] Screen Using Time
   - [ ] ClipBoard
   - [ ] Encoder/Decoder
+  - [ ] Weather
   - [ ] Chart(CPU,GPU,Network status,etc.)
 
 

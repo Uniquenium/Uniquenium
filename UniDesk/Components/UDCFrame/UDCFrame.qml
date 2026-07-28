@@ -1,4 +1,3 @@
-// e:\Uniquenium\Uniquenium\UniDesk\Components\UDCFrame\UDCFrame.qml
 import QtQuick 
 import QtQuick.Controls 
 import QtQuick.Layouts
@@ -13,10 +12,8 @@ import UniDesk.Components.UDCFrame
 UniDeskComBase{
     id: base
     visible: true
-    type: "UDCFrame"
     width: 200
     height: 150
-    optionsWindow: optionsFrame
     chosen: comManager.selectMode===UniDeskComponentSelectMode.NoSelect ? (optionsWindow.visible) : selected
     // 框架属性
     property int borderWidth: 1
@@ -35,40 +32,7 @@ UniDeskComBase{
         opacity: base.itemOpacity
     }
     
-    UniDeskMenu{
-        id: menu
-        UniDeskMenuItem{
-            text: qsTr("编辑")
-            iconSource: "qrc:/media/img/edit.svg"
-            onClicked: {
-                optionsFrame.show()
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("复制")
-            iconSource: "qrc:/media/img/copy.svg"
-            onClicked: {
-                base.copyCom();
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("新建子组件")
-            iconSource: "qrc:/media/img/add-line.svg"
-            onClicked: {
-                base.createSubComponent();
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("删除")
-            iconSource: "qrc:/media/img/delete-bin.svg"
-            onClicked: {
-                base.deleteCom();
-            }
-        }
-    }
-    
-    UDCFrameOptions{
-        id: optionsFrame
+    optionsWindow: UDCFrameOptions{
         editingComponent: base
         comManager: base.comManager
     }
@@ -128,9 +92,4 @@ UniDeskComBase{
         UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
     }
     
-    onCloseSignal: ()=>{
-        if(optionsFrame){
-            optionsFrame.close();
-        }
-    }
 }

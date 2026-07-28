@@ -58,10 +58,6 @@ ScrollView{
             UniDeskSettings.set("colorMode", currentIndex);
             UniDeskGlobals.updateIsLight();
         }
-        onModelChanged: {
-            currentIndex = UniDeskSettings.colorMode
-            UniDeskGlobals.updateIsLight();
-        }
     }
     UniDeskText{
         id: labelPrimaryColor
@@ -591,7 +587,7 @@ ScrollView{
         checked: UniDeskSettings.customCursorEnabled
         onCheckedChanged: {
             UniDeskSettings.set("customCursorEnabled", checked);
-            view.updateCursorStyle();
+            view.updateCursorStyle(UniDeskSettings.customCursorStylePath);
         }
     }
     UniDeskText{
@@ -611,15 +607,16 @@ ScrollView{
         mode: UniDeskFileMode.FileModeFolder
         path: UniDeskSettings.customCursorStylePath
         onSubmit: {
-            UniDeskSettings.set("customCursorStylePath", path);
-            view.updateCursorStyle();
+            if(view.updateCursorStyle(path)){
+                UniDeskSettings.set("customCursorStylePath", path);
+            }
         }
     }
-    function updateCursorStyle(){
-        if (UniDeskSettings.customCursorEnabled&&(!(UniDeskSettings.customCursorStylePath===""))) {
-            UniDeskCursorManager.loadCustomByPath(UniDeskSettings.customCursorStylePath);
+    function updateCursorStyle(path){
+        if (UniDeskSettings.customCursorEnabled&&(!(path===""))) {
+            return UniDeskCursorManager.loadCustomByPath(path);
         } else {
-            UniDeskCursorManager.restoreSystem();
+            return UniDeskCursorManager.restoreSystem();
         }
     }
     contentHeight: pathSelector3.height+pathSelector3.y+10

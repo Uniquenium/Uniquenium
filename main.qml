@@ -14,8 +14,8 @@ UniDeskObject{
         id: object
         x:0
         y:0
-        width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight
+        width: Screen.width
+        height: Screen.height
         title: qsTr("UniDesk")
         visible: rootObject.appVisible
         color: "transparent"
@@ -31,6 +31,10 @@ UniDeskObject{
             root: object
             topMostLayer: top_most_layer
             comWindow: UniDeskComWindow
+            onMenuClosed: {
+                object.updateMouseClickThrough(UniDeskTools.getCursorPosition());
+                top_most_layer.updateMouseClickThrough(UniDeskTools.getCursorPosition());
+            }
         }
         Item {
             id: base
@@ -211,6 +215,7 @@ UniDeskObject{
             UniDeskMenu{
                 y: btn_system.y
                 id: system_menu
+                comManager: component_manager
                 UniDeskMenuItem{
                     id: mi_shutdown
                     text: qsTr("关机")
@@ -256,6 +261,7 @@ UniDeskObject{
             UniDeskMenu{
                 y: btn_page.y
                 id: page_menu
+                comManager: component_manager
                 UniDeskMenu{
                     id: mi_toggle_page
                     title: qsTr("切换页面")
@@ -411,15 +417,17 @@ UniDeskObject{
         function updateMouseClickThrough(pos){
             let moac=component_manager.mouse_on_any_com(pos,"Desktop")
             let bcgp=base.contains(base.mapFromGlobal(pos))
-            object.mouseClickThrough=!(moac||bcgp);
+            let anyMenuOpen = system_menu.visible||page_menu.visible;
+            object.mouseClickThrough=!(moac||bcgp||anyMenuOpen);
         }
     }
     UniDeskRoot{
         id: top_most_layer
+        property Component cursor_component
         x:0
         y:0
-        width: Screen.desktopAvailableWidth
-        height: Screen.desktopAvailableHeight
+        width: Screen.width
+        height: Screen.height
         flags: Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint 
         mouseClickThrough: true
         title: qsTr("UniDesk")
@@ -430,12 +438,27 @@ UniDeskObject{
             anchors.fill: parent
             color: "transparent"
         }
+
+        Loader{
+            id: cursor_loader
+            visible: UniDeskCursorManager.isQmlCursor
+            sourceComponent: top_most_layer.cursor_component
+            x: 0
+            y: 0
+            z: 32767
+        }
         onMouseMoved:(pos) => {
             updateMouseClickThrough(pos);
         }
         function updateMouseClickThrough(pos){
             let moac=component_manager.mouse_on_any_com(pos,"TopMost")
             top_most_layer.mouseClickThrough=!(moac);
+        }
+        Connections{
+            target: UniDeskCursorManager
+            function onQmlCursorPathChanged() {
+                top_most_layer.cursor_component=Qt.createComponent(UniDeskCursorManager.qmlCursorPath);
+            }
         }
     }
     UniDeskCustomWallpaper{
@@ -637,5 +660,8 @@ UniDeskObject{
         UniDeskSystemTray.setTooltip(qsTr("UniDesk"))
         UniDeskSystemTray.setVisible(true)
         UniDeskSystemTray.setWindowVisible(appVisible)
+    }
+    Component.onDestruction:{
+        UniDeskCursorManager.restoreSystem();
     }
 }

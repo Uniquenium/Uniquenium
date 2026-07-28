@@ -11,10 +11,11 @@
 #include <QDir>
 #include <QSharedMemory>
 #include <QMessageBox>
+#include <QQuickWindow>
+#include <QSGRendererInterface>
 #include <UniDeskPluginMgr.h>
 
 int main(int argc,char* argv[]){
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc,argv);
     app.setWindowIcon(QIcon(":/media/logo/uq-l-bg.png"));
     // 防止多开：使用QSharedMemory共享内存检测是否已有实例运行
@@ -37,6 +38,30 @@ int main(int argc,char* argv[]){
     engine.load(url);
     if (engine.rootObjects().isEmpty())
         return -1;
+    QString graphicsApiUsed = "";
+    switch (QQuickWindow::graphicsApi()) {
+    case QSGRendererInterface::Unknown:
+        graphicsApiUsed = "Unknown";
+        break;
+    case QSGRendererInterface::Software:
+        graphicsApiUsed = "Software Rendering";
+        break;
+    case QSGRendererInterface::OpenGL:
+        graphicsApiUsed = "OpenGL Rendering";
+        break;
+    case QSGRendererInterface::Vulkan:
+        graphicsApiUsed = "Vulkan Rendering";
+        break;
+    case QSGRendererInterface::Direct3D11:
+        graphicsApiUsed = "Direct3D11 Rendering";
+        break;
+    case QSGRendererInterface::Direct3D12:
+        graphicsApiUsed = "Direct3D12 Rendering";
+        break;
+    default:
+        graphicsApiUsed = "Unknown";
+    }
+    qDebug() << "Using graphical API: " << graphicsApiUsed;
     qDebug()<<"Application Launched Successfully.";
     return app.exec();
 }

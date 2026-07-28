@@ -16,7 +16,8 @@ T.Menu {
     margins: 0
     overlap: 1
     spacing: 0
-    popupType: Popup.Window
+    property var comManager
+    // popupType: Popup.Window
     delegate: UniDeskMenuItem {}
     enter: Transition {
         NumberAnimation {
@@ -60,6 +61,11 @@ T.Menu {
     T.Overlay.modeless: Rectangle {
         color: "transparent"
         radius: window.windowVisibility === Window.Maximized ? 0 : 3
+    }
+    onClosed:{
+        if(comManager){
+            comManager.menuClosed()
+        }
     }
 }
 

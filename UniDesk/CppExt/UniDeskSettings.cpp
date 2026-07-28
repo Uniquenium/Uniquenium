@@ -50,8 +50,8 @@ static QJsonObject defaultSettings() {
     obj["mainPanelColorDark"] = mainPanelColorDark;
     QJsonObject mainPanelColorLight{{"<type>", "QColor"},{"red", 255},{"green",255},{"blue",255},{"alpha",150}};
     obj["mainPanelColorLight"] = mainPanelColorLight;
-    obj["mainPanelOrientation"] = 0;           // 默认横向
-    obj["mainPanelPosition"] = 1;              // 默认底部
+    obj["mainPanelOrientation"] = 1;           // 默认纵向
+    obj["mainPanelPosition"] = 0;              // 默认顶部
     obj["customCursorEnabled"] = false;          // 默认关闭自定义光标
     obj["customCursorStylePath"] = QString();
     return obj;

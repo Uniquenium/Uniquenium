@@ -39,6 +39,44 @@ Item{
     property real initialBaseY: 0
     property real itemOpacity: 1
     transformOrigin: Item.TopLeft
+    property var menu: UniDeskMenu{
+        comManager: base.comManager
+        UniDeskMenuItem{
+            text: qsTr("编辑")
+            iconSource: "qrc:/media/img/edit.svg"
+            onClicked: {
+                if(base.optionsWindow){
+                    base.optionsWindow.show()
+                }
+            }
+        }
+        UniDeskMenuItem{
+            text: qsTr("复制")
+            iconSource: "qrc:/media/img/copy.svg"
+            onClicked: {
+                base.copyCom();
+            }
+        }
+        UniDeskMenuItem{
+            text: qsTr("新建子组件")
+            iconSource: "qrc:/media/img/add-line.svg"
+            onClicked: {
+                base.createSubComponent();
+            }
+        }
+        UniDeskMenuItem{
+            text: qsTr("删除")
+            iconSource: "qrc:/media/img/delete-bin.svg"
+            onClicked: {
+                base.deleteCom();
+            }
+        }
+    }
+    onRightClicked: {
+        if(base.comManager.selectMode!==UniDeskComponentSelectMode.MultiSelect){
+            menu.popup(base);
+        }
+    }
     Rectangle{
         id: rect_bg
         anchors.fill: parent
@@ -127,7 +165,7 @@ Item{
         }
     }
     function containsGlobalPoint(point) {
-        return base.contains(base.mapFromGlobal(point))||rect_border.hoverOnAnyButton(point);
+        return base.contains(base.mapFromGlobal(point))||rect_border.hoverOnAnyButton(point)||base.menu.visible;
     }
     function changeParentWithoutMoving(p){
         // 检查是否跨窗口重新父化
@@ -183,6 +221,11 @@ Item{
         target: comManager.root
         function onMouseMoved(){
             base.controlHovered = base.contains(base.mapFromGlobal(UniDeskTools.getCursorPosition()));
+        }
+    }
+    onCloseSignal: ()=>{
+        if(optionsWindow){
+            optionsWindow.close();
         }
     }
 }

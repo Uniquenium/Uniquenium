@@ -94,6 +94,7 @@ void UniDeskRoot::updateClickThrough() {
 }
 
 bool UniDeskRoot::eventFilter(QObject *obj, QEvent *event) {
+
     if (event->type() == QEvent::MouseMove) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
         if (mouseEvent) {

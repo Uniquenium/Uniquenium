@@ -12,7 +12,6 @@ import UniDesk.Components.UDCText
 UniDeskComBase{
     id: base
     visible: true
-    type: "UDCText"
     property string textContent: qsTr("文字")
     property color textColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1)
     property string fontFamily: UniDeskTextStyle.family
@@ -32,7 +31,6 @@ UniDeskComBase{
     property int wrapMode: Text.Wrap
     property int horizontalAlignment: Text.AlignHCenter
     property int verticalAlignment: Text.AlignVCenter
-    optionsWindow: optionsText
     chosen: comManager.selectMode===UniDeskComponentSelectMode.NoSelect ? (optionsWindow.visible) : selected
     width: 100
     height: 50
@@ -61,37 +59,6 @@ UniDeskComBase{
         height: base.height
         opacity: base.itemOpacity
     }
-    UniDeskMenu{
-        id: menu
-        UniDeskMenuItem{
-            text: qsTr("编辑")
-            iconSource: "qrc:/media/img/edit.svg"
-            onClicked: {
-                optionsText.show()
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("复制")
-            iconSource: "qrc:/media/img/copy.svg"
-            onClicked: {
-                base.copyCom();
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("新建子组件")
-            iconSource: "qrc:/media/img/add-line.svg"
-            onClicked: {
-                base.createSubComponent();
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("删除")
-            iconSource: "qrc:/media/img/delete-bin.svg"
-            onClicked: {
-                base.deleteCom();
-            }
-        }
-    }
     Timer{
         id: flushText
         interval: 50
@@ -100,15 +67,9 @@ UniDeskComBase{
         }
         repeat: true
     }
-    UDCTextOptions{
-        id: optionsText
+    optionsWindow: UDCTextOptions{
         editingComponent: base
         comManager: base.comManager
-    }
-    onRightClicked: {
-        if(base.comManager.selectMode!==UniDeskComponentSelectMode.MultiSelect){
-            menu.popup(cont);
-        }
     }
     function propertyData(){
         return {
@@ -190,9 +151,6 @@ UniDeskComBase{
         flushText.start();
     }
     onCloseSignal: ()=>{
-        if(optionsText){
-            optionsText.close();
-        }
         flushText.stop();
     }
 }

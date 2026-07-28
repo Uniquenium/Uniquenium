@@ -1,4 +1,3 @@
-// e:\Uniquenium\Uniquenium\UniDesk\Components\UDCFrame\UDCFrameOptions.qml
 import QtQuick 
 import QtQuick.Controls 
 import QtQuick.Layouts

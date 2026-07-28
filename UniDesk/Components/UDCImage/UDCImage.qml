@@ -15,7 +15,6 @@ UniDeskComBase{
     visible: true
     width: 200
     height: 200
-    type: "UDCImage"
     property string imagePath: ""
     property int fillMode: Image.Stretch
     smooth: true
@@ -28,7 +27,6 @@ UniDeskComBase{
     property int buttonActionType: UniDeskButtonActionType.ButtonActionApp
     // 按钮动作目标: 应用程序路径/网页URL/命令
     property string buttonActionTarget: ""
-    optionsWindow: optionsImage
 
     chosen: comManager.selectMode===UniDeskComponentSelectMode.NoSelect ? (optionsWindow.visible) : selected
     AnimatedImage{
@@ -77,49 +75,10 @@ UniDeskComBase{
             }
         }
     }
-    UniDeskMenu{
-        id: menu
-        UniDeskMenuItem{
-            text: qsTr("编辑")
-            iconSource: "qrc:/media/img/edit.svg"
-            onClicked: {
-                optionsImage.show()
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("复制")
-            iconSource: "qrc:/media/img/copy.svg"
-            onClicked: {
-                base.copyCom()
-            }
-        }
-        UniDeskMenuItem{
-            text: qsTr("新建子组件")
-            iconSource: "qrc:/media/img/add-line.svg"
-            onClicked: {
-                base.createSubComponent()
-            }
-        }
-        UniDeskMenuItem{
-            id: mi_delete
-            text: qsTr("删除")
-            iconSource: "qrc:/media/img/delete-bin.svg"
-            onClicked: {
-                base.deleteCom()
-            }
-        }
-    }
     
-    UDCImageOptions{
-        id: optionsImage
+    optionsWindow: UDCImageOptions{
         editingComponent: base
         comManager: base.comManager
-    }
-    
-    onRightClicked: {
-        if(base.comManager.selectMode!==UniDeskComponentSelectMode.MultiSelect){
-            menu.popup(cont);
-        }
     }
     
     // 按钮点击处理 - 使用函数数组消除if判断
@@ -184,10 +143,5 @@ UniDeskComBase{
     function saveComToFile(){
         var data= propertyData()
         UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data)
-    }
-    onCloseSignal: ()=>{
-        if(optionsImage){
-            optionsImage.close()
-        }
     }
 }

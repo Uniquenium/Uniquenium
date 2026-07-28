@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix='/'>
+    <qresource prefix="/">
         <file>main.qml</file>
         <file>media/font/SanJiNengLiangHeiJianTi-2.ttf</file>
         <file>media/font/XiaWuWenKai.ttf</file>

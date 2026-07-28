@@ -31,6 +31,7 @@ UniDeskObject{
     property var selectMode: UniDeskComponentSelectMode.NoSelect
     property list<Item> selectedComponents
     property list<Item> needMoveComponents
+    signal menuClosed()
     ListModel{
         id: page_list_model
         ListElement{
@@ -60,7 +61,7 @@ UniDeskObject{
         }
         let typid=typename_list.indexOf(typename);
         let uuid = UniDeskTools.createUuid();
-        let new_com=type_list[typid].createObject(parentOfNewCom,{"name":qsTr(typenameTr)+" "+serialComponentCnt,"identification":uuid,"pageid": currentPid,"comManager":object,"x":50,"y":50});
+        let new_com=type_list[typid].createObject(parentOfNewCom,{"name":qsTr(typenameTr)+" "+serialComponentCnt,"identification":uuid,"pageid": currentPid,"comManager":object,"x":50,"y":50,"type":typename});
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com);
         for(var i=0;i<component_list.length;i++){

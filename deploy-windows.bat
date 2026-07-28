@@ -54,6 +54,11 @@ echo [4/5] Copying UniDesk to qml directory...
 xcopy /e /i "%BUILD_DIR%/Qt_MSVC2022_64bit-Release/temp/UniDesk" "%QML_DIR%/UniDesk"
 echo Done.
 
+:: 5. 复制空白光标到deploy目录下
+echo [5/5] Copying cursors to deploy directory...
+xcopy /e /i "%PROJECT_DIR%cursors" "%DEPLOY_DIR%/cursors"
+echo Done.
+
 
 
 echo.
