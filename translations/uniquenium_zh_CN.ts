@@ -841,15 +841,15 @@
         <translation>默认页面</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="84"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="86"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="322"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="325"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="83"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="85"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="330"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="333"/>
         <source>页面</source>
         <translation>页面</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="149"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="153"/>
         <source>副本</source>
         <translation>副本</translation>
     </message>
@@ -958,7 +958,7 @@
     </message>
     <message>
         <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="182"/>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="299"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="319"/>
         <source>复制</source>
         <translation>复制</translation>
     </message>
@@ -969,22 +969,22 @@
     </message>
     <message>
         <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="199"/>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="312"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="332"/>
         <source>删除</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="272"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="292"/>
         <source>添加组件</source>
         <translation>添加组件</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="286"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="306"/>
         <source>编辑</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="325"/>
+        <location filename="../UniDesk/Singletons/UniDeskPageWindow.qml" line="345"/>
         <source>移动到页面</source>
         <translation>移动到页面</translation>
     </message>

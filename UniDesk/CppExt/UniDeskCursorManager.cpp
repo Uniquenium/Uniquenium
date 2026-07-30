@@ -353,7 +353,7 @@ int UniDeskCursorManager::getStdState() {
 
     HCURSOR cur = ci.hCursor;
     if (cur == NULL) {
-        qDebug() << "当前没有游标句柄 (cur == NULL)\n";
+        // qDebug() << "当前没有游标句柄 (cur == NULL)\n";
         return static_cast<int>(UniDeskCursorStdState::Arrow);
     }
 

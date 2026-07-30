@@ -45,6 +45,8 @@ public:
     Q_INVOKABLE void openFileOrDir(const QString &path);
     Q_INVOKABLE void showFileInExplorer(const QString &path);
     Q_INVOKABLE QString createUuid();
+    Q_INVOKABLE bool isAppAutoStartEnabled();
+    Q_INVOKABLE void setAppAutoStart(bool enabled);
 
 signals:
     void customFontsChanged();

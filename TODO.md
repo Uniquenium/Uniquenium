@@ -26,12 +26,14 @@
   - QML Cursor Style 
     - [x] Blank Cursor For Hidding Cursor
     - [x] Getting Cursor Standard State Support (Timer Bug)
-  - [ ] Auto Start With Booting Support
-  - [ ] Tree View in Page Manage Window
+  - Tree View in Page Manage Window
+    - [x] ComBox Bug
+    - [ ] Update compModels when changing component's parent and locating page
   - [ ] Component Z-Index Swaping
+  - [ ] Auto Start With Booting Support
+  - [ ] Linux Support
   - [ ] Templete
   - [ ] Theme
-  - [ ] Linux Support
 - Bugs
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)
   - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity

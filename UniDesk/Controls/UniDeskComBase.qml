@@ -214,6 +214,16 @@ Item{
             return "TopMost";
         }
     }
+    function isAncestorOf(p){
+        var p2=base.parent;
+        while(p2.identification){
+            if(p2===p){
+                return true;
+            }
+            p2=p2.parent;
+        }
+        return false;
+    }
     Component.onCompleted: {
         base.componentCompleted();
     }

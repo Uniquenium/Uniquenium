@@ -65,6 +65,9 @@ UniDeskWindow{
                 editingComponent.changeParentWithoutMoving(p);
                 editingComponent.saveComToFile();
             }
+            onCurrentComponentChanged: {
+                currentIndex=getIndexByCom(currentComponent);
+            }
             Component.onCompleted: {
                 currentIndex=getIndexByCom(currentComponent);
             }
