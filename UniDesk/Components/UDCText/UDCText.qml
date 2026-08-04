@@ -71,15 +71,8 @@ UniDeskComBase{
         editingComponent: base
         comManager: base.comManager
     }
-    function propertyData(){
+    function propertyDataEx(){
         return {
-            "type": base.type,
-            "identification": base.identification,
-            "pageid": base.pageid,
-            "x": base.x,
-            "y": base.y,
-            "name": base.name,
-            "parent": base.comManager.getComId(base.parent),
             "textContent": base.textContent,
             "textColorR": base.textColor.r,
             "textColorG": base.textColor.g,
@@ -102,25 +95,12 @@ UniDeskComBase{
             "styleColorB": base.styleColor.b,
             "styleColorA": base.styleColor.a,
             "textFormat": base.textFormat,
-            "rotation": base.rotation,
             "wrapMode": base.wrapMode,
             "horizontalAlignment": base.horizontalAlignment,
-            "verticalAlignment": base.verticalAlignment,
-            "opacity": base.itemOpacity,
-            "width": base.width,
-            "height": base.height
+            "verticalAlignment": base.verticalAlignment
         }
     }
-    function loadPropertyData(data){
-        if(data.type!==undefined){base.type=data.type;}
-        if(data.identification!==undefined){base.identification=data.identification;}       
-        if(data.pageid!==undefined){base.pageid=data.pageid;}
-        if(data.x!==undefined){base.x=data.x;}
-        if(data.y!==undefined){base.y=data.y;}
-        if(data.name!==undefined){base.name=data.name;}
-        if(data.parent!==undefined){base.parent=base.comManager.getComById(data.parent);}
-        if(data.width!==undefined){base.width=data.width;}
-        if(data.height!==undefined){base.height=data.height;}
+    function loadPropertyDataEx(data){
         if(data.textContent!==undefined){base.textContent=data.textContent;}
         if(data.textColorR!==undefined){base.textColor=Qt.rgba(data.textColorR,data.textColorG,data.textColorB,data.textColorA);}
         if(data.fontFamily!==undefined){base.fontFamily=data.fontFamily;}
@@ -131,17 +111,15 @@ UniDeskComBase{
         if(data.underline!==undefined){base.underline=data.underline;}
         if(data.strikeout!==undefined){base.strikeout=data.strikeout;}
         if(data.letterSpacing!==undefined){base.letterSpacing=data.letterSpacing;}
-        if(data.wordSpacing!==undefined){base.wordSpacing=data.wordSpacing;}    
+        if(data.wordSpacing!==undefined){base.wordSpacing=data.wordSpacing;}
         if(data.lineHeight!==undefined){base.lineHeight=data.lineHeight;}
         if(data.weight!==undefined){base.weight=data.weight;}
         if(data.style!==undefined){base.style=data.style;}
         if(data.styleColorR!==undefined){base.styleColor=Qt.rgba(data.styleColorR,data.styleColorG,data.styleColorB,data.styleColorA);}
         if(data.textFormat!==undefined){base.textFormat=data.textFormat;}
-        if(data.rotation!==undefined){base.rotation=data.rotation;}
         if(data.wrapMode!==undefined){base.wrapMode=data.wrapMode;}
         if(data.horizontalAlignment!==undefined){base.horizontalAlignment=data.horizontalAlignment;}else{base.horizontalAlignment=Text.AlignHCenter;}
         if(data.verticalAlignment!==undefined){base.verticalAlignment=data.verticalAlignment;}else{base.verticalAlignment=Text.AlignVCenter;}
-        if(data.opacity!==undefined){base.itemOpacity=data.opacity;}else{base.itemOpacity=1;}
     }
     function saveComToFile(){
         var data= propertyData();

@@ -28,9 +28,9 @@
     - [x] Getting Cursor Standard State Support (Timer Bug)
   - Tree View in Page Manage Window
     - [x] ComBox Bug
-    - [ ] Update compModels when changing component's parent and locating page
-  - [ ] Component Z-Index Swaping
-  - [ ] Auto Start With Booting Support
+    - [x] Component Delete Bug
+  - [x] Component Z-Index Modification
+  - [x] Auto Start With Booting Support
   - [ ] Linux Support
   - [ ] Templete
   - [ ] Theme
@@ -39,11 +39,11 @@
   - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity
   - [x] Supporting: UDCText's canMove property changing by menu(it has problems so it's temporarily hidden)(it has fixed by binding "canMove" with "chosen")
   - [x] UniDeskComboBox 's currentIndex is reset to 0 when language is changed
-  - [ ] Wallpaper breaks on Windows 10
-  - [x] Expr double % Converting bug
-  - [ ] Clickthrough is broken on Windows 10
-  - [ ] Window Updating is Blocked when Moving or Resizing QQuickWindow
   - [x] App Can't Exit Successfully if Wallpaper Video is Set
+  - [x] Expr double % Converting bug
+  - [ ] Wallpaper breaks on Old Version Windows 10
+  - [ ] Window Updating is Blocked when Moving or Resizing QQuickWindow
+  - [ ] TreeView Horizontal Scrollbar Bug
 - Components in Official Plugin
   - [ ] Calculator
   - [ ] Screen Capture

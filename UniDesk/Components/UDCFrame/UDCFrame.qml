@@ -43,17 +43,8 @@ UniDeskComBase{
         }
     }
     
-    function propertyData(){
+    function propertyDataEx(){
         return {
-            "type": base.type,
-            "identification": base.identification,
-            "pageid": base.pageid,
-            "x": base.x,
-            "y": base.y,
-            "name": base.name,
-            "parent": base.comManager.getComId(base.parent),
-            "width": base.width,
-            "height": base.height,
             "borderWidth": base.borderWidth,
             "borderColorR": base.borderColor.r,
             "borderColorG": base.borderColor.g,
@@ -63,28 +54,15 @@ UniDeskComBase{
             "bgColorR": base.backgroundColor.r,
             "bgColorG": base.backgroundColor.g,
             "bgColorB": base.backgroundColor.b,
-            "bgColorA": base.backgroundColor.a,
-            "opacity": base.itemOpacity,
-            "rotation": base.rotation
+            "bgColorA": base.backgroundColor.a
         }
     }
     
-    function loadPropertyData(data){
-        if(data.type!==undefined){base.type=data.type;}
-        if(data.identification!==undefined){base.identification=data.identification;}       
-        if(data.pageid!==undefined){base.pageid=data.pageid;}
-        if(data.x!==undefined){base.x=data.x;}
-        if(data.y!==undefined){base.y=data.y;}
-        if(data.name!==undefined){base.name=data.name;}
-        if(data.parent!==undefined){base.parent=base.comManager.getComById(data.parent);}
-        if(data.width!==undefined){base.width=data.width;}
-        if(data.height!==undefined){base.height=data.height;}
+    function loadPropertyDataEx(data){
         if(data.borderWidth!==undefined){base.borderWidth=data.borderWidth;}
         if(data.borderColorR!==undefined){base.borderColor=Qt.rgba(data.borderColorR,data.borderColorG,data.borderColorB,data.borderColorA);}
         if(data.borderRadius!==undefined){base.borderRadius=data.borderRadius;}
         if(data.bgColorR!==undefined){base.backgroundColor=Qt.rgba(data.bgColorR,data.bgColorG,data.bgColorB,data.bgColorA);}
-        if(data.opacity!==undefined){base.itemOpacity=data.opacity;}else{base.itemOpacity=1;}
-        if(data.rotation!==undefined){base.rotation=data.rotation;}
     }
     
     function saveComToFile(){

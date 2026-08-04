@@ -189,6 +189,7 @@ Item{
             base.x = point.x;
             base.y = point.y;
             base.parent = p;
+            comManager.updateComTreeParent(base, p);
         } else {
             let data= base.propertyData();
             let point = p.mapFromItem(base,0,0);
@@ -197,6 +198,7 @@ Item{
             data["parent"]=comManager.getComId(p)
             UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
             comManager.loadComponentsFromData();
+            comManager.updateComTreeParent(base, p);
         }
     }
     function currentLayer(){
@@ -215,14 +217,46 @@ Item{
         }
     }
     function isAncestorOf(p){
-        var p2=base.parent;
+        var p2=p.parent;
         while(p2.identification){
-            if(p2===p){
+            if(p2===base){
                 return true;
             }
             p2=p2.parent;
         }
         return false;
+    }
+    function propertyData(){
+        var dataEx=base.propertyDataEx();
+        return mergeDicts({
+            "identification": base.identification,
+            "name": base.name,
+            "type": base.type,
+            "parent": base.comManager.getComId(base.parent),
+            "x": base.x,
+            "y": base.y,
+            "width": base.width,
+            "height": base.height,
+            "z": base.z,
+            "pageid": base.pageid,
+            "rotation": base.rotation,
+            "opacity": base.itemOpacity
+        },dataEx)
+    }
+    function loadPropertyData(data){
+        if(data.identification!==undefined){base.identification = data.identification;}
+        if(data.name!==undefined){base.name = data.name;}
+        if(data.type!==undefined){base.type = data.type;}
+        if(data.parent!==undefined){base.parent = comManager.getComById(data.parent);}
+        if(data.x!==undefined){base.x = data.x;}
+        if(data.y!==undefined){base.y = data.y;}
+        if(data.width!==undefined){base.width = data.width;}
+        if(data.height!==undefined){base.height = data.height;}
+        if(data.z!==undefined){base.z = data.z;}
+        if(data.pageid!==undefined){base.pageid = data.pageid;}
+        if(data.rotation!==undefined){base.rotation = data.rotation;}
+        if(data.opacity!==undefined){base.itemOpacity = data.opacity;}
+        if(base.loadPropertyDataEx){base.loadPropertyDataEx(data);}
     }
     Component.onCompleted: {
         base.componentCompleted();
@@ -237,5 +271,19 @@ Item{
         if(optionsWindow){
             optionsWindow.close();
         }
+    }
+    function mergeDicts(dict1, dict2) {
+        var merged = {};
+        for (var key in dict1) {
+            if (dict1.hasOwnProperty(key)) {
+                merged[key] = dict1[key];
+            }
+        }
+        for (var key in dict2) {
+            if (dict2.hasOwnProperty(key)) {
+                merged[key] = dict2[key];
+            }
+        }
+        return merged;
     }
 }

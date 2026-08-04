@@ -94,23 +94,12 @@ UniDeskComBase{
             }
         }
     }
-    function propertyData(){
+    function propertyDataEx(){
         return {
-            "type": base.type,
-            "identification": base.identification,
-            "pageid": base.pageid,
-            "x": base.x,
-            "y": base.y,
-            "name": base.name,
-            "parent": base.comManager.getComId(base.parent),
-            "width": base.width,
-            "height": base.height,
             "imagePath": base.imagePath,
             "fillMode": base.fillMode,
-            "opacity": base.itemOpacity,
             "smooth": base.smooth,
             "mipmap": base.mipmap,
-            "rotation": base.rotation,
             "radius": base.radius,
             "isButton": base.isButton,
             "buttonActionType": base.buttonActionType,
@@ -118,22 +107,11 @@ UniDeskComBase{
         }
     }
     
-    function loadPropertyData(data){
-        if(data.type!==undefined){base.type=data.type}
-        if(data.identification!==undefined){base.identification=data.identification}       
-        if(data.pageid!==undefined){base.pageid=data.pageid}
-        if(data.name!==undefined){base.name=data.name}
-        if(data.parent!==undefined){base.parent = base.comManager.getComById(data.parent)}
-        if(data.x!==undefined){base.x=data.x}
-        if(data.y!==undefined){base.y=data.y}
-        if(data.width!==undefined){base.width=data.width}
-        if(data.height!==undefined){base.height=data.height}
+    function loadPropertyDataEx(data){
         if(data.imagePath!==undefined){base.imagePath=data.imagePath}
         if(data.fillMode!==undefined){base.fillMode=data.fillMode}
-        if(data.opacity!==undefined){base.itemOpacity=data.opacity}
         if(data.smooth!==undefined){base.smooth=data.smooth}
         if(data.mipmap!==undefined){base.mipmap=data.mipmap}
-        if(data.rotation!==undefined){base.rotation=data.rotation}
         if(data.radius!==undefined){base.radius=data.radius}
         if(data.isButton!==undefined){base.isButton=data.isButton}
         if(data.buttonActionType!==undefined){base.buttonActionType = data.buttonActionType}

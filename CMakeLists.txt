@@ -21,6 +21,8 @@ set(TS_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/translations/uniquenium_en_US.ts
 )
 
+
+
 # Set this to allow indexing when we are using Qt Creator
 set(QML_IMPORT_PATH ${CMAKE_BINARY_DIR}/temp CACHE STRING "" FORCE)
 
@@ -130,6 +132,12 @@ qt_add_executable(${PROJECT_NAME}
     ${QM_FILES}
     ${EXAMPLE_VERSION_RC_PATH}
 )
+
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        WIN32_EXECUTABLE $<STREQUAL:$<CONFIG>,Release>
+    )
+endif()
 
 target_link_libraries(${PROJECT_NAME}
         PUBLIC

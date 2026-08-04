@@ -33,7 +33,7 @@ int main(int argc,char* argv[]){
     
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("QQMLENGINE", &engine);
-    engine.addImportPath(QDir::currentPath()+"/temp");
+    engine.addImportPath(QCoreApplication::applicationDirPath()+"/temp");
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     engine.load(url);
     if (engine.rootObjects().isEmpty())

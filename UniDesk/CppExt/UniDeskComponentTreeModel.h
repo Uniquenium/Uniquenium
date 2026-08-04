@@ -38,6 +38,7 @@ public:
     Q_INVOKABLE bool contains(const QString &identification) const;
     Q_INVOKABLE void update(const QVariantMap &data);
     Q_INVOKABLE void reparentAll();
+    Q_INVOKABLE void setZ(const QString &identification, qreal z);
 
 private:
     struct Node {
@@ -45,6 +46,7 @@ private:
         QString name;
         QString type;
         QString parentId;
+        qreal z = 0;
         QList<Node*> children;
         Node* parent = nullptr;
         Node() = default;
@@ -60,4 +62,5 @@ private:
     void flattenNodes(QList<Node*> &out) const;
     QModelIndex findIndexById(const QString &identification) const;
     void emitCountChanged();
+    void sortSiblings(Node* node);
 };

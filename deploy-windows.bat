@@ -56,7 +56,7 @@ echo Done.
 
 :: 5. 复制空白光标到deploy目录下
 echo [5/5] Copying cursors to deploy directory...
-xcopy /e /i "%PROJECT_DIR%cursors" "%DEPLOY_DIR%/cursors"
+xcopy /e /i "%PROJECT_DIR%/cursors" "%DEPLOY_DIR%/cursors"
 echo Done.
 
 

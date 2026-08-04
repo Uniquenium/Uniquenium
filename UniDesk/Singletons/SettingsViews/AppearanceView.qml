@@ -15,28 +15,7 @@ ScrollView{
     property var comManager
     property var customWallpaper
     hoverEnabled: true
-    UniDeskText{
-        id: textLanguage
-        text: qsTr("显示语言")
-        font: UniDeskTextStyle.little
-        anchors.left: parent.left
-        anchors.margins: 10
-        anchors.verticalCenter: languageComboBox.verticalCenter
-    }
     
-    UniDeskComboBox{
-        id: languageComboBox
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.margins: 10
-        model: ["中文", "English"]
-        currentIndex: ["zh_CN", "en_US"].indexOf(UniDeskSettings.language)
-        onActivated: {
-            var lang = ["zh_CN", "en_US"][currentIndex]
-            UniDeskSettings.set("language", lang)
-            UniDeskGlobals.translate(languageComboBox, lang)
-        }
-    }
     UniDeskText{
         id: labelColorMode
         text: qsTr("颜色模式")
@@ -50,7 +29,7 @@ ScrollView{
         id: optionColorMode
         comManager: UniDeskSettingsWindow.comManager
         model: [qsTr("浅色"), qsTr("深色"), qsTr("跟随系统")]
-        anchors.top: languageComboBox.bottom
+        anchors.top: parent.top
         anchors.right: parent.right
         anchors.margins: 10
         currentIndex: UniDeskSettings.colorMode

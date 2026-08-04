@@ -29,7 +29,7 @@ static QJsonObject readJsonFile(const QString &file) {
 
 void UniDeskGlobals::updateIsLight() {
     bool prev = isLight();
-    QJsonObject obj = readJsonFile("./data/settings.json");
+    QJsonObject obj = readJsonFile(QGuiApplication::applicationDirPath() + "/data/settings.json");
     int colorMode = obj.value("colorMode").toInt();
     bool newIsLight = true;
     if (colorMode == 0) {

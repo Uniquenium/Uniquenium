@@ -25,6 +25,9 @@ UniDeskWindow{
         id: tabBar
         x: 10
         UniDeskTabButton{
+            text: qsTr("功能")
+        }
+        UniDeskTabButton{
             text: qsTr("外观")
             //颜色模式，各控件颜色、字体、圆角大小、外框粗细、主面板外观
         }
@@ -34,9 +37,7 @@ UniDeskWindow{
         UniDeskTabButton{
             text: qsTr("插件")
         }
-        UniDeskTabButton{
-            text: qsTr("主题")
-        }
+        
         UniDeskTabButton{
             text: qsTr("关于")
             //仓库链接、鸣谢、版本、检查更新、官网链接
@@ -49,6 +50,10 @@ UniDeskWindow{
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         interactive: false
+        UDSV.FunctionView{
+            comManager: window.comManager
+            customWallpaper: window.customWallpaper
+        }
         UDSV.AppearanceView{
             comManager: window.comManager
             customWallpaper: window.customWallpaper
@@ -58,10 +63,6 @@ UniDeskWindow{
             customWallpaper: window.customWallpaper
         }
         UDSV.PluginsView{
-            comManager: window.comManager
-            customWallpaper: window.customWallpaper
-        }
-        UDSV.ThemesView{
             comManager: window.comManager
             customWallpaper: window.customWallpaper
         }

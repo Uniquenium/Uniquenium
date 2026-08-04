@@ -407,6 +407,7 @@ UniDeskObject{
             UniDeskComWindow.comManager=component_manager;
             UniDeskPageWindow.comManager=component_manager;
             UniDeskPageWindow.comWindow=UniDeskComWindow;
+            component_manager.pageWindow=UniDeskPageWindow;
             component_manager.loadComponentTypesFromData();
             component_manager.currentPid=UniDeskComponentsData.getCurrentPage();
             component_manager.loadPagesFromData();

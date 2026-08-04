@@ -23,74 +23,15 @@ UniDeskWindow{
     ScrollView{
         anchors.fill: parent
         hoverEnabled: true
-        contentHeight: opacitySpinBox.y+opacitySpinBox.height-text0.y+30
+        contentHeight: bgColorPicker.y+bgColorPicker.height-basicOptions.y+30
         
-        UniDeskText{
-            id: text0
-            text: qsTr("组件名称")
-            font: UniDeskTextStyle.little
-            anchors.left: parent.left
-            anchors.margins: 10
-            anchors.verticalCenter: idField.verticalCenter
-        }
-        UniDeskTextField {
-            id: idField
+        UniDeskComBasicOptions{
+            id: basicOptions
             anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.margins: 10
-            placeholderText: qsTr("请输入组件名称")
-            text: editingComponent ? editingComponent.name : ""
-            onEditingFinished: {
-                if (editingComponent)   {
-                    editingComponent.name = text;
-                }
-                editingComponent.saveComToFile();
-            }
-        }
-        
-        UniDeskText{
-            text: qsTr("父组件（设为壁纸层将冻结组件）")
-            font: UniDeskTextStyle.little
             anchors.left: parent.left
-            anchors.margins: 10
-            anchors.verticalCenter: parentComboBox.verticalCenter
-        }
-        UniDeskComBox{
-            id: parentComboBox
-            anchors.top: idField.bottom
             anchors.right: parent.right
-            anchors.margins: 10
+            anchors.topMargin: 10
             comManager: window.comManager
-            editingComponent: window.editingComponent
-            currentComponent: window.editingComponent.parent
-            onActivated: {
-                let p = parentComboBox.getComByIndex(currentIndex);
-                editingComponent.changeParentWithoutMoving(p);
-                editingComponent.saveComToFile();
-            }
-            onCurrentComponentChanged: {
-                currentIndex=getIndexByCom(currentComponent);
-            }
-            Component.onCompleted: {
-                currentIndex=getIndexByCom(currentComponent);
-            }
-        }
-        UniDeskPosSelector{
-            id: posSelector
-            comManager: window.comManager
-            anchors.top: parentComboBox.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: 10
-            editingComponent: window.editingComponent
-        }
-        
-        UniDeskSizeSelector{
-            id: sizeSelector
-            anchors.top: posSelector.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: 10
             editingComponent: window.editingComponent
         }
         
@@ -104,7 +45,7 @@ UniDeskWindow{
         }
         UniDeskSpinBox{
             id: borderWidthSpinBox
-            anchors.top: sizeSelector.bottom
+            anchors.top: basicOptions.bottom
             anchors.right: parent.right
             anchors.margins: 10
             editable: true
@@ -189,60 +130,6 @@ UniDeskWindow{
                 }
             }
         }
-        
-        // 旋转角度
-        UniDeskText{
-            id: text13
-            text: qsTr("旋转角度")
-            font: UniDeskTextStyle.little
-            anchors.left: parent.left
-            anchors.margins: 10
-            anchors.verticalCenter: rotationSpinBox.verticalCenter
-        }
-        UniDeskSpinBox{
-            id: rotationSpinBox
-            anchors.top: bgColorPicker.bottom
-            anchors.right: parent.right
-            anchors.margins: 10
-            editable: true
-            value: editingComponent ? editingComponent.rotation : 0
-            from: 0
-            to: 359
-            stepSize: 1
-            onValueModified: {
-                if (editingComponent) {
-                    editingComponent.rotation = value;
-                    editingComponent.saveComToFile();
-                }
-            }
-        }
-        
-        // 透明度
-        UniDeskText{
-            id: textOpacity
-            text: qsTr("透明度")
-            font: UniDeskTextStyle.little
-            anchors.left: parent.left
-            anchors.margins: 10
-            anchors.verticalCenter: opacitySpinBox.verticalCenter
-        }
-        UniDeskSpinBox{
-            id: opacitySpinBox
-            anchors.top: rotationSpinBox.bottom
-            anchors.right: parent.right
-            anchors.margins: 10
-            editable: true
-            value: editingComponent ? editingComponent.itemOpacity * 100 : 100
-            from: 0
-            to: 100
-            stepSize: 1
-            onValueModified: {
-                if (editingComponent) {
-                    editingComponent.itemOpacity = value / 100;
-                    editingComponent.saveComToFile();
-                }
-            }
-        }
     }
     
     Connections{
@@ -250,8 +137,5 @@ UniDeskWindow{
         function onApplicationQuit() {
             window.close();
         }
-    }
-    Component.onCompleted: {
-        posSelector.refreshPosition();
     }
 }

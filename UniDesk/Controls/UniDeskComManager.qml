@@ -34,11 +34,13 @@ UniDeskObject{
     property var root
     property var topMostLayer
     property var comWindow
+    property var pageWindow
     property var selectMode: UniDeskComponentSelectMode.NoSelect
     property list<Item> selectedComponents
     property list<Item> needMoveComponents
+    property alias treeModelComponent: com_tree_model
     signal menuClosed()
-
+    signal deleteComSignal(string id)
     Component{
         id: com_tree_model
         UniDeskComponentTreeModel{
@@ -72,7 +74,8 @@ UniDeskObject{
             }
         }
         serialComponentCnt+=1;
-        compModels.get(pid2pindex(currentPid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":new_com.parent ? new_com.parent.identification : ""});
+        compModels.get(pid2pindex(currentPid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":getComId(new_com.parent), "z":new_com.z});
+        pageWindow.reloadTreeView();
     }
     function toggle_page_to(id){
         currentPid=id;
@@ -80,13 +83,17 @@ UniDeskObject{
     }
     function new_page(){
         let uuid = UniDeskTools.createUuid();
-        compModels.append({"text": qsTr("页面")+serialPageCnt.toString(), "pid": uuid, "value":com_tree_model.createObject(null,{})});
+        var treeModel=com_tree_model.createObject(null,{});
+        compModels.append({"text": qsTr("页面")+serialPageCnt.toString(), "pid": uuid, "value":treeModel});
+        initLayerNodes(treeModel);
         UniDeskComponentsData.addPage({"text": qsTr("页面")+serialPageCnt.toString(),"pid": uuid});
         serialPageCnt+=1;
+        pageWindow.reloadTreeView();
     }
     function rename_page(index,newname){
         compModels.get(index).text=newname
         UniDeskComponentsData.updatePage(index-1,compModels.get(index))
+        pageWindow.reloadTreeView();
     }
     function remove_page(index){
         if(pindex2pid(index) === currentPid && compModels.count > 1){
@@ -96,6 +103,7 @@ UniDeskObject{
         }
         UniDeskComponentsData.removePage(pindex2pid(index))
         compModels.remove(index);
+        pageWindow.reloadTreeView();
     }
     function copy_com(com){
         // 创建新组件（位置偏移delta）
@@ -110,38 +118,43 @@ UniDeskObject{
         return new_com;
     }
     function delete_com(id){
+        deleteComSignal(id);
+    }
+    onDeleteComSignal: (id)=>{
         var com=getComById(id);
-        for(var i=0;i<com.children.length;i++){
-            if(com.children[i].identification){
-                com.children[i].changeParentWithoutMoving(com.parent);
-                com.children[i].saveComToFile();
+        for(var i=0;i<component_list.length;i++){
+            if(com.isAncestorOf(component_list[i])){
+                UniDeskComponentsData.removeComponent(component_list[i].identification);
+                if(selectedComponents.indexOf(component_list[i])!==-1)selectedComponents.splice(selectedComponents.indexOf(component_list[i]),1);
+                component_list.splice(getIndexById(component_list[i].identification),1);
             }
         }
         UniDeskComponentsData.removeComponent(id);
         component_list.splice(getIndexById(id),1);
-        
         if(selectedComponents.indexOf(com)!==-1)selectedComponents.splice(selectedComponents.indexOf(com),1);
         update_need_move_com();
         var pidx=pid2pindex(com.pageid)
-        for(var i=0;i<compModels.get(pidx).value.count;i++){
-            if(compModels.get(pidx).value.getIdentification(i)===id){
-                compModels.get(pidx).value.remove(i);
-                break;
-            }
-        }
+        compModels.get(pidx).value.removeById(id);
         com.closeSignal();
-        com.visible=false;
-        // UniDeskUtils.deleteLater(com); //this cause the whole app to crash
+        UniDeskUtils.deleteLater(com); 
+        pageWindow.reloadTreeView();
     }
     function clear_page(index){
-        //no 'i++': count will auto decrease
         var ids = [];
-        for(var i=0;i<compModels.get(index).value.count;i++){
-            ids.push(compModels.get(index).value.getIdentification(i));
+        for(var i=0;i<component_list.length;i++){
+            if(component_list[i]){
+                if(component_list[i].pageid===pindex2pid(index)){
+                    delete_com(component_list[i].identification);
+                }
+            }
+            else{
+                component_list.splice(i,1);
+            }
         }
-        for(var i=ids.length-1;i>=0;i--){
-            delete_com(ids[i]);
-        }
+        pageWindow.reloadTreeView();
+    }
+    function isEmptyPage(index){
+        return compModels.get(index).value.count===3;
     }
     function copy_page(index){
         // 获取源页面的pid
@@ -150,6 +163,7 @@ UniDeskObject{
         var newPageName = sourcePageData.text + qsTr("副本");
         var newPid = UniDeskTools.createUuid();
         compModels.append({"text": newPageName, "pid": newPid, "value":com_tree_model.createObject(null,{})});
+        initLayerNodes(compModels.get(compModels.count-1).value);
         UniDeskComponentsData.addPage({"text": newPageName, "pid": newPid});
         serialPageCnt+=1;
         var oldIds=[];
@@ -176,6 +190,10 @@ UniDeskObject{
             }
             com.saveComToFile();
         }
+        for(var i=0;i<newIds.length;i++){
+            updateComTreeParent(getComById(newIds[i]), getComById(newIds[i]).parent);
+        }
+        pageWindow.reloadTreeView();
         return newPid;
     }
     function getIndexById(id){
@@ -222,6 +240,7 @@ UniDeskObject{
         component_list=[];
         for(var i=0;i<compModels.count;i++){
             compModels.get(i).value.clear();
+            initLayerNodes(compModels.get(i).value);
         }
         var data=UniDeskComponentsData.getComponents();
         for(var i=0;i<data.length;i++){
@@ -235,7 +254,7 @@ UniDeskObject{
                 }
             }
             component_list.push(new_com)
-            compModels.get(pid2pindex(new_com.pageid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":data[i].parent ? data[i].parent : ""});
+            compModels.get(pid2pindex(new_com.pageid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":data[i].parent ? data[i].parent : "", "z":new_com.z});
             new_com.visible=new_com.pageid===currentPid;
         }
         for(var i=0;i<data.length;i++){
@@ -255,6 +274,7 @@ UniDeskObject{
                 com.optionsWindow.show();
             }
         }
+        pageWindow.reloadTreeView();
     }
     function loadPagesFromData(){
         compModels.clear();
@@ -262,6 +282,22 @@ UniDeskObject{
         var data=UniDeskComponentsData.getPages();
         for(var i=0;i<data.length;i++){
             compModels.append({"text": data[i].text, "pid": data[i].pid, "value":com_tree_model.createObject(null,{})});
+        }
+        for(var i=0;i<compModels.count;i++){
+            initLayerNodes(compModels.get(i).value);
+        }
+        pageWindow.reloadTreeView();
+    }
+    function initLayerNodes(treeModel){
+        var layers=[
+            {"identification":"Wallpaper", "name":qsTr("壁纸层"), "type":"Layer", "parentId":""},
+            {"identification":"Desktop", "name":qsTr("桌面层"), "type":"Layer", "parentId":""},
+            {"identification":"TopMost", "name":qsTr("置顶层"), "type":"Layer", "parentId":""}
+        ];
+        for(var i=0;i<layers.length;i++){
+            if(!treeModel.contains(layers[i].identification)){
+                treeModel.append(layers[i]);
+            }
         }
     }
     function loadComponentTypesFromData(){
@@ -313,18 +349,22 @@ UniDeskObject{
         compModels.move(index,index-1,1);
         UniDeskComponentsData.updatePage(index-1,compModels.get(index));
         UniDeskComponentsData.updatePage(index-2,compModels.get(index-1));
+        pageWindow.reloadTreeView();
     }
     function move_page_down(index){
         compModels.move(index,index+1,1);
         UniDeskComponentsData.updatePage(index-1,compModels.get(index));
         UniDeskComponentsData.updatePage(index,compModels.get(index+1));
+        pageWindow.reloadTreeView();
     }
     function insert_new_page(index){
         let uuid = UniDeskTools.createUuid();
-        compModels.insert(index,{"text": qsTr("页面")+serialPageCnt.toString(), "pid": uuid, "value":com_tree_model.createObject(null,{})});
-        //Don't change "index-1" for unnecessary reasons!
+        var treeModel=com_tree_model.createObject(null,{});
+        compModels.insert(index,{"text": qsTr("页面")+serialPageCnt.toString(), "pid": uuid, "value":treeModel});
+        initLayerNodes(treeModel);
         UniDeskComponentsData.insertPage(index-1,{"text": qsTr("页面")+serialPageCnt.toString(),"pid": uuid});
         serialPageCnt+=1;
+        pageWindow.reloadTreeView();
     }
     function index_in_compModels(comId){
         var c=getComById(comId);
@@ -333,14 +373,48 @@ UniDeskObject{
     }
     function move_com_to_page(comId,indexPage){
         var c=getComById(comId);
-        compModels.get(indexPage).value.append({"identification":comId, "name":c.name, "type":c.type, "parentId":c.parent ? c.parent.identification : ""});
-        compModels.get(pid2pindex(c.pageid)).value.removeById(comId);
-        c.pageid=pindex2pid(indexPage);
+        var oldPidx=pid2pindex(c.pageid);
+        var newPid=pindex2pid(indexPage);
+        compModels.get(indexPage).value.append({"identification":comId, "name":c.name, "type":c.type, "parentId":getComId(c.parent), "z":c.z});
+        compModels.get(oldPidx).value.removeById(comId);
+        c.pageid=newPid;
         c.saveComToFile();
+        var descendants=[];
+        for(var i=0;i<component_list.length;i++){
+            if(c.isAncestorOf(component_list[i])){
+                descendants.push(component_list[i]);
+            }
+        }
+        for(var i=0;i<descendants.length;i++){
+            var d=descendants[i];
+            var dOldPidx=pid2pindex(d.pageid);
+            compModels.get(indexPage).value.append({"identification":d.identification, "name":d.name, "type":d.type, "parentId":getComId(d.parent), "z":d.z});
+            if(dOldPidx!==indexPage){
+                compModels.get(dOldPidx).value.removeById(d.identification);
+            }
+            d.pageid=newPid;
+            d.saveComToFile();
+        }
+        pageWindow.reloadTreeView();
+    }
+    function updateComTreeParent(com, newParent){
+        if(!com) return;
+        var pidx = pid2pindex(com.pageid);
+        var treeModel = compModels.get(pidx).value;
+        var newParentId = getComId(newParent);
+        treeModel.update({"identification": com.identification, "parentId": newParentId, "z": com.z});
+    }
+    function updateComTreeZ(com, newZ){
+        if(!com) return;
+        var pidx = pid2pindex(com.pageid);
+        var treeModel = compModels.get(pidx).value;
+        com.z = newZ;
+        treeModel.setZ(com.identification, newZ);
+        pageWindow.reloadTreeView();
     }
     function mouse_on_any_com(mousePos,layer){
         for(var i=0;i<component_list.length;i++){
-            if(component_list[i].visible){
+            if(component_list[i]&&component_list[i].visible){
                 if(component_list[i].containsGlobalPoint(mousePos)&&component_list[i].currentLayer()===layer){
                     return true;
                 }
@@ -455,8 +529,31 @@ UniDeskObject{
         new_com.visible = new_com.pageid === currentPid;
         UniDeskComponentsData.addComponent(new_com.propertyData());
         component_list.push(new_com);
-        compModels.get(pid2pindex(data.pageid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":new_com.parent ? new_com.parent.identification : ""});
+        compModels.get(pid2pindex(data.pageid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":getComId(new_com.parent), "z":new_com.z});
         serialComponentCnt += 1;
+        pageWindow.reloadTreeView();
         return new_com;
+    }
+    function getComOrLayerName(com){
+        if(com===wallpaperLayer.contentItem){
+            return qsTr("壁纸层");
+        }
+        else if(com===root.contentItem){
+            return qsTr("桌面层");
+        }
+        else if(com===topMostLayer.contentItem){
+            return qsTr("置顶层");
+        }
+        else{
+            return com.name;
+        }
+        function updateComTreeZ(com, newZ){
+            if(!com) return;
+            var pidx = pid2pindex(com.pageid);
+            var treeModel = compModels.get(pidx).value;
+            com.z = newZ;
+            com.saveComToFile();
+            treeModel.setZ(com.identification, newZ);
+        }
     }
 }

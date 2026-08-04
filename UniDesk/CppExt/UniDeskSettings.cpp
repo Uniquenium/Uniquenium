@@ -4,8 +4,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDir>
+#include <QCoreApplication>
 
-static QString settingsFile = "./data/settings.json";
+static QString settingsFile = QCoreApplication::applicationDirPath() + "/data/settings.json";
 
 static QJsonObject defaultSettings() {
     QJsonObject obj;
@@ -58,7 +59,7 @@ static QJsonObject defaultSettings() {
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
     QFile f(file);
-    QDir().mkdir("./data");
+    QDir().mkdir(QCoreApplication::applicationDirPath() + "/data");
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QJsonDocument doc(obj);
     f.write(doc.toJson(QJsonDocument::Indented));

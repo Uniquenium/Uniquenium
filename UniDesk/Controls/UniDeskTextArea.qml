@@ -38,6 +38,7 @@ Rectangle {
             selectedTextColor: UniDeskSettings.fontPrimaryColorDark
             
             font: UniDeskTextStyle.little
+            readOnly: true
             UniDeskText {
                 id: placeholder
                 x: control.leftPadding

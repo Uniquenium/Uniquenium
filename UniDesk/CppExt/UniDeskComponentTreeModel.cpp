@@ -1,4 +1,5 @@
 #include "UniDeskComponentTreeModel.h"
+#include <algorithm>
 
 
 UniDeskComponentTreeModel::UniDeskComponentTreeModel(QObject *parent)
@@ -141,6 +142,8 @@ QVariant UniDeskComponentTreeModel::data(const QModelIndex &index, int role) con
         return node->type;
     case Qt::UserRole + 3:  // parentId
         return node->parentId;
+    case Qt::UserRole + 4:  // z
+        return node->z;
     default:
         return QVariant();
     }
@@ -153,6 +156,7 @@ QHash<int, QByteArray> UniDeskComponentTreeModel::roleNames() const
     roles.insert(Qt::UserRole + 1, "identification");
     roles.insert(Qt::UserRole + 2, "type");
     roles.insert(Qt::UserRole + 3, "parentId");
+ roles.insert(Qt::UserRole + 4, "z");
     return roles;
 }
 
@@ -174,6 +178,7 @@ void UniDeskComponentTreeModel::append(const QVariantMap &data)
     node->name = data.value("name").toString();
     node->type = data.value("type").toString();
     node->parentId = data.value("parentId").toString();
+    node->z = data.value("z").toDouble();
 
     // 查找父节点
     Node* parentNode = nullptr;
@@ -196,6 +201,7 @@ void UniDeskComponentTreeModel::append(const QVariantMap &data)
     }
 
     m_idToNode.insert(id, node);
+    sortSiblings(node);
     emitCountChanged();
 }
 
@@ -299,6 +305,8 @@ void UniDeskComponentTreeModel::update(const QVariantMap &data)
         node->name = data.value("name").toString();
     if (data.contains("type"))
         node->type = data.value("type").toString();
+    if (data.contains("z"))
+        node->z = data.value("z").toDouble();
 
     // 如果parentId改变，需要移动节点
     QString newParentId = data.value("parentId").toString();
@@ -336,13 +344,31 @@ void UniDeskComponentTreeModel::update(const QVariantMap &data)
             m_nodes.append(node);
             endInsertRows();
         }
+        sortSiblings(node);
     } else {
         // 仅更新数据
         QModelIndex idx = findIndexById(id);
         if (idx.isValid()) {
             emit dataChanged(idx, idx);
         }
+        if (data.contains("z")) {
+            sortSiblings(node);
+        }
     }
+}
+
+void UniDeskComponentTreeModel::setZ(const QString &identification, qreal z)
+{
+    Node* node = m_idToNode.value(identification, nullptr);
+    if (!node)
+        return;
+    if (qFuzzyCompare(node->z, z))
+        return;
+    node->z = z;
+    sortSiblings(node);
+    QModelIndex idx = findIndexById(identification);
+    if (idx.isValid())
+        emit dataChanged(idx, idx);
 }
 
 // ===== Page属性 =====
@@ -432,4 +458,19 @@ QModelIndex UniDeskComponentTreeModel::findIndexById(const QString &identificati
         index = createIndex(row, 0, n);
     }
     return index;
+}
+
+void UniDeskComponentTreeModel::sortSiblings(Node* node)
+{
+    if (!node)
+        return;
+    QList<Node*>& siblings = node->parent ? node->parent->children : m_nodes;
+    if (siblings.size() < 2)
+        return;
+
+    emit layoutAboutToBeChanged({}, QAbstractItemModel::VerticalSortHint);
+    std::stable_sort(siblings.begin(), siblings.end(), [](Node* a, Node* b) {
+        return a->z < b->z;
+    });
+    emit layoutChanged({}, QAbstractItemModel::VerticalSortHint);
 }

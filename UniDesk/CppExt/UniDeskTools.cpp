@@ -332,10 +332,10 @@ QString UniDeskTools::createUuid() {
     return QUuid::createUuid().toString();
 }
 bool UniDeskTools::isAppAutoStartEnabled() {
-    QString path = QGuiApplication::applicationFilePath();
+    QString path = QDir::toNativeSeparators(QGuiApplication::applicationFilePath());
     return IsAutoStartEnabled(L"UniDesk.Uniquenium", path.toStdWString());
 }
 void UniDeskTools::setAppAutoStart(bool enabled) {
-    QString path = QGuiApplication::applicationFilePath();
+    QString path = QDir::toNativeSeparators(QGuiApplication::applicationFilePath());
     SetAutoStart(L"UniDesk.Uniquenium", path.toStdWString(), enabled);
 }
