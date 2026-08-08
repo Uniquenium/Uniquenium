@@ -42,7 +42,7 @@ ScrollView{
         anchors.margins: 10
         y: text_open_settings.y 
         onAccepted: {
-            UniDeskSettings.set("hotkey_open_settings", current.join("+"))
+            UniDeskSettings.set("hotkeys.hotkey_open_settings", current.join("+"))
         }
     }
     UniDeskHotkeyPicker {
@@ -52,7 +52,7 @@ ScrollView{
         anchors.margins: 10
         y: text_open_page_manager.y 
         onAccepted: {
-            UniDeskSettings.set("hotkey_open_page_manager", current.join("+"))
+            UniDeskSettings.set("hotkeys.hotkey_open_page_manager", current.join("+"))
         }
     }
 }

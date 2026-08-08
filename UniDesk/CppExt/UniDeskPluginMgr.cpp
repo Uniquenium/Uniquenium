@@ -48,21 +48,22 @@ void UniDeskPluginMgr::loadPlugins()
         }
         for (const QJsonValue &dll : obj["dlls"].toArray()) {
             QString fileName = pluginsDir.absoluteFilePath(pluginDirName + "/" + dll.toString());
-            QPluginLoader loader(fileName);
-            QObject *plugin = loader.instance();
+            QPluginLoader *loader = new QPluginLoader(fileName);
+            QObject *plugin = loader->instance();
             if (plugin) {
                 UniDeskPluginInterface *interface = qobject_cast<UniDeskPluginInterface*>(plugin);
                 if (interface) {
                     interface->registerQmlTypes(m_engine);
                     interface->initialize();
-                    
+                    m_loaders.append(loader);
                 } else {
                     qDebug() << "Plugin does not implement PluginInterface:" << fileName;
+                    delete loader;
                 }
-
             } else {
                 qDebug() << "Failed to load plugin:" << fileName;
-                qDebug() << "Error:" << loader.errorString();
+                qDebug() << "Error:" << loader->errorString();
+                delete loader;
             }
         }
         QVariantMap pluginInfo;
@@ -76,6 +77,18 @@ void UniDeskPluginMgr::loadPlugins()
         m_engine->addImportPath(pluginsDir.absoluteFilePath(pluginDirName));
     }
     plugins_list(pluginList);
+}
+
+void UniDeskPluginMgr::unloadPlugins()
+{
+    for (QPluginLoader *loader : m_loaders) {
+        if (loader) {
+            loader->unload();
+            delete loader;
+        }
+    }
+    m_loaders.clear();
+    plugins_list(QVariantList());
 }
 
 void UniDeskPluginMgr::setEngine(QQmlApplicationEngine* engine)

@@ -27,6 +27,7 @@ target_link_libraries(${TARGET}
         Qt6::GuiPrivate
         Qt6::Core5Compat
         Qt6::LabsPlatform
+        Qt6::Concurrent
         QHotkey::QHotkey
         )
 target_include_directories(${TARGET} 

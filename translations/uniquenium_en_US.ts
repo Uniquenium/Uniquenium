@@ -227,6 +227,26 @@
         <source>开机自启</source>
         <translation>Auto-start on Boot</translation>
     </message>
+    <message>
+        <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="42"/>
+        <source>主题</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="50"/>
+        <source>保存路径</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="63"/>
+        <source>保存为主题</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="70"/>
+        <source>请先选择保存路径</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HotkeysView</name>
@@ -1169,6 +1189,181 @@
         <location filename="../UniDesk/CppExt/UniDeskSystemTray.cpp" line="14"/>
         <source>退出</source>
         <translation>Exit</translation>
+    </message>
+</context>
+<context>
+    <name>UniDeskThemeManager</name>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="54"/>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="324"/>
+        <source>已有保存任务正在进行</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="67"/>
+        <source>保存路径不能为空</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="75"/>
+        <source>路径不是目录: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="82"/>
+        <source>无法创建主题目录: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="89"/>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="349"/>
+        <source>准备保存...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="103"/>
+        <source>正在保存外观设置...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="149"/>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="194"/>
+        <source>无法写入文件: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="150"/>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="173"/>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="195"/>
+        <source>保存失败</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="158"/>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="518"/>
+        <source>正在复制插件...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="172"/>
+        <source>复制插件失败: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="176"/>
+        <source>正在复制插件: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="179"/>
+        <source>正在保存组件信息...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="203"/>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="559"/>
+        <source>保存完成</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="204"/>
+        <source>主题已保存至: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="332"/>
+        <source>主题保存路径为空</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="337"/>
+        <source>路径不是文件夹: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="343"/>
+        <source>无法创建主题目录: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="374"/>
+        <source>完成</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="484"/>
+        <source>无法创建 media 目录</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="489"/>
+        <source>正在读取外观设置...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="493"/>
+        <source>找不到 settings.json: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="497"/>
+        <source>无法打开 settings.json</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="504"/>
+        <source>正在处理外观设置中的媒体文件...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="509"/>
+        <source>正在写入 settings.json...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="512"/>
+        <source>无法写入 settings.json</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="523"/>
+        <source>复制插件失败</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="530"/>
+        <source>正在读取组件信息...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="534"/>
+        <source>找不到 components.json: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="538"/>
+        <source>无法打开 components.json</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="545"/>
+        <source>正在处理组件中的媒体文件...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="550"/>
+        <source>正在写入 components.json...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="553"/>
+        <source>无法写入 components.json</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="560"/>
+        <source>主题已保存到: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

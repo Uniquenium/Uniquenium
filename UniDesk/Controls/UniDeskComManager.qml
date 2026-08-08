@@ -277,6 +277,12 @@ UniDeskObject{
         pageWindow.reloadTreeView();
     }
     function loadPagesFromData(){
+        for(var i=0;i<component_list.length;i++){
+            component_list[i].closeSignal();
+            component_list[i].visible=false;
+            UniDeskUtils.deleteLater(component_list[i]);
+        }
+        component_list=[];
         compModels.clear();
         compModels.append({"text": qsTr("默认页面"), "pid": "default", "value":com_tree_model.createObject(null,{})});
         var data=UniDeskComponentsData.getPages();
@@ -301,6 +307,8 @@ UniDeskObject{
         }
     }
     function loadComponentTypesFromData(){
+        typename_list=[];
+        type_list=[];
         componentInfoList=UniDeskComponentsData.getComponentTypes();
         typename_list=[];
         type_list=[];

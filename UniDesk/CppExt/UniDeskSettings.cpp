@@ -5,56 +5,61 @@
 #include <QJsonArray>
 #include <QDir>
 #include <QCoreApplication>
+#include <QSet>
 
 static QString settingsFile = QCoreApplication::applicationDirPath() + "/data/settings.json";
 
+QString UniDeskSettings::stripPrefix(const QString &key) {
+    int dot = key.indexOf('.');
+    return (dot > 0) ? key.mid(dot + 1) : key;
+}
+bool UniDeskSettings::isAppearanceProperty(const QString &key) { return key.startsWith("appearance."); }
+bool UniDeskSettings::isHotkeysProperty(const QString &key) { return key.startsWith("hotkeys."); }
+bool UniDeskSettings::isFunctionProperty(const QString &key) { return key.startsWith("function."); }
+
 static QJsonObject defaultSettings() {
     QJsonObject obj;
-    obj["hideTaskbar"] = false;
-    obj["colorMode"] = 2;
+    obj["function.hideTaskbar"] = false;
+    obj["appearance.colorMode"] = 2;
     QJsonObject color;
     color["<type>"] = "QColor";
     color["red"] = 0;
     color["green"] = 100;
     color["blue"] = 255;
     color["alpha"] = 255;
-    obj["primaryColor"] = color;
-    obj["globalFontFamily"] = QString::fromUtf8("微软雅黑");
-    obj["customFontFamilyPaths"] = QJsonArray();
+    obj["appearance.primaryColor"] = color;
+    obj["appearance.globalFontFamily"] = QString::fromUtf8("微软雅黑");
+    obj["appearance.customFontFamilyPaths"] = QJsonArray();
     QJsonObject fontPrimaryColorDark{{"<type>", "QColor"},{"red", 255},{"green",255},{"blue",255},{"alpha",255}};
-    obj["fontPrimaryColorDark"]=fontPrimaryColorDark;
+    obj["appearance.fontPrimaryColorDark"]=fontPrimaryColorDark;
     QJsonObject fontPrimaryColorLight{{"<type>", "QColor"},{"red", 0},{"green",0},{"blue",0},{"alpha",255}};
-    obj["fontPrimaryColorLight"]=fontPrimaryColorLight;
+    obj["appearance.fontPrimaryColorLight"]=fontPrimaryColorLight;
     QJsonObject fontSecondaryColorDark{{"<type>", "QColor"},{"red", 222},{"green",222},{"blue",222},{"alpha",255}};
-    obj["fontSecondaryColorDark"]=fontSecondaryColorDark;
+    obj["appearance.fontSecondaryColorDark"]=fontSecondaryColorDark;
     QJsonObject fontSecondaryColorLight{{"<type>", "QColor"},{"red", 102},{"green",102},{"blue",102},{"alpha",255}};
-    obj["fontSecondaryColorLight"]=fontSecondaryColorLight;
+    obj["appearance.fontSecondaryColorLight"]=fontSecondaryColorLight;
     QJsonObject fontTertiaryColorDark{{"<type>", "QColor"},{"red", 200},{"green",200},{"blue",200},{"alpha",255}};
-    obj["fontTertiaryColorDark"]=fontTertiaryColorDark;
+    obj["appearance.fontTertiaryColorDark"]=fontTertiaryColorDark;
     QJsonObject fontTertiaryColorLight{{"<type>", "QColor"},{"red", 153},{"green",153},{"blue",153},{"alpha",255}};
-    obj["fontTertiaryColorLight"]=fontTertiaryColorLight;
-    // 壁纸相关默认值
-    obj["wallpaperMode"] = 0;                   // 0=关闭
-    obj["wallpaperRefreshInterval"] = 300;      // 5分钟
-    obj["wallpaperVideoUrl"] = QString();
-    obj["wallpaperVolume"] = 0;
-    obj["wallpaperApiUrl"] = QString();
-    obj["wallpaperApiExpression"] = QString();
-    obj["wallpaperImageUrls"] = QJsonArray();
-
-    // 语言设置默认值
-    obj["language"] = "zh_CN";                 // 默认中文
-    obj["hotkey_open_settings"] = "Ctrl+Shift+S";
-    obj["hotkey_open_page_manager"] = "Ctrl+Shift+P";
-    // 主面板默认值
+    obj["appearance.fontTertiaryColorLight"]=fontTertiaryColorLight;
+    obj["appearance.wallpaperMode"] = 0;
+    obj["appearance.wallpaperRefreshInterval"] = 300;
+    obj["appearance.wallpaperVideoUrl"] = QString();
+    obj["appearance.wallpaperVolume"] = 0;
+    obj["appearance.wallpaperApiUrl"] = QString();
+    obj["appearance.wallpaperApiExpression"] = QString();
+    obj["appearance.wallpaperImageUrls"] = QJsonArray();
+    obj["function.language"] = "zh_CN";
+    obj["hotkeys.hotkey_open_settings"] = "Ctrl+Shift+S";
+    obj["hotkeys.hotkey_open_page_manager"] = "Ctrl+Shift+P";
     QJsonObject mainPanelColorDark{{"<type>", "QColor"},{"red", 0},{"green",0},{"blue",0},{"alpha",150}};
-    obj["mainPanelColorDark"] = mainPanelColorDark;
+    obj["appearance.mainPanelColorDark"] = mainPanelColorDark;
     QJsonObject mainPanelColorLight{{"<type>", "QColor"},{"red", 255},{"green",255},{"blue",255},{"alpha",150}};
-    obj["mainPanelColorLight"] = mainPanelColorLight;
-    obj["mainPanelOrientation"] = 1;           // 默认纵向
-    obj["mainPanelPosition"] = 0;              // 默认顶部
-    obj["customCursorEnabled"] = false;          // 默认关闭自定义光标
-    obj["customCursorStylePath"] = QString();
+    obj["appearance.mainPanelColorLight"] = mainPanelColorLight;
+    obj["appearance.mainPanelOrientation"] = 1;
+    obj["appearance.mainPanelPosition"] = 0;
+    obj["appearance.customCursorEnabled"] = false;
+    obj["appearance.customCursorStylePath"] = QString();
     return obj;
 }
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
@@ -135,15 +140,18 @@ UniDeskSettings::UniDeskSettings(QQuickItem *parent)
     notifyLoad();
 }
 
-QVariant UniDeskSettings::get(const QString &prop) {
+QVariant UniDeskSettings::get(const QString &key) {
     QJsonObject obj = readJsonFile(settingsFile);
-    if (obj.value(prop).isUndefined()||obj.value(prop).isNull()) return json2object(defaultSettings()[prop]);
-    return json2object(obj.value(prop));
+    QJsonValue v = obj.value(key);
+    if (v.isUndefined() || v.isNull()) v = obj.value(stripPrefix(key));
+    if (v.isUndefined() || v.isNull()) return json2object(defaultSettings()[key]);
+    return json2object(v);
 }
 
-void UniDeskSettings::set(const QString &prop, const QVariant &val) {
+void UniDeskSettings::set(const QString &key, const QVariant &val) {
     QJsonObject obj = readJsonFile(settingsFile);
-    obj[prop] = object2json(val);
+    obj[key] = object2json(val);
+    obj.remove(stripPrefix(key));
     writeJsonFile(settingsFile, obj);
     notifyLoad();
 }
@@ -168,42 +176,43 @@ void UniDeskSettings::setAll(const QVariant &val) {
 
 void UniDeskSettings::notifyLoad() {
     QJsonObject obj = readJsonFile(settingsFile);
-    hideTaskbar(obj.value("hideTaskbar").toBool());
-    colorMode(obj.value("colorMode").toInt());
-    primaryColor(json2object(obj.value("primaryColor")).value<QColor>());
-    fontPrimaryColorDark(json2object(obj.value("fontPrimaryColorDark")).value<QColor>());
-    fontPrimaryColorLight(json2object(obj.value("fontPrimaryColorLight")).value<QColor>());
-    fontSecondaryColorDark(json2object(obj.value("fontSecondaryColorDark")).value<QColor>());
-    fontSecondaryColorLight(json2object(obj.value("fontSecondaryColorLight")).value<QColor>());
-    fontTertiaryColorDark(json2object(obj.value("fontTertiaryColorDark")).value<QColor>());
-    fontTertiaryColorLight(json2object(obj.value("fontTertiaryColorLight")).value<QColor>());
-    globalFontFamily(obj.value("globalFontFamily").toString());
+    auto getVal = [&obj](const QString &key) -> QJsonValue {
+        QJsonValue v = obj.value(key);
+        if (v.isUndefined() || v.isNull()) v = obj.value(stripPrefix(key));
+        return v;
+    };
+    hideTaskbar(getVal("function.hideTaskbar").toBool());
+    colorMode(getVal("appearance.colorMode").toInt());
+    primaryColor(json2object(getVal("appearance.primaryColor")).value<QColor>());
+    fontPrimaryColorDark(json2object(getVal("appearance.fontPrimaryColorDark")).value<QColor>());
+    fontPrimaryColorLight(json2object(getVal("appearance.fontPrimaryColorLight")).value<QColor>());
+    fontSecondaryColorDark(json2object(getVal("appearance.fontSecondaryColorDark")).value<QColor>());
+    fontSecondaryColorLight(json2object(getVal("appearance.fontSecondaryColorLight")).value<QColor>());
+    fontTertiaryColorDark(json2object(getVal("appearance.fontTertiaryColorDark")).value<QColor>());
+    fontTertiaryColorLight(json2object(getVal("appearance.fontTertiaryColorLight")).value<QColor>());
+    globalFontFamily(getVal("appearance.globalFontFamily").toString());
     QList<QString> fontPaths;
-    for (const QJsonValue &v : obj.value("customFontFamilyPaths").toArray())
+    for (const QJsonValue &v : getVal("appearance.customFontFamilyPaths").toArray())
         fontPaths << v.toString();
     customFontFamilyPaths(fontPaths);
-    // 加载壁纸设置
-    wallpaperMode(obj.value("wallpaperMode").toInt());
-    wallpaperRefreshInterval(obj.value("wallpaperRefreshInterval").toInt());
-    wallpaperApiUrl(obj.value("wallpaperApiUrl").toString());
-    wallpaperApiExpression(obj.value("wallpaperApiExpression").toString());
+    wallpaperMode(getVal("appearance.wallpaperMode").toInt());
+    wallpaperRefreshInterval(getVal("appearance.wallpaperRefreshInterval").toInt());
+    wallpaperApiUrl(getVal("appearance.wallpaperApiUrl").toString());
+    wallpaperApiExpression(getVal("appearance.wallpaperApiExpression").toString());
     QStringList imageUrls;
-    for (const QJsonValue &v : obj.value("wallpaperImageUrls").toArray())
+    for (const QJsonValue &v : getVal("appearance.wallpaperImageUrls").toArray())
         imageUrls << v.toString();
     wallpaperImageUrls(imageUrls);
-    wallpaperVideoUrl(obj.value("wallpaperVideoUrl").toString());
-    wallpaperVolume(obj.value("wallpaperVolume").toInt());
-    // 加载语言设置
-    language(obj.value("language").toString());
-    // 加载快捷键设置
-    hotkey_open_settings(obj.value("hotkey_open_settings").toString());
-    hotkey_open_page_manager(obj.value("hotkey_open_page_manager").toString());
-    // 加载主面板设置
-    mainPanelColorDark(json2object(obj.value("mainPanelColorDark")).value<QColor>());
-    mainPanelColorLight(json2object(obj.value("mainPanelColorLight")).value<QColor>());
-    mainPanelOrientation(obj.value("mainPanelOrientation").toInt());
-    mainPanelPosition(obj.value("mainPanelPosition").toInt());
-    customCursorEnabled(obj.value("customCursorEnabled").toBool());
-    customCursorStylePath(obj.value("customCursorStylePath").toString());
+    wallpaperVideoUrl(getVal("appearance.wallpaperVideoUrl").toString());
+    wallpaperVolume(getVal("appearance.wallpaperVolume").toInt());
+    language(getVal("function.language").toString());
+    hotkey_open_settings(getVal("hotkeys.hotkey_open_settings").toString());
+    hotkey_open_page_manager(getVal("hotkeys.hotkey_open_page_manager").toString());
+    mainPanelColorDark(json2object(getVal("appearance.mainPanelColorDark")).value<QColor>());
+    mainPanelColorLight(json2object(getVal("appearance.mainPanelColorLight")).value<QColor>());
+    mainPanelOrientation(getVal("appearance.mainPanelOrientation").toInt());
+    mainPanelPosition(getVal("appearance.mainPanelPosition").toInt());
+    customCursorEnabled(getVal("appearance.customCursorEnabled").toBool());
+    customCursorStylePath(getVal("appearance.customCursorStylePath").toString());
 }
 

@@ -152,6 +152,7 @@ target_link_libraries(${PROJECT_NAME}
         Qt6::GuiPrivate
         Qt6::Core5Compat
         Qt6::LabsPlatform
+        Qt6::Concurrent
         QHotkey::QHotkey
         ${TARGET}
         )

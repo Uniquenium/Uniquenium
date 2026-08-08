@@ -62,6 +62,11 @@ public:
     Q_INVOKABLE void setAll(const QVariant &val);
 
     Q_INVOKABLE void notifyLoad();
+
+    static bool isAppearanceProperty(const QString &key);
+    static bool isHotkeysProperty(const QString &key);
+    static bool isFunctionProperty(const QString &key);
+    static QString stripPrefix(const QString &key);
 };
 
 

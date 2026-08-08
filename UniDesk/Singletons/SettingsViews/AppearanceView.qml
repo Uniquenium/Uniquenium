@@ -34,7 +34,7 @@ ScrollView{
         anchors.margins: 10
         currentIndex: UniDeskSettings.colorMode
         onActivated:  {
-            UniDeskSettings.set("colorMode", currentIndex);
+            UniDeskSettings.set("appearance.colorMode", currentIndex);
             UniDeskGlobals.updateIsLight();
         }
     }
@@ -53,7 +53,7 @@ ScrollView{
         anchors.right: parent.right
         anchors.margins: 10
         onSelectedColorChanged:{
-            UniDeskSettings.set("primaryColor", selectedColor);
+            UniDeskSettings.set("appearance.primaryColor", selectedColor);
              
         }
         Component.onCompleted:{
@@ -78,7 +78,7 @@ ScrollView{
         currentIndex: UniDeskTools.fontIndex(UniDeskSettings.globalFontFamily)
         onCurrentTextChanged: {
             UniDeskTextStyle.changeFontFamily(currentText);
-            UniDeskSettings.set("globalFontFamily", currentText);
+            UniDeskSettings.set("appearance.globalFontFamily", currentText);
         }
         Component.onCompleted: {
             UniDeskTextStyle.changeFontFamily(UniDeskSettings.globalFontFamily);
@@ -181,17 +181,13 @@ ScrollView{
         id: button_group1
         onCheckedButtonChanged: {
             if (checkedButton === radioButtonOff) {
-                UniDeskSettings.set("wallpaperMode", 0);
-                customWallpaper.updateWallpaper();
+                UniDeskSettings.set("appearance.wallpaperMode", 0);
             } else if (checkedButton === radioButtonApi) {
-                UniDeskSettings.set("wallpaperMode", 1);
-                customWallpaper.updateWallpaper();
+                UniDeskSettings.set("appearance.wallpaperMode", 1);
             } else if (checkedButton === radioButtonImage) {
-                UniDeskSettings.set("wallpaperMode", 2);
-                customWallpaper.updateWallpaper();
+                UniDeskSettings.set("appearance.wallpaperMode", 2);
             } else if (checkedButton === radioButtonVideo) {
-                UniDeskSettings.set("wallpaperMode", 3);
-                customWallpaper.updateWallpaper();
+                UniDeskSettings.set("appearance.wallpaperMode", 3);
             }
         }
     }
@@ -238,9 +234,9 @@ ScrollView{
                     id: apiUrlField
                     width: parent.width
                     placeholderText: qsTr("https://api.example.com/images")
-                    text: UniDeskSettings.get("wallpaperApiUrl") || ""
+                    text: UniDeskSettings.get("appearance.wallpaperApiUrl") || ""
                     onEditingFinished: {
-                        UniDeskSettings.set("wallpaperApiUrl", text);
+                        UniDeskSettings.set("appearance.wallpaperApiUrl", text);
                         
                     }
                 }
@@ -255,9 +251,9 @@ ScrollView{
             id: apiExpressionField
             width: parent.width
             placeholderText: qsTr("response.data[0].url")
-            text: UniDeskSettings.get("wallpaperApiExpression") || ""
+            text: UniDeskSettings.get("appearance.wallpaperApiExpression") || ""
             onEditingFinished: {
-                UniDeskSettings.set("wallpaperApiExpression", text);
+                UniDeskSettings.set("appearance.wallpaperApiExpression", text);
                 
             }
         }
@@ -282,9 +278,7 @@ ScrollView{
                 to: 3600
                 value: customWallpaper.refreshInterval
                 onValueModified: {
-                    UniDeskSettings.set("wallpaperRefreshInterval", value);
-                    
-                    customWallpaper.updateWallpaper();
+                    UniDeskSettings.set("appearance.wallpaperRefreshInterval", value);
                 }
             }
         }
@@ -329,7 +323,7 @@ ScrollView{
                 anchors.fill: parent
                 anchors.margins: 10
                 spacing: 10
-                model: UniDeskSettings.get("wallpaperImageUrls") || []
+                model: UniDeskSettings.get("appearance.wallpaperImageUrls") || []
                 
                 delegate: RowLayout{
                     width: parent.width
@@ -340,10 +334,9 @@ ScrollView{
                         Layout.fillWidth: true
                         path: modelData
                         onSubmit: {
-                            var urls = UniDeskSettings.get("wallpaperImageUrls") || [];
+                            var urls = UniDeskSettings.get("appearance.wallpaperImageUrls") || [];
                             urls[index] = path.toString();
-                            UniDeskSettings.set("wallpaperImageUrls", urls);
-                            customWallpaper.updateWallpaper();
+                            UniDeskSettings.set("appearance.wallpaperImageUrls", urls);
                         }
                     }
                     
@@ -355,10 +348,9 @@ ScrollView{
                         iconColor: Qt.rgba(1, 0, 0, 1)
                         radius: width / 2
                         onClicked: {
-                            var urls = UniDeskSettings.get("wallpaperImageUrls") || [];
+                            var urls = UniDeskSettings.get("appearance.wallpaperImageUrls") || [];
                             urls.splice(index, 1);
-                            UniDeskSettings.set("wallpaperImageUrls", urls);
-                            customWallpaper.updateWallpaper();
+                            UniDeskSettings.set("appearance.wallpaperImageUrls", urls);
                             imageListView.model = urls;
                         }
                         Layout.alignment: Qt.AlignVCenter
@@ -383,10 +375,9 @@ ScrollView{
             borderWidth: 1
             radius: 5
             onClicked: {
-                var urls = UniDeskSettings.get("wallpaperImageUrls") || [];
+                var urls = UniDeskSettings.get("appearance.wallpaperImageUrls") || [];
                 urls.push("");
-                UniDeskSettings.set("wallpaperImageUrls", urls);
-                customWallpaper.updateWallpaper();
+                UniDeskSettings.set("appearance.wallpaperImageUrls", urls);
                 imageListView.model = urls;
             }
             anchors.left: parent.left
@@ -410,9 +401,7 @@ ScrollView{
                 to: 3600
                 value: customWallpaper.refreshInterval
                 onValueModified: {
-                    UniDeskSettings.set("wallpaperRefreshInterval", value);
-                       
-                    customWallpaper.updateWallpaper();
+                    UniDeskSettings.set("appearance.wallpaperRefreshInterval", value);
                 }
             }
         }
@@ -435,10 +424,7 @@ ScrollView{
         path: customWallpaper.wallpaperVideoUrl
         visible: customWallpaper.wallpaperMode === 3
         onSubmit: {
-            UniDeskSettings.set("wallpaperVideoUrl", path.toString());
-            if (radioButtonVideo.checked) {
-                customWallpaper.updateWallpaper();
-            }
+            UniDeskSettings.set("appearance.wallpaperVideoUrl", path.toString());
         }
     }
     UniDeskText{
@@ -460,8 +446,7 @@ ScrollView{
         to: 100
         stepSize: 1
         onMoved: {
-            UniDeskSettings.set("wallpaperVolume", value);
-            customWallpaper.updateWallpaper();
+            UniDeskSettings.set("appearance.wallpaperVolume", value);
         }
     }
     UniDeskText{
@@ -509,7 +494,7 @@ ScrollView{
         anchors.right: parent.right
         anchors.margins: 10
         onSelectedColorChanged: {
-            UniDeskSettings.set("mainPanelColorDark", selectedColor);
+            UniDeskSettings.set("appearance.mainPanelColorDark", selectedColor);
         }
         Component.onCompleted: {
             selectedColor = UniDeskSettings.mainPanelColorDark;
@@ -521,7 +506,7 @@ ScrollView{
         anchors.right: parent.right
         anchors.margins: 10
         onSelectedColorChanged: {
-            UniDeskSettings.set("mainPanelColorLight", selectedColor);
+            UniDeskSettings.set("appearance.mainPanelColorLight", selectedColor);
         }
         Component.onCompleted: {
             selectedColor = UniDeskSettings.mainPanelColorLight;
@@ -535,7 +520,7 @@ ScrollView{
         model: [qsTr("横向"), qsTr("纵向")]
         currentIndex: UniDeskSettings.mainPanelOrientation
         onActivated: {
-            UniDeskSettings.set("mainPanelOrientation", currentIndex);
+            UniDeskSettings.set("appearance.mainPanelOrientation", currentIndex);
         }
     }
     UniDeskComboBox{
@@ -546,7 +531,7 @@ ScrollView{
         model: [qsTr("顶部"), qsTr("底部")]
         currentIndex: UniDeskSettings.mainPanelPosition
         onActivated: {
-            UniDeskSettings.set("mainPanelPosition", currentIndex);
+            UniDeskSettings.set("appearance.mainPanelPosition", currentIndex);
         }
     }
     UniDeskText{
@@ -565,7 +550,7 @@ ScrollView{
         anchors.margins: 10
         checked: UniDeskSettings.customCursorEnabled
         onCheckedChanged: {
-            UniDeskSettings.set("customCursorEnabled", checked);
+            UniDeskSettings.set("appearance.customCursorEnabled", checked);
             view.updateCursorStyle(UniDeskSettings.customCursorStylePath);
         }
     }
@@ -587,7 +572,7 @@ ScrollView{
         path: UniDeskSettings.customCursorStylePath
         onSubmit: {
             if(view.updateCursorStyle(path)){
-                UniDeskSettings.set("customCursorStylePath", path);
+                UniDeskSettings.set("appearance.customCursorStylePath", path);
             }
         }
     }

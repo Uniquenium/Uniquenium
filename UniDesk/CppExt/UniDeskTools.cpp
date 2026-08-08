@@ -257,7 +257,7 @@ void UniDeskTools::addFontFamily(const QString &path) {
 
         // 更新设置文件
         UniDeskSettings::getInstance()->customFontFamilyPaths(paths);
-        UniDeskSettings::getInstance()->set("customFontFamilyPaths", QVariant::fromValue(paths));
+        UniDeskSettings::getInstance()->set("appearance.customFontFamilyPaths", QVariant::fromValue(paths));
     }
 }
 

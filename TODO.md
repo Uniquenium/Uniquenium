@@ -22,7 +22,6 @@
   - [x] Multi Component Edition
   - [x] Topmost Layer
   - [x] Native Cursor Style 
-
   - QML Cursor Style 
     - [x] Blank Cursor For Hidding Cursor
     - [x] Getting Cursor Standard State Support (Timer Bug)
@@ -31,9 +30,9 @@
     - [x] Component Delete Bug
   - [x] Component Z-Index Modification
   - [x] Auto Start With Booting Support
-  - [ ] Linux Support
+  - [x] Theme
   - [ ] Templete
-  - [ ] Theme
+  - [ ] Linux Support
 - Bugs
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)
   - [x] UniDeskComRectEditor's opacity is affected by UniDeskComBase's opacity

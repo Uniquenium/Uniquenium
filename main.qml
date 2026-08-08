@@ -397,7 +397,9 @@ UniDeskObject{
             updateMouseClickThrough(pos);
         }
         Component.onCompleted: {
-            custom_wallpaper.updateWallpaper();
+            // 触发 UniDeskThemeManager 单例构造，确保 startup 清理（删除标记文件夹 + 完整替换 plugins DLL）
+            // 在 loadPlugins 之前执行，保证 DLL 已被清理干净
+            var _tm = UniDeskThemeManager.isWorking;
             custom_wallpaper.fetchCustomApiWallpaper();
             custom_wallpaper.nextImage();
             UniDeskPluginMgr.setEngine(QQMLENGINE);
@@ -470,10 +472,15 @@ UniDeskObject{
         height: Screen.height
         visible: rootObject.appVisible
         color: "transparent"
-        property real refreshInterval: 0
+        property real refreshInterval: UniDeskSettings.wallpaperRefreshInterval
         property string temporaryImageUrl: ""
         property int currentImageIndex: 0
-        property list<string> imageUrls: []
+        property list<string> imageUrls: UniDeskSettings.wallpaperImageUrls
+        wallpaperMode: UniDeskSettings.wallpaperMode
+        wallpaperVideoUrl: UniDeskSettings.wallpaperVideoUrl
+        wallpaperVolume: UniDeskSettings.wallpaperVolume
+        wallpaperApiUrl: UniDeskSettings.wallpaperApiUrl
+        wallpaperApiExpression: UniDeskSettings.wallpaperApiExpression
         // 壁纸图片
         UniDeskImage{
             id: wallpaperImage
@@ -605,17 +612,6 @@ UniDeskObject{
             }
             custom_wallpaper.currentImageIndex = (custom_wallpaper.currentImageIndex + 1) % urls.length;
             custom_wallpaper.wallpaperImageUrl = urls[custom_wallpaper.currentImageIndex];
-        }
-        
-        // 更新壁纸
-        function updateWallpaper() {
-            custom_wallpaper.refreshInterval = UniDeskSettings.get("wallpaperRefreshInterval");
-            custom_wallpaper.wallpaperMode = UniDeskSettings.get("wallpaperMode");
-            custom_wallpaper.imageUrls = UniDeskSettings.get("wallpaperImageUrls") || [];
-            custom_wallpaper.wallpaperVideoUrl = UniDeskSettings.get("wallpaperVideoUrl");
-            custom_wallpaper.wallpaperVolume = UniDeskSettings.get("wallpaperVolume");
-            custom_wallpaper.wallpaperApiUrl = UniDeskSettings.get("wallpaperApiUrl");
-            custom_wallpaper.wallpaperApiExpression = UniDeskSettings.get("wallpaperApiExpression");
         }
     }
     Connections {
