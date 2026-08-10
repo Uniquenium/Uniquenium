@@ -31,7 +31,9 @@
   - [x] Component Z-Index Modification
   - [x] Auto Start With Booting Support
   - [x] Theme
-  - [ ] Templete
+  - Templete
+    - [x] String Convert With Preset Bug 
+  - [ ] Log Support
   - [ ] Linux Support
 - Bugs
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)

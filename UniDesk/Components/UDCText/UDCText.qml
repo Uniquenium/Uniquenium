@@ -121,10 +121,6 @@ UniDeskComBase{
         if(data.horizontalAlignment!==undefined){base.horizontalAlignment=data.horizontalAlignment;}else{base.horizontalAlignment=Text.AlignHCenter;}
         if(data.verticalAlignment!==undefined){base.verticalAlignment=data.verticalAlignment;}else{base.verticalAlignment=Text.AlignVCenter;}
     }
-    function saveComToFile(){
-        var data= propertyData();
-        UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
-    }
     Component.onCompleted:{
         flushText.start();
     }

@@ -379,6 +379,20 @@ UniDeskObject{
                 }
             }
         }
+        Connections{
+            target: UniDeskTempleteMgr
+            function onErrorOccurred(message){
+                print(message);
+            }
+            function onFinished(success, message, templeteDir, kind){
+                if(success && kind === "save"){
+                    UniDeskTools.showFileInExplorer(templeteDir);
+                }
+            }
+            function onTempleteLoaded(components, presets){
+                component_manager.add_components_from_data(components);
+            }
+        }
         function closeAllWindows(){
             UniDeskSettingsWindow.close();
             UniDeskComWindow.close();
@@ -395,6 +409,11 @@ UniDeskObject{
         }
         onMouseMoved:(pos) => {
             updateMouseClickThrough(pos);
+        }
+        onMousePressed:(button, pos) => {
+            if(button === Qt.RightButton && component_manager.selectMode === UniDeskComponentSelectMode.MultiSelect){
+                multi_select_menu.popup(object.contentItem);
+            }
         }
         Component.onCompleted: {
             // 触发 UniDeskThemeManager 单例构造，确保 startup 清理（删除标记文件夹 + 完整替换 plugins DLL）
@@ -423,6 +442,128 @@ UniDeskObject{
             let anyMenuOpen = system_menu.visible||page_menu.visible;
             object.mouseClickThrough=!(moac||bcgp||anyMenuOpen);
         }
+    }
+    UniDeskMenu{
+        id: multi_select_menu
+        comManager: component_manager
+        UniDeskMenuItem{
+            text: qsTr("保存为模版数据")
+            iconSource: "qrc:/media/img/info.svg"
+            onClicked: {
+                save_templete_dialog.showActivate();
+            }
+        }
+    }
+    UniDeskDialog{
+        id: save_templete_dialog
+        title: qsTr("保存为模版数据")
+        autoVisible: false
+        autoDestroy: false
+        width: 400
+        height: 180
+        property string lastError: ""
+        UniDeskText{
+            id: templete_label
+            text: qsTr("请输入模版名称:")
+            font: UniDeskTextStyle.little
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.topMargin: 20
+            anchors.leftMargin: 20
+        }
+        UniDeskTextField{
+            id: templete_name_input
+            anchors.top: templete_label.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: 8
+            anchors.leftMargin: 20
+            anchors.rightMargin: 20
+            placeholderText: qsTr("模版名称")
+            focus: true
+            Keys.onReturnPressed: {
+                templete_confirm_btn.clicked();
+            }
+            Keys.onEscapePressed: {
+                save_templete_dialog.close();
+            }
+        }
+        RowLayout{
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 15
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
+            UniDeskButton{
+                id: templete_confirm_btn
+                display: Button.TextOnly
+                contentText: qsTr("确定")
+                borderWidth: 1
+                radius: 5
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                onClicked: {
+                    var name = templete_name_input.text.trim();
+                    if(name.length===0){
+                        save_templete_dialog.showError(qsTr("名称不能为空"));
+                        return;
+                    }
+                    var components = rootObject.collectSelectedComponentsJson();
+                    if(components.length===0){
+                        save_templete_dialog.showError(qsTr("没有选中任何组件"));
+                        return;
+                    }
+                    UniDeskTempleteMgr.saveTemplete(components, name);
+                    save_templete_dialog.close();
+                }
+            }
+            UniDeskButton{
+                id: templete_cancel_btn
+                display: Button.TextOnly
+                contentText: qsTr("取消")
+                borderWidth: 1
+                radius: 5
+                bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                onClicked: {
+                    save_templete_dialog.close();
+                }
+            }
+        }
+        onVisibleChanged: {
+            if(visible){
+                templete_name_input.text = "";
+                templete_name_input.forceActiveFocus();
+            }
+        }
+    }
+    function collectSelectedComponentsJson(){
+        var arr = [];
+        var sel = component_manager.selectedComponents;
+        var selIds = [];
+        for(var i=0;i<sel.length;i++){
+            var c = sel[i];
+            if(c && c.identification){
+                selIds.push(c.identification);
+            }
+        }
+        for(var i=0;i<sel.length;i++){
+            var com = sel[i];
+            if(com && com.propertyData){
+                var data = com.propertyData();
+                var pid = data.parent;
+                var isLayer = (pid === "Wallpaper" || pid === "Desktop" || pid === "TopMost");
+                var inSet = !isLayer && selIds.indexOf(pid) >= 0;
+                if(!isLayer && !inSet){
+                    if(com.parent && com.parent.currentLayer){
+                        data.parent = com.parent.currentLayer();
+                    } else {
+                        data.parent = "Desktop";
+                    }
+                }
+                arr.push(data);
+            }
+        }
+        return arr;
     }
     UniDeskRoot{
         id: top_most_layer

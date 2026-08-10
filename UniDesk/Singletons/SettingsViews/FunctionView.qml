@@ -11,8 +11,10 @@ import UniDesk.Singletons
 import UniDesk
 
 ScrollView{
+    id: view
     property var comManager
     property var customWallpaper
+    property var parentWindow
     hoverEnabled: true
     ColumnLayout{
         id: columnLayout
@@ -78,7 +80,7 @@ ScrollView{
                 onClicked: {
                     var p = themePathSelector.path.toString();
                     if (p === "") {
-                        UniDeskSettingsWindow.showError(qsTr("请先选择保存路径"));
+                        view.parentWindow.showError(qsTr("请先选择保存路径"));
                         return;
                     }
                     UniDeskThemeManager.saveTheme(p);
@@ -95,7 +97,7 @@ ScrollView{
                 onClicked: {
                     var p = themePathSelector.path.toString();
                     if (p === "") {
-                        UniDeskSettingsWindow.showError(qsTr("请先选择加载路径"));
+                        view.parentWindow.showError(qsTr("请先选择加载路径"));
                         return;
                     }
                     loadConfirm.themePath = p;
@@ -121,24 +123,22 @@ ScrollView{
         }
         ProgressBar{
             Layout.fillWidth: true
-            visible: UniDeskThemeManager.isWorking
             value: UniDeskThemeManager.progress
         }
         UniDeskText{
             text: UniDeskThemeManager.progressMessage
-            visible: UniDeskThemeManager.isWorking
             font: UniDeskTextStyle.little
         }
         Connections{
             target: UniDeskThemeManager
             function onErrorOccurred(message){
-                UniDeskSettingsWindow.showError(message);
+                view.parentWindow.showError(message);
             }
             function onFinished(success, message){
                 if(success){
-                    UniDeskSettingsWindow.showSuccess(message);
+                    view.parentWindow.showSuccess(message);
                 } else {
-                    UniDeskSettingsWindow.showError(message);
+                    view.parentWindow.showError(message);
                 }
             }
         }

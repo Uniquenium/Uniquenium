@@ -39,7 +39,7 @@ void UniDeskExpr::stopTimer() {
 }
 
 
-QString UniDeskExpr::convertStr(const QString &text) {      
+QString UniDeskExpr::convertStr(const QString &text, const QVariantMap &presets) {
     QString result = text;
     QDateTime dt = QDateTime::currentDateTime();
     QDate qd=QDate::currentDate();
@@ -113,6 +113,15 @@ QString UniDeskExpr::convertStr(const QString &text) {
         const std::string expression_string = exp.toStdString();
         symbol_table_t symbol_table;
         symbol_table.add_constants();
+        static thread_local QMap<QString, double> s_presetStorage;
+        s_presetStorage.clear();
+        for (auto it = presets.constBegin(); it != presets.constEnd(); ++it) {
+            bool ok = false;
+            double v = it.value().toDouble(&ok);
+            if (!ok) v = 0.0;
+            s_presetStorage.insert(it.key(), v);
+            symbol_table.add_variable(it.key().toStdString(), s_presetStorage[it.key()]);
+        }
         expression_t expression;
         expression.register_symbol_table(symbol_table);
         parser_t parser;

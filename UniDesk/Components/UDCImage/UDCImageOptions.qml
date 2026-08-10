@@ -61,14 +61,6 @@ UniDeskWindow{
             }
         }
         
-        UniDeskSizeSelector{
-            id: sizeSelector
-            anchors.top: pathSelector.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: 10
-            editingComponent: window.ec
-        }
         
         UniDeskText{
             id: textFillMode
@@ -81,7 +73,7 @@ UniDeskWindow{
         
         UniDeskComboBox{
             id: fillModeComboBox
-            anchors.top: sizeSelector.bottom
+            anchors.top: pathSelector.bottom
             anchors.right: parent.right
             anchors.margins: 10
             model: [qsTr("拉伸"), qsTr("保持比例适应"), qsTr("保持比例裁剪"), qsTr("平铺"), qsTr("保持比例填充")]
@@ -217,13 +209,6 @@ UniDeskWindow{
                     window.ec.saveComToFile()
                 }
             }
-        }
-    }
-    
-    Connections{
-        target: UniDeskGlobals
-        function onApplicationQuit() {
-            window.close()
         }
     }
 }

@@ -38,6 +38,7 @@ Item{
     property real initialBaseX: 0
     property real initialBaseY: 0
     property real itemOpacity: 1
+    property bool defaultRightClickMenu: true
     transformOrigin: Item.TopLeft
     property var menu: UniDeskMenu{
         comManager: base.comManager
@@ -73,7 +74,7 @@ Item{
         }
     }
     onRightClicked: {
-        if(base.comManager.selectMode!==UniDeskComponentSelectMode.MultiSelect){
+        if(base.comManager.selectMode!==UniDeskComponentSelectMode.MultiSelect&&base.defaultRightClickMenu){
             menu.popup(base);
         }
     }
@@ -227,8 +228,7 @@ Item{
         return false;
     }
     function propertyData(){
-        var dataEx=base.propertyDataEx();
-        return mergeDicts({
+        var data={
             "identification": base.identification,
             "name": base.name,
             "type": base.type,
@@ -241,7 +241,14 @@ Item{
             "pageid": base.pageid,
             "rotation": base.rotation,
             "opacity": base.itemOpacity
-        },dataEx)
+        }
+        if(base.propertyDataEx){
+            var dataEx=base.propertyDataEx();
+            return mergeDicts(data,dataEx)
+        }
+        else{
+            return data;
+        }
     }
     function loadPropertyData(data){
         if(data.identification!==undefined){base.identification = data.identification;}
@@ -285,5 +292,9 @@ Item{
             }
         }
         return merged;
+    }
+    function saveComToFile(){
+        var data= propertyData();
+        UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
     }
 }

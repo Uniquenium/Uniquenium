@@ -442,10 +442,5 @@ UniDeskWindow{
             }
         }
     }
-    Connections{
-        target: UniDeskGlobals
-        function onApplicationQuit() {
-            window.close();
-        }
-    }
+    
 }

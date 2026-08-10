@@ -5,6 +5,7 @@
 #include <QtQml/qqml.h>
 #include <QDateTime>
 #include <QThread>
+#include <QVariantMap>
 #include "stdafx.h"
 #include "singleton.h"
 #include "UniDeskSystemInfo.h"
@@ -21,7 +22,7 @@ public:
     explicit UniDeskExpr(QQuickItem *parent = nullptr);
     static auto create(QQmlEngine*, QJSEngine*) { return getInstance(); }
 
-    Q_INVOKABLE QString convertStr(const QString &text);
+    Q_INVOKABLE QString convertStr(const QString &text, const QVariantMap &presets = QVariantMap());
 
     // 解析API响应并执行表达式，支持字典和列表访问
     Q_INVOKABLE QVariant evalResponse(const QString &response, const QString &expression);

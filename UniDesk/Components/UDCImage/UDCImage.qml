@@ -118,8 +118,4 @@ UniDeskComBase{
         if(data.buttonActionTarget!==undefined){base.buttonActionTarget=data.buttonActionTarget}
     }
     
-    function saveComToFile(){
-        var data= propertyData()
-        UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data)
-    }
 }

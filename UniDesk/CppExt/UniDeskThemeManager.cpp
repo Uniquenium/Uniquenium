@@ -28,6 +28,7 @@ static QString pluginRootPath = QCoreApplication::applicationDirPath() + "/data/
 static QString dataRootPath = QCoreApplication::applicationDirPath() + "/data";
 static QString pendingDllOpsFile = dataRootPath + "/.pending_dll_ops.json";
 static QString pendingPluginsTempDir = dataRootPath + "/.pending_plugins_temp";
+static QString pendingMediaOpsFile = dataRootPath + "/.pending_media_ops.json";
 
 static bool prepareOverwrite(const QString &path) {
     if (!QFile::exists(path)) return true;
@@ -40,9 +41,10 @@ UniDeskThemeManager::UniDeskThemeManager(QQuickItem *parent)
     : QQuickItem(parent)
 {
     progress(0.0);
-    progressMessage(QString());
+    progressMessage(QString(tr("未进行任务")));
     isWorking(false);
     cleanupPendingDeletesAtStartup();
+    cleanupPendingMediaDeletesAtStartup();
 }
 
 void UniDeskThemeManager::reportProgress(qreal value, const QString &message) {
@@ -146,7 +148,6 @@ void UniDeskThemeManager::loadTheme(const QString &themeDir) {
     isWorking(true);
     progress(0.0);
     progressMessage(tr("准备加载..."));
-
     QThreadPool::globalInstance()->start([this, absolutePath]() { doLoadTheme(absolutePath); });
 }
 
@@ -265,6 +266,19 @@ void UniDeskThemeManager::doSaveTheme(const QString &themeDir) {
         QJsonDocument doc(componentsObj);
         f.write(doc.toJson(QJsonDocument::Indented));
         f.close();
+    }
+
+    reportProgress(0.90, tr("正在同步模版库..."));
+    {
+        QString srcTempletesDir = dataRootPath + "/templetes";
+        QString dstTempletesDir = themeDir + "/templetes";
+        if (QDir(srcTempletesDir).exists()) {
+            if (QDir(dstTempletesDir).exists()) {
+                QDir(dstTempletesDir).removeRecursively();
+            }
+            QDir().mkpath(dstTempletesDir);
+            copyPathRecursive(srcTempletesDir, dstTempletesDir, false);
+        }
     }
 
     reportProgress(1.0, tr("保存完成"));
@@ -479,18 +493,23 @@ bool UniDeskThemeManager::clearPluginsDirPartially(const QString &path, const QS
     return true;
 }
 
-void UniDeskThemeManager::processJsonValueForLoad(QJsonValue &value, const QString &mediaDir) {
+void UniDeskThemeManager::processJsonValueForLoad(QJsonValue &value, const QString &mediaDir, const QHash<QString, QString> &renameMap) {
     if (value.isString()) {
         QString str = value.toString();
         if (str.startsWith("media/")) {
-            QString localPath = mediaDir + "/" + str.mid(6);
+            QString relName = str.mid(6);
+            auto it = renameMap.find(relName);
+            if (it != renameMap.end()) {
+                relName = it.value();
+            }
+            QString localPath = mediaDir + "/" + relName;
             value = QJsonValue(QUrl::fromLocalFile(localPath).toString());
         }
     } else if (value.isArray()) {
         QJsonArray arr = value.toArray();
         for (int i = 0; i < arr.size(); ++i) {
             QJsonValue child = arr[i];
-            processJsonValueForLoad(child, mediaDir);
+            processJsonValueForLoad(child, mediaDir, renameMap);
             arr[i] = child;
         }
         value = arr;
@@ -498,7 +517,7 @@ void UniDeskThemeManager::processJsonValueForLoad(QJsonValue &value, const QStri
         QJsonObject obj = value.toObject();
         for (auto it = obj.begin(); it != obj.end(); ++it) {
             QJsonValue child = it.value();
-            processJsonValueForLoad(child, mediaDir);
+            processJsonValueForLoad(child, mediaDir, renameMap);
             obj[it.key()] = child;
         }
         value = obj;
@@ -506,6 +525,7 @@ void UniDeskThemeManager::processJsonValueForLoad(QJsonValue &value, const QStri
 }
 
 void UniDeskThemeManager::doLoadTheme(const QString &themeDir) {
+    
     QString appDataDir = QCoreApplication::applicationDirPath() + "/data";
     QString appMediaDir = appDataDir + "/media";
     QString appPluginsDir = appDataDir + "/plugins";
@@ -516,15 +536,16 @@ void UniDeskThemeManager::doLoadTheme(const QString &themeDir) {
     QString themePluginsDir = themeDir + "/plugins";
     QString themeSettingsFile = themeDir + "/settings.json";
     QString themeComponentsFile = themeDir + "/components.json";
-
-    // 1. 清空 media 目录（无 DLL，可完整清空）
-    reportProgress(0.05, tr("正在清空 media 目录..."));
-    if (!clearDirectory(appMediaDir)) {
-        reportError(tr("无法清空 media 目录"));
-        reportFinished(false, tr("加载失败"));
-        return;
+    // 1. 部分清空 media 目录：逐个删除文件，删不掉的标记重启后删除
+    QHash<QString, QString> mediaRenameMap;
+    reportProgress(0.05, tr("正在清理 media 目录..."));
+    {
+        QStringList mediaMarkList;
+        clearMediaDirPartially(appMediaDir, mediaMarkList);
+        for (const QString &mediaPath : mediaMarkList) {
+            markMediaForDeletion(mediaPath);
+        }
     }
-
     // 2. 部分清空 plugins 目录（DLL 删除失败时只记录该 DLL 文件路径，不报错）
     reportProgress(0.10, tr("正在清理插件目录..."));
     QStringList markList;
@@ -537,17 +558,15 @@ void UniDeskThemeManager::doLoadTheme(const QString &themeDir) {
     for (const QString &dll : markList) {
         markDllForDeletion(dll);
     }
-
-    // 3. 复制 media（完整复制）
+    // 3. 复制 media：遇到同名冲突（包括与未删除的历史文件冲突）加数字后缀，记录改名映射
     reportProgress(0.20, tr("正在复制 media..."));
     if (QDir(themeMediaDir).exists()) {
-        if (!copyPathRecursive(themeMediaDir, appMediaDir, false)) {
+        if (!copyMediaDirWithRename(themeMediaDir, appMediaDir, mediaRenameMap)) {
             reportError(tr("复制 media 失败"));
             reportFinished(false, tr("加载失败"));
             return;
         }
     }
-
     // 4. 复制 plugins：非 DLL 直接复制到 appPluginsDir；DLL 复制到临时目录 .pending_plugins_temp，
     //    重启后再从临时目录复制到 appPluginsDir（此时 DLL 未锁定）
     reportProgress(0.35, tr("正在复制插件..."));
@@ -593,7 +612,7 @@ void UniDeskThemeManager::doLoadTheme(const QString &themeDir) {
         recordDllCopies(pendingPluginsTempDir, appPluginsDir);
     }
 
-    // 5. 复制 components.json，并重新分配组件/页面 UUID
+    // 5. 复制 components.json，转换 media 相对路径 → 绝对路径，并重新分配组件/页面 UUID
     reportProgress(0.55, tr("正在复制组件信息..."));
     if (QFile::exists(themeComponentsFile)) {
         prepareOverwrite(appComponentsFile);
@@ -601,6 +620,19 @@ void UniDeskThemeManager::doLoadTheme(const QString &themeDir) {
             reportError(tr("复制 components.json 失败"));
             reportFinished(false, tr("加载失败"));
             return;
+        }
+        // 5a. 转换 components.json 中的 media/ 相对路径为绝对路径
+        QFile cf(appComponentsFile);
+        if (cf.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QJsonDocument doc = QJsonDocument::fromJson(cf.readAll());
+            cf.close();
+            QJsonValue rootVal = doc.object();
+            processJsonValueForLoad(rootVal, appMediaDir, mediaRenameMap);
+            prepareOverwrite(appComponentsFile);
+            if (cf.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                cf.write(QJsonDocument(rootVal.toObject()).toJson(QJsonDocument::Indented));
+                cf.close();
+            }
         }
         reportProgress(0.60, tr("正在重新分配组件 UUID..."));
         if (!processComponentsReassignUuids(appComponentsFile)) {
@@ -633,7 +665,7 @@ void UniDeskThemeManager::doLoadTheme(const QString &themeDir) {
             QString key = it.key();
             if (!UniDeskSettings::isAppearanceProperty(key)) continue;
             QJsonValue val = it.value();
-            processJsonValueForLoad(val, appMediaDir);
+            processJsonValueForLoad(val, appMediaDir, mediaRenameMap);
             appSettings[key] = val;
         }
 
@@ -650,6 +682,20 @@ void UniDeskThemeManager::doLoadTheme(const QString &themeDir) {
     }
 
     // 7. pending_dll_ops.json 已在前面 markDllForDeletion / markDllForCopy 调用中写入，无需额外处理
+
+    // 7a. 清空 data/templetes，复制主题包中的 templetes 目录到 data/templetes
+    reportProgress(0.85, tr("正在同步模版库..."));
+    {
+        QString appTempletesDir = dataRootPath + "/templetes";
+        QString themeTempletesDir = themeDir + "/templetes";
+        if (QDir(appTempletesDir).exists()) {
+            QDir(appTempletesDir).removeRecursively();
+        }
+        QDir().mkpath(appTempletesDir);
+        if (QDir(themeTempletesDir).exists()) {
+            copyPathRecursive(themeTempletesDir, appTempletesDir, false);
+        }
+    }
 
     // 8. 完成，通知用户后自动重启
     reportProgress(0.95, tr("文件已写入，即将重启..."));
@@ -866,6 +912,122 @@ void UniDeskThemeManager::cleanupPendingDeletesAtStartup() {
         QDir(pendingPluginsTempDir).removeRecursively();
     }
     QFile::remove(pendingDllOpsFile);
+}
+
+bool UniDeskThemeManager::clearMediaDirPartially(const QString &path, QStringList &markList) {
+    QDir dir(path);
+    if (!dir.exists()) return dir.mkpath(path);
+
+    const auto entries = dir.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
+    for (const QString &entry : entries) {
+        QString entryPath = path + "/" + entry;
+        if (QFileInfo(entryPath).isDir()) {
+            clearMediaDirPartially(entryPath, markList);
+            QDir(entryPath).rmdir(entryPath);
+        } else {
+            QFile f(entryPath);
+            f.setPermissions(f.permissions() | QFile::WriteOwner);
+            if (!f.remove()) {
+                if (!markList.contains(entryPath)) {
+                    markList.append(entryPath);
+                }
+            }
+        }
+    }
+    return true;
+}
+
+bool UniDeskThemeManager::copyMediaDirWithRename(const QString &src, const QString &dst, QHash<QString, QString> &renameMap) {
+    QDir srcDir(src);
+    if (!srcDir.exists()) return false;
+
+    QDir dstDir(dst);
+    if (!dstDir.exists()) {
+        if (!dstDir.mkpath(dst)) return false;
+    }
+
+    auto resolveUniqueName = [](const QString &dstDir, const QString &baseName, const QString &ext) {
+        QString candidate = baseName + ext;
+        int counter = 0;
+        while (QFile::exists(dstDir + "/" + candidate)) {
+            ++counter;
+            candidate = baseName + "_" + QString::number(counter) + ext;
+        }
+        return candidate;
+    };
+
+    for (const QString &file : srcDir.entryList(QDir::Files)) {
+        QString srcFile = src + "/" + file;
+        QFileInfo info(file);
+        QString baseName = info.completeBaseName();
+        QString ext = info.suffix().isEmpty() ? QString() : ("." + info.suffix());
+
+        QString finalName = resolveUniqueName(dst, baseName, ext);
+        QString dstFile = dst + "/" + finalName;
+
+        if (finalName != file) {
+            renameMap.insert(file, finalName);
+        }
+
+        if (!QFile::copy(srcFile, dstFile)) {
+            return false;
+        }
+    }
+
+    for (const QString &sub : srcDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        if (!copyMediaDirWithRename(src + "/" + sub, dst + "/" + sub, renameMap)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void UniDeskThemeManager::markMediaForDeletion(const QString &mediaPath) {
+    QJsonObject root;
+    QJsonArray arr;
+    QFile f(pendingMediaOpsFile);
+    if (f.exists() && f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        root = QJsonDocument::fromJson(f.readAll()).object();
+        f.close();
+        arr = root.value("deletes").toArray();
+    }
+    QString pathSafe = mediaPath;
+    pathSafe.replace("\\", "/");
+    bool exists = false;
+    for (const QJsonValue &v : arr) {
+        if (v.toString() == pathSafe) { exists = true; break; }
+    }
+    if (!exists) arr.append(pathSafe);
+    root["deletes"] = arr;
+    QFile::remove(pendingMediaOpsFile);
+    QDir().mkpath(QFileInfo(pendingMediaOpsFile).path());
+    QFile wf(pendingMediaOpsFile);
+    if (wf.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        wf.write(QJsonDocument(root).toJson(QJsonDocument::Indented));
+        wf.close();
+    }
+}
+
+void UniDeskThemeManager::cleanupPendingMediaDeletesAtStartup() {
+    if (!QFile::exists(pendingMediaOpsFile)) return;
+
+    QFile f(pendingMediaOpsFile);
+    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) return;
+    QJsonObject root = QJsonDocument::fromJson(f.readAll()).object();
+    f.close();
+
+    QJsonArray deletes = root.value("deletes").toArray();
+    for (const QJsonValue &v : deletes) {
+        QString mediaPath = v.toString();
+        if (mediaPath.isEmpty()) continue;
+        QFile sf(mediaPath);
+        sf.setPermissions(sf.permissions() | QFile::WriteOwner);
+        if (sf.remove()) {
+            QDir().rmdir(QFileInfo(mediaPath).absolutePath());
+        }
+    }
+
+    QFile::remove(pendingMediaOpsFile);
 }
 
 

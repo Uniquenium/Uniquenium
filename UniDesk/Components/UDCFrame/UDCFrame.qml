@@ -37,12 +37,6 @@ UniDeskComBase{
         comManager: base.comManager
     }
     
-    onRightClicked: {
-        if(base.comManager.selectMode!==UniDeskComponentSelectMode.MultiSelect){
-            menu.popup(cont);
-        }
-    }
-    
     function propertyDataEx(){
         return {
             "borderWidth": base.borderWidth,
@@ -65,9 +59,5 @@ UniDeskComBase{
         if(data.bgColorR!==undefined){base.backgroundColor=Qt.rgba(data.bgColorR,data.bgColorG,data.bgColorB,data.bgColorA);}
     }
     
-    function saveComToFile(){
-        var data= propertyData();
-        UniDeskComponentsData.updateComponent(base.comManager.getIndexById(base.identification), data);
-    }
     
 }

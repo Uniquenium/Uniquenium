@@ -41,6 +41,7 @@ UniDeskObject{
     property alias treeModelComponent: com_tree_model
     signal menuClosed()
     signal deleteComSignal(string id)
+    signal multiSelectRightClicked(int x, int y)
     Component{
         id: com_tree_model
         UniDeskComponentTreeModel{
@@ -76,6 +77,40 @@ UniDeskObject{
         serialComponentCnt+=1;
         compModels.get(pid2pindex(currentPid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":getComId(new_com.parent), "z":new_com.z});
         pageWindow.reloadTreeView();
+    }
+    function add_com_from_data(data){
+        var typid=typename_list.indexOf(data.type);
+        if(typid<0) return null;
+        var new_com=type_list[typid].createObject(root.contentItem,{"comManager":object});
+        new_com.loadPropertyData(data);
+        new_com.pageid=currentPid;
+        UniDeskComponentsData.addComponent(new_com.propertyData());
+        component_list.push(new_com);
+        compModels.get(pid2pindex(new_com.pageid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":data.parent ? data.parent : "", "z":new_com.z});
+        new_com.visible=new_com.pageid===currentPid;
+        return new_com;
+    }
+    function add_components_from_data(components){
+        var created=[];
+        for(var i=0;i<components.length;i++){
+            var c=add_com_from_data(components[i]);
+            if(c) created.push(c);
+        }
+        for(var i=0;i<components.length;i++){
+            var com=getComById(components[i].identification);
+            if(com && components[i].parent){
+                var p=getComById(components[i].parent);
+                if(p){
+                    com.parent=p;
+                    updateComTreeParent(com, p);
+                }
+            }
+        }
+        for(var pi=0;pi<compModels.count;pi++){
+            compModels.get(pi).value.reparentAll();
+        }
+        pageWindow.reloadTreeView();
+        return created;
     }
     function toggle_page_to(id){
         currentPid=id;

@@ -53,6 +53,7 @@ UniDeskWindow{
         UDSV.FunctionView{
             comManager: window.comManager
             customWallpaper: window.customWallpaper
+            parentWindow: window
         }
         UDSV.AppearanceView{
             comManager: window.comManager

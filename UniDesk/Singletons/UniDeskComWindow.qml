@@ -20,6 +20,7 @@ UniDeskWindow{
     property string pageid
     property var comManager
     ScrollView{
+        id: scroll_view
         anchors.fill: parent
         anchors.margins: 10
         ColumnLayout{
@@ -32,6 +33,7 @@ UniDeskWindow{
             }
             Flow{
                 spacing: 10
+                Layout.preferredWidth: scroll_view.width
                 Repeater{
                     model: basicComponents
                     UniDeskButton{
@@ -50,23 +52,60 @@ UniDeskWindow{
                     }
                 }
             }
+            UniDeskText{
+                text: qsTr("模版")
+                font: UniDeskTextStyle.small_
+                visible: templeteRepeater.count > 0
+            }
+            Flow{
+                spacing: 10
+                Layout.preferredWidth: scroll_view.width
+                visible: templeteRepeater.count > 0
+                Repeater{
+                    id: templeteRepeater
+                    model: UniDeskTempleteMgr.templeteList
+                    UniDeskButton{
+                        display: Button.TextOnly
+                        contentText: modelData.name ? modelData.name : ""
+                        bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                        bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                        borderWidth: 1
+                        radius: 5
+                        onClicked: {
+                            var presetWin = modelData.presetWindow ? modelData.presetWindow : "";
+                            if(presetWin.length > 0){
+                                var winPath = "file:/" + modelData.dir + "/" + presetWin;
+                                var comp = Qt.createComponent(winPath);
+                                if(comp.status === Component.Ready){
+                                    var win = comp.createObject(window, {"templeteDir": modelData.dir, "comManager": comManager});
+                                    win.showActivate();
+                                    window.close();
+                                } else {
+                                    print("Failed to load presetWindow: " + comp.errorString());
+                                    UniDeskTempleteMgr.loadTemplete(modelData.dir, ({}));
+                                    window.close();
+                                }
+                            } else {
+                                UniDeskTempleteMgr.loadTemplete(modelData.dir, ({}));
+                                window.close();
+                            }
+                        }
+                    }
+                }
+            }
             Repeater{
                 model: UniDeskPluginMgr.plugins_list
-                Item{
+                ColumnLayout{
+                    spacing: 10
                     UniDeskText{
                         id: com_name_text
                         text: qsTr(modelData.name)
                         font: UniDeskTextStyle.small_
-                        anchors.left: parent.left
-                        anchors.top: parent.top
                     }
                     Flow{
+                        id: com_flow
                         spacing: 10
-                        anchors.left: parent.left
-                        anchors.top: com_name_text.bottom
-                        anchors.topMargin: 10
-                        anchors.bottom: parent.bottom
-                        
+                        Layout.preferredWidth: scroll_view.width
                         Repeater{
                             model: modelData.components
                             UniDeskButton{
