@@ -38,11 +38,18 @@ target_include_directories(${TARGET}
         ${EXPRTK_INCLUDE}
         )
 
+if (MSVC)
+    target_compile_options(${TARGET} PRIVATE /bigobj)
+endif ()
+
 if (UNIX)
     if (NOT APPLE)
         target_link_libraries(${TARGET} PRIVATE Qt6::Gui Qt6::GuiPrivate)
         if (KF6WindowSystem_FOUND)
             target_link_libraries(${TARGET} PRIVATE KF6::WindowSystem)
+        endif ()
+        if (KF6GlobalAccel_FOUND)
+            target_link_libraries(${TARGET} PRIVATE KF6::GlobalAccel)
         endif ()
     endif ()
 endif ()

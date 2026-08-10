@@ -1,0 +1,7 @@
+uniquenium (0.1.1-1) unstable; urgency=medium
+
+  * Initial Debian packaging.
+  * Add support for Linux X11/Wayland architectures.
+  * Include desktop entry file and application icons.
+
+ -- UniDesk Team <unidesk@lingmo.org>  Sun, 10 Aug 2026 00:00:00 +0800

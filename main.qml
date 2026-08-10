@@ -250,7 +250,11 @@ UniDeskObject{
                     text: qsTr("休眠")
                     iconSource: "qrc:/media/img/rest-time-line.svg"
                     onClicked: {
-                        UniDeskTools.systemCommand("powercfg -h on")
+                        if (UniDeskUtils.isWin()) {
+                            UniDeskTools.systemCommand("powercfg -h on")
+                        } else if (UniDeskUtils.isLinux()) {
+                            UniDeskTools.systemCommand("systemctl suspend")
+                        }
                     }
                 }
                 UniDeskMenuItem{
@@ -266,7 +270,11 @@ UniDeskObject{
                     text: qsTr("锁屏")
                     iconSource: "qrc:/media/img/lock.svg"
                     onClicked: {
-                        UniDeskTools.systemCommand("Rundll32.exe user32.dll,LockWorkStation")
+                        if (UniDeskUtils.isWin()) {
+                            UniDeskTools.systemCommand("Rundll32.exe user32.dll,LockWorkStation")
+                        } else if (UniDeskUtils.isLinux()) {
+                            UniDeskTools.systemCommand("loginctl lock-session $XDG_SESSION_ID")
+                        }
                     }
                 }
                 //系统有更新时显示更新选项
@@ -360,7 +368,11 @@ UniDeskObject{
             }
             onButtonClicked: {
                 if(clickedIndex==0){
-                    UniDeskTools.systemCommand("shutdown -s -t 0");
+                    if (UniDeskUtils.isWin()) {
+                        UniDeskTools.systemCommand("shutdown -s -t 0");
+                    } else if (UniDeskUtils.isLinux()) {
+                        UniDeskTools.systemCommand("systemctl poweroff");
+                    }
                 }
             }
         }
@@ -374,7 +386,11 @@ UniDeskObject{
             }
             onButtonClicked: {
                 if(clickedIndex==0){
-                    UniDeskTools.systemCommand("shutdown -r -t 0");
+                    if (UniDeskUtils.isWin()) {
+                        UniDeskTools.systemCommand("shutdown -r -t 0");
+                    } else if (UniDeskUtils.isLinux()) {
+                        UniDeskTools.systemCommand("systemctl reboot");
+                    }
                 }
             }
         }
@@ -388,7 +404,11 @@ UniDeskObject{
             }
             onButtonClicked: {
                 if(clickedIndex==0){
-                    UniDeskTools.systemCommand("shutdown -l -t 0");
+                    if (UniDeskUtils.isWin()) {
+                        UniDeskTools.systemCommand("shutdown -l -t 0");
+                    } else if (UniDeskUtils.isLinux()) {
+                        UniDeskTools.systemCommand("loginctl terminate-session $XDG_SESSION_ID");
+                    }
                 }
             }
         }

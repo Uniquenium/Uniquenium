@@ -6,12 +6,12 @@
 #include <QJsonArray>
 #include <QDir>
 #include <QUrl>
-#include <tchar.h>
 #include <QCoreApplication>
-#include <shlwapi.h>
 #include <QDebug>
 #include <QTimer>
 #ifdef Q_OS_WIN
+#include <tchar.h>
+#include <shlwapi.h>
 #include <windows.h>
 #include <winuser.h>
 #pragma comment(lib, "shlwapi.lib")
@@ -107,6 +107,7 @@ bool UniDeskCursorManager::readCursorStyleInfo(const QString &dirPath, QJsonObje
 }
 
 bool UniDeskCursorManager::getOriginalCursorPaths() {
+#ifdef Q_OS_WIN
     if (hasSavedOriginalCursors) {
         return true;
     }
@@ -122,7 +123,6 @@ bool UniDeskCursorManager::getOriginalCursorPaths() {
         return false;
     }
     
-    // 保存Scheme Source（光标主题来源）
     wchar_t schemeBuffer[MAX_PATH] = {0};
     DWORD schemeBufferSize = MAX_PATH;
     result = RegQueryValueExW(hKey,
@@ -134,7 +134,6 @@ bool UniDeskCursorManager::getOriginalCursorPaths() {
     if (result == ERROR_SUCCESS) {
         originalCursors[L"Scheme Source"] = schemeBuffer;
     }
-    
     
     for (size_t i = 0; i < sizeof(cursorNames) / sizeof(cursorNames[0]); ++i) {
         wchar_t buffer[MAX_PATH] = {0};
@@ -148,7 +147,6 @@ bool UniDeskCursorManager::getOriginalCursorPaths() {
                                   &bufferSize);
         
         if (result == ERROR_SUCCESS) {
-            // 保存所有值，包括空值（空值表示使用系统默认）
             originalCursors[cursorNames[i]] = buffer;
         }
     }
@@ -156,9 +154,13 @@ bool UniDeskCursorManager::getOriginalCursorPaths() {
     RegCloseKey(hKey);
     hasSavedOriginalCursors = true;
     return true;
+#else
+    return false;
+#endif
 }
 
 bool UniDeskCursorManager::setCursor(const std::wstring &cursorName, const std::wstring &cursorPath) {
+#ifdef Q_OS_WIN
     HKEY hKey;
     LONG result = RegOpenKeyExW(HKEY_CURRENT_USER,
                                 L"Control Panel\\Cursors",
@@ -185,89 +187,78 @@ bool UniDeskCursorManager::setCursor(const std::wstring &cursorName, const std::
     }
     
     return true;
+#else
+    Q_UNUSED(cursorName);
+    Q_UNUSED(cursorPath);
+    return false;
+#endif
 }
 
 void UniDeskCursorManager::refreshSystemCursors() {
-    // 使用SystemParametersInfo刷新系统光标
+#ifdef Q_OS_WIN
     SystemParametersInfoW(SPI_SETCURSORS, 0, nullptr, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
     
-    // 额外的刷新：发送WM_SETTINGCHANGE消息给所有顶层窗口
     SendMessageTimeoutW(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 
                         reinterpret_cast<LPARAM>(L"intl"), 
                         SMTO_ABORTIFHUNG, 5000, nullptr);
     
-    // 再次发送WM_SETTINGCHANGE消息，确保系统收到
     SendMessageTimeoutW(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 
                         reinterpret_cast<LPARAM>(L"Control Panel\\Cursors"), 
                         SMTO_ABORTIFHUNG, 5000, nullptr);
+#endif
 }
 
 bool UniDeskCursorManager::loadCustomByPath(const QString &dirPath) {
-    // 处理QML URL路径格式（file:/ 或 file://）
     QString path = dirPath;
     if (path.startsWith("file:///")) {
-        path = path.mid(8); // 移除 "file:///"
+        path = path.mid(8);
     } else if (path.startsWith("file:/")) {
-        path = path.mid(6); // 移除 "file:/"
+        path = path.mid(6);
     }
     bool success = true;
-    // 确保路径以斜杠结尾
     QString normalizedDir = QDir(path).absolutePath();
     
-    // 首先保存原始光标设置（如果还没保存）
+#ifdef Q_OS_WIN
     if (!getOriginalCursorPaths()) {
         return false;
     }
+#endif
     
-    // 读取cursor-style-info.json
     QJsonObject jsonObj;
     if (!readCursorStyleInfo(normalizedDir, jsonObj)) {
         return false;
     }
-    if (jsonObj["type"].toString() == "Native") {
+    
+    QString cursorType = jsonObj["type"].toString();
+    
+#ifdef Q_OS_WIN
+    if (cursorType == "Native") {
         isQmlCursor(false);
-        // 遍历JSON中的光标映射
         QStringList cursorNamesJson = jsonObj.keys();
-        
         for (const QString &name : cursorNamesJson) {
-            // 跳过元数据键（如name）
-            if (name == "name") {
+            if (name == "name" || name == "type") {
                 continue;
             }
-            
-            // 跳过type键
-            if (name == "type") {
-                continue;
-            }
-            
             QString fileName = jsonObj[name].toString();
             if (fileName.isEmpty()) {
                 continue;
             }
-            
-            // 构建完整的光标文件路径
             QString fullPath = normalizedDir + "/" + fileName;
-            
-            // 检查文件是否存在
             if (!QFile::exists(fullPath)) {
                 qWarning() << "Cursor file not found:" << fullPath;
                 success = false;
                 continue;
             }
-            
-            // 将QString转换为std::wstring
             std::wstring wName = name.toStdWString();
             std::wstring wPath = fullPath.toStdWString();
-            
-            // 设置光标
             if (!setCursor(wName, wPath)) {
                 success = false;
             }
         }
-        
-        // 刷新系统光标
         refreshSystemCursors();
-    } else if (jsonObj["type"].toString() == "Qml") {
+    } else
+#endif
+    if (cursorType == "Qml") {
         if (jsonObj["qmlFilePath"].toString().isEmpty()) {
             qWarning() << "qmlFilePath is empty";
             return false;
@@ -280,18 +271,19 @@ bool UniDeskCursorManager::loadCustomByPath(const QString &dirPath) {
         qmlCursorPath(qmlFilePath);
         isQmlCursor(true);
         success = true;
+#ifdef Q_OS_WIN
         for(size_t i = 0; i < sizeof(cursorNames) / sizeof(cursorNames[0]); i++){
-            QString blankCursorPath = QCoreApplication::applicationDirPath() + "/cursors/blank-cursor.cur" ;
+            QString blankCursorPath = QCoreApplication::applicationDirPath() + "/cursors/blank-cursor.cur";
             if(!setCursor(cursorNames[i], blankCursorPath.toStdWString())){
                 success = false;
             }
         }
-        // 刷新系统光标
         refreshSystemCursors();
+#endif
         return success;
     }
-    else{
-        qWarning() << "Unknown cursor type:" << jsonObj["type"].toString();
+    else {
+        qWarning() << "Unknown cursor type:" << cursorType;
         success = false;
     }
     
@@ -299,6 +291,7 @@ bool UniDeskCursorManager::loadCustomByPath(const QString &dirPath) {
 }
 
 bool UniDeskCursorManager::restoreSystem() {
+#ifdef Q_OS_WIN
     if (!hasSavedOriginalCursors || originalCursors.empty()) {
         qWarning() << "No original cursor settings saved";
         return false;
@@ -312,10 +305,13 @@ bool UniDeskCursorManager::restoreSystem() {
         }
     }
     isQmlCursor(false);
-    // 刷新系统光标
     refreshSystemCursors();
     qDebug() << "System cursors restored:" << success;
     return success;
+#else
+    isQmlCursor(false);
+    return true;
+#endif
 }
 
 // 获取当前系统光标标准状态

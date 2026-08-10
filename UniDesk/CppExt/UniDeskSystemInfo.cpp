@@ -133,7 +133,7 @@ BatteryStats getBatteryStats_win() {
     return stats;
 }
 
-#elif Q_OS_LINUX
+#elif defined(Q_OS_LINUX)
 #include <fstream>
 #include <string>
 #include <sstream>
