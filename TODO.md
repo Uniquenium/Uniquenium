@@ -33,7 +33,7 @@
   - [x] Theme
   - Templete
     - [x] String Convert With Preset Bug 
-  - [ ] Log Support
+  - [x] Log Support
   - [ ] Linux Support
 - Bugs
   - [x] Program Terminates Abnormally When Deleting a Page(Don't let a UniDeskMenuItem delete itself!)

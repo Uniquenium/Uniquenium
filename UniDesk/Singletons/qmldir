@@ -2,3 +2,4 @@ module UniDesk.Singletons
 singleton UniDeskComWindow 1.0 UniDeskComWindow.qml
 singleton UniDeskPageWindow 1.0 UniDeskPageWindow.qml
 singleton UniDeskSettingsWindow 1.0 UniDeskSettingsWindow.qml
+singleton UniDeskLogWindow 1.0 UniDeskLogWindow.qml

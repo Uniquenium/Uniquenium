@@ -145,6 +145,19 @@ UniDeskObject{
                     }
                 }
                 UniDeskButton{
+                    id: btn_logs
+                    contentText: qsTr("日志")
+                    iconSize: 15
+                    iconSource: "qrc:/media/img/info.svg"
+                    bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                    bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                    iconNormalColor: UniDeskGlobals.isLight ? UniDeskSettings.mainPanelColorLight : UniDeskSettings.mainPanelColorDark
+                    radius: width / 2
+                    onClicked:{
+                        UniDeskLogWindow.showActivate()
+                    }
+                }
+                UniDeskButton{
                     id: btn_singleselect
                     contentText: qsTr("选择")
                     iconSize: 15
@@ -410,11 +423,6 @@ UniDeskObject{
         onMouseMoved:(pos) => {
             updateMouseClickThrough(pos);
         }
-        onMousePressed:(button, pos) => {
-            if(button === Qt.RightButton && component_manager.selectMode === UniDeskComponentSelectMode.MultiSelect){
-                multi_select_menu.popup(object.contentItem);
-            }
-        }
         Component.onCompleted: {
             // 触发 UniDeskThemeManager 单例构造，确保 startup 清理（删除标记文件夹 + 完整替换 plugins DLL）
             // 在 loadPlugins 之前执行，保证 DLL 已被清理干净
@@ -422,6 +430,7 @@ UniDeskObject{
             custom_wallpaper.fetchCustomApiWallpaper();
             custom_wallpaper.nextImage();
             UniDeskPluginMgr.setEngine(QQMLENGINE);
+            UniDeskConsole.setConsoleOutput(OUTPUT);
             UniDeskPluginMgr.loadPlugins();
             UniDeskSettingsWindow.customWallpaper=custom_wallpaper;
             UniDeskSettingsWindow.comManager=component_manager;
@@ -446,6 +455,7 @@ UniDeskObject{
     UniDeskMenu{
         id: multi_select_menu
         comManager: component_manager
+        popupType: Menu.Window
         UniDeskMenuItem{
             text: qsTr("保存为模版数据")
             iconSource: "qrc:/media/img/info.svg"
@@ -568,6 +578,7 @@ UniDeskObject{
     UniDeskRoot{
         id: top_most_layer
         property Component cursor_component
+        signal componentRightClicked(var com)
         x:0
         y:0
         width: Screen.width
@@ -593,6 +604,11 @@ UniDeskObject{
         }
         onMouseMoved:(pos) => {
             updateMouseClickThrough(pos);
+        }
+        onComponentRightClicked:(com) => {
+            if(component_manager.selectMode === UniDeskComponentSelectMode.MultiSelect){
+                multi_select_menu.popup(com);
+            }
         }
         function updateMouseClickThrough(pos){
             let moac=component_manager.mouse_on_any_com(pos,"TopMost")

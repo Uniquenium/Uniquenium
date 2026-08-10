@@ -127,6 +127,7 @@ Item{
                 }
             } else if (mouse.button === Qt.RightButton) {
                 base.rightClicked();
+                base.comManager.topMostLayer.componentRightClicked(base);
             }
             base.moving = false;
             base.moved= false;

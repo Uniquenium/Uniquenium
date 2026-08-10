@@ -14,7 +14,8 @@
 #include <QThread>
 #include <QQuickWindow>
 #include <QSGRendererInterface>
-#include <UniDeskPluginMgr.h>
+#include <iostream>
+#include <sstream>
 
 int main(int argc,char* argv[]){
     QApplication app(argc,argv);
@@ -48,9 +49,13 @@ int main(int argc,char* argv[]){
             }
         }
     }
-
+    std::ostringstream* oss = new std::ostringstream();
+    std::cout.rdbuf(oss->rdbuf());
+    std::cerr.rdbuf(oss->rdbuf());
     QQmlApplicationEngine engine;
+    qRegisterMetaType<std::ostringstream*>("std::ostringstream*");
     engine.rootContext()->setContextProperty("QQMLENGINE", &engine);
+    engine.rootContext()->setContextProperty("OUTPUT", QVariant::fromValue(oss));
     engine.addImportPath(QCoreApplication::applicationDirPath()+"/temp");
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     engine.load(url);
