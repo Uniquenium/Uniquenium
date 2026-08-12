@@ -7,6 +7,7 @@
 #include <QJsonArray>
 #include "UniDeskPluginMgr.h"
 #include "UniDeskPluginInterface.h"
+#include "UniDeskSettings.h"
 
 const QString pluginPath = QCoreApplication::applicationDirPath() + "/data/plugins";
 
@@ -24,7 +25,6 @@ void UniDeskPluginMgr::loadPlugins()
     }
     QVariantList pluginList;
     qDebug() << "Scanning plugins directory:" << pluginsDir.path();
-    // Scan for directories in the directory
     for (const QString &pluginDirName : pluginsDir.entryList(QDir::Dirs)) {
         if ((!QDir(pluginsDir.absoluteFilePath(pluginDirName)).exists())||pluginDirName=="."||pluginDirName=="..") {
             continue;
@@ -75,8 +75,30 @@ void UniDeskPluginMgr::loadPlugins()
         pluginInfo["version"] = obj["version"].toString();
         pluginInfo["components"] = obj["components"].toArray();
         pluginInfo["dirpath"] = pluginsDir.absoluteFilePath(pluginDirName);
+        pluginInfo["settings"] = obj.value("settings").toString();
         pluginList.append(pluginInfo);
         m_engine->addImportPath(pluginsDir.absoluteFilePath(pluginDirName));
+
+        QString pluginId = obj["id"].toString();
+        QString defaultsPath = pluginsDir.absoluteFilePath(pluginDirName + "/defaultSettings.json");
+        QFile defaultsFile(defaultsPath);
+        if (defaultsFile.exists() && defaultsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QJsonDocument defaultsDoc = QJsonDocument::fromJson(defaultsFile.readAll());
+            defaultsFile.close();
+            QJsonObject defaultsObj = defaultsDoc.object();
+            if (!defaultsObj.isEmpty()) {
+                QVariantMap defaultsMap;
+                for (auto it = defaultsObj.begin(); it != defaultsObj.end(); ++it) {
+                    QJsonValue val = it.value();
+                    if (val.isString()) defaultsMap[it.key()] = val.toString();
+                    else if (val.isDouble()) defaultsMap[it.key()] = val.toDouble();
+                    else if (val.isBool()) defaultsMap[it.key()] = val.toBool();
+                    else if (val.isArray()) defaultsMap[it.key()] = val.toArray().toVariantList();
+                    else if (val.isObject()) defaultsMap[it.key()] = val.toObject().toVariantMap();
+                }
+                UniDeskSettings::setPluginDefaults(pluginId, defaultsMap);
+            }
+        }
     }
     plugins_list(pluginList);
 }

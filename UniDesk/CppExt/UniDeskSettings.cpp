@@ -7,7 +7,13 @@
 #include <QCoreApplication>
 #include <QSet>
 
-static QString settingsFile = QCoreApplication::applicationDirPath() + "/data/settings.json";
+QHash<QString, QVariantMap> UniDeskSettings::s_pluginDefaults;
+
+QString UniDeskSettings::settingsFilePath(const QString &pluginId) {
+    if (pluginId.isEmpty())
+        return QCoreApplication::applicationDirPath() + "/data/settings.json";
+    return QCoreApplication::applicationDirPath() + "/data/plugins/" + pluginId + "/settings.json";
+}
 
 QString UniDeskSettings::stripPrefix(const QString &key) {
     int dot = key.indexOf('.');
@@ -17,7 +23,7 @@ bool UniDeskSettings::isAppearanceProperty(const QString &key) { return key.star
 bool UniDeskSettings::isHotkeysProperty(const QString &key) { return key.startsWith("hotkeys."); }
 bool UniDeskSettings::isFunctionProperty(const QString &key) { return key.startsWith("function."); }
 
-static QJsonObject defaultSettings() {
+static QJsonObject mainDefaultSettings() {
     QJsonObject obj;
     obj["function.hideTaskbar"] = false;
     obj["appearance.colorMode"] = 2;
@@ -62,28 +68,37 @@ static QJsonObject defaultSettings() {
     obj["appearance.customCursorStylePath"] = QString();
     return obj;
 }
+
 static void writeJsonFile(const QString &file, const QJsonObject &obj) {
     QFile f(file);
-    QDir().mkdir(QCoreApplication::applicationDirPath() + "/data");
+    QDir().mkpath(QFileInfo(file).absolutePath());
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QJsonDocument doc(obj);
     f.write(doc.toJson(QJsonDocument::Indented));
     f.close();
 }
-static QJsonObject readJsonFile(const QString &file) {
+
+static QJsonObject readJsonFile(const QString &file, bool isPlugin) {
     QFile f(file);
     if (!f.exists()) {
-        QJsonObject obj = defaultSettings();
+        QJsonObject obj;
+        if (!isPlugin)
+            obj = mainDefaultSettings();
         writeJsonFile(file, obj);
         return obj;
     }
     if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) return QJsonObject();
     QJsonDocument doc = QJsonDocument::fromJson(f.readAll());
     f.close();
+    if (doc.isNull()) {
+        QJsonObject obj;
+        if (!isPlugin)
+            obj = mainDefaultSettings();
+        writeJsonFile(file, obj);
+        return obj;
+    }
     return doc.object();
 }
-
-
 
 static QVariant json2object(const QJsonValue &jso) {
     if (jso.isObject()) {
@@ -106,7 +121,6 @@ static QVariant json2object(const QJsonValue &jso) {
 }
 
 static QJsonValue object2json(const QVariant &obj) {
-    // 使用typeId判断是否为QColor
     if (obj.typeId() == qMetaTypeId<QColor>()) {
         QColor c = obj.value<QColor>();
         QJsonObject o;
@@ -117,7 +131,6 @@ static QJsonValue object2json(const QVariant &obj) {
         o["alpha"] = c.alpha();
         return o;
     }
-    // 使用typeId判断Map和List
     if (obj.typeId() == qMetaTypeId<QVariantMap>()) {
         QJsonObject o;
         QVariantMap m = obj.toMap();
@@ -140,42 +153,73 @@ UniDeskSettings::UniDeskSettings(QQuickItem *parent)
     notifyLoad();
 }
 
-QVariant UniDeskSettings::get(const QString &key) {
-    QJsonObject obj = readJsonFile(settingsFile);
+QVariant UniDeskSettings::get(const QString &key, const QString &pluginId) {
+    bool isPlugin = !pluginId.isEmpty();
+    QString file = settingsFilePath(pluginId);
+    QJsonObject obj = readJsonFile(file, isPlugin);
     QJsonValue v = obj.value(key);
     if (v.isUndefined() || v.isNull()) v = obj.value(stripPrefix(key));
-    if (v.isUndefined() || v.isNull()) return json2object(defaultSettings()[key]);
+    if (v.isUndefined() || v.isNull()) {
+        if (isPlugin) {
+            QVariantMap defaults = s_pluginDefaults.value(pluginId);
+            if (defaults.contains(key)) return defaults.value(key);
+            QString prefixFree = stripPrefix(key);
+            if (defaults.contains(prefixFree)) return defaults.value(prefixFree);
+            return QVariant();
+        }
+        return json2object(mainDefaultSettings()[key]);
+    }
     return json2object(v);
 }
 
-void UniDeskSettings::set(const QString &key, const QVariant &val) {
-    QJsonObject obj = readJsonFile(settingsFile);
+void UniDeskSettings::set(const QString &key, const QVariant &val, const QString &pluginId) {
+    bool isPlugin = !pluginId.isEmpty();
+    QString file = settingsFilePath(pluginId);
+    QJsonObject obj = readJsonFile(file, isPlugin);
     obj[key] = object2json(val);
-    obj.remove(stripPrefix(key));
-    writeJsonFile(settingsFile, obj);
-    notifyLoad();
+    if (key.contains('.'))
+        obj.remove(stripPrefix(key));
+    writeJsonFile(file, obj);
+    if (!isPlugin)
+        notifyLoad();
 }
 
-QVariant UniDeskSettings::getAll() {
-    QJsonObject obj = readJsonFile(settingsFile);
+QVariant UniDeskSettings::getAll(const QString &pluginId) {
+    bool isPlugin = !pluginId.isEmpty();
+    QString file = settingsFilePath(pluginId);
+    QJsonObject obj = readJsonFile(file, isPlugin);
     QVariantMap map;
+    QVariantMap defaults = isPlugin ? s_pluginDefaults.value(pluginId) : QVariantMap();
+    for (auto it = defaults.begin(); it != defaults.end(); ++it)
+        map[it.key()] = it.value();
     for (auto it = obj.begin(); it != obj.end(); ++it)
         map[it.key()] = json2object(it.value());
     return map;
 }
 
-void UniDeskSettings::setAll(const QVariant &val) {
+void UniDeskSettings::setAll(const QVariant &val, const QString &pluginId) {
     if (!val.canConvert<QVariantMap>()) return;
     QVariantMap map = val.toMap();
     QJsonObject obj;
     for (auto it = map.begin(); it != map.end(); ++it)
         obj[it.key()] = object2json(it.value());
-    writeJsonFile(settingsFile, obj);
-    notifyLoad();
+    QString file = settingsFilePath(pluginId);
+    writeJsonFile(file, obj);
+    if (pluginId.isEmpty())
+        notifyLoad();
+}
+
+void UniDeskSettings::setPluginDefaults(const QString &pluginId, const QVariantMap &defaults) {
+    s_pluginDefaults[pluginId] = defaults;
+}
+
+QVariantMap UniDeskSettings::pluginDefaults(const QString &pluginId) {
+    return s_pluginDefaults.value(pluginId);
 }
 
 void UniDeskSettings::notifyLoad() {
-    QJsonObject obj = readJsonFile(settingsFile);
+    QString file = settingsFilePath();
+    QJsonObject obj = readJsonFile(file, false);
     auto getVal = [&obj](const QString &key) -> QJsonValue {
         QJsonValue v = obj.value(key);
         if (v.isUndefined() || v.isNull()) v = obj.value(stripPrefix(key));
@@ -215,4 +259,3 @@ void UniDeskSettings::notifyLoad() {
     customCursorEnabled(getVal("appearance.customCursorEnabled").toBool());
     customCursorStylePath(getVal("appearance.customCursorStylePath").toString());
 }
-

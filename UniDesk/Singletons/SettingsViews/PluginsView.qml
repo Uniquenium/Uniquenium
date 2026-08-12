@@ -53,6 +53,7 @@ Item{
                     property var model
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    spacing: 5
                     UniDeskButton{
                         contentText: qsTr("打开文件夹")
                         iconSize: 15
@@ -63,6 +64,26 @@ Item{
                         radius: width / 2
                         onClicked:{
                             UniDeskTools.openFileOrDir(modelData.dirpath);
+                        }
+                    }
+                    UniDeskButton{
+                        visible: modelData.settings && modelData.settings.length > 0
+                        contentText: qsTr("插件设置")
+                        iconSize: 15
+                        iconSource: "qrc:/media/img/settings.svg"
+                        bgHoverColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.2) : Qt.rgba(0,0,0,0.5).lighter(1.2)
+                        bgPressColor: UniDeskGlobals.isLight ? Qt.rgba(1,1,1,0.5).darker(1.5) : Qt.rgba(0,0,0,0.5).lighter(1.5)
+                        iconColor: UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1).darker(1.5)
+                        radius: width / 2
+                        onClicked:{
+                            var path = Qt.resolvedUrl("file:///" + modelData.dirpath + "/" + modelData.settings)
+                            var component = Qt.createComponent(path, Component.Synchronous, null)
+                            if (component.status === Component.Ready) {
+                                var obj = component.createObject()
+                                if (obj && obj.show) obj.show()
+                            } else {
+                                console.error("Failed to load plugin settings QML:", path, component.errorString())
+                            }
                         }
                     }
                 }
