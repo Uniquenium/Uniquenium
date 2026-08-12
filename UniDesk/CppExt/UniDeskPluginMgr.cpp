@@ -67,7 +67,9 @@ void UniDeskPluginMgr::loadPlugins()
             }
         }
         QVariantMap pluginInfo;
-        qDebug()<<"Loaded plugin:"<<obj["name"].toString();
+        qDebug()<<"Loaded plugin:"<<obj["author"].toString()<<"."<<obj["id"].toString()<<"("<<obj["name"].toString()<<")";
+        pluginInfo["author"] = obj["author"].toString();
+        pluginInfo["id"] = obj["id"].toString();
         pluginInfo["name"] = obj["name"].toString();
         pluginInfo["description"] = obj["description"].toString();
         pluginInfo["version"] = obj["version"].toString();

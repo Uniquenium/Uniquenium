@@ -97,9 +97,11 @@ UniDeskWindow{
                 model: UniDeskPluginMgr.plugins_list
                 ColumnLayout{
                     spacing: 10
+                    id: plugin_column
+                    required property var modelData
                     UniDeskText{
                         id: com_name_text
-                        text: qsTr(modelData.name)
+                        text: qsTr(plugin_column.modelData.name)
                         font: UniDeskTextStyle.small_
                     }
                     Flow{
@@ -107,8 +109,9 @@ UniDeskWindow{
                         spacing: 10
                         Layout.preferredWidth: scroll_view.width
                         Repeater{
-                            model: modelData.components
+                            model: plugin_column.modelData.components
                             UniDeskButton{
+                                required property var modelData
                                 display: Button.TextOnly
                                 contentText: modelData.nameTr
                                 // iconSource: modelData.icon
@@ -117,7 +120,8 @@ UniDeskWindow{
                                 borderWidth: 1
                                 radius: 5
                                 onClicked: {
-                                    comManager.add_com(modelData.name, modelData.nameTr, pageid);
+                                    var comTypeId = plugin_column.modelData.author+"."+plugin_column.modelData.id+"."+modelData.name;
+                                    comManager.add_com(comTypeId, modelData.nameTr, pageid);
                                     window.close();
                                 }
                             }

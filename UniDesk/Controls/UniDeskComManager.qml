@@ -364,12 +364,13 @@ UniDeskObject{
         for(var i=0;i<plugins.length;i++){
             for(var j=0;j<plugins[i].components.length;j++){
                 var info=plugins[i].components[j];
-                print(info.name+" Loading")
+                var comTypeId = plugins[i].author+"."+plugins[i].id+"."+info.name
+                print(comTypeId+" Loading")
                 var component = Qt.createComponent(Qt.resolvedUrl("file:///"+plugins[i].dirpath+"/"+info.path),Component.Synchronous, null)
                 if(component.status===Component.Ready){
                     type_list.push(component);
-                    typename_list.push(info.name);
-                    print(info.name+" Loaded")
+                    typename_list.push(comTypeId);
+                    print(comTypeId+" Loaded")
                 }
                 else if(component.status===Component.Error){
                     print("Error loading "+info.name+": "+component.errorString())

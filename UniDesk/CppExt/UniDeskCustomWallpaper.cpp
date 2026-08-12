@@ -4,9 +4,6 @@
 #include <windows.h>
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
-#elif defined(Q_OS_LINUX)
-#include <QWindow>
-#include <KWindowSystem>
 #endif
 
 #ifdef Q_OS_WIN
@@ -143,19 +140,6 @@ void UniDeskCustomWallpaper::attachToWallpaper() {
         SetWindowPos(hwnd, shellDefView, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
         attachedToWallpaper(true);
     }
-#elif defined(Q_OS_LINUX)
-    QWindow* win = this;
-    if (!win) {
-        attachedToWallpaper(false);
-        return;
-    }
-    KWindowSystem::setState(win, NET::KeepBelow | NET::SkipTaskbar | NET::SkipPager | NET::SkipSwitcher);
-    KWindowSystem::setOnAllDesktops(win, true);
-    if (KWindowSystem::isPlatformX11()) {
-        KWindowSystem::setType(win, NET::Desktop);
-    }
-    win->lower();
-    attachedToWallpaper(true);
 #endif
 }
 

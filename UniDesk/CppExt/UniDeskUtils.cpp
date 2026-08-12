@@ -381,61 +381,23 @@ QString UniDeskUtils::getWallpaperFilePath()
     switch (hash_(desktop_name.toStdString().c_str())) {
     case hash_compile_time("KDE"): {
         QDBusInterface plasmaShellInterface("org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell");
+        // 检查接口是否有效
         if (!plasmaShellInterface.isValid()) {
             qDebug() << "Failed to create D-Bus interface.";
             return {};
         }
+        // 调用D-Bus方法获取属性
         QDBusReply<QVariantMap> reply = plasmaShellInterface.call("wallpaper", static_cast<uint32_t>(0));
+        // 检查调用是否成功
         if (!reply.isValid()) {
             qDebug() << "Failed to call D-Bus method:" << reply.error().message();
             return {};
         }
+        // 获取属性值
         QVariantMap properties = reply.value();
-        return properties["Image"].toString();
+        QString imagePath = properties["Image"].toString();
+        return imagePath;
     }
-    case hash_compile_time("GNOME"):
-    case hash_compile_time("Unity"):
-    case hash_compile_time("BUDGIE"): {
-        QProcess process;
-        process.start("gsettings", {"get", "org.gnome.desktop.background", "picture-uri"});
-        process.waitForFinished(3000);
-        QString output = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
-        if (!output.isEmpty() && output.startsWith("'")) {
-            output.remove(0, 1);
-            if (output.endsWith("'"))
-                output.chop(1);
-            if (output.startsWith("file://"))
-                return output.mid(7);
-            return output;
-        }
-        return {};
-    }
-    case hash_compile_time("XFCE"): {
-        QProcess process;
-        process.start("xfconf-query", {"-c", "xfce4-desktop", "-p", "/backdrop/screen0/monitor0/workspace0/last-image"});
-        process.waitForFinished(3000);
-        QString output = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
-        if (!output.isEmpty())
-            return output;
-        return {};
-    }
-    case hash_compile_time("CINNAMON"): {
-        QProcess process;
-        process.start("gsettings", {"get", "org.cinnamon.desktop.background", "picture-uri"});
-        process.waitForFinished(3000);
-        QString output = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
-        if (!output.isEmpty() && output.startsWith("'")) {
-            output.remove(0, 1);
-            if (output.endsWith("'"))
-                output.chop(1);
-            if (output.startsWith("file://"))
-                return output.mid(7);
-            return output;
-        }
-        return {};
-    }
-    default:
-        break;
     }
 
 #elif defined(Q_OS_MACOS)

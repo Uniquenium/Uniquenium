@@ -169,7 +169,7 @@ Item{
     function containsGlobalPoint(point) {
         return base.contains(base.mapFromGlobal(point))||rect_border.hoverOnAnyButton(point)||base.menu.visible;
     }
-    function chgePrntWthoutMvAndSv(p){
+    function changeParentWithoutMoving(p){
         // 检查是否跨窗口重新父化
         let currentWindow = base.currentLayer();
         let targetWindow = null;
@@ -192,7 +192,6 @@ Item{
             base.y = point.y;
             base.parent = p;
             comManager.updateComTreeParent(base, p);
-            base.saveComToFile();
         } else {
             let data= base.propertyData();
             let point = p.mapFromItem(base,0,0);

@@ -61,7 +61,8 @@ Item {
                 onActivated: {
                     let p = parentComboBox.getComByIndex(currentIndex);
                     if(control.editingComponent){
-                        control.editingComponent.chgePrntWthoutMvAndSv(p);
+                        control.editingComponent.changeParentWithoutMoving(p);
+                        control.editingComponent.saveComToFile();
                     }
                 }
                 onCurrentComponentChanged: {

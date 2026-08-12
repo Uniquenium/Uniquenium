@@ -16,22 +16,16 @@
 #include <QQuickWindow>
 #include <QCursor>
 #include <QFileInfo>
-#include <QDBusInterface>
-#include <QDBusReply>
-#include <QDBusMessage>
-#include <QStandardPaths>
-#include <QTextStream>
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <winreg.h>
 #endif
 
-#ifdef Q_OS_WIN
 // 设置或取消开机自启
 // name: 注册表值名（通常是程序名）
 // path: 可执行文件完整路径（会自动加引号）
 // enable: true => 设置自启； false => 删除自启
-// allUsers: false => HKCU (当前用户)， true => HKLM (所有用户；需要管理员权限）
+// allUsers: false => HKCU (当前用户)， true => HKLM (所有用户；需要管理员权限)
 static bool SetAutoStart(const std::wstring& name, const std::wstring& path, bool enable, bool allUsers = false)
 {
     HKEY root = allUsers ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
@@ -137,7 +131,6 @@ static bool IsAutoStartEnabled(const std::wstring& name, const std::wstring& pat
 
     return PathEqualInsensitive(storedExe, path);
 }
-#endif
 
 
 UniDeskTools::UniDeskTools(QQuickItem *parent)
@@ -174,15 +167,7 @@ void UniDeskTools::systemCommand(const QString &command) {
 
 QFont UniDeskTools::font(const QString &family, int size) {
     QFont f;
-    if (family.isEmpty()) {
-#ifdef Q_OS_LINUX
-        f.setFamily(QStringLiteral("Noto Sans"));
-#else
-        f.setFamily(QStringLiteral("微软雅黑"));
-#endif
-    } else {
-        f.setFamily(family);
-    }
+    f.setFamily(family.isEmpty() ? QStringLiteral("微软雅黑") : family);
     f.setPixelSize(size);
     return f;
 }
@@ -214,52 +199,6 @@ QUrl UniDeskTools::get_system_wallpaper() {
         RegCloseKey(hKey);
         return QUrl::fromLocalFile(QString::fromWCharArray(path));
     }
-#elif defined(Q_OS_LINUX)
-    QString desktop = qgetenv("XDG_CURRENT_DESKTOP");
-    if (desktop.contains("GNOME") || desktop.contains("Unity") || desktop.contains("Budgie")) {
-        QProcess process;
-        process.start("gsettings", {"get", "org.gnome.desktop.background", "picture-uri"});
-        process.waitForFinished(3000);
-        QString output = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
-        if (!output.isEmpty() && output.startsWith("'")) {
-            output.remove(0, 1);
-            if (output.endsWith("'"))
-                output.chop(1);
-            if (output.startsWith("file://"))
-                return QUrl::fromLocalFile(output.mid(7));
-            return QUrl::fromLocalFile(output);
-        }
-    } else if (desktop.contains("KDE")) {
-        QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell");
-        if (iface.isValid()) {
-            QDBusReply<QVariantMap> reply = iface.call("wallpaper", static_cast<uint32_t>(0));
-            if (reply.isValid()) {
-                QString imagePath = reply.value().value("Image").toString();
-                if (!imagePath.isEmpty())
-                    return QUrl::fromLocalFile(imagePath);
-            }
-        }
-    } else if (desktop.contains("XFCE")) {
-        QProcess process;
-        process.start("xfconf-query", {"-c", "xfce4-desktop", "-p", "/backdrop/screen0/monitor0/workspace0/last-image"});
-        process.waitForFinished(3000);
-        QString output = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
-        if (!output.isEmpty())
-            return QUrl::fromLocalFile(output);
-    } else if (desktop.contains("Cinnamon")) {
-        QProcess process;
-        process.start("gsettings", {"get", "org.cinnamon.desktop.background", "picture-uri"});
-        process.waitForFinished(3000);
-        QString output = QString::fromUtf8(process.readAllStandardOutput()).trimmed();
-        if (!output.isEmpty() && output.startsWith("'")) {
-            output.remove(0, 1);
-            if (output.endsWith("'"))
-                output.chop(1);
-            if (output.startsWith("file://"))
-                return QUrl::fromLocalFile(output.mid(7));
-            return QUrl::fromLocalFile(output);
-        }
-    }
 #endif
     return QUrl();
 }
@@ -280,22 +219,6 @@ void UniDeskTools::set_system_wallpaper(const QUrl &path) {
         RegCloseKey(hKey);
     }
     SystemParametersInfoW(0x0014, 0, (void*)filePath.utf16(), 0x01 | 0x02 | 0x04);
-#elif defined(Q_OS_LINUX)
-    QString filePath = path.toLocalFile();
-    if (filePath.isEmpty()) return;
-    QString desktop = qgetenv("XDG_CURRENT_DESKTOP");
-    if (desktop.contains("GNOME") || desktop.contains("Unity") || desktop.contains("Budgie")) {
-        QProcess::startDetached("gsettings", {"set", "org.gnome.desktop.background", "picture-uri", "'file://" + filePath + "'"});
-        QProcess::startDetached("gsettings", {"set", "org.gnome.desktop.background", "picture-options", "'zoom'"});
-    } else if (desktop.contains("KDE")) {
-        QDBusMessage msg = QDBusMessage::createMethodCall("org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell", "setWallpaper");
-        msg << uint32_t(0) << filePath;
-        QDBusConnection::sessionBus().asyncCall(msg);
-    } else if (desktop.contains("XFCE")) {
-        QProcess::startDetached("xfconf-query", {"-c", "xfce4-desktop", "-p", "/backdrop/screen0/monitor0/workspace0/last-image", "-s", filePath});
-    } else if (desktop.contains("Cinnamon")) {
-        QProcess::startDetached("gsettings", {"set", "org.cinnamon.desktop.background", "picture-uri", "'file://" + filePath + "'"});
-    }
 #endif
 }
 
@@ -403,60 +326,16 @@ void UniDeskTools::showFileInExplorer(const QString &path) {
         param<<QLatin1String("/select,");
     param<<QDir::toNativeSeparators(path);
     QProcess::startDetached(explorer,param);
-#elif defined(Q_OS_LINUX)
-    QDBusInterface iface("org.freedesktop.FileManager1", "/org/freedesktop/FileManager1", "org.freedesktop.FileManager1");
-    if (iface.isValid()) {
-        QStringList uris;
-        uris << QUrl::fromLocalFile(path).toString();
-        if (QFileInfo(path).isDir()) {
-            iface.call("ShowFolders", uris, "");
-        } else {
-            iface.call("ShowItems", uris, "");
-        }
-    } else {
-        QFileInfo fi(path);
-        QString dir = fi.isDir() ? path : fi.absolutePath();
-        QProcess::startDetached("xdg-open", {dir});
-    }
 #endif
 }
 QString UniDeskTools::createUuid() {
     return QUuid::createUuid().toString();
 }
 bool UniDeskTools::isAppAutoStartEnabled() {
-#ifdef Q_OS_WIN
     QString path = QDir::toNativeSeparators(QGuiApplication::applicationFilePath());
     return IsAutoStartEnabled(L"UniDesk.Uniquenium", path.toStdWString());
-#elif defined(Q_OS_LINUX)
-    QString autostartDir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/autostart";
-    QString desktopFile = autostartDir + "/unidesk.desktop";
-    return QFile::exists(desktopFile);
-#else
-    return false;
-#endif
 }
 void UniDeskTools::setAppAutoStart(bool enabled) {
-#ifdef Q_OS_WIN
     QString path = QDir::toNativeSeparators(QGuiApplication::applicationFilePath());
     SetAutoStart(L"UniDesk.Uniquenium", path.toStdWString(), enabled);
-#elif defined(Q_OS_LINUX)
-    QString autostartDir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/autostart";
-    QString desktopFile = autostartDir + "/unidesk.desktop";
-    if (enabled) {
-        QDir().mkpath(autostartDir);
-        QFile file(desktopFile);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QTextStream stream(&file);
-            stream << "[Desktop Entry]\n";
-            stream << "Type=Application\n";
-            stream << "Name=UniDesk\n";
-            stream << "Exec=" << QGuiApplication::applicationFilePath() << "\n";
-            stream << "X-GNOME-Autostart-enabled=true\n";
-            stream << "Terminal=false\n";
-            file.close();
-        }
-    } else {
-        QFile::remove(desktopFile);
-    }
-#endif
 }

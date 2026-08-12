@@ -83,17 +83,12 @@ void UniDeskRoot::updateClickThrough() {
     if (hwnd) {
         LONG style = GetWindowLong(hwnd, GWL_EXSTYLE);
         if (mouseClickThrough()) {
+            // Enable mouse click-through
             SetWindowLong(hwnd, GWL_EXSTYLE, style | WS_EX_TRANSPARENT);
         } else {
+            // Disable mouse click-through
             SetWindowLong(hwnd, GWL_EXSTYLE, style & ~WS_EX_TRANSPARENT);
         }
-    }
-#elif defined(Q_OS_LINUX)
-    if (mouseClickThrough()) {
-        setAttribute(Qt::WA_TransparentForMouseEvents, true);
-        setAttribute(Qt::WA_ShowWithoutActivating, true);
-    } else {
-        setAttribute(Qt::WA_TransparentForMouseEvents, false);
     }
 #endif
 }

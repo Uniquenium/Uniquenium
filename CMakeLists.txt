@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 
 add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
-if (MSVC)
-    add_compile_options(/bigobj)
-endif ()
+add_compile_options(/bigobj)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -53,10 +51,6 @@ if (UNIX)
         # If not found, warn and continue
         if (NOT KF6WindowSystem_FOUND)
             message(WARNING "KF6WindowSystem not found. Some features may not work.")
-        endif ()
-        find_package(KF6GlobalAccel)
-        if (NOT KF6GlobalAccel_FOUND)
-            message(WARNING "KF6GlobalAccel not found. Wayland global hotkeys may not work.")
         endif ()
     endif ()
 endif ()
