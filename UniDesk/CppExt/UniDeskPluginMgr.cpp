@@ -103,6 +103,13 @@ void UniDeskPluginMgr::loadPlugins()
 
         pluginList.append(pluginInfo);
         m_engine->addImportPath(pluginsDir.absoluteFilePath(pluginDirName));
+
+        QString author = obj["author"].toString();
+        QString id = obj["id"].toString();
+        for (const QJsonValue &comp : obj["components"].toArray()) {
+            QString comTypeId = author + "." + id + "." + comp.toObject()["name"].toString();
+            m_typePluginDirs[comTypeId] = pluginsDir.absoluteFilePath(pluginDirName);
+        }
     }
     plugins_list(pluginList);
 }
@@ -116,7 +123,13 @@ void UniDeskPluginMgr::unloadPlugins()
         }
     }
     m_loaders.clear();
+    m_typePluginDirs.clear();
     plugins_list(QVariantList());
+}
+
+QString UniDeskPluginMgr::getPluginDir(const QString& comTypeId) const
+{
+    return m_typePluginDirs.value(comTypeId, "");
 }
 
 void UniDeskPluginMgr::setEngine(QQmlApplicationEngine* engine)

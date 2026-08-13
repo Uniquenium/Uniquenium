@@ -39,6 +39,7 @@ Item{
     property real initialBaseY: 0
     property real itemOpacity: 1
     property bool defaultRightClickMenu: true
+    property string pluginDir: ""
     transformOrigin: Item.TopLeft
     property var menu: UniDeskMenu{
         comManager: base.comManager
@@ -267,7 +268,11 @@ Item{
         if(base.loadPropertyDataEx){base.loadPropertyDataEx(data);}
     }
     Component.onCompleted: {
+        base.pluginDir = UniDeskPluginMgr.getPluginDir(base.type);
         base.componentCompleted();
+    }
+    onTypeChanged: {
+        base.pluginDir = UniDeskPluginMgr.getPluginDir(base.type);
     }
     Connections{
         target: comManager.root
