@@ -10,6 +10,7 @@ import Qt.labs.platform as QLP
 UniDeskObject{
     id: rootObject
     property bool appVisible: true
+    property var pluginSignalHandlers: []
     UniDeskRoot{
         id: object
         x:0
@@ -432,6 +433,22 @@ UniDeskObject{
             UniDeskPluginMgr.setEngine(QQMLENGINE);
             UniDeskConsole.setConsoleOutput(OUTPUT);
             UniDeskPluginMgr.loadPlugins();
+            var plugins = UniDeskPluginMgr.plugins_list;
+            for (var i = 0; i < plugins.length; i++) {
+                if (!plugins[i].signals || plugins[i].signals.length === 0) continue;
+                var path = "file:///" + plugins[i].dirpath + "/" + plugins[i].signals;
+                var component = Qt.createComponent(path, Component.Synchronous);
+                if (component === null) {
+                    console.error("Failed to create SignalHandler component:", path);
+                } else if (component.status === Component.Ready) {
+                    var handler = component.createObject(rootObject);
+                    if (handler) {
+                        pluginSignalHandlers.push(handler);
+                    }
+                } else {
+                    console.error("Failed to load SignalHandler:", path, component.errorString());
+                }
+            }
             UniDeskSettingsWindow.customWallpaper=custom_wallpaper;
             UniDeskSettingsWindow.comManager=component_manager;
             UniDeskComWindow.comManager=component_manager;

@@ -301,17 +301,22 @@
 <context>
     <name>PluginsView</name>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="57"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="58"/>
         <source>打开文件夹</source>
         <translation>Open Folder</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="83"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="71"/>
+        <source>插件设置</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="104"/>
         <source>已加载</source>
         <translation>Loaded</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="83"/>
+        <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="104"/>
         <source>个插件</source>
         <translation>plugins</translation>
     </message>
@@ -907,8 +912,8 @@
     <message>
         <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="122"/>
         <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="124"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="406"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="408"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="407"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="409"/>
         <source>页面</source>
         <translation>Page</translation>
     </message>
@@ -919,19 +924,19 @@
     </message>
     <message>
         <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="334"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="582"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="583"/>
         <source>壁纸层</source>
         <translation>Wallpaper Layer</translation>
     </message>
     <message>
         <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="335"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="585"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="586"/>
         <source>桌面层</source>
         <translation>Desktop Layer</translation>
     </message>
     <message>
         <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="336"/>
-        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="588"/>
+        <location filename="../UniDesk/Controls/UniDeskComManager.qml" line="589"/>
         <source>置顶层</source>
         <translation>Topmost Layer</translation>
     </message>
@@ -1500,193 +1505,193 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.qml" line="19"/>
-        <location filename="../main.qml" line="588"/>
-        <location filename="../main.qml" line="814"/>
+        <location filename="../main.qml" line="20"/>
+        <location filename="../main.qml" line="605"/>
+        <location filename="../main.qml" line="831"/>
         <source>UniDesk</source>
         <translation>UniDesk</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="84"/>
+        <location filename="../main.qml" line="85"/>
         <source>收起</source>
         <translation>Collapse</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="84"/>
+        <location filename="../main.qml" line="85"/>
         <source>展开</source>
         <translation>Expand</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="97"/>
+        <location filename="../main.qml" line="98"/>
         <source>退出</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="110"/>
+        <location filename="../main.qml" line="111"/>
         <source>系统</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="303"/>
+        <location filename="../main.qml" line="304"/>
         <source>上一页</source>
         <translation>Previous Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="123"/>
+        <location filename="../main.qml" line="124"/>
         <source>页面</source>
         <translation>Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="312"/>
+        <location filename="../main.qml" line="313"/>
         <source>下一页</source>
         <translation>Next Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="136"/>
+        <location filename="../main.qml" line="137"/>
         <source>设置</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="149"/>
+        <location filename="../main.qml" line="150"/>
         <source>日志</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="162"/>
+        <location filename="../main.qml" line="163"/>
         <source>选择</source>
         <translation>Select</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="183"/>
+        <location filename="../main.qml" line="184"/>
         <source>多选</source>
         <translation>Multi-select</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="204"/>
+        <location filename="../main.qml" line="205"/>
         <source>添加组件</source>
         <translation>Add Component</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="234"/>
+        <location filename="../main.qml" line="235"/>
         <source>关机</source>
         <translation>Shut Down</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="242"/>
+        <location filename="../main.qml" line="243"/>
         <source>重启</source>
         <translation>Restart</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="250"/>
+        <location filename="../main.qml" line="251"/>
         <source>休眠</source>
         <translation>Sleep</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="258"/>
+        <location filename="../main.qml" line="259"/>
         <source>注销</source>
         <translation>Log Off</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="266"/>
+        <location filename="../main.qml" line="267"/>
         <source>锁屏</source>
         <translation>Lock</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="280"/>
+        <location filename="../main.qml" line="281"/>
         <source>切换页面</source>
         <translation>Switch Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="323"/>
+        <location filename="../main.qml" line="324"/>
         <source>添加页面</source>
         <translation>Add Page</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="331"/>
+        <location filename="../main.qml" line="332"/>
         <source>管理页面</source>
         <translation>Manage Pages</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="341"/>
+        <location filename="../main.qml" line="342"/>
         <source>确认退出</source>
         <translation>Confirm Exit</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="342"/>
+        <location filename="../main.qml" line="343"/>
         <source>确认要退出吗？</source>
         <translation>Are you sure you want to exit?</translation>
-    </message>
-    <message>
-        <location filename="../main.qml" line="344"/>
-        <location filename="../main.qml" line="358"/>
-        <location filename="../main.qml" line="372"/>
-        <location filename="../main.qml" line="386"/>
-        <location filename="../main.qml" line="509"/>
-        <source>确定</source>
-        <translation>OK</translation>
     </message>
     <message>
         <location filename="../main.qml" line="345"/>
         <location filename="../main.qml" line="359"/>
         <location filename="../main.qml" line="373"/>
         <location filename="../main.qml" line="387"/>
-        <location filename="../main.qml" line="532"/>
+        <location filename="../main.qml" line="526"/>
+        <source>确定</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../main.qml" line="346"/>
+        <location filename="../main.qml" line="360"/>
+        <location filename="../main.qml" line="374"/>
+        <location filename="../main.qml" line="388"/>
+        <location filename="../main.qml" line="549"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="355"/>
+        <location filename="../main.qml" line="356"/>
         <source>确认关机</source>
         <translation>Confirm Shutdown</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="356"/>
+        <location filename="../main.qml" line="357"/>
         <source>确认要关机吗？</source>
         <translation>Are you sure you want to shut down?</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="369"/>
+        <location filename="../main.qml" line="370"/>
         <source>确认重启</source>
         <translation>Confirm Restart</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="370"/>
+        <location filename="../main.qml" line="371"/>
         <source>确认要重启吗？</source>
         <translation>Are you sure you want to restart?</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="383"/>
+        <location filename="../main.qml" line="384"/>
         <source>确认注销</source>
         <translation>Confirm Log Off</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="384"/>
+        <location filename="../main.qml" line="385"/>
         <source>确认要注销吗？</source>
         <translation>Are you sure you want to log off?</translation>
     </message>
     <message>
-        <location filename="../main.qml" line="460"/>
-        <location filename="../main.qml" line="469"/>
+        <location filename="../main.qml" line="477"/>
+        <location filename="../main.qml" line="486"/>
         <source>保存为模版数据</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="477"/>
+        <location filename="../main.qml" line="494"/>
         <source>请输入模版名称:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="492"/>
+        <location filename="../main.qml" line="509"/>
         <source>模版名称</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="517"/>
+        <location filename="../main.qml" line="534"/>
         <source>名称不能为空</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.qml" line="522"/>
+        <location filename="../main.qml" line="539"/>
         <source>没有选中任何组件</source>
         <translation type="unfinished"></translation>
     </message>

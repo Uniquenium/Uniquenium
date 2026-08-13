@@ -8,6 +8,7 @@
 #include "UniDeskPluginMgr.h"
 #include "UniDeskPluginInterface.h"
 #include "UniDeskSettings.h"
+#include "UniDeskGlobals.h"
 
 const QString pluginPath = QCoreApplication::applicationDirPath() + "/data/plugins";
 
@@ -76,10 +77,10 @@ void UniDeskPluginMgr::loadPlugins()
         pluginInfo["components"] = obj["components"].toArray();
         pluginInfo["dirpath"] = pluginsDir.absoluteFilePath(pluginDirName);
         pluginInfo["settings"] = obj.value("settings").toString();
-        pluginList.append(pluginInfo);
-        m_engine->addImportPath(pluginsDir.absoluteFilePath(pluginDirName));
+        pluginInfo["signals"] = obj.value("signals").toString();
 
         QString pluginId = obj["id"].toString();
+
         QString defaultsPath = pluginsDir.absoluteFilePath(pluginDirName + "/defaultSettings.json");
         QFile defaultsFile(defaultsPath);
         if (defaultsFile.exists() && defaultsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -99,6 +100,9 @@ void UniDeskPluginMgr::loadPlugins()
                 UniDeskSettings::setPluginDefaults(pluginId, defaultsMap);
             }
         }
+
+        pluginList.append(pluginInfo);
+        m_engine->addImportPath(pluginsDir.absoluteFilePath(pluginDirName));
     }
     plugins_list(pluginList);
 }
