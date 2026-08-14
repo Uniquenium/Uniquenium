@@ -230,59 +230,61 @@
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="44"/>
         <source>主题</source>
-        <translation type="unfinished"></translation>
+        <translation>Theme</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="52"/>
         <source>保存/加载路径</source>
-        <translation type="unfinished"></translation>
+        <translation>Save/Load Path</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="64"/>
         <source>加载主题将覆盖外观设置、页面组件布局、插件</source>
-        <translation type="unfinished"></translation>
+        <translation>Loading a theme will overwrite appearance settings, page component layouts, and plugins</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="93"/>
         <source>从主题加载</source>
-        <translation type="unfinished"></translation>
+        <translation>Load from Theme</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="100"/>
         <source>请先选择加载路径</source>
-        <translation type="unfinished"></translation>
+        <translation>Please select a load path first</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="111"/>
         <source>确认加载主题</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm Load Theme</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="112"/>
         <source>加载主题将覆盖当前的外观设置、页面组件布局和插件
 程序将在加载完成后自动重启
 是否继续？</source>
-        <translation type="unfinished"></translation>
+        <translation>Loading a theme will overwrite current appearance settings, page component layouts and plugins.
+The program will automatically restart after loading.
+Continue?</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="114"/>
         <source>继续加载</source>
-        <translation type="unfinished"></translation>
+        <translation>Continue Loading</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="115"/>
         <source>取消</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="76"/>
         <source>保存为主题</source>
-        <translation type="unfinished"></translation>
+        <translation>Save as Theme</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/FunctionView.qml" line="83"/>
         <source>请先选择保存路径</source>
-        <translation type="unfinished"></translation>
+        <translation>Please select a save path first</translation>
     </message>
 </context>
 <context>
@@ -308,7 +310,7 @@
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="71"/>
         <source>插件设置</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Settings</translation>
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/PluginsView.qml" line="104"/>
@@ -826,22 +828,22 @@
 <context>
     <name>UniDeskComBase</name>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="46"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="47"/>
         <source>编辑</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="55"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="56"/>
         <source>复制</source>
         <translation>Copy</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="62"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="63"/>
         <source>新建子组件</source>
         <translation>New Sub-component</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="69"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="70"/>
         <source>删除</source>
         <translation>Delete</translation>
     </message>
@@ -969,7 +971,7 @@
     <message>
         <location filename="../UniDesk/Singletons/UniDeskComWindow.qml" line="56"/>
         <source>模版</source>
-        <translation type="unfinished"></translation>
+        <translation>Templates</translation>
     </message>
 </context>
 <context>
@@ -1018,7 +1020,7 @@
     <message>
         <location filename="../UniDesk/Singletons/UniDeskLogWindow.qml" line="17"/>
         <source>日志</source>
-        <translation type="unfinished"></translation>
+        <translation>Logs</translation>
     </message>
 </context>
 <context>
@@ -1259,54 +1261,54 @@
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="32"/>
         <source>模版名称不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>Template name cannot be empty</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="37"/>
         <source>模版名称包含非法字符</source>
-        <translation type="unfinished"></translation>
+        <translation>Template name contains invalid characters</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="41"/>
         <source>没有选中任何组件</source>
-        <translation type="unfinished"></translation>
+        <translation>No component selected</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="47"/>
         <source>无法创建模版目录: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot create template directory: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="79"/>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="85"/>
         <source>无法写入文件: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot write file: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="80"/>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="86"/>
         <source>保存失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Save failed</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="92"/>
         <source>模版已保存至: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Template saved to: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="236"/>
         <source>模版不存在: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Template does not exist: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="258"/>
         <source>无法读取模版数据</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot read template data</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskTempleteMgr.cpp" line="259"/>
         <source>加载失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Load failed</translation>
     </message>
 </context>
 <context>
@@ -1314,107 +1316,107 @@
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="73"/>
         <source>已有保存任务正在进行</source>
-        <translation type="unfinished"></translation>
+        <translation>Another save task is already in progress</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="86"/>
         <source>保存路径不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>Save path cannot be empty</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="94"/>
         <source>路径不是目录: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Path is not a directory: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="101"/>
         <source>无法创建主题目录: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot create theme directory: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="108"/>
         <source>准备保存...</source>
-        <translation type="unfinished"></translation>
+        <translation>Preparing to save...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="115"/>
         <source>已有任务正在进行</source>
-        <translation type="unfinished"></translation>
+        <translation>Another task is already in progress</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="128"/>
         <source>加载路径不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>Load path cannot be empty</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="136"/>
         <source>主题目录不存在: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Theme directory does not exist: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="144"/>
         <source>该目录不包含有效主题文件</source>
-        <translation type="unfinished"></translation>
+        <translation>This directory does not contain a valid theme file</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="150"/>
         <source>准备加载...</source>
-        <translation type="unfinished"></translation>
+        <translation>Preparing to load...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="166"/>
         <source>正在保存外观设置...</source>
-        <translation type="unfinished"></translation>
+        <translation>Saving appearance settings...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="215"/>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="262"/>
         <source>无法写入文件: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot write file: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="216"/>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="240"/>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="263"/>
         <source>保存失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Save failed</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="224"/>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="572"/>
         <source>正在复制插件...</source>
-        <translation type="unfinished"></translation>
+        <translation>Copying plugins...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="239"/>
         <source>复制插件失败: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to copy plugin: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="243"/>
         <source>正在复制插件: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Copying plugin: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="246"/>
         <source>正在保存组件信息...</source>
-        <translation type="unfinished"></translation>
+        <translation>Saving component info...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="271"/>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="687"/>
         <source>正在同步模版库...</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncing template library...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="284"/>
         <source>保存完成</source>
-        <translation type="unfinished"></translation>
+        <translation>Save completed</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="285"/>
         <source>主题已保存至: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Theme saved to: %1</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="554"/>
@@ -1424,82 +1426,82 @@
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="651"/>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="676"/>
         <source>加载失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Load failed</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="550"/>
         <source>正在清理插件目录...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleaning plugin directory...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="44"/>
         <source>未进行任务</source>
-        <translation type="unfinished"></translation>
+        <translation>No task in progress</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="541"/>
         <source>正在清理 media 目录...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cleaning media directory...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="553"/>
         <source>无法清理 plugins 目录</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot clean plugins directory</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="562"/>
         <source>正在复制 media...</source>
-        <translation type="unfinished"></translation>
+        <translation>Copying media...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="565"/>
         <source>复制 media 失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to copy media</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="616"/>
         <source>正在复制组件信息...</source>
-        <translation type="unfinished"></translation>
+        <translation>Copying component info...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="620"/>
         <source>复制 components.json 失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to copy components.json</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="637"/>
         <source>正在重新分配组件 UUID...</source>
-        <translation type="unfinished"></translation>
+        <translation>Reassigning component UUIDs...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="639"/>
         <source>重分配组件 UUID 失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to reassign component UUIDs</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="646"/>
         <source>正在加载外观设置...</source>
-        <translation type="unfinished"></translation>
+        <translation>Loading appearance settings...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="650"/>
         <source>无法读取主题设置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot read theme settings file</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="675"/>
         <source>无法写入设置文件</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot write settings file</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="701"/>
         <source>文件已写入，即将重启...</source>
-        <translation type="unfinished"></translation>
+        <translation>File written, restarting...</translation>
     </message>
     <message>
         <location filename="../UniDesk/CppExt/UniDeskThemeManager.cpp" line="702"/>
         <source>主题已写入，程序将自动重启</source>
-        <translation type="unfinished"></translation>
+        <translation>Theme written, program will restart automatically</translation>
     </message>
 </context>
 <context>
@@ -1554,7 +1556,7 @@
     <message>
         <location filename="../main.qml" line="150"/>
         <source>日志</source>
-        <translation type="unfinished"></translation>
+        <translation>Logs</translation>
     </message>
     <message>
         <location filename="../main.qml" line="163"/>
@@ -1673,27 +1675,27 @@
         <location filename="../main.qml" line="477"/>
         <location filename="../main.qml" line="486"/>
         <source>保存为模版数据</source>
-        <translation type="unfinished"></translation>
+        <translation>Save as Template</translation>
     </message>
     <message>
         <location filename="../main.qml" line="494"/>
         <source>请输入模版名称:</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter template name:</translation>
     </message>
     <message>
         <location filename="../main.qml" line="509"/>
         <source>模版名称</source>
-        <translation type="unfinished"></translation>
+        <translation>Template Name</translation>
     </message>
     <message>
         <location filename="../main.qml" line="534"/>
         <source>名称不能为空</source>
-        <translation type="unfinished"></translation>
+        <translation>Name cannot be empty</translation>
     </message>
     <message>
         <location filename="../main.qml" line="539"/>
         <source>没有选中任何组件</source>
-        <translation type="unfinished"></translation>
+        <translation>No component selected</translation>
     </message>
 </context>
 </TS>

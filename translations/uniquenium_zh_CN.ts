@@ -826,22 +826,22 @@
 <context>
     <name>UniDeskComBase</name>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="46"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="47"/>
         <source>编辑</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="55"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="56"/>
         <source>复制</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="62"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="63"/>
         <source>新建子组件</source>
         <translation>新建子组件</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="69"/>
+        <location filename="../UniDesk/Controls/UniDeskComBase.qml" line="70"/>
         <source>删除</source>
         <translation>删除</translation>
     </message>
