@@ -15,7 +15,7 @@ UniDeskWindow{
     width: 500
     height: 350
     title: qsTr("日志")
-    autoDestroy: false// keep the system appbar hidden (temporary solution)
+    autoDestroy: false
     autoVisible: false
     UniDeskTextArea{
         id: textArea
@@ -24,5 +24,11 @@ UniDeskWindow{
         
         area.readOnly: true
         area.text: UniDeskConsole.consoleContent
+        Connections{
+            target: textArea.area
+            function onTextChanged() {
+                textArea.view.contentY = textArea.view.contentHeight-textArea.view.height-10
+            }
+        }
     }
 }

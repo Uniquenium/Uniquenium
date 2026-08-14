@@ -47,8 +47,12 @@ void UniDeskPluginMgr::loadPlugins()
             qDebug() << "Invalid plugin-info.json file:" << pluginInfoPath;
             continue;
         }
+
+        QString pluginDirPath = pluginsDir.absoluteFilePath(pluginDirName);
+        m_engine->addImportPath(pluginDirPath);
+
         for (const QJsonValue &dll : obj["dlls"].toArray()) {
-            QString fileName = pluginsDir.absoluteFilePath(pluginDirName + "/" + dll.toString());
+            QString fileName = pluginDirPath + "/" + dll.toString();
             QPluginLoader *loader = new QPluginLoader(fileName);
             QObject *plugin = loader->instance();
             if (plugin) {
@@ -75,13 +79,13 @@ void UniDeskPluginMgr::loadPlugins()
         pluginInfo["description"] = obj["description"].toString();
         pluginInfo["version"] = obj["version"].toString();
         pluginInfo["components"] = obj["components"].toArray();
-        pluginInfo["dirpath"] = pluginsDir.absoluteFilePath(pluginDirName);
+        pluginInfo["dirpath"] = pluginDirPath;
         pluginInfo["settings"] = obj.value("settings").toString();
         pluginInfo["signals"] = obj.value("signals").toString();
 
         QString pluginId = obj["id"].toString();
 
-        QString defaultsPath = pluginsDir.absoluteFilePath(pluginDirName + "/defaultSettings.json");
+        QString defaultsPath = pluginDirPath + "/defaultSettings.json";
         QFile defaultsFile(defaultsPath);
         if (defaultsFile.exists() && defaultsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QJsonDocument defaultsDoc = QJsonDocument::fromJson(defaultsFile.readAll());
@@ -102,13 +106,12 @@ void UniDeskPluginMgr::loadPlugins()
         }
 
         pluginList.append(pluginInfo);
-        m_engine->addImportPath(pluginsDir.absoluteFilePath(pluginDirName));
 
         QString author = obj["author"].toString();
         QString id = obj["id"].toString();
         for (const QJsonValue &comp : obj["components"].toArray()) {
             QString comTypeId = author + "." + id + "." + comp.toObject()["name"].toString();
-            m_typePluginDirs[comTypeId] = pluginsDir.absoluteFilePath(pluginDirName);
+            m_typePluginDirs[comTypeId] = pluginDirPath;
         }
     }
     plugins_list(pluginList);
