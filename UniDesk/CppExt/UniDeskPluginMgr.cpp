@@ -5,6 +5,10 @@
 #include <QJsonObject>
 #include <QFile>
 #include <QJsonArray>
+#ifdef Q_OS_WIN
+#define NOMINMAX
+#include <windows.h>
+#endif
 #include "UniDeskPluginMgr.h"
 #include "UniDeskPluginInterface.h"
 #include "UniDeskSettings.h"
@@ -50,16 +54,21 @@ void UniDeskPluginMgr::loadPlugins()
 
         QString pluginDirPath = pluginsDir.absoluteFilePath(pluginDirName);
         m_engine->addImportPath(pluginDirPath);
+        QCoreApplication::addLibraryPath(pluginDirPath);
+
+#ifdef Q_OS_WIN
+        SetDllDirectoryW(pluginDirPath.toStdWString().c_str());
+#endif
 
         for (const QJsonValue &dll : obj["dlls"].toArray()) {
             QString fileName = pluginDirPath + "/" + dll.toString();
             QPluginLoader *loader = new QPluginLoader(fileName);
             QObject *plugin = loader->instance();
             if (plugin) {
-                UniDeskPluginInterface *interface = qobject_cast<UniDeskPluginInterface*>(plugin);
-                if (interface) {
-                    interface->registerQmlTypes(m_engine);
-                    interface->initialize();
+                UniDeskPluginInterface *pluginInterface = qobject_cast<UniDeskPluginInterface*>(plugin);
+                if (pluginInterface) {
+                    pluginInterface->registerQmlTypes(m_engine);
+                    pluginInterface->initialize();
                     m_loaders.append(loader);
                 } else {
                     qDebug() << "Plugin does not implement PluginInterface:" << fileName;
@@ -71,6 +80,10 @@ void UniDeskPluginMgr::loadPlugins()
                 delete loader;
             }
         }
+
+#ifdef Q_OS_WIN
+        SetDllDirectoryW(nullptr);
+#endif
         QVariantMap pluginInfo;
         qDebug()<<"Loaded plugin:"<<obj["author"].toString()<<"."<<obj["id"].toString()<<"("<<obj["name"].toString()<<")";
         pluginInfo["author"] = obj["author"].toString();

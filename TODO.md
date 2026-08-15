@@ -45,26 +45,6 @@
   - [ ] Wallpaper breaks on Old Version Windows 10
   - [ ] Window Updating is Blocked when Moving or Resizing QQuickWindow
   - [ ] TreeView Horizontal Scrollbar Bug
-- Components in Official Plugin
-  - [ ] Calculator
-  - [ ] Screen Capture
-  - [ ] Color Picker
-  - [ ] Translator
-  - [ ] Music
-  - [ ] Todo List
-  - [ ] Explorer
-  - [ ] Typing Follower
-  - [ ] Work Sheets
-  - [ ] Calendar
-  - [ ] Schedule
-  - [ ] Notepad
-  - [ ] Codepad
-  - [ ] Rapid File Downloader
-  - [ ] RSS
-  - [ ] Screen Using Time
-  - [ ] ClipBoard
-  - [ ] Encoder/Decoder
-  - [ ] Weather
-  - [ ] Chart(CPU,GPU,Network status,etc.)
+
 
 

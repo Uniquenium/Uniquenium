@@ -17,7 +17,7 @@ UniDeskWindow{
     title: qsTr("日志")
     autoDestroy: false
     autoVisible: false
-    UniDeskTextArea{
+    UniDeskTextAreaConsole{
         id: textArea
         anchors.fill: parent
         anchors.margins: 10
@@ -27,7 +27,7 @@ UniDeskWindow{
         Connections{
             target: textArea.area
             function onTextChanged() {
-                textArea.view.contentY = textArea.view.contentHeight-textArea.view.height-10
+                textArea.view.contentY = Math.min(textArea.view.contentHeight-textArea.view.height, 0)
             }
         }
     }

@@ -28,23 +28,18 @@ static QJsonObject readJsonFile(const QString &file) {
 }
 
 void UniDeskGlobals::updateIsLight() {
-    bool prev = isLight();
     QJsonObject obj = readJsonFile(QGuiApplication::applicationDirPath() + "/data/settings.json");
-    int colorMode = obj.value("colorMode").toInt();
+    int colorMode = obj.value("appearance.colorMode").toInt(2);
     bool newIsLight = true;
     if (colorMode == 0) {
         newIsLight = true;
     } else if (colorMode == 1) {
         newIsLight = false;
     } else {
-        // 自动检测系统主题
         QPalette pal = QGuiApplication::palette();
         newIsLight = pal.color(QPalette::Window).lightness() > 128;
     }
-    if (prev != newIsLight) {
-        isLight(newIsLight);
-        emit isLightChanged(newIsLight);
-    }
+    isLight(newIsLight);
 }
 
 void UniDeskGlobals::emitApplicationQuit() {

@@ -866,17 +866,17 @@ Continue?</translation>
         <translation>Parent Component (set to Wallpaper Layer to freeze)</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="97"/>
+        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="96"/>
         <source>旋转角度</source>
         <translation>Rotation Angle</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="123"/>
+        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="122"/>
         <source>Z坐标</source>
         <translation>Z-Index</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="152"/>
+        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="151"/>
         <source>透明度</source>
         <translation>Opacity</translation>
     </message>

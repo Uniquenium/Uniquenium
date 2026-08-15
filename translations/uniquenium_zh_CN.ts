@@ -864,17 +864,17 @@
         <translation>父组件（设为壁纸层将冻结组件）</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="97"/>
+        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="96"/>
         <source>旋转角度</source>
         <translation>旋转角度</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="123"/>
+        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="122"/>
         <source>Z坐标</source>
         <translation>Z坐标</translation>
     </message>
     <message>
-        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="152"/>
+        <location filename="../UniDesk/Controls/UniDeskComBasicOptions.qml" line="151"/>
         <source>透明度</source>
         <translation>透明度</translation>
     </message>
