@@ -20,8 +20,12 @@
     </message>
     <message>
         <location filename="../UniDesk/Singletons/SettingsViews/AboutView.qml" line="64"/>
+        <source>官网/文档</source>
+        <translation>Official Website/Documentation</translation>
+    </message>
+    <message>
         <source>官网</source>
-        <translation>Official Website</translation>
+        <translation type="vanished">Official Website</translation>
     </message>
 </context>
 <context>

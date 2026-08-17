@@ -27,7 +27,7 @@ UniDeskWindow{
         Connections{
             target: textArea.area
             function onTextChanged() {
-                textArea.view.contentY = Math.min(textArea.view.contentHeight-textArea.view.height, 0)
+                textArea.view.contentY = Math.max(textArea.view.contentHeight-textArea.view.height, 0)
             }
         }
     }

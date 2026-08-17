@@ -61,7 +61,8 @@ ScrollView{
                 font: UniDeskTextStyle.little
             }
             UniDeskTextButton{
-                text: qsTr("官网")
+                text: qsTr("官网/文档")
+                webLink: "https://docs.uniquenium.qyadbr.top"
                 font: UniDeskTextStyle.little
             }
         }
