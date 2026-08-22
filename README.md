@@ -14,7 +14,7 @@
 [TODO](./TODO.md)
 
 </div>
-An open-source desktop extension tool that combines beautification and practical functions
+An open-source desktop extension tool with high flexibility
 
 # Dependences
 
