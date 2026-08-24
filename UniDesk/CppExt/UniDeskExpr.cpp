@@ -13,7 +13,7 @@
 typedef exprtk::symbol_table<double> symbol_table_t;
 typedef exprtk::expression<double>   expression_t;
 typedef exprtk::parser<double>       parser_t;
-typedef exprtk::parser_error::type   error_t;
+typedef exprtk::parser_error::type exprtk_error_t;
 
 UniDeskExpr::UniDeskExpr(QQuickItem *parent)
     : QQuickItem(parent)
@@ -53,6 +53,7 @@ QString UniDeskExpr::convertStr(const QString &text, const QVariantMap &presets)
     result.replace("%dayOfYear", QString::number(qd.dayOfYear()));
     result.replace("%dayOfWeek", QString::number(qd.dayOfWeek()));
     result.replace("%cpuPercent", QString::number(stats.cpu.usagePercent));
+    result.replace("%cpuTemp", QString::number(stats.cpu.temperature));
     result.replace("%bytesSendTotal", QString::number(stats.net.bytesSend));
     result.replace("%bytesRecvTotal", QString::number(stats.net.bytesRecv));
     result.replace("%bytesSendPerSec", QString::number(stats.net.bytesSendPerSec));
@@ -71,6 +72,22 @@ QString UniDeskExpr::convertStr(const QString &text, const QVariantMap &presets)
     result.replace("%blefthours", plugged ? "UNLIMITED" : QString::number(minsleft / 60));
     result.replace("%bleftmins", plugged ? "UNLIMITED" : QString::number(minsleft));
     result.replace("%bplug", QString::number(plugged));
+    result.replace("%gpuUsagePercent", QString::number(stats.gpu.usagePercent));
+    result.replace("%gpuTemp", QString::number(stats.gpu.temperature));
+    result.replace("%gpuVramTotal", QString::number(stats.gpu.vramTotal));
+    result.replace("%gpuVramUsed", QString::number(stats.gpu.vramUsed));
+    result.replace("%gpuName", stats.gpu.name);
+    result.replace("%cpuName", stats.cpu.name);
+    result.replace("%cpuCores", QString::number(stats.cpu.logicalCores));
+    result.replace("%cpuMaxClock", QString::number(stats.cpu.maxClockMHz));
+    result.replace("%diskTotal", QString::number(stats.disk.totalSpace));
+    result.replace("%diskFree", QString::number(stats.disk.freeSpace));
+    result.replace("%diskPercent", QString::number(stats.disk.usagePercent));
+    result.replace("%uptime", QString::number(stats.sysInfo.uptimeSeconds));
+    result.replace("%hostname", stats.sysInfo.hostname);
+    result.replace("%osName", stats.sysInfo.osName);
+    result.replace("%screenWidth", QString::number(stats.sysInfo.screenWidth));
+    result.replace("%screenHeight", QString::number(stats.sysInfo.screenHeight));
     result.replace("%ap", dt.toString("ap"));
     result.replace("%AP", dt.toString("AP"));
     result.replace("%yyyy", dt.toString("yyyy"));

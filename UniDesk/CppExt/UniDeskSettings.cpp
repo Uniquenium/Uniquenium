@@ -58,6 +58,7 @@ static QJsonObject mainDefaultSettings() {
     obj["function.language"] = "zh_CN";
     obj["hotkeys.hotkey_open_settings"] = "Ctrl+Shift+S";
     obj["hotkeys.hotkey_open_page_manager"] = "Ctrl+Shift+P";
+    obj["hotkeys.hotkey_quit"] = "Alt+Ctrl+Q";
     QJsonObject mainPanelColorDark{{"<type>", "QColor"},{"red", 0},{"green",0},{"blue",0},{"alpha",150}};
     obj["appearance.mainPanelColorDark"] = mainPanelColorDark;
     QJsonObject mainPanelColorLight{{"<type>", "QColor"},{"red", 255},{"green",255},{"blue",255},{"alpha",150}};
@@ -220,9 +221,10 @@ QVariantMap UniDeskSettings::pluginDefaults(const QString &pluginId) {
 void UniDeskSettings::notifyLoad() {
     QString file = settingsFilePath();
     QJsonObject obj = readJsonFile(file, false);
-    auto getVal = [&obj](const QString &key) -> QJsonValue {
+    QJsonObject mainDefaultObj = mainDefaultSettings();
+    auto getVal = [&obj, &mainDefaultObj](const QString &key) -> QJsonValue {
         QJsonValue v = obj.value(key);
-        if (v.isUndefined() || v.isNull()) v = obj.value(stripPrefix(key));
+        if (v.isUndefined() || v.isNull()) v = mainDefaultObj.value(key);
         return v;
     };
     hideTaskbar(getVal("function.hideTaskbar").toBool());
@@ -252,6 +254,7 @@ void UniDeskSettings::notifyLoad() {
     language(getVal("function.language").toString());
     hotkey_open_settings(getVal("hotkeys.hotkey_open_settings").toString());
     hotkey_open_page_manager(getVal("hotkeys.hotkey_open_page_manager").toString());
+    hotkey_quit(getVal("hotkeys.hotkey_quit").toString());
     mainPanelColorDark(json2object(getVal("appearance.mainPanelColorDark")).value<QColor>());
     mainPanelColorLight(json2object(getVal("appearance.mainPanelColorLight")).value<QColor>());
     mainPanelOrientation(getVal("appearance.mainPanelOrientation").toInt());

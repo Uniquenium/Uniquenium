@@ -36,6 +36,7 @@ class UniDeskSettings : public QQuickItem {
     Q_PROPERTY_AUTO(QString, language)
     Q_PROPERTY_AUTO(QString, hotkey_open_settings)
     Q_PROPERTY_AUTO(QString, hotkey_open_page_manager)
+    Q_PROPERTY_AUTO(QString, hotkey_quit)
     Q_PROPERTY_AUTO(QColor, mainPanelColorDark)
     Q_PROPERTY_AUTO(QColor, mainPanelColorLight)
     Q_PROPERTY_AUTO(int, mainPanelOrientation)

@@ -21,6 +21,7 @@
 #include <winreg.h>
 #endif
 
+#ifdef Q_OS_WIN
 // 设置或取消开机自启
 // name: 注册表值名（通常是程序名）
 // path: 可执行文件完整路径（会自动加引号）
@@ -132,6 +133,7 @@ static bool IsAutoStartEnabled(const std::wstring& name, const std::wstring& pat
     return PathEqualInsensitive(storedExe, path);
 }
 
+#endif
 
 UniDeskTools::UniDeskTools(QQuickItem *parent)
     : QQuickItem(parent)
@@ -332,10 +334,16 @@ QString UniDeskTools::createUuid() {
     return QUuid::createUuid().toString();
 }
 bool UniDeskTools::isAppAutoStartEnabled() {
+#ifdef Q_OS_WIN
     QString path = QDir::toNativeSeparators(QGuiApplication::applicationFilePath());
     return IsAutoStartEnabled(L"UniDesk.Uniquenium", path.toStdWString());
+#else
+    return false;
+#endif
 }
 void UniDeskTools::setAppAutoStart(bool enabled) {
+#ifdef Q_OS_WIN
     QString path = QDir::toNativeSeparators(QGuiApplication::applicationFilePath());
     SetAutoStart(L"UniDesk.Uniquenium", path.toStdWString(), enabled);
+#endif
 }

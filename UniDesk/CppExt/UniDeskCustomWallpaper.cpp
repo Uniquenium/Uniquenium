@@ -6,6 +6,11 @@
 #pragma comment(lib, "dwmapi.lib")
 #endif
 
+#ifdef Q_OS_LINUX
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#endif
+
 #ifdef Q_OS_WIN
 namespace {
 
@@ -50,7 +55,9 @@ UniDeskCustomWallpaper::UniDeskCustomWallpaper(QQuickWindow *parent)
     : QQuickWindow { parent }
 {
     setFlag(Qt::FramelessWindowHint, true);
+#ifdef Q_OS_WIN
     setFlag(Qt::WindowStaysOnBottomHint, true);
+#endif
     setFlag(Qt::Tool, true);
     // 设置窗口背景为透明
     setColor(Qt::transparent);
@@ -141,6 +148,39 @@ void UniDeskCustomWallpaper::attachToWallpaper() {
         attachedToWallpaper(true);
     }
 #endif
+
+#ifdef Q_OS_LINUX
+    QString platform = QGuiApplication::platformName();
+    if (platform == "xcb" || platform == "X11") {
+        Display *display = XOpenDisplay(nullptr);
+        if (!display) {
+            attachedToWallpaper(false);
+            return;
+        }
+
+        ::Window rootWindow = DefaultRootWindow(display);
+        ::Window window = static_cast< ::Window>(winId());
+
+        XSetWindowAttributes attrs;
+        attrs.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | FocusChangeMask;
+        attrs.background_pixel = BlackPixel(display, DefaultScreen(display));
+        attrs.background_pixmap = None;
+        XChangeWindowAttributes(display, window, CWEventMask | CWBackPixel | CWBackPixmap, &attrs);
+
+        XReparentWindow(display, window, rootWindow, 0, 0);
+
+        XMapWindow(display, window);
+        XFlush(display);
+        XCloseDisplay(display);
+
+        attachedToWallpaper(true);
+    } else if (platform == "wayland") {
+        setFlag(Qt::WindowStaysOnBottomHint, true);
+        attachedToWallpaper(true);
+    } else {
+        attachedToWallpaper(false);
+    }
+#endif
 }
 
 bool UniDeskCustomWallpaper::eventFilter(QObject *obj, QEvent *event) {
@@ -174,5 +214,3 @@ void UniDeskCustomWallpaper::showEvent(QShowEvent *event) {
         QGuiApplication::instance()->installEventFilter(this);
     }
 }
-
-

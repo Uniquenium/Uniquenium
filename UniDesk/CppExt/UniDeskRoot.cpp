@@ -9,20 +9,26 @@
 #include <QDateTime>
 #include <QScreen>
 #include <QTimer>
-#include <QCursor>
 #include "UniDeskRoot.h"
+
+using CursorShapeType = Qt::CursorShape;
 
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <dwmapi.h>
-#pragma comment(lib, "dwmapi.lib")
+#endif
+#ifdef Q_OS_LINUX
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #endif
 
 UniDeskRoot::UniDeskRoot(QQuickWindow *parent)
     : QQuickWindow { parent }
 {
     setFlag(Qt::FramelessWindowHint, true);
+#ifdef Q_OS_WIN
     setFlag(Qt::WindowStaysOnBottomHint, true);
+#endif
     setFlag(Qt::Tool, true);
     margins(4);
     edges(Qt::Edges());
@@ -83,11 +89,37 @@ void UniDeskRoot::updateClickThrough() {
     if (hwnd) {
         LONG style = GetWindowLong(hwnd, GWL_EXSTYLE);
         if (mouseClickThrough()) {
-            // Enable mouse click-through
             SetWindowLong(hwnd, GWL_EXSTYLE, style | WS_EX_TRANSPARENT);
         } else {
-            // Disable mouse click-through
             SetWindowLong(hwnd, GWL_EXSTYLE, style & ~WS_EX_TRANSPARENT);
+        }
+    }
+#endif
+#ifdef Q_OS_LINUX
+    QString platform = QGuiApplication::platformName();
+    if (platform == "xcb" || platform == "X11") {
+        Display *display = XOpenDisplay(nullptr);
+        if (display) {
+            ::Window window = static_cast< ::Window>(winId());
+            if (mouseClickThrough()) {
+                XSetWindowAttributes attrs;
+                attrs.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | FocusChangeMask;
+                attrs.override_redirect = True;
+                XChangeWindowAttributes(display, window, CWEventMask | CWOverrideRedirect, &attrs);
+            } else {
+                XSetWindowAttributes attrs;
+                attrs.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | FocusChangeMask | ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | PointerMotionMask | EnterWindowMask | LeaveWindowMask;
+                attrs.override_redirect = False;
+                XChangeWindowAttributes(display, window, CWEventMask | CWOverrideRedirect, &attrs);
+            }
+            XFlush(display);
+            XCloseDisplay(display);
+        }
+    } else if (platform == "wayland") {
+        if (mouseClickThrough()) {
+            setFlag(Qt::WindowTransparentForInput, true);
+        } else {
+            setFlag(Qt::WindowTransparentForInput, false);
         }
     }
 #endif
@@ -124,7 +156,6 @@ void UniDeskRoot::checkMousePosition() {
     }
 }
 
-void UniDeskRoot::setCursorShape(Qt::CursorShape shape) {
-    m_cursor->setShape(shape);
+void UniDeskRoot::setCursorShape(int shape) {
+    m_cursor->setShape((CursorShapeType)shape);
 }
-

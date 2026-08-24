@@ -14,8 +14,6 @@ class UniDeskComponentTreeModel : public QAbstractItemModel {
     QML_NAMED_ELEMENT(UniDeskComponentTreeModel)
 
 public:
-    struct Node;
-
     explicit UniDeskComponentTreeModel(QObject *parent = nullptr);
     ~UniDeskComponentTreeModel() override;
 

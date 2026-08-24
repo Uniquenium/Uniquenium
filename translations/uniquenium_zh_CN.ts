@@ -301,6 +301,11 @@
         <source>打开页面管理器</source>
         <translation>打开页面管理器</translation>
     </message>
+    <message>
+        <location filename="../UniDesk/Singletons/SettingsViews/HotkeysView.qml" line="39"/>
+        <source>退出应用</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PluginsView</name>
@@ -1511,7 +1516,7 @@
     <message>
         <location filename="../main.qml" line="20"/>
         <location filename="../main.qml" line="605"/>
-        <location filename="../main.qml" line="831"/>
+        <location filename="../main.qml" line="838"/>
         <source>UniDesk</source>
         <translation>UniDesk</translation>
     </message>

@@ -4,8 +4,6 @@
 #include <QColor>
 #include <QCryptographicHash>
 #include <QCursor>
-#include <QDBusInterface>
-#include <QDBusReply>
 #include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
@@ -17,6 +15,11 @@
 #include <QSettings>
 #include <QTextDocument>
 #include <QUuid>
+
+#ifdef HAVE_QTDBUS
+#include <QDBusInterface>
+#include <QDBusReply>
+#endif
 
 #ifdef Q_OS_WIN
 #pragma comment(lib, "user32.lib")
@@ -317,6 +320,7 @@ QString UniDeskUtils::getWallpaperFilePath()
 #elif defined(Q_OS_LINUX)
     auto type = QSysInfo::productType();
 
+#ifdef HAVE_QTDBUS
     switch (hash_(type.toStdString().c_str())) {
     case hash_compile_time("uos"): {
         QDBusInterface interface("com.deepin.wm",
@@ -399,6 +403,7 @@ QString UniDeskUtils::getWallpaperFilePath()
         return imagePath;
     }
     }
+#endif
 
 #elif defined(Q_OS_MACOS)
     QProcess process;

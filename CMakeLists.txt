@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.25)
 
 add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
-add_compile_options(/bigobj)
+if(MSVC)
+    add_compile_options(/bigobj)
+endif()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -170,7 +172,3 @@ target_include_directories(${PROJECT_NAME}
 #    query_qmake(CMAKE_INSTALL_QTPLUGINDIR QT_INSTALL_PLUGINS)
 #    add_subdirectory(qtwidgets-style)
 #endif ()
-
-
-
-

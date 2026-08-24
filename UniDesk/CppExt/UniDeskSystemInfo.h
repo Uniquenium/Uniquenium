@@ -4,11 +4,18 @@
 #include <QQuickItem>
 #include <QtQml/qqml.h>
 #include <QDateTime>
+#include <QString>
+#include <QMutex>
 #include "singleton.h"
 #include <cstdint>
 
 struct CPUStats {
-    double usagePercent; // CPU占用百分比
+    double usagePercent;
+    QString name;
+    int physicalCores;
+    int logicalCores;
+    double maxClockMHz;
+    double temperature;
 };
 
 struct NetSnapshot {
@@ -26,18 +33,40 @@ struct NetworkStats {
 };
 
 struct MemoryStats {
-    uint64_t virtmemTotal;       // 总物理内存（字节）
-    uint64_t virtmemUsed;        // 已用物理内存（字节）
-    double virtmemPercent;       // 物理内存使用率
-    uint64_t swapmemTotal;       // 总交换内存（字节）
-    uint64_t swapmemUsed;        // 已用交换内存（字节）
-    double swapmemPercent;       // 交换内存使用率
+    uint64_t virtmemTotal;
+    uint64_t virtmemUsed;
+    double virtmemPercent;
+    uint64_t swapmemTotal;
+    uint64_t swapmemUsed;
+    double swapmemPercent;
 };
 
 struct BatteryStats {
-    int batteryPercent;         // 剩余电量百分比
-    bool charging;              // 是否插入充电线
-    int remainMinutes;          // 剩余时间（分钟），-1表示未知
+    int batteryPercent;
+    bool charging;
+    int remainMinutes;
+};
+
+struct GPUStats {
+    QString name;
+    double usagePercent;
+    double temperature;
+    uint64_t vramTotal;
+    uint64_t vramUsed;
+};
+
+struct DiskStats {
+    uint64_t totalSpace;
+    uint64_t freeSpace;
+    double usagePercent;
+};
+
+struct SystemInfo {
+    quint64 uptimeSeconds;
+    QString hostname;
+    QString osName;
+    int screenWidth;
+    int screenHeight;
 };
 
 struct SystemStats {
@@ -45,6 +74,9 @@ struct SystemStats {
     NetworkStats net;
     MemoryStats mem;
     BatteryStats bat;
+    GPUStats gpu;
+    DiskStats disk;
+    SystemInfo sysInfo;
 };
 
 class UniDeskSystemInfo: public QObject{
@@ -53,6 +85,9 @@ class UniDeskSystemInfo: public QObject{
     QML_SINGLETON
 private:
     explicit UniDeskSystemInfo();
+    SystemStats cachedStats;
+    QMutex statsMutex;
+    void updateStatsInBackground();
 public:
     SINGLETON(UniDeskSystemInfo)
     static auto create(QQmlEngine*, QJSEngine*) { return getInstance(); }

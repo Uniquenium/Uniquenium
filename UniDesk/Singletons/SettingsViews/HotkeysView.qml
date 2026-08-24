@@ -34,6 +34,13 @@ ScrollView{
             height: hotkeyPickerOpenPageManager.height
             anchors.left: parent.left
         }
+        UniDeskText {
+            id: text_quit
+            text: qsTr("退出应用")
+            font: UniDeskTextStyle.little
+            height: hotkeyPickerQuit.height
+            anchors.left: parent.left
+        }
     }
     UniDeskHotkeyPicker {
         id: hotkeyPickerOpenSettings
@@ -53,6 +60,16 @@ ScrollView{
         y: text_open_page_manager.y 
         onAccepted: {
             UniDeskSettings.set("hotkeys.hotkey_open_page_manager", current.join("+"))
+        }
+    }
+    UniDeskHotkeyPicker {
+        id: hotkeyPickerQuit
+        current: UniDeskSettings.hotkey_quit.split("+")
+        anchors.right: parent.right
+        anchors.margins: 10
+        y: text_quit.y
+        onAccepted: {
+            UniDeskSettings.set("hotkeys.hotkey_quit", current.join("+"))
         }
     }
 }

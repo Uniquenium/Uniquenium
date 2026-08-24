@@ -826,6 +826,13 @@ UniDeskObject{
             UniDeskPageWindow.showActivate();
         }
     }
+    UniDeskHotkey {
+        id: hotkeyQuit
+        sequence: UniDeskSettings.hotkey_quit
+        onActivated: {
+            object.exitAll()
+        }
+    }
     Component.onCompleted: {
         UniDeskSystemTray.setIcon(":/media/logo/uq-l-bg.png")
         UniDeskSystemTray.setTooltip(qsTr("UniDesk"))

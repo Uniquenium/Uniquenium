@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QQmlEngine>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QFile>
 
 static QMap<QString, QVariant> g_config;

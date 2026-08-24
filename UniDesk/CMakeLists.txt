@@ -3,6 +3,10 @@ qt_standard_project_setup()
 # Create Qt6 library target
 qt_add_library(${TARGET} SHARED)
 
+if(MSVC)
+    target_compile_options(${TARGET} PRIVATE /bigobj)
+endif()
+
 # 使用 JSON 文件代替 components-list
 # file(STRINGS Components/components-list COMPONENT_LIST)
 
@@ -14,11 +18,12 @@ set(UNIDESK_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 #     list(APPEND component_dir_list ${CMAKE_CURRENT_SOURCE_DIR}/Components/${line})
 # endforeach()
 
+find_package(Qt6 COMPONENTS DBus OPTIONAL_COMPONENT)
+
 target_link_libraries(${TARGET}
         PUBLIC
         Qt6::Core
         Qt6::Gui
-        Qt6::DBus
         Qt6::Widgets
         PRIVATE
         Qt6::Qml
@@ -30,6 +35,11 @@ target_link_libraries(${TARGET}
         Qt6::Concurrent
         QHotkey::QHotkey
         )
+
+if(Qt6::DBus)
+    target_link_libraries(${TARGET} PRIVATE Qt6::DBus)
+    target_compile_definitions(${TARGET} PRIVATE HAVE_QTDBUS)
+endif()
 target_include_directories(${TARGET} 
         PRIVATE 
         ${QHOTKEY_INCLUDE_DIR} 
@@ -44,7 +54,13 @@ if (UNIX)
         if (KF6WindowSystem_FOUND)
             target_link_libraries(${TARGET} PRIVATE KF6::WindowSystem)
         endif ()
+        find_package(X11 REQUIRED)
+        target_link_libraries(${TARGET} PRIVATE X11::X11)
     endif ()
+endif ()
+
+if (WIN32)
+    target_link_libraries(${TARGET} PRIVATE pdh.lib dxgi.lib wbemuuid.lib)
 endif ()
 
 # Clear the list of source files

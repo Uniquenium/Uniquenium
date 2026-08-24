@@ -37,7 +37,7 @@ public:
     void showEvent(QShowEvent *event) override;
     bool nativeEventFilter(const QByteArray& eventType, void* message,
                           QT_NATIVE_EVENT_RESULT_TYPE* result) override;
-    Q_INVOKABLE void setCursorShape(Qt::CursorShape shape);
+    Q_INVOKABLE void setCursorShape(int shape);
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
@@ -57,5 +57,3 @@ private:
 };      
 
 #endif // UNIDESKROOT_H
-
-
