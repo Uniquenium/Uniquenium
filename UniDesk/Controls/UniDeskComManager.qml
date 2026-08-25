@@ -62,6 +62,10 @@ UniDeskObject{
             currentPid=pageid;
         }
         let typid=typename_list.indexOf(typename);
+        if(typid<0 || typid>=type_list.length) {
+            console.warn("add_com: Component type not found:", typename);
+            return null;
+        }
         let uuid = UniDeskTools.createUuid();
         let new_com=type_list[typid].createObject(parentOfNewCom,{"name":qsTr(typenameTr)+" "+serialComponentCnt,"identification":uuid,"pageid": currentPid,"comManager":object,"x":50,"y":50,"type":typename});
         UniDeskComponentsData.addComponent(new_com.propertyData());
@@ -80,7 +84,7 @@ UniDeskObject{
     }
     function add_com_from_data(data){
         var typid=typename_list.indexOf(data.type);
-        if(typid<0) return null;
+        if(typid<0 || typid>=type_list.length) return null;
         var new_com=type_list[typid].createObject(root.contentItem,{"comManager":object});
         new_com.loadPropertyData(data);
         new_com.pageid=currentPid;
@@ -141,7 +145,6 @@ UniDeskObject{
         pageWindow.reloadTreeView();
     }
     function copy_com(com){
-        // 创建新组件（位置偏移delta）
         let uuid = UniDeskTools.createUuid();
         var new_com=copy_com_basic(com,{
             "identification": uuid,
@@ -189,7 +192,9 @@ UniDeskObject{
         pageWindow.reloadTreeView();
     }
     function isEmptyPage(index){
-        return compModels.get(index).value.count===3;
+        var entry = compModels.get(index);
+        if(!entry || !entry.value) return false;
+        return entry.value.count===3;
     }
     function copy_page(index){
         // 获取源页面的pid
@@ -214,6 +219,7 @@ UniDeskObject{
                     "y": com.y,
                     "name": qsTr(com.type) + " " + serialComponentCnt
                 })
+                if(!new_com) continue;
                 oldIds.push(com.identification);
                 newIds.push(new_com.identification);
             }
@@ -280,16 +286,24 @@ UniDeskObject{
         var data=UniDeskComponentsData.getComponents();
         for(var i=0;i<data.length;i++){
             var id_num=data[i].identification;
-            var new_com;
+            var new_com=null;
             for(var j=0;j<typename_list.length;j++){
-                if(data[i].type===typename_list[j]){
-                    //set parent to desktop layer temporarily
+                if(data[i].type===typename_list[j] && j<type_list.length){
                     new_com=type_list[j].createObject(root.contentItem,{"identification":data[i].identification,"pageid": data[i].pageid,"comManager":object,"x":data[i].x,"y":data[i].y});
                     new_com.loadPropertyData(data[i]); 
+                    break;
                 }
             }
+            if(!new_com) {
+                console.warn("loadComponentsFromData: Skipping unknown component type:", data[i].type, "id:", id_num);
+                continue;
+            }
             component_list.push(new_com)
-            compModels.get(pid2pindex(new_com.pageid)).value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":data[i].parent ? data[i].parent : "", "z":new_com.z});
+            var pageIdx = pid2pindex(new_com.pageid);
+            var pageEntry = compModels.get(pageIdx);
+            if(pageEntry && pageEntry.value) {
+                pageEntry.value.append({"identification":new_com.identification, "name":new_com.name, "type":new_com.type, "parentId":data[i].parent ? data[i].parent : "", "z":new_com.z});
+            }
             new_com.visible=new_com.pageid===currentPid;
         }
         for(var i=0;i<data.length;i++){
@@ -366,7 +380,7 @@ UniDeskObject{
                 var info=plugins[i].components[j];
                 var comTypeId = plugins[i].author+"."+plugins[i].id+"."+info.name
                 print(comTypeId+" Loading")
-                var component = Qt.createComponent(Qt.resolvedUrl("file:///"+plugins[i].dirpath+"/"+info.path),Component.Synchronous, null)
+                var component = Qt.createComponent(UniDeskTools.fromLocalFile(plugins[i].dirpath+"/"+info.path),Component.Synchronous, null)
                 if(component.status===Component.Ready){
                     type_list.push(component);
                     typename_list.push(comTypeId);
@@ -561,7 +575,12 @@ UniDeskObject{
         }
     }
     function copy_com_basic(com,data){
-        var new_com = type_list[typename_list.indexOf(com.type)].createObject(com.parent, {
+        var cidx = typename_list.indexOf(com.type);
+        if(cidx<0 || cidx>=type_list.length) {
+            console.warn("copy_com_basic: Component type not found:", com.type);
+            return null;
+        }
+        var new_com = type_list[cidx].createObject(com.parent, {
             "comManager": object
         });
         new_com.loadPropertyData(com.propertyData());

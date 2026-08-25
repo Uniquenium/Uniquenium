@@ -5,9 +5,11 @@
 #include <QJsonObject>
 #include <QFile>
 #include <QJsonArray>
+#include <QLibrary>
 #ifdef Q_OS_WIN
 #define NOMINMAX
 #include <windows.h>
+#include <libloaderapi.h>
 #endif
 #include "UniDeskPluginMgr.h"
 #include "UniDeskPluginInterface.h"
@@ -58,11 +60,18 @@ void UniDeskPluginMgr::loadPlugins()
 
 #ifdef Q_OS_WIN
         SetDllDirectoryW(pluginDirPath.toStdWString().c_str());
+        DLL_DIRECTORY_COOKIE dllCookie = AddDllDirectory(reinterpret_cast<PCWSTR>(pluginDirPath.utf16()));
+        QByteArray curPath = qgetenv("PATH");
+        QByteArray newPath = QByteArray(curPath.constData(), curPath.size())
+            + ";" + pluginDirPath.toLocal8Bit();
+        qputenv("PATH", newPath.constData());
 #endif
 
-        for (const QJsonValue &dll : obj["dlls"].toArray()) {
+        QJsonArray dllsArray = obj["dlls"].toArray();
+        for (const QJsonValue &dll : dllsArray) {
             QString fileName = pluginDirPath + "/" + dll.toString();
             QPluginLoader *loader = new QPluginLoader(fileName);
+            loader->setLoadHints(QLibrary::ExportExternalSymbolsHint | QLibrary::ResolveAllSymbolsHint);
             QObject *plugin = loader->instance();
             if (plugin) {
                 UniDeskPluginInterface *pluginInterface = qobject_cast<UniDeskPluginInterface*>(plugin);
@@ -76,13 +85,31 @@ void UniDeskPluginMgr::loadPlugins()
                 }
             } else {
                 qDebug() << "Failed to load plugin:" << fileName;
-                qDebug() << "Error:" << loader->errorString();
+                QString errStr = loader->errorString();
+                if (!errStr.isEmpty()) {
+                    qDebug() << "  Error:" << errStr;
+                }
+                QFile f(fileName);
+                if (!f.exists()) {
+                    qDebug() << "  Hint: File does not exist on disk.";
+                } else {
+                    QLibrary probe(fileName);
+                    probe.setLoadHints(QLibrary::ExportExternalSymbolsHint);
+                    if (!probe.load()) {
+                        qDebug() << "  Raw QLibrary error:" << probe.errorString();
+                    } else {
+                        probe.unload();
+                        qDebug() << "  Hint: DLL itself loads fine; Qt plugin metadata not found.";
+                        qDebug() << "        Built with matching Qt version and plugin IID?";
+                    }
+                }
                 delete loader;
             }
         }
 
 #ifdef Q_OS_WIN
         SetDllDirectoryW(nullptr);
+        if (dllCookie) RemoveDllDirectory(dllCookie);
 #endif
         QVariantMap pluginInfo;
         qDebug()<<"Loaded plugin:"<<obj["author"].toString()<<"."<<obj["id"].toString()<<"("<<obj["name"].toString()<<")";

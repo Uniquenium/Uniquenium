@@ -397,12 +397,18 @@ UniDeskWindow{
         radius: 5
     }
     onCurrentIndexChanged: {
-        liview.model=comManager.page_list.get(window.currentIndex).value
+        if(!comManager) return;
+        var entry = comManager.page_list.get(window.currentIndex);
+        if(entry && entry.value) liview.model = entry.value;
     }
     onReloadTreeView: {
+        if(!comManager) return;
         var tempEmpty=comManager.treeModelComponent.createObject(null,{})
         liview.model=tempEmpty
-        liview.model=comManager.page_list.get(window.currentIndex).value
+        var entry = comManager.page_list.get(window.currentIndex);
+        if(entry && entry.value) {
+            liview.model=entry.value
+        }
         tempEmpty.destroy()
         liview.expandRecursively();
     }

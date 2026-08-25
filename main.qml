@@ -436,7 +436,7 @@ UniDeskObject{
             var plugins = UniDeskPluginMgr.plugins_list;
             for (var i = 0; i < plugins.length; i++) {
                 if (!plugins[i].signals || plugins[i].signals.length === 0) continue;
-                var path = "file:///" + plugins[i].dirpath + "/" + plugins[i].signals;
+                var path = UniDeskTools.fromLocalFile(plugins[i].dirpath + "/" + plugins[i].signals);
                 var component = Qt.createComponent(path, Component.Synchronous);
                 if (component === null) {
                     console.error("Failed to create SignalHandler component:", path);

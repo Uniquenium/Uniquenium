@@ -16,6 +16,7 @@
 #include <QQuickWindow>
 #include <QCursor>
 #include <QFileInfo>
+#include <QSettings>
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <winreg.h>
@@ -175,8 +176,17 @@ QFont UniDeskTools::font(const QString &family, int size) {
 }
 
 bool UniDeskTools::isSystemColorLight() {
+#ifdef Q_OS_WIN
+    QSettings reg("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+                  QSettings::NativeFormat);
+    QVariant v = reg.value("AppsUseLightTheme");
+    if (!v.isValid()) v = reg.value("SystemUsesLightTheme");
+    if (v.isValid()) return v.toInt() != 0;
+    return true;
+#else
     QPalette pal = QGuiApplication::palette();
     return pal.color(QPalette::Window).lightness() > 128;
+#endif
 }
 
 void UniDeskTools::web_browse(const QString &url) {
