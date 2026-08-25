@@ -136,13 +136,42 @@ static bool IsAutoStartEnabled(const std::wstring& name, const std::wstring& pat
 
 #endif
 
+static QString normalizeLocalFontPath(const QString &p) {
+    if (p.isEmpty()) return p;
+    QString s = p.trimmed();
+    // case 1: 完整 URL，交给 QUrl 解析（能处理 file:///、file://server/share、percent-encode 等）
+    QUrl url(s);
+    if (url.isLocalFile()) {
+        s = url.toLocalFile();
+    } else if (url.scheme().compare(QStringLiteral("file"), Qt::CaseInsensitive) == 0) {
+        // scheme 是 file 但 QUrl 不认为是 local file（如 UNC/格式异常）→ 用 Qt 自带解析 path
+        s = url.path();
+        // QUrl 对 "file://server/share" 返回 "/server/share"，需要还原成 UNC 的双斜杠
+        if (s.size() >= 2 && s.at(0) == '/' && s.at(1) != '/') {
+            s.prepend(QLatin1Char('/'));
+        }
+    }
+    // case 2: 形如 "/C:/xxx" 的伪绝对路径（QUrl 无 scheme，当作纯路径）
+    // 特征：第 0 位 '/'，第 1 位字母，第 2 位 ':'  → 去掉开头斜杠
+    if (s.size() >= 3
+        && s.at(0) == '/'
+        && s.at(1).isLetter()
+        && s.at(2) == ':') {
+        s = s.mid(1);
+    }
+    // 用 Qt 自带清理冗余分隔符、"./"、"../"
+    return QDir::cleanPath(s);
+}
+
 UniDeskTools::UniDeskTools(QQuickItem *parent)
     : QQuickItem(parent)
 {
     QList<QString> paths = UniDeskSettings::getInstance()->customFontFamilyPaths();
+    for (QString &p : paths) p = normalizeLocalFontPath(p);
     familyPaths(paths);
     QList<int> fontIds;
-    for (const QString& path : paths) {
+    for (const QString& rawPath : paths) {
+        QString path = normalizeLocalFontPath(rawPath);
         if (QFile::exists(path)) {
             int id = QFontDatabase::addApplicationFont(path);
             if (id != -1)
@@ -255,19 +284,21 @@ int UniDeskTools::fontIndex(const QString &familyName) {
 }
 
 void UniDeskTools::addFontFamily(const QString &path) {
-    int id = QFontDatabase::addApplicationFont(path);
+    QString localPath = normalizeLocalFontPath(path);
+    int id = QFontDatabase::addApplicationFont(localPath);
     if (id != -1) {
         QList<int> ids = appFonts();
         ids.append(id);
         appFonts(ids);
 
         QList<QString> paths = familyPaths();
-        paths.append(path);
+        for (QString &p : paths) p = normalizeLocalFontPath(p);
+        paths.append(localPath);
         familyPaths(paths);
 
         emit customFontsChanged();
 
-        // 更新设置文件
+        // 更新设置文件（存纯本地路径，不带 file:/// 前缀）
         UniDeskSettings::getInstance()->customFontFamilyPaths(paths);
         UniDeskSettings::getInstance()->set("appearance.customFontFamilyPaths", QVariant::fromValue(paths));
     }
@@ -284,14 +315,16 @@ void UniDeskTools::removeFontFamily(const QString &idStr) {
         appFonts(ids);
 
         QList<QString> paths = familyPaths();
-        paths.removeAt(idx);
+        for (QString &p : paths) p = normalizeLocalFontPath(p);
+        if (idx >= 0 && idx < paths.size())
+            paths.removeAt(idx);
         familyPaths(paths);
 
         emit customFontsChanged();
 
         // 更新设置文件
         UniDeskSettings::getInstance()->customFontFamilyPaths(paths);
-        UniDeskSettings::getInstance()->set("customFontFamilyPaths", QVariant::fromValue(paths));
+        UniDeskSettings::getInstance()->set("appearance.customFontFamilyPaths", QVariant::fromValue(paths));
     }
 }
 

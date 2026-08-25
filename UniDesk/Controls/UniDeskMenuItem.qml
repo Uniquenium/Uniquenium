@@ -30,7 +30,7 @@ T.MenuItem {
             id: content_icon
             iconSize: root.iconSize
             iconSource: root.iconSource
-            iconColor: enabled ? UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1) : root.palette.mid
+            iconColor: enabled ? UniDeskGlobals.isLight ? Qt.rgba(0,0,0,1) : Qt.rgba(1,1,1,1) : Qt.rgba(0.5,0.5,0.5,1)
         }
     }
     contentItem: Item{
@@ -56,7 +56,7 @@ T.MenuItem {
                 id:content_text
                 text: root.text
                 font: root.font
-                color: enabled ? root.textColor : Qt.rgba(0,0,0,0.5)
+                color: enabled ? root.textColor : Qt.rgba(0.5,0.5,0.5,1)
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

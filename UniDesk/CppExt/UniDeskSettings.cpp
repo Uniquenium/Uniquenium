@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QSet>
+#include <QUrl>
 
 QHash<QString, QVariantMap> UniDeskSettings::s_pluginDefaults;
 
@@ -22,6 +23,33 @@ QString UniDeskSettings::stripPrefix(const QString &key) {
 bool UniDeskSettings::isAppearanceProperty(const QString &key) { return key.startsWith("appearance."); }
 bool UniDeskSettings::isHotkeysProperty(const QString &key) { return key.startsWith("hotkeys."); }
 bool UniDeskSettings::isFunctionProperty(const QString &key) { return key.startsWith("function."); }
+
+static QString normalizeLocalFontPath(const QString &p) {
+    if (p.isEmpty()) return p;
+    QString s = p.trimmed();
+    // case 1: 完整 URL，交给 QUrl 解析（能处理 file:///、file://server/share、percent-encode 等）
+    QUrl url(s);
+    if (url.isLocalFile()) {
+        s = url.toLocalFile();
+    } else if (url.scheme().compare(QStringLiteral("file"), Qt::CaseInsensitive) == 0) {
+        // scheme 是 file 但 QUrl 不认为是 local file（如 UNC/格式异常）→ 用 Qt 自带解析 path
+        s = url.path();
+        // QUrl 对 "file://server/share" 返回 "/server/share"，需要还原成 UNC 的双斜杠
+        if (s.size() >= 2 && s.at(0) == '/' && s.at(1) != '/') {
+            s.prepend(QLatin1Char('/'));
+        }
+    }
+    // case 2: 形如 "/C:/xxx" 的伪绝对路径（QUrl 无 scheme，当作纯路径）
+    // 特征：第 0 位 '/'，第 1 位字母，第 2 位 ':'  → 去掉开头斜杠
+    if (s.size() >= 3
+        && s.at(0) == '/'
+        && s.at(1).isLetter()
+        && s.at(2) == ':') {
+        s = s.mid(1);
+    }
+    // 用 Qt 自带清理冗余分隔符、"./"、"../"
+    return QDir::cleanPath(s);
+}
 
 static QJsonObject mainDefaultSettings() {
     QJsonObject obj;
@@ -239,7 +267,7 @@ void UniDeskSettings::notifyLoad() {
     globalFontFamily(getVal("appearance.globalFontFamily").toString());
     QList<QString> fontPaths;
     for (const QJsonValue &v : getVal("appearance.customFontFamilyPaths").toArray())
-        fontPaths << v.toString();
+        fontPaths << normalizeLocalFontPath(v.toString());
     customFontFamilyPaths(fontPaths);
     wallpaperMode(getVal("appearance.wallpaperMode").toInt());
     wallpaperRefreshInterval(getVal("appearance.wallpaperRefreshInterval").toInt());

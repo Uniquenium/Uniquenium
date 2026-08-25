@@ -164,7 +164,8 @@ ScrollView{
         mode: UniDeskFileMode.FileModeFile
         onSubmit: {
             if(UniDeskTools.isValidUrl(path)){
-                UniDeskTools.addFontFamily(path.toString().slice(8));
+                var str = (path instanceof URL) ? path.toString() : (typeof path === 'string' ? path : path.url ? path.url : String(path));
+                UniDeskTools.addFontFamily(str);
                 customFontListView.model=UniDeskTools.getCustomFonts();
             }
         }
