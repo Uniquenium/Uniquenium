@@ -16,12 +16,15 @@
 </div>
 An open-source desktop extension tool with high flexibility
 
+# Screenshot
+
+![Screenshot](./media/logo/screenshot.png)
+
 # Dependences
 
 - [exprtk](https://github.com/ArashPartow/exprtk)
 - QHotkey
-
-
+- Extra Cmake Modules
 
 # Acknowledgements
 

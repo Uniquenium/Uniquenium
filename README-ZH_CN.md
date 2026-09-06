@@ -17,3 +17,21 @@
 
 </div>
 高度自由的开源桌面自定义工具
+
+# 效果图
+
+![屏幕截图](./media/logo/screenshot.png)
+
+# 依赖项
+
+- [exprtk](https://github.com/ArashPartow/exprtk)
+- QHotkey
+- Extra Cmake Modules
+
+# 致谢
+
+[Admibrill](https://github.com/admibrill)，项目发起人。
+
+[Remix Icons](https://www.remixicon.cn/collection)，提供图标。
+
+[LingmoUI](https://github.com/LingmoOS/LingmoUI)，UI库原型。
